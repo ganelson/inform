@@ -65,7 +65,6 @@ void ProjectFileManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *ProjectFileManager::claim_file_as_copy(filename *F) {
 	inbuild_copy *C = ProjectFileManager::new_copy(Filenames::get_leafname(F), F);
-	ProjectFileManager::build_vertex(C);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
@@ -98,16 +97,6 @@ void ProjectFileManager::building_soon(inbuild_genre *gen, inbuild_copy *C, buil
 	*V = project->chosen_build_target;
 }
 
-@ The build graph for a project will need further thought...
-
-=
-void ProjectFileManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
-}
-
-@ which it will get here:
-
-=
 void ProjectFileManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectFileManager::from_copy(C));
 }

@@ -20,10 +20,10 @@ binary Inter files, because those are its build-dependencies.
 time_t IncrementalBuild::timestamp(build_vertex *V) {
 	switch (V->type) {
 		case FILE_VERTEX:
-			return Filenames::timestamp(V->buildable_if_internal_file);
+			return Filenames::timestamp(V->as_file);
 		case COPY_VERTEX:
-			if (V->buildable_if_copy->location_if_file)
-				return Filenames::timestamp(V->buildable_if_copy->location_if_file);
+			if (V->as_copy->location_if_file)
+				return Filenames::timestamp(V->as_copy->location_if_file);
 			return IncrementalBuild::time_of_latest_build_dependency(V);
 		default:
 			return Platform::never_time();
@@ -118,24 +118,25 @@ for each time we recurse.
 =
 int no_build_generations = 0;
 int IncrementalBuild::begin_recursion(OUTPUT_STREAM, int gb, build_vertex *V,
-	build_methodology *meth) {
+	build_methodology *BM) {
 	int changes = 0;
-	text_stream *trace = NULL;
-	if (trace_ibg) trace = STDOUT;
-	WRITE_TO(trace, "Incremental build %d:\n", no_build_generations);
-	int rv = IncrementalBuild::recurse(OUT, trace, gb, V, meth, &changes, no_build_generations++);
-	WRITE_TO(trace, "%d change(s)\n", changes);
+	text_stream *T = NULL;
+	if (trace_ibg) T = STDOUT;
+	no_build_generations++;
+	WRITE_TO(T, "Incremental build %d:\n", no_build_generations);
+	int rv = IncrementalBuild::recurse(OUT, T, gb, V, BM, &changes, no_build_generations);
+	WRITE_TO(T, "%d change(s)\n", changes);
 	return rv;
 }
 
-int IncrementalBuild::recurse(OUTPUT_STREAM, text_stream *trace, int gb, build_vertex *V,
-	build_methodology *meth, int *changes, int generation) {
-	if (trace) {
-		WRITE_TO(trace, "Visit %c%c%c: ",
+int IncrementalBuild::recurse(OUTPUT_STREAM, text_stream *T, int gb, build_vertex *V,
+	build_methodology *BM, int *changes, int generation) {
+	if (T) {
+		WRITE_TO(T, "Visit %c%c%c: ",
 			(gb & BUILD_DEPENDENCIES_MATTER_GB)?'b':'.',
 			(gb & USE_DEPENDENCIES_MATTER_GB)?'u':'.',
 			(gb & IGNORE_TIMESTAMPS_GB)?'i':'.');
-		Graphs::describe(trace, V, FALSE);
+		Graphs::describe(T, V, FALSE);
 	}
 
 	if (V->last_built_in_generation == generation) return V->build_result;
@@ -162,10 +163,10 @@ clear. Here, if a node has no build script attached, it must be because it
 needs no action taken.
 
 @<Build this node if necessary, setting rv to its success or failure@> =
-	if (trace) STREAM_INDENT(trace);
+	if (T) STREAM_INDENT(T);
 	if (gb & BUILD_DEPENDENCIES_MATTER_GB) @<Build the build dependencies of the node@>;
 	if (gb & USE_DEPENDENCIES_MATTER_GB) @<Build the use dependencies of the node@>;
-	if (trace) STREAM_OUTDENT(trace);
+	if (T) STREAM_OUTDENT(T);
 	if ((rv) && (Graphs::can_be_built(V))) @<Build the node itself, if necessary@>;
 
 @ Suppose V needs W (for whatever reason), and that W can only be used with X.
@@ -177,15 +178,15 @@ building V is itself a use of W, and therefore of X. So we always enable the
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 		if (rv)
-			rv = IncrementalBuild::recurse(OUT, trace,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, meth, changes, generation);
+			rv = IncrementalBuild::recurse(OUT, T,
+				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation);
 
 @<Build the use dependencies of the node@> =
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
 		if (rv)
-			rv = IncrementalBuild::recurse(OUT, trace,
-				gb | USE_DEPENDENCIES_MATTER_GB, W, meth, changes, generation);
+			rv = IncrementalBuild::recurse(OUT, T,
+				gb | USE_DEPENDENCIES_MATTER_GB, W, BM, changes, generation);
 
 @ Now for the node |V| itself.
 
@@ -195,11 +196,11 @@ building V is itself a use of W, and therefore of X. So we always enable the
 	else @<Decide based on timestamps@>;
 
 	if (needs_building) {
-		if (trace) { WRITE_TO(trace, "Build: "); Graphs::describe(trace, V, FALSE); }
+		if (T) { WRITE_TO(T, "Build: "); Graphs::describe(T, V, FALSE); }
 		(*changes)++;
-		rv = BuildScripts::execute(V, V->script, meth);
+		rv = BuildScripts::execute(V, V->script, BM);
 	} else {
-		if (trace) { WRITE_TO(trace, "No build\n"); }
+		if (T) { WRITE_TO(T, "No build\n"); }
 	}
 
 @ This is where the incremental promise is finally kept. If the timestamp of
@@ -215,16 +216,16 @@ created during the same second.
 	if (last_up_to_date_at == Platform::never_time())
 		needs_building = TRUE;
 	else {
-		if (trace) { WRITE_TO(trace, "Last built at: %08x\n", last_up_to_date_at); }
+		if (T) { WRITE_TO(T, "Last built at: %08x\n", last_up_to_date_at); }
 		if (gb & BUILD_DEPENDENCIES_MATTER_GB) {
 			time_t t = IncrementalBuild::time_of_latest_build_dependency(V);
-			if (trace) { WRITE_TO(trace, "Most recent build dependency: %08x\n", t); }
+			if (T) { WRITE_TO(T, "Most recent build dependency: %08x\n", t); }
 			if (IncrementalBuild::timecmp(t, last_up_to_date_at) >= 0)
 				needs_building = TRUE;
 		}
 		if (gb & USE_DEPENDENCIES_MATTER_GB) {
 			time_t t = IncrementalBuild::time_of_latest_use_dependency(V);
-			if (trace) { WRITE_TO(trace, "Most recent use dependency: %08x\n", t); }
+			if (T) { WRITE_TO(T, "Most recent use dependency: %08x\n", t); }
 			if (IncrementalBuild::timecmp(t, last_up_to_date_at) >= 0)
 				needs_building = TRUE;
 		}

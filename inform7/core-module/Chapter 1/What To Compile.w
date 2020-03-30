@@ -81,8 +81,8 @@ only issue stubby Unix-like command line errors.)
 void Task::issue_problems_arising(build_vertex *V) {
 	if (V->type == COPY_VERTEX) {
 		LOG("Issue from copy of %X at %08x\n",
-			V->buildable_if_copy->edition->work, V->buildable_if_copy);
-		SourceProblems::issue_problems_arising(V->buildable_if_copy);
+			V->as_copy->edition->work, V->as_copy);
+		SourceProblems::issue_problems_arising(V->as_copy);
 	}
 	build_vertex *W;
 	LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
@@ -261,7 +261,7 @@ filename *Task::storyfile_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	build_vertex *V = inform7_task->project->unblorbed_vertex;
 	if (V == NULL) internal_error("project graph not ready");
-	return V->buildable_if_internal_file;
+	return V->as_file;
 }
 
 @ Deeper inside the|Build| subfolder is an (also ephemeral) |Index| subfolder,

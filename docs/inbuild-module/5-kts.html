@@ -178,7 +178,6 @@
         <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Nests::search_for_best</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">nest_list</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"cannot find kit"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">KitManager::build_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">KitManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -276,9 +275,9 @@
 
 <p class="endnote">The function Kits::early_source_text is used in 5/ps (<a href="5-ps.html#SP3">&#167;3</a>).</p>
 
-<p class="endnote">The function Kits::inter_paths is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Kits::inter_paths is used in 3/is (<a href="3-is.html#SP4">&#167;4</a>).</p>
 
-<p class="endnote">The structure inform_kit is accessed in 1/ic, 3/is2, 3/is3, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/es, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2, 6/hdn, 6/inc and here.</p>
+<p class="endnote">The structure inform_kit is accessed in 1/ic, 3/bg, 3/ib, 3/is2, 3/is3, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/es, 5/ed, 5/ed2, 5/ts, 5/ps, 5/ls, 5/ps2, 6/hdn, 6/inc and here.</p>
 
 <p class="endnote">The structure inform_kit_ittt is private to this section.</p>
 

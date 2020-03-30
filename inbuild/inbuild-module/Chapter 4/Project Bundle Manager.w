@@ -62,7 +62,6 @@ void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 
 inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
 	inbuild_copy *C = ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
-	ProjectBundleManager::build_vertex(C);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
@@ -95,16 +94,6 @@ void ProjectBundleManager::building_soon(inbuild_genre *gen, inbuild_copy *C, bu
 	*V = project->chosen_build_target;
 }
 
-@ The build graph for a project will need further thought...
-
-=
-void ProjectBundleManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
-}
-
-@ which it will get here:
-
-=
 void ProjectBundleManager::go_operational(inbuild_genre *G, inbuild_copy *C) {
 	Projects::construct_graph(ProjectBundleManager::from_copy(C));
 }

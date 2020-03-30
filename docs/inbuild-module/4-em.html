@@ -189,7 +189,6 @@ So we'll open it and look.
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">ExtensionManager::claim_file_as_copy</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">ExtensionManager::new_copy</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext">ExtensionManager::build_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -338,11 +337,7 @@ the current VM settings.
         <span class="functiontext">Inclusions::traverse</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">)-</span><span class="element">&gt;syntax_tree</span><span class="plain">);</span>
         <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">-</span><span class="element">&gt;use_edges</span><span class="plain">)</span>
-            <span class="functiontext">ExtensionManager::ensure_graphed</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;buildable_if_copy</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExtensionManager::build_vertex</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="functiontext">Graphs::copy_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="functiontext">ExtensionManager::ensure_graphed</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -351,8 +346,6 @@ the current VM settings.
 <p class="endnote">The function ExtensionManager::building_soon is used in <a href="#SP3">&#167;3</a>.</p>
 
 <p class="endnote">The function ExtensionManager::ensure_graphed appears nowhere else.</p>
-
-<p class="endnote">The function ExtensionManager::build_vertex is used in <a href="#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Source text. </b></p>
 

@@ -1,22 +1,29 @@
 [Inform7Skill::] Inform7 Skill.
 
-A build step is a task such as running inform7 or inblorb on some file.
+The skill of turning source text into Inter code.
 
-@ =
+@ This skill can be performed externally with a shell command to |inform7|, or,
+if we are running inside |inform7| anyway, internally with a function call.
+
+=
 build_skill *compile_using_inform7_skill = NULL;
 
 void Inform7Skill::create(void) {
-	compile_using_inform7_skill = BuildSteps::new_skill(I"compile using inform7");
-	METHOD_ADD(compile_using_inform7_skill, BUILD_SKILL_COMMAND_MTID, Inform7Skill::inform7_via_shell);
-	METHOD_ADD(compile_using_inform7_skill, BUILD_SKILL_INTERNAL_MTID, Inform7Skill::inform7_internally);
+	compile_using_inform7_skill =
+		BuildSteps::new_skill(I"compile using inform7");
+	METHOD_ADD(compile_using_inform7_skill, BUILD_SKILL_COMMAND_MTID,
+		Inform7Skill::inform7_via_shell);
+	METHOD_ADD(compile_using_inform7_skill, BUILD_SKILL_INTERNAL_MTID,
+		Inform7Skill::inform7_internally);
 }
 
-int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S, text_stream *command, build_methodology *meth) {
+int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
+	text_stream *command, build_methodology *BM) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
 
-	Shell::quote_file(command, meth->to_inform7);
+	Shell::quote_file(command, BM->to_inform7);
 
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
@@ -41,7 +48,7 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S, text_stre
 	return TRUE;
 }
 
-int Inform7Skill::inform7_internally(build_skill *skill, build_step *S, build_methodology *meth) {
+int Inform7Skill::inform7_internally(build_skill *skill, build_step *S, build_methodology *BM) {
 	#ifdef CORE_MODULE
 	return Task::carry_out(S);
 	#endif

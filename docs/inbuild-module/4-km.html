@@ -171,7 +171,6 @@ a valid metadata file.
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">canary</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kit_metadata.txt"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">canary</span><span class="plain">)) {</span>
             <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">KitManager::new_copy</span><span class="plain">(</span><span class="identifier">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="functiontext">KitManager::build_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -278,10 +277,6 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
         <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::build_vertex</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="functiontext">Graphs::copy_vertex</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-    <span class="plain">}</span>
-
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::go_operational</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="functiontext">Kits::construct_graph</span><span class="plain">(</span><span class="functiontext">KitManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
     <span class="plain">}</span>
@@ -307,8 +302,6 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function KitManager::building_soon is used in <a href="#SP1">&#167;1</a>.</p>
-
-<p class="endnote">The function KitManager::build_vertex is used in <a href="#SP4">&#167;4</a>, 5/kts (<a href="5-kts.html#SP1">&#167;1</a>).</p>
 
 <p class="endnote">The function KitManager::go_operational is used in <a href="#SP1">&#167;1</a>.</p>
 

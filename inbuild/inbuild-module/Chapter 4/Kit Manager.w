@@ -86,7 +86,6 @@ inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in_folder(P, I"kit_metadata.txt");
 	if (TextFiles::exists(canary)) {
 		inbuild_copy *C = KitManager::new_copy(Pathnames::directory_name(P), P);
-		KitManager::build_vertex(C);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		return C;
 	}
@@ -169,10 +168,6 @@ void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest 
 =
 void KitManager::building_soon(inbuild_genre *gen, inbuild_copy *C, build_vertex **V) {
 	*V = C->vertex;
-}
-
-void KitManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
 }
 
 void KitManager::go_operational(inbuild_genre *G, inbuild_copy *C) {

@@ -99,13 +99,13 @@ void Projects::set_source_filename(inform_project *project, pathname *P, filenam
 		text_stream *leafname;
 		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 			build_vertex *S = Graphs::file_vertex(Filenames::in_folder(P, leafname));
-			S->annotation = leafname;
+			S->source_source = leafname;
 			ADD_TO_LINKED_LIST(S, build_vertex, project->source_vertices);
 		}
 	}
 	if ((LinkedLists::len(project->source_vertices) == 0) && (F)) {
 		build_vertex *S = Graphs::file_vertex(F);
-		S->annotation = I"your source text";
+		S->source_source = I"your source text";
 		ADD_TO_LINKED_LIST(S, build_vertex, project->source_vertices);
 	}
 }
@@ -374,9 +374,9 @@ void Projects::read_source_text_for(inform_project *project) {
 	if (L) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
-			filename *F = N->buildable_if_internal_file;
+			filename *F = N->as_file;
 			if (bwc == -1) bwc = lexer_wordcount;
-			N->read_as = SourceText::read_file(project->as_copy, F, N->annotation,
+			N->as_source_file = SourceText::read_file(project->as_copy, F, N->source_source,
 				FALSE, TRUE);
 		}
 	}
@@ -518,7 +518,7 @@ int Projects::draws_from_source_file(inform_project *project, source_file *sf) {
 	if (L) {
 		build_vertex *N;
 		LOOP_OVER_LINKED_LIST(N, build_vertex, L)
-			if (sf == N->read_as)
+			if (sf == N->as_source_file)
 				return TRUE;
 	}
 	return FALSE;

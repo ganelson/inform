@@ -1,4 +1,4 @@
-prepare <- *attach
+prepare <- *kit
 merge-template <- all
 parse-linked-matter
 resolve-conditional-compilation

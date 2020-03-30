@@ -159,13 +159,13 @@
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) {</span>
                 <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">));</span>
-                <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;annotation</span><span class="plain"> = </span><span class="identifier">leafname</span><span class="plain">;</span>
+                <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;source_source</span><span class="plain"> = </span><span class="identifier">leafname</span><span class="plain">;</span>
                 <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;source_vertices</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;source_vertices</span><span class="plain">) == 0) &amp;&amp; (</span><span class="identifier">F</span><span class="plain">)) {</span>
             <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
-            <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;annotation</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"your source text"</span><span class="plain">;</span>
+            <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;source_source</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"your source text"</span><span class="plain">;</span>
             <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;source_vertices</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -275,7 +275,7 @@
 
 <p class="endnote">The structure kit_dependency is accessed in 3/is2 and here.</p>
 
-<p class="endnote">The structure inform_project is accessed in 1/ic, 2/edt, 2/rqr, 2/nst, 3/is2, 3/is3, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ts, 5/ls, 5/ps2, 6/hdn, 6/inc, 6/vmg and here.</p>
+<p class="endnote">The structure inform_project is accessed in 1/ic, 2/edt, 2/rqr, 2/nst, 3/bg, 3/ib, 3/is2, 3/is3, 4/em, 4/lm, 4/pbm, 4/pfm, 4/tm, 4/pm, 5/kts, 5/es, 5/ed, 5/ed2, 5/ec, 5/ts, 5/ls, 5/ps2, 6/hdn, 6/inc, 6/vmg and here.</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Perform if-this-then-that</span> <span class="cwebmacronumber">1.1</span>&gt; =
@@ -470,7 +470,7 @@ may be multiple sentences, which we need to count up.
 
 <p class="endnote">The function Projects::early_source_text is used in <a href="#SP4">&#167;4</a>.</p>
 
-<p class="endnote">The function Projects::list_of_inter_libraries is used in 3/is (<a href="3-is.html#SP1">&#167;1</a>).</p>
+<p class="endnote">The function Projects::list_of_inter_libraries is used in 3/is (<a href="3-is.html#SP4">&#167;4</a>).</p>
 
 <p class="endnote">The function Projects::build_pathname appears nowhere else.</p>
 
@@ -480,7 +480,7 @@ may be multiple sentences, which we need to count up.
 
 <p class="endnote">The function Projects::graph_dependent_language appears nowhere else.</p>
 
-<p class="endnote">The function Projects::construct_graph is used in 4/pbm (<a href="4-pbm.html#SP8">&#167;8</a>), 4/pfm (<a href="4-pfm.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Projects::construct_graph is used in 4/pbm (<a href="4-pbm.html#SP6">&#167;6</a>), 4/pfm (<a href="4-pfm.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
@@ -521,9 +521,9 @@ may be multiple sentences, which we need to count up.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">) {</span>
             <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) {</span>
-                <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;buildable_if_internal_file</span><span class="plain">;</span>
+                <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;as_file</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bwc</span><span class="plain"> == -1) </span><span class="identifier">bwc</span><span class="plain"> = </span><span class="identifier">lexer_wordcount</span><span class="plain">;</span>
-                <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;read_as</span><span class="plain"> = </span><span class="functiontext">SourceText::read_file</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;annotation</span><span class="plain">,</span>
+                <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;as_source_file</span><span class="plain"> = </span><span class="functiontext">SourceText::read_file</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;source_source</span><span class="plain">,</span>
                     <span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -556,7 +556,7 @@ may be multiple sentences, which we need to count up.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Projects::read_source_text_for is used in 4/pbm (<a href="4-pbm.html#SP9">&#167;9</a>), 4/pfm (<a href="4-pfm.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Projects::read_source_text_for is used in 4/pbm (<a href="4-pbm.html#SP7">&#167;7</a>), 4/pfm (<a href="4-pfm.html#SP7">&#167;7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>It might seem sensible to parse the opening sentence of the source text,
 the bibliographic sentence giving title and author, by looking at the result
@@ -715,7 +715,7 @@ stop &mdash; it's needed before sentence-breaking has even taken place.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">) {</span>
             <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;read_as</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;as_source_file</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>

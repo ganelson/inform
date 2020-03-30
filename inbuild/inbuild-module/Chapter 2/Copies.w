@@ -37,7 +37,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
 	copy->content = NULL_GENERAL_POINTER;
-	copy->vertex = NULL;
+	copy->vertex = Graphs::copy_vertex(copy);
 	copy->source_text_read = FALSE;
 	copy->source_text = EMPTY_WORDING;
 	copy->found_by = NULL;

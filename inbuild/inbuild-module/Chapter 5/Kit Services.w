@@ -118,7 +118,6 @@ inform_kit *Kits::load(text_stream *name, linked_list *nest_list) {
 	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
 	if (R == NULL) Errors::fatal_with_text("cannot find kit", name);
 	inbuild_copy *C = R->copy;
-	if (C->vertex == NULL) KitManager::build_vertex(C);
 	return KitManager::from_copy(C);
 }
 

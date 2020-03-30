@@ -95,7 +95,6 @@ void ExtensionManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	inbuild_copy *C = ExtensionManager::new_copy(F);
-	ExtensionManager::build_vertex(C);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 	return C;
 }
@@ -217,11 +216,7 @@ void ExtensionManager::ensure_graphed(inbuild_copy *C) {
 	Inclusions::traverse(C, ExtensionManager::from_copy(C)->syntax_tree);
 	build_vertex *V;
 	LOOP_OVER_LINKED_LIST(V, build_vertex, C->vertex->use_edges)
-		ExtensionManager::ensure_graphed(V->buildable_if_copy);
-}
-
-void ExtensionManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
+		ExtensionManager::ensure_graphed(V->as_copy);
 }
 
 @h Source text.

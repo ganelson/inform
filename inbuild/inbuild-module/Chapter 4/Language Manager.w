@@ -93,7 +93,6 @@ inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in_folder(P, I"about.txt");
 	if (TextFiles::exists(canary)) {
 		inbuild_copy *C = LanguageManager::new_copy(Pathnames::directory_name(P), P);
-		LanguageManager::build_vertex(C);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		return C;
 	}
@@ -168,13 +167,4 @@ void LanguageManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	} else {
 		Pathnames::rsync(C->location_if_path, dest_language);
 	}
-}
-
-@h Build graph.
-The build graph for a language bundle is just a single node: you don't need to
-build it at all.
-
-=
-void LanguageManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
 }

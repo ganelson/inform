@@ -69,7 +69,6 @@ inbuild_copy *TemplateManager::claim_folder_as_copy(pathname *P) {
 	filename *canary2 = Filenames::in_folder(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2))) {
 		inbuild_copy *C = TemplateManager::new_copy(Pathnames::directory_name(P), P);
-		TemplateManager::build_vertex(C);
 		Works::add_to_database(C->edition->work, CLAIMED_WDBC);
 		return C;
 	}
@@ -146,13 +145,4 @@ void TemplateManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	} else {
 		Pathnames::rsync(C->location_if_path, P);
 	}
-}
-
-@h Build graph.
-The build graph for a template is just a single node: you don't need to
-build a template at all.
-
-=
-void TemplateManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
 }

@@ -54,7 +54,7 @@ supplied at the command line; |ext| is a substring of it, and is its extension
 |directory_status| is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-An pipeline, for us, simply needs to be a file with extension |interpipeline|.
+An pipeline, for us, simply needs to be a file with extension |.interpipeline|.
 
 =
 void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
@@ -75,7 +75,6 @@ inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *erro
 		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F);
 	DISCARD_TEXT(unext);
 	Works::add_to_database(C->edition->work, CLAIMED_WDBC);
-	PipelineManager::build_vertex(C);
 	return C;
 }
 
@@ -144,13 +143,4 @@ void PipelineManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_
 	Shell::quote_file(command, F);
 	BuildSteps::shell(command, meth);
 	DISCARD_TEXT(command);
-}
-
-@h Build graph.
-The build graph for a pipeline is just a single node: you don't need to
-build a pipeline at all.
-
-=
-void PipelineManager::build_vertex(inbuild_copy *C) {
-	Graphs::copy_vertex(C);
 }

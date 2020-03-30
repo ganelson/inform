@@ -68,7 +68,7 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0, 
 		if ((last_H0) && (ParseTree::int_annotation(last_H0, implied_heading_ANNOT) != TRUE)) {
 			build_vertex *V = Inclusions::spawned_from_vertex(last_H0);
 			build_vertex *EV = E->as_copy->vertex;
-			if (V->buildable_if_copy->edition->work->genre == extension_genre)
+			if (V->as_copy->edition->work->genre == extension_genre)
 				Graphs::need_this_to_use(V, EV);
 			else
 				Graphs::need_this_to_build(V, EV);

@@ -32,18 +32,20 @@ typedef struct build_vertex {
 	struct linked_list *build_edges; /* of |build_vertex| */
 	struct linked_list *use_edges; /* of |build_vertex| */
 
-	struct inbuild_copy *buildable_if_copy;
-	struct filename *buildable_if_internal_file;
-	struct inbuild_requirement *findable;
+	struct inbuild_copy *as_copy; /* for |COPY_VERTEX| only */
+	struct filename *as_file; /* for |FILE_VERTEX| only */
+	struct inbuild_requirement *as_requirement; /* for |REQUIREMENT_VERTEX| only */
 
-	struct text_stream *annotation;
-	struct source_file *read_as;
-	int last_described_in_generation;
+	struct text_stream *source_source; /* for |FILE_VERTEX| of a file of I7 source text */
+	struct source_file *as_source_file; /* for |FILE_VERTEX| of a file of I7 source text */
 
-	int build_result;
-	int last_built_in_generation;
-	int always_build_this;
-	struct build_script *script;
+	int last_described_in_generation; /* used when recursively printing a graph */
+
+	int build_result; /* whether the most recent build of this succeeded... */
+	int last_built_in_generation; /* ...in this build generation */
+	int always_build_this; /* i.e., don't look at timestamps hoping to skip it */
+	struct build_script *script; /* how to build what this node represents */
+
 	MEMORY_MANAGEMENT
 } build_vertex;
 
@@ -54,36 +56,44 @@ First, the three colours of vertex.
 build_vertex *Graphs::file_vertex(filename *F) {
 	build_vertex *V = CREATE(build_vertex);
 	V->type = FILE_VERTEX;
-	V->buildable_if_copy = NULL;
-	V->buildable_if_internal_file = F;
 	V->build_edges = NEW_LINKED_LIST(build_vertex);
 	V->use_edges = NEW_LINKED_LIST(build_vertex);
-	V->script = BuildScripts::new();
-	V->annotation = NULL;
-	V->read_as = NULL;
-	V->last_described_in_generation = 0;
-	V->build_result = NOT_APPLICABLE;
-	V->last_built_in_generation = -1;
-	V->always_build_this = FALSE;
-	return V;
-}
 
-build_vertex *Graphs::copy_vertex(inbuild_copy *C) {
-	if (C == NULL) internal_error("no copy");
-	if (C->vertex == NULL) {
-		C->vertex = Graphs::file_vertex(NULL);
-		C->vertex->type = COPY_VERTEX;
-		C->vertex->buildable_if_copy = C;
-	}
-	return C->vertex;
+	V->as_copy = NULL;
+	V->as_file = F;
+	V->as_requirement = NULL;
+
+	V->source_source = NULL;
+	V->as_source_file = NULL;
+
+	V->last_described_in_generation = -1;
+
+	V->build_result = NOT_APPLICABLE; /* has never been built */
+	V->last_built_in_generation = -1; /* never seen in any generation */
+	V->always_build_this = FALSE;
+	V->script = BuildScripts::new();
+	return V;
 }
 
 build_vertex *Graphs::req_vertex(inbuild_requirement *R) {
 	if (R == NULL) internal_error("no requirement");
 	build_vertex *V = Graphs::file_vertex(NULL);
 	V->type = REQUIREMENT_VERTEX;
-	V->findable = R;
+	V->as_requirement = R;
 	return V;
+}
+
+@ Note that each copy is assigned exactly one copy vertex, when it is created.
+This function should never otherwise be called.
+
+=
+build_vertex *Graphs::copy_vertex(inbuild_copy *C) {
+	if (C == NULL) internal_error("no copy");
+	if (C->vertex) internal_error("already set");
+	C->vertex = Graphs::file_vertex(NULL);
+	C->vertex->type = COPY_VERTEX;
+	C->vertex->as_copy = C;
+	return C->vertex;
 }
 
 @ Next, the two colours of edge. Note that between A and B there can be
@@ -137,9 +147,9 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	WRITE(" ");
 	TEMPORARY_TEXT(T);
 	switch (V->type) {
-		case COPY_VERTEX: Copies::write_copy(T, V->buildable_if_copy); break;
-		case REQUIREMENT_VERTEX: Requirements::write(T, V->findable); break;
-		case FILE_VERTEX: WRITE("%f", V->buildable_if_internal_file); break;
+		case COPY_VERTEX: Copies::write_copy(T, V->as_copy); break;
+		case REQUIREMENT_VERTEX: Requirements::write(T, V->as_requirement); break;
+		case FILE_VERTEX: WRITE("%f", V->as_file); break;
 	}
 	TEMPORARY_TEXT(S);
 	WRITE_TO(S, "%p", stem);
@@ -154,9 +164,9 @@ void Graphs::describe_r(OUTPUT_STREAM, int depth, build_vertex *V,
 	V->last_described_in_generation = description_round;
 	WRITE("\n");
 	if (recurse) {
-		if (V->buildable_if_copy) stem = V->buildable_if_copy->location_if_path;
-		if (V->buildable_if_internal_file)
-			stem = Filenames::get_path_to(V->buildable_if_internal_file);
+		if (V->as_copy) stem = V->as_copy->location_if_path;
+		if (V->as_file)
+			stem = Filenames::get_path_to(V->as_file);
 		build_vertex *W;
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
 			Graphs::describe_r(OUT, depth+1, W, TRUE, stem, TRUE, description_round);
@@ -185,18 +195,18 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 	int depth, int true_depth, int uses_only) {
 	if (V->type == COPY_VERTEX) {
 		for (int i=0; i<depth; i++) WRITE("  ");
-		inbuild_copy *C = V->buildable_if_copy;
+		inbuild_copy *C = V->as_copy;
 		WRITE("%S: ", C->edition->work->genre->genre_name);
 		Copies::write_copy(OUT, C); WRITE("\n");
 		depth++;
 	}
 	if (V->type == REQUIREMENT_VERTEX) {
 		for (int i=0; i<depth; i++) WRITE("  ");
-		WRITE("missing %S: ", V->findable->work->genre->genre_name);
-		Works::write(OUT, V->findable->work);
-		if (VersionNumberRanges::is_any_range(V->findable->version_range) == FALSE) {
+		WRITE("missing %S: ", V->as_requirement->work->genre->genre_name);
+		Works::write(OUT, V->as_requirement->work);
+		if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
 			WRITE(", need version in range ");
-			VersionNumberRanges::write_range(OUT, V->findable->version_range);
+			VersionNumberRanges::write_range(OUT, V->as_requirement->version_range);
 		} else {
 			WRITE(", any version will do");
 		}
@@ -224,11 +234,11 @@ int Graphs::show_missing_r(OUTPUT_STREAM, build_vertex *V,
 	int true_depth, int uses_only) {
 	int N = 0;
 	if (V->type == REQUIREMENT_VERTEX) {
-		WRITE("missing %S: ", V->findable->work->genre->genre_name);
-		Works::write(OUT, V->findable->work);
-		if (VersionNumberRanges::is_any_range(V->findable->version_range) == FALSE) {
+		WRITE("missing %S: ", V->as_requirement->work->genre->genre_name);
+		Works::write(OUT, V->as_requirement->work);
+		if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
 			WRITE(", need version in range ");
-			VersionNumberRanges::write_range(OUT, V->findable->version_range);
+			VersionNumberRanges::write_range(OUT, V->as_requirement->version_range);
 		} else {
 			WRITE(", any version will do");
 		}
@@ -262,7 +272,7 @@ void Graphs::archive(OUTPUT_STREAM, build_vertex *V, inbuild_nest *N,
 void Graphs::archive_r(OUTPUT_STREAM, build_vertex *V, int true_depth, inbuild_nest *N,
 	build_methodology *BM) {
 	if (V->type == COPY_VERTEX) {
-		inbuild_copy *C = V->buildable_if_copy;
+		inbuild_copy *C = V->as_copy;
 		if ((Genres::stored_in_nests(C->edition->work->genre)) &&
 			((Str::ne(C->edition->work->title, I"English")) ||
 				(Str::len(C->edition->work->author_name) > 0)))
