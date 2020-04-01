@@ -57,7 +57,7 @@ is run only to call other functions.
 
 =
 void I6T::interpreter_shared(parse_node_tree *T, int int_mode, OUTPUT_STREAM, wchar_t *sf, text_stream *segment_name,
-	int N_escape, filename *index_template) {
+	int N_escape, filename *index_structure) {
 	FILE *Input_File = NULL;
 	int col = 1, cr, sfp = 0;
 	TEMPORARY_TEXT(heading_name);
@@ -133,10 +133,10 @@ file.
 		Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 			"I couldn't open a requested I6T segment: see the console "
 			"output for details.");
-	} else if (index_template) {
-		Input_File = Filenames::fopen(index_template, "r");
+	} else if (index_structure) {
+		Input_File = Filenames::fopen(index_structure, "r");
 		if (Input_File == NULL) {
-			LOG("Filename was %f\n", index_template);
+			LOG("Filename was %f\n", index_structure);
 			Problems::Issue::unlocated_problem(Task::syntax_tree(), _p_(BelievedImpossible), /* or anyway not usefully testable */
 				"I couldn't open the template file for the index.");
 		}

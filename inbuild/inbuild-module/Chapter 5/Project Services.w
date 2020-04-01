@@ -133,7 +133,7 @@ void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name
 	RUN_ONLY_BEFORE_PHASE(OPERATIONAL_INBUILD_PHASE)
 	if (Projects::uses_kit(project, kit_name)) return;
 	kit_dependency *kd = CREATE(kit_dependency);
-	kd->kit = Kits::load(kit_name, Inbuild::nest_list());
+	kd->kit = Kits::find_by_name(kit_name, Inbuild::nest_list());
 	kd->because_of_language = because_of_language;
 	kd->because_of_kit = because_of_kit;
 	ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
@@ -195,13 +195,19 @@ void Projects::load_types(inform_project *project) {
 }
 #endif
 
+@h Language element activation.
+Note that this function is meaningful only when this module is part of the
+|inform7| executable, and it invites us to activate or deactivate language
+features according to what our kits tell us.
+
+=
 #ifdef CORE_MODULE
-void Projects::activate_plugins(inform_project *project) {
-	LOG("Activate plugins...\n");
+void Projects::activate_elements(inform_project *project) {
+	LOG("Activate elements...\n");
 	Plugins::Manage::activate(CORE_PLUGIN_NAME);
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
-		Kits::activate_plugins(kd->kit);
+		Kits::activate_elements(kd->kit);
 	Plugins::Manage::show(DL, "Included", TRUE);
 	Plugins::Manage::show(DL, "Excluded", FALSE);
 }
@@ -215,12 +221,12 @@ int Projects::Main_defined(inform_project *project) {
 	return FALSE;
 }
 
-text_stream *Projects::index_template(inform_project *project) {
+text_stream *Projects::index_structure(inform_project *project) {
 	text_stream *I = NULL;
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
-		if (kd->kit->index_template)
-			I = kd->kit->index_template;
+		if (kd->kit->index_structure)
+			I = kd->kit->index_structure;
 	return I;
 }
 
@@ -400,7 +406,7 @@ void Projects::read_source_text_for(inform_project *project) {
 	ParseTree::push_attachment_point(project->syntax_tree, implicit_heading);
 	
 	#ifdef CORE_MODULE
-	Projects::activate_plugins(project);
+	Projects::activate_elements(project);
 	#endif
 	Inclusions::traverse(project->as_copy, project->syntax_tree);
 	Headings::satisfy_dependencies(project->syntax_tree, project->as_copy);

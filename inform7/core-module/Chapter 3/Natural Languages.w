@@ -12,7 +12,7 @@ void NaturalLanguages::produce_index(void) {
 		Filenames::in_folder(
 			Languages::path_to_bundle(
 				Projects::get_language_of_index(project)),
-			Projects::index_template(project)));
+			Projects::index_structure(project)));
 }
 
 @
