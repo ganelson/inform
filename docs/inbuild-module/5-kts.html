@@ -489,11 +489,11 @@ not ours.
         <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">BVL</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">build_vertex</span><span class="plain">); </span>    <span class="comment">list of vertices for the binaries</span>
         &lt;<span class="cwebmacro">Add build edges to the binaries for each architecture</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">contents_page</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Contents.w"</span><span class="plain">);</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">CV</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">contents_page</span><span class="plain">); </span>    <span class="comment">the contents page vertex</span>
+        <span class="identifier">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="identifier">WebMetadata::get_without_modules</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">CV</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="identifier">contents_filename</span><span class="plain">); </span>    <span class="comment">the contents page vertex</span>
         &lt;<span class="cwebmacro">Add build edges from the binary vertices to the contents vertex</span> <span class="cwebmacronumber">13.2</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Kits::find_sections</span><span class="plain">(</span><span class="identifier">contents_page</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Add build edges from the binary vertices to each section vertex</span> <span class="cwebmacronumber">13.3</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
@@ -547,14 +547,16 @@ not ours.
 
 
 <pre class="displaydefn">
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">segment</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) {</span>
-            <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">SF</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span>
-                <span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Sections"</span><span class="plain">), </span><span class="identifier">segment</span><span class="plain">);</span>
-            <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">SV</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">SF</span><span class="plain">);</span>
-            <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">BV</span><span class="plain">;</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">BV</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">BVL</span><span class="plain">)</span>
-                <span class="functiontext">Graphs::need_this_to_build</span><span class="plain">(</span><span class="identifier">BV</span><span class="plain">, </span><span class="identifier">SV</span><span class="plain">);</span>
+        <span class="identifier">chapter_md</span><span class="plain"> *</span><span class="identifier">Cm</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Cm</span><span class="plain">, </span><span class="identifier">chapter_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="identifier">chapters_md</span><span class="plain">) {</span>
+            <span class="identifier">section_md</span><span class="plain"> *</span><span class="identifier">Sm</span><span class="plain">;</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Sm</span><span class="plain">, </span><span class="identifier">section_md</span><span class="plain">, </span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="identifier">sections_md</span><span class="plain">) {</span>
+                <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">SF</span><span class="plain"> = </span><span class="identifier">Sm</span><span class="plain">-&gt;</span><span class="identifier">source_file_for_section</span><span class="plain">;</span>
+                <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">SV</span><span class="plain"> = </span><span class="functiontext">Graphs::file_vertex</span><span class="plain">(</span><span class="identifier">SF</span><span class="plain">);</span>
+                <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">BV</span><span class="plain">;</span>
+                <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">BV</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain">, </span><span class="identifier">BVL</span><span class="plain">)</span>
+                    <span class="functiontext">Graphs::need_this_to_build</span><span class="plain">(</span><span class="identifier">BV</span><span class="plain">, </span><span class="identifier">SV</span><span class="plain">);</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
 
@@ -592,44 +594,6 @@ vertex, i.e., to a vertex meaning "we would like Locksmith but can't find it".
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP13">&#167;13</a>.</p>
-
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
-
-
-<pre class="display">
-    <span class="identifier">linked_list</span><span class="plain"> *</span><span class="functiontext">Kits::find_sections</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">contents_page</span><span class="plain">) {</span>
-        <span class="reserved">kit_contents_section_state</span><span class="plain"> </span><span class="identifier">CSS</span><span class="plain">;</span>
-        <span class="identifier">CSS</span><span class="element">.active</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">CSS</span><span class="element">.sects</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain">);</span>
-        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">contents_page</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Kits::read_contents</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) &amp;</span><span class="identifier">CSS</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">CSS</span><span class="element">.sects</span><span class="plain">;</span>
-    <span class="plain">}</span>
-
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kit_contents_section_state</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">sects</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">text_stream</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">kit_contents_section_state</span><span class="plain">;</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kits::read_contents</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">kit_contents_section_state</span><span class="plain"> *</span><span class="identifier">CSS</span><span class="plain"> = (</span><span class="reserved">kit_contents_section_state</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
-        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Sections"</span><span class="plain">))</span>
-            <span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" (%c+)"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;active</span><span class="plain">)) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="string">".i6t"</span><span class="plain">);</span>
-            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]), </span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">CSS</span><span class="plain">-</span><span class="element">&gt;sects</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function Kits::find_sections is used in <a href="#SP13">&#167;13</a>.</p>
-
-<p class="endnote">The function Kits::read_contents appears nowhere else.</p>
-
-<p class="endnote">The structure kit_contents_section_state is private to this section.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-es.html">Back to 'Extension Services'</a></li><li><a href="5-ls.html">Continue with 'Language Services'</a></li></ul><hr class="tocbar">

@@ -305,11 +305,11 @@ void Kits::construct_graph(inform_kit *K) {
 	linked_list *BVL = NEW_LINKED_LIST(build_vertex); /* list of vertices for the binaries */
 	@<Add build edges to the binaries for each architecture@>;
 
-	filename *contents_page = Filenames::in_folder(C->location_if_path, I"Contents.w");
-	build_vertex *CV = Graphs::file_vertex(contents_page); /* the contents page vertex */
+	web_md *Wm = WebMetadata::get_without_modules(C->location_if_path, NULL);
+
+	build_vertex *CV = Graphs::file_vertex(Wm->contents_filename); /* the contents page vertex */
 	@<Add build edges from the binary vertices to the contents vertex@>;
 
-	linked_list *L = Kits::find_sections(contents_page);
 	@<Add build edges from the binary vertices to each section vertex@>;
 
 	inbuild_requirement *req;
@@ -333,14 +333,16 @@ void Kits::construct_graph(inform_kit *K) {
 		Graphs::need_this_to_build(BV, CV);
 
 @<Add build edges from the binary vertices to each section vertex@> =
-	text_stream *segment;
-	LOOP_OVER_LINKED_LIST(segment, text_stream, L) {
-		filename *SF = Filenames::in_folder(
-			Pathnames::subfolder(C->location_if_path, I"Sections"), segment);
-		build_vertex *SV = Graphs::file_vertex(SF);
-		build_vertex *BV;
-		LOOP_OVER_LINKED_LIST(BV, build_vertex, BVL)
-			Graphs::need_this_to_build(BV, SV);
+	chapter_md *Cm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
+		section_md *Sm;
+		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
+			filename *SF = Sm->source_file_for_section;
+			build_vertex *SV = Graphs::file_vertex(SF);
+			build_vertex *BV;
+			LOOP_OVER_LINKED_LIST(BV, build_vertex, BVL)
+				Graphs::need_this_to_build(BV, SV);
+		}
 	}
 
 @ Suppose our kit wants to include Locksmith by Emily Short. If that's an
@@ -361,29 +363,3 @@ vertex, i.e., to a vertex meaning "we would like Locksmith but can't find it".
 		build_vertex *RV = Graphs::req_vertex(req);
 		Graphs::need_this_to_use(KV, RV);
 	}
-
-@ =
-linked_list *Kits::find_sections(filename *contents_page) {
-	kit_contents_section_state CSS;
-	CSS.active = FALSE;
-	CSS.sects = NEW_LINKED_LIST(text_stream);
-	TextFiles::read(contents_page, FALSE, NULL, FALSE, Kits::read_contents, NULL, (void *) &CSS);
-	return CSS.sects;
-}
-
-typedef struct kit_contents_section_state {
-	struct linked_list *sects; /* of |text_stream| */
-	int active;
-} kit_contents_section_state;
-
-void Kits::read_contents(text_stream *text, text_file_position *tfp, void *state) {
-	kit_contents_section_state *CSS = (kit_contents_section_state *) state;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"Sections"))
-		CSS->active = TRUE;
-	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
-		WRITE_TO(mr.exp[0], ".i6t");
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
-	}
-	Regexp::dispose_of(&mr);
-}
