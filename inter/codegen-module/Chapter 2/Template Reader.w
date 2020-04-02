@@ -71,10 +71,10 @@ int TemplateReader::I6T_file_intervene(OUTPUT_STREAM, int stage, text_stream *se
 			#endif
 			LOGIF(TEMPLATE_READING, "Intervention at stage %d Segment %S Part %S\n", stage, segment, part);
 			if (i6ti->I6T_matter) {
-				TemplateReader::interpret(OUT, i6ti->I6T_matter, NULL, -1, kit);
+				TemplateReader::interpret(OUT, i6ti->I6T_matter, NULL, -1, kit, NULL);
 			}
 			if (Str::len(i6ti->alternative_segment) > 0)
-				TemplateReader::interpret(OUT, NULL, i6ti->alternative_segment, -1, kit);
+				TemplateReader::interpret(OUT, NULL, i6ti->alternative_segment, -1, kit, NULL);
 			if (stage == 0) rv = TRUE;
 		}
 	return rv;
@@ -200,7 +200,7 @@ and therefore no interventions will have happened.)
 =
 void TemplateReader::extract(text_stream *template_file, I6T_kit *kit) {
 	text_stream *SP = Str::new();
-	TemplateReader::interpret(SP, NULL, template_file, -1, kit);
+	TemplateReader::interpret(SP, NULL, template_file, -1, kit, NULL);
 	(*(kit->raw_callback))(SP, kit);
 }
 
@@ -210,27 +210,23 @@ typedef struct contents_section_state {
 } contents_section_state;
 
 void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
-	text_stream *segment_name, int N_escape, I6T_kit *kit) {
+	text_stream *segment_name, int N_escape, I6T_kit *kit, filename *Input_Filename) {
 	if (Str::eq(segment_name, I"all")) {
 		for (int area=0; area<kit->no_i6t_file_areas; area++) {
 			pathname *P = Pathnames::up(kit->i6t_files[area]);
-			filename *F = Filenames::in_folder(P, I"Contents.w");
-			if (TextFiles::exists(F)) {
-				contents_section_state CSS;
-				CSS.active = FALSE;
-				CSS.sects = NEW_LINKED_LIST(text_stream);
-				TextFiles::read(F, FALSE,
-					NULL, FALSE, TemplateReader::read_contents, NULL, (void *) &CSS);
-				text_stream *segment;
-				LOOP_OVER_LINKED_LIST(segment, text_stream, CSS.sects)
-					TemplateReader::interpret(OUT, sf, segment, N_escape, kit);
-				return;
+			web_md *Wm = WebMetadata::get(P, NULL, V2_SYNTAX, NULL, FALSE, TRUE, NULL);
+			chapter_md *Cm;
+			LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
+				section_md *Sm;
+				LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
+					filename *SF = Sm->source_file_for_section;
+					TemplateReader::interpret(OUT, sf, Sm->sect_title, N_escape, kit, SF);
+				}
 			}
 		}
 		TemplateReader::error("unable to find a contents section to read 'all'", I"Contents.w");
 		return;
 	}
-	FILE *Input_File = NULL;
 	TEMPORARY_TEXT(heading_name);
 	int skip_part = FALSE, comment = TRUE;
 	int col = 1, cr, sfp = 0;
@@ -241,7 +237,8 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 		(TemplateReader::I6T_file_intervene(OUT, INSTEAD_LINK_STAGE, segment_name, NULL, kit)))
 		goto OmitFile;
 
-	if (Str::len(segment_name) > 0) {
+	FILE *Input_File = NULL;
+	if ((Str::len(segment_name) > 0) || (Input_Filename)) {
 		@<Open the I6 template file@>;
 		comment = TRUE;
 	} else comment = FALSE;
@@ -263,7 +260,8 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 part of the I6T kit.
 
 @<Open the I6 template file@> =
-	Input_File = NULL;
+	if (Input_Filename)
+		Input_File = Filenames::fopen(Input_Filename, "r");
 	for (int area=0; area<kit->no_i6t_file_areas; area++)
 		if (Input_File == NULL)
 			Input_File = Filenames::fopen(
@@ -486,7 +484,7 @@ safely between |{-open-index}| and |{-close-index}|.
 	if (Str::eq_wide_string(command, L"segment")) {
 		(*(kit->raw_callback))(OUT, kit);
 		Str::clear(OUT);
-		TemplateReader::interpret(OUT, NULL, argument, -1, kit);
+		TemplateReader::interpret(OUT, NULL, argument, -1, kit, NULL);
 		(*(kit->raw_callback))(OUT, kit);
 		Str::clear(OUT);
 		continue;

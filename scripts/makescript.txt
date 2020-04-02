@@ -66,50 +66,18 @@ INBUILDX = inbuild/Tangled/inbuild
 # After its declaration, we list all modules needed to compile the tool.
 
 {tool} INBLORB inblorb inblorb
-{dep} INBLORB on FOUNDATION
 
 {tool} INDOC indoc indoc
-{dep} INDOC on FOUNDATION
 
 {tool} INFORM7 inform7 inform7
-{dep} INFORM7 on FOUNDATION
-{dep} INFORM7 on WORDS
-{dep} INFORM7 on INFLECTIONS
-{dep} INFORM7 on SYNTAX
-{dep} INFORM7 on LINGUISTICS
-{dep} INFORM7 on KINDS
-{dep} INFORM7 on PROBLEMS
-{dep} INFORM7 on CORE
-{dep} INFORM7 on IF
-{dep} INFORM7 on MULTIMEDIA
-{dep} INFORM7 on INDEX
-{dep} INFORM7 on HTML
-{dep} INFORM7 on ARCH
-{dep} INFORM7 on INTER
-{dep} INFORM7 on BUILDING
-{dep} INFORM7 on CODEGEN
-{dep} INFORM7 on INBUILD
 
 {tool} INPOLICY inpolicy inpolicy
-{dep} INPOLICY on FOUNDATION
 
 {tool} INRTPS inrtps inrtps
-{dep} INRTPS on FOUNDATION
 
 {tool} INBUILDTOOL inbuild inbuild
-{dep} INBUILDTOOL on FOUNDATION
-{dep} INBUILDTOOL on WORDS
-{dep} INBUILDTOOL on SYNTAX
-{dep} INBUILDTOOL on HTML
-{dep} INBUILDTOOL on ARCH
-{dep} INBUILDTOOL on INBUILD
 
 {tool} INTERTOOL inter inter
-{dep} INTERTOOL on FOUNDATION
-{dep} INTERTOOL on ARCH
-{dep} INTERTOOL on INTER
-{dep} INTERTOOL on BUILDING
-{dep} INTERTOOL on CODEGEN
 
 # Inform 6 is not a web, so we have to give it special treatment:
 
@@ -118,41 +86,18 @@ INFORM6X = inform6/Tangled/inform6
 # While these are also executables, they only provide unit tests for modules:
 
 {tool} INFLECTIONSTEST inflections-test inform7/inflections-test
-{dep} INFLECTIONSTEST on FOUNDATION
-{dep} INFLECTIONSTEST on WORDS
-{dep} INFLECTIONSTEST on INFLECTIONS
 
 {tool} LINGUISTICSTEST linguistics-test inform7/linguistics-test
-{dep} LINGUISTICSTEST on FOUNDATION
-{dep} LINGUISTICSTEST on WORDS
-{dep} LINGUISTICSTEST on INFLECTIONS
-{dep} LINGUISTICSTEST on SYNTAX
-{dep} LINGUISTICSTEST on LINGUISTICS
 
 {tool} PROBLEMSTEST problems-test inform7/problems-test
-{dep} PROBLEMSTEST on FOUNDATION
-{dep} PROBLEMSTEST on WORDS
-{dep} PROBLEMSTEST on SYNTAX
-{dep} PROBLEMSTEST on PROBLEMS
 
 {tool} SYNTAXTEST syntax-test inbuild/syntax-test
-{dep} SYNTAXTEST on FOUNDATION
-{dep} SYNTAXTEST on WORDS
-{dep} SYNTAXTEST on SYNTAX
 
 {tool} WORDSTEST words-test inbuild/words-test
-{dep} WORDSTEST on FOUNDATION
-{dep} WORDSTEST on WORDS
 
 {tool} BUILDINGTEST building-test inter/building-test
-{dep} BUILDINGTEST on FOUNDATION
-{dep} BUILDINGTEST on BUILDING
-{dep} BUILDINGTEST on INTER
-{dep} BUILDINGTEST on WORDS
 
 {tool} ARCHTEST arch-test inbuild/arch-test
-{dep} ARCHTEST on FOUNDATION
-{dep} ARCHTEST on ARCH
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
@@ -181,15 +126,15 @@ inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.prefor
 # -----------------------------------------------------------------------------
 # Each individual tool has its own makefile, stored inside its individual web. 
 # "make makers" runs through each tool in turn and creates this makefile.
-# Note the repeatblock feature: the line in the block is repeated once for each
+# Note the repeat-tools-block feature: the line in the block is repeated once for each
 # defined tool. Inside the block, an asterisk expands to the tool's symbol
 # name: so for example, for inblorb, *WEB would become INBLORBWEB.
 
 .PHONY: makers
 makers:
-	{repeatblock}
+	{repeat-tools-block}
 	$(INWEBX) $(*WEB) -makefile $(*MAKER)
-	{endblock}
+	{end-block}
 	$(INWEBX) -prototype inform6/makescript.txt -makefile inform6/inform6.mk
 	$(INWEBX) -prototype retrospective/makescript.txt -makefile retrospective/makefile
 
@@ -201,9 +146,9 @@ makers:
 .PHONY: gitignores
 gitignores:
 	$(INWEBX) -prototype scripts/gitignorescript.txt -gitignore .gitignore
-	{repeatblock}
+	{repeat-tools-block}
 	$(INWEBX) $(*WEB) -gitignore $(*WEB)/.gitignore
-	{endblock}
+	{end-block}
 	$(INWEBX) -prototype inform6/gitignorescript.txt -gitignore inform6/.gitignore
 
 # -----------------------------------------------------------------------------
@@ -213,9 +158,9 @@ gitignores:
 
 .PHONY: versions
 versions:
-	{repeatblock}
+	{repeat-tools-block}
 	$(*X) -version
-	{endblock}
+	{end-block}
 	$(INFORM6X) -V
 
 # -----------------------------------------------------------------------------
@@ -261,13 +206,13 @@ forcekits:
 # Note the use of repeat to make a list: $(INBLORBX) $(INDOCX) ..., etc.
 
 .PHONY: tools
-tools: {repeatspan}$(*X){endspan} $(INFORM6X)
+tools: {repeat-tools-span}$(*X){end-span} $(INFORM6X)
 
-{repeatblock}
-$(*X): {dependent-files-for}*
+{repeat-tools-block}
+$(*X): {dependent-files-for-tool}*
 	$(MAKE) -f $(*MAKER)
 
-{endblock}
+{end-block}
 
 # As ever, Inform 6 needs special handling:
 
@@ -292,10 +237,10 @@ retrospective:
 
 .PHONY: forcetools
 forcetools:
-	{repeatblock}
+	{repeat-tools-block}
 	$(MAKE) -f $(*MAKER) force
 	$(MAKE) -f inform6/inform6.mk force
-	{endblock}
+	{end-block}
 
 # -----------------------------------------------------------------------------
 # Target "check"
@@ -309,9 +254,9 @@ forcetools:
 check:
 	$(MAKE) -f inform6/inform6.mk test
 	$(INPOLICYX) -silence -check-problems
-	{repeatblock}
+	{repeat-tools-block}
 	$(MAKE) -f $(*MAKER) test
-	{endblock}
+	{end-block}
 
 # -----------------------------------------------------------------------------
 # Target "tangle"
@@ -324,9 +269,9 @@ tangle:
 	$(call tangle-webs)
 
 define tangle-webs
-	{repeatblock}
+	{repeat-tools-block}
 	$(INWEBX) $(*WEB) -tangle
-	{endblock}
+	{end-block}
 endef
 
 # -----------------------------------------------------------------------------
@@ -342,9 +287,9 @@ weave:
 	$(call weave-webs)
 
 define weave-webs
-	{repeatblock}
+	{repeat-tools-block}
 	$(INWEBX) $(*WEB) $(WEAVEOPTS)
-	{endblock}
+	{end-block}
 endef
 
 # -----------------------------------------------------------------------------
@@ -468,9 +413,9 @@ clean:
 	$(call clean-up)
 
 define clean-up
-	{repeatblock}
+	{repeat-tools-block}
 	$(MAKE) -f $(*MAKER) clean
-	{endblock}
+	{end-block}
 	$(MAKE) -f inform6/inform6.mk clean
 endef
 
@@ -485,9 +430,9 @@ purge:
 	$(call purge-up)
 
 define purge-up
-	{repeatblock}
+	{repeat-tools-block}
 	$(MAKE) -f $(*MAKER) purge
-	{endblock}
+	{end-block}
 	$(MAKE) -f inform6/inform6.mk purge
 endef
 

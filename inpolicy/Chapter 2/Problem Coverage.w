@@ -99,64 +99,32 @@ void Coverage::xref_harvester(text_stream *text, text_file_position *tfp, void *
 }
 
 @h Problems generated in the I7 source.
-Which is to say, actually existing problem messages. Ideally, this code
-should find the modules included in Inform in some more sophisticated way.
+Which is to say, actually existing problem messages.
 
 =
 void Coverage::which_problems_exist(void) {
-	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7"));
-	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/core-module"));
-	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/if-module"));
-	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inform7/multimedia-module"));
-	Coverage::which_problems_exist_inner(Pathnames::from_text(I"inter/codegen-module"));
-}
-
-@ So now we have to read the contents page of a web, to see what section
-files it contains:
-
-=
-typedef struct existence_state {
-	struct pathname *web_path;
-	struct pathname *chapter_path;
-	struct filename *section;
-} existence_state;
-
-void Coverage::which_problems_exist_inner(pathname *D) {
-	filename *C = Filenames::in_folder(D, I"Contents.w");
-	existence_state es;
-	es.web_path = D;
-	es.chapter_path = NULL;
-	TextFiles::read(C, FALSE, "unable to read contents page of 'inform7' web", TRUE,
-		&Coverage::section_harvester, NULL, &es);
-}
-
-void Coverage::section_harvester(text_stream *text, text_file_position *tfp, void *state) {
-	existence_state *es = (existence_state *) state;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"(Chapter %d+)%c+"))
-		es->chapter_path = Pathnames::subfolder(es->web_path, mr.exp[0]);
-	if (Regexp::match(&mr, text, L"Appendix%c+")) es->chapter_path = NULL;
-	if (Regexp::match(&mr, text, L"Preliminaries%c+")) es->chapter_path = NULL;
-	if ((es->chapter_path) && (Regexp::match(&mr, text, L" (%c+?) *"))) {
-		TEMPORARY_TEXT(leaf);
-		Str::copy(leaf, mr.exp[0]);
-		if (Regexp::match(&mr, leaf, L"(%c+?) %[%[%c+")) Str::copy(leaf, mr.exp[0]);
-		WRITE_TO(leaf, ".w");
-		es->section = Filenames::in_folder(es->chapter_path, leaf);
-		DISCARD_TEXT(leaf);
-		TextFiles::read(es->section, FALSE, "unable to read section page from 'inform7' web", TRUE,
-			&Coverage::existence_harvester, NULL, es);
+	pathname *tools = Pathnames::up(path_to_inpolicy);
+	pathname *path_to_inweb = Pathnames::subfolder(Pathnames::up(tools), I"inweb");
+	pathname *path_to_inform7 = Pathnames::subfolder(tools, I"inform7");
+	web_md *Wm = WebMetadata::get(path_to_inform7, NULL, V2_SYNTAX,
+					NULL, FALSE, TRUE, path_to_inweb);
+	chapter_md *Cm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
+		section_md *Sm;
+		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
+			filename *SF = Sm->source_file_for_section;
+			TextFiles::read(SF, FALSE, "unable to read section page from 'inform7'",
+				TRUE, &Coverage::existence_harvester, NULL, (void *) SF);
+		}
 	}
-	Regexp::dispose_of(&mr);
 }
 
-@ So now we're working through individual section files. The exclusion of
-the case called |sigil| throws out a macro definition in the source code,
-not a specific problem case.
+@ So now we have to read a section, looking for the existence of problem
+messages:
 
 =
 void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, void *state) {
-	existence_state *es = (existence_state *) state;
+	filename *SF = (filename *) state;
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, text, L"(%c*?)_p_%((%c+?)%)(%c*)")) {
 		Str::clear(text);
@@ -167,13 +135,13 @@ void Coverage::existence_harvester(text_stream *text, text_file_position *tfp, v
 		int context = CODE_MENTIONS_PCON;
 		if (Str::eq(name, I"BelievedImpossible")) {
 			context = IMPOSSIBLE_PCON;
-			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+			WRITE_TO(name, "_%f_line%d", SF, tfp->line_count);
 		} else if (Str::eq(name, I"Untestable")) {
 			context = UNTESTABLE_PCON;
-			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+			WRITE_TO(name, "_%f_line%d", SF, tfp->line_count);
 		} else if (Str::eq(name, I"...")) {
 			context = NAMELESS_PCON;
-			WRITE_TO(name, "_%f_line%d", es->section, tfp->line_count);
+			WRITE_TO(name, "_%f_line%d", SF, tfp->line_count);
 		}
 		Coverage::observe_problem(name, context);
 		DISCARD_TEXT(name);
