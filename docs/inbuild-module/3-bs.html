@@ -66,26 +66,25 @@
 attached to <code class="display"><span class="extract">V</span></code>. This is only a list of steps:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">build_script</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">steps</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">build_step</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">steps</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">build_step</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">build_script</span><span class="plain">;</span>
 
     <span class="reserved">build_script</span><span class="plain"> *</span><span class="functiontext">BuildScripts::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">build_script</span><span class="plain">);</span>
-        <span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">build_step</span><span class="plain">);</span>
+        <span class="identifier">BS</span><span class="plain">-&gt;</span><span class="element">steps</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">build_step</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BS</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildScripts::add_step</span><span class="plain">(</span><span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain">, </span><span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain">, </span><span class="identifier">BS</span><span class="plain">-&gt;</span><span class="element">steps</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BuildScripts::script_length</span><span class="plain">(</span><span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BS</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BS</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">BS</span><span class="plain">-&gt;</span><span class="element">steps</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -104,12 +103,11 @@ returning <code class="display"><span class="extract">FALSE</span></code>, the s
 always succeeds and returns <code class="display"><span class="extract">TRUE</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BuildScripts::execute</span><span class="plain">(</span><span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">build_script</span><span class="plain"> *</span><span class="identifier">BS</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">build_step</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain">, </span><span class="identifier">BS</span><span class="plain">-</span><span class="element">&gt;steps</span><span class="plain">)</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">build_step</span><span class="plain">, </span><span class="identifier">BS</span><span class="plain">-&gt;</span><span class="element">steps</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">)</span>
                 <span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">BuildSteps::execute</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>

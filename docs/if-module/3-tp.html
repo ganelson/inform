@@ -68,13 +68,12 @@ and so do the second pair. (<code class="display"><span class="extract">I_yourse
 other such "constants" in the Inform source code.)
 </p>
 
-
 <pre class="display">
-    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">start_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">room in which play begins: e.g., Barber's Shop</span>
-    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">start_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">object in which play begins: e.g., a barber's chair</span>
-    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">player_character_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the player character object used in this run</span>
+    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">start_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">room in which play begins: e.g., Barber's Shop</span>
+    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">start_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">object in which play begins: e.g., a barber's chair</span>
+    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">player_character_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the player character object used in this run</span>
 
-    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I_yourself</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the default player character object, <code class="display"><span class="extract">selfobj</span></code> in I6</span>
+    <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I_yourself</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the default player character object, <code class="display"><span class="extract">selfobj</span></code> in I6</span>
 
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_saved_short_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -85,9 +84,8 @@ other such "constants" in the Inform source code.)
 to this plugin, but the idea is to position the player in both space and time.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">player_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">initially <code class="display"><span class="extract">player_character_object</span></code> and often always <code class="display"><span class="extract">I_yourself</span></code></span>
+    <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">player_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">initially <code class="display"><span class="extract">player_character_object</span></code> and often always <code class="display"><span class="extract">I_yourself</span></code></span>
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">time_of_day_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">score_VAR</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -95,7 +93,6 @@ to this plugin, but the idea is to position the player in both space and time.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Initialisation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -119,7 +116,6 @@ to this plugin, but the idea is to position the player in both space and time.
 is created in English.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">instances</span><span class="plain">&gt; ::=</span>
         <span class="identifier">yourself</span>
@@ -128,7 +124,6 @@ is created in English.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_new_instance_notify</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">inst</span><span class="plain">) {</span>
@@ -177,7 +172,6 @@ schema which overrides the standard one for setting global variables:
 <p class="inwebparagraph">As usual, no need to translate these; they are created in English.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt; ::=</span>
         <span class="identifier">player</span><span class="plain"> |</span>
@@ -189,21 +183,20 @@ schema which overrides the standard one for setting global variables:
 
 <p class="inwebparagraph"><a id="SP6_2"></a><b>&#167;6.2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_new_quantity_notify</span><span class="plain">(</span><span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">nlv</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
                     <span class="identifier">player_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I_yourself</span><span class="plain">) </span>&lt;<span class="cwebmacro">Alias the player variable to the yourself object</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
                     <span class="identifier">NonlocalVariables::set_write_schema</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="string">"ChangePlayer(*2)"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                     <span class="identifier">score_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">;</span>
                     <span class="identifier">NonlocalVariables::make_initalisable</span><span class="plain">(</span><span class="identifier">score_VAR</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
                     <span class="identifier">time_of_day_VAR</span><span class="plain"> = </span><span class="identifier">nlv</span><span class="plain">;</span>
                     <span class="identifier">NonlocalVariables::make_initalisable</span><span class="plain">(</span><span class="identifier">time_of_day_VAR</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
@@ -278,7 +271,6 @@ aliasing.
 here of course it becomes the Lord Collingwood object.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_variable_set_warning</span><span class="plain">(</span><span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain"> == </span><span class="identifier">player_VAR</span><span class="plain">) {</span>
@@ -325,7 +317,6 @@ the source text clearly intended.
 that is, when the source text explicitly sets a value for "player".
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_detect_bodysnatching</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">body</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">snatcher</span><span class="plain">,</span>
         <span class="identifier">inference_subject</span><span class="plain"> **</span><span class="identifier">counterpart</span><span class="plain">) {</span>
@@ -359,7 +350,6 @@ ensure that assemblies such as "A nose is part of every person" produces
 "your nose" rather than "yourself's nose":
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_irregular_genitive</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">genitive</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">propriety</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> == </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I_yourself</span><span class="plain">)) {</span>
@@ -390,7 +380,6 @@ was once an either/or property in the clumsier early stages of Inform 7,
 and people still sometimes type it.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">implicit</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">relationship</span><span class="plain">&gt; ::=</span>
         <span class="identifier">worn</span><span class="plain"> |</span>
@@ -401,7 +390,6 @@ and people still sometimes type it.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_refine_implicit_noun</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -431,15 +419,14 @@ start room by looking at where the player sits in the spatial model.
 we assume he is freestanding in the earliest defined room.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Player::player_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stage</span><span class="plain"> == 3) &amp;&amp; (</span><span class="identifier">I_yourself</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I_yourself</span><span class="plain">)) {</span>
             <span class="identifier">P_saved_short_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"saved_short_name"</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
             <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_saved_short_name</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I_yourself</span><span class="plain">),</span>
                 <span class="identifier">Rvalues::from_unescaped_wording</span><span class="plain">(</span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"yourself"</span><span class="plain">)), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 4) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Set the start room to the earliest room defined in the source text</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">If the start room is still null, there's no room, so issue a problem</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="character">;</span>
             &lt;<span class="cwebmacro">Otherwise see if the player has explicitly been placed in the model world</span> <span class="cwebmacronumber">12.3</span>&gt;<span class="plain">;</span>
@@ -544,7 +531,6 @@ compile this little array, which provides enough details for the I6 template
 code to set things up correctly at run-time.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
@@ -555,11 +541,11 @@ code to set things up correctly at run-time.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::InitialSituation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">player_plugin</span><span class="plain">)) {</span>
-            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">PLAYER_OBJECT_INIS_HL</span><span class="plain">, 0);</span>
-            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_OBJECT_INIS_HL</span><span class="plain">, 1);</span>
-            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_ROOM_INIS_HL</span><span class="plain">, 2);</span>
-            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_TIME_INIS_HL</span><span class="plain">, 3);</span>
-            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">DONE_INIS_HL</span><span class="plain">, 4);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">PLAYER_OBJECT_INIS_HL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_OBJECT_INIS_HL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_ROOM_INIS_HL</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">START_TIME_INIS_HL</span><span class="plain">, </span><span class="constant">3</span><span class="plain">);</span>
+            <span class="functiontext">PL::Player::InitialSituation_define</span><span class="plain">(</span><span class="identifier">DONE_INIS_HL</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
 
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">INITIALSITUATION_HL</span><span class="plain">);</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
@@ -585,7 +571,6 @@ code to set things up correctly at run-time.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. World Index details. </b>We explicitly mention the player in the World index, since otherwise it won't
 usually appear anywhere.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Player::index_object_further</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">details</span><span class="plain">) {</span>

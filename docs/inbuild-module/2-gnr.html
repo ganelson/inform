@@ -75,7 +75,6 @@ method attached to its <code class="display"><span class="extract">inbuild_genre
 the instance <code class="display"><span class="extract">kit_genre</span></code> and provides its method functions.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_genre</span><span class="plain"> {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">genre_name</span><span class="plain">;</span>
@@ -86,15 +85,15 @@ the instance <code class="display"><span class="extract">kit_genre</span></code>
 
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">nested</span><span class="plain">) {</span>
         <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain">);</span>
-        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;stored_in_nests</span><span class="plain"> = </span><span class="identifier">nested</span><span class="plain">;</span>
+        <span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">genre_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">stored_in_nests</span><span class="plain"> = </span><span class="identifier">nested</span><span class="plain">;</span>
         <span class="identifier">ENABLE_METHOD_CALLS</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gen</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Genres::name</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"(none)"</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-&gt;</span><span class="identifier">genre_name</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -111,11 +110,10 @@ others, such as Inform projects, cannot. Whether a copy can be stored in a
 nest depends only on its genre.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Genres::stored_in_nests</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">G</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;stored_in_nests</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">-&gt;</span><span class="identifier">stored_in_nests</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -126,12 +124,11 @@ nest depends only on its genre.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The requirements parser needs to identify genres by name, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="functiontext">Genres::by_name</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_genre</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">-</span><span class="element">&gt;genre_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">G</span><span class="plain">-&gt;</span><span class="element">genre_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">G</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>

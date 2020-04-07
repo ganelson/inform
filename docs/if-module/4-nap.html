@@ -63,13 +63,12 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Definitions. </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">named_action_pattern</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">first</span><span class="plain">; </span>    <span class="comment">list of APs defining this NAP</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">first</span><span class="plain">; </span><span class="comment">list of APs defining this NAP</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">text_of_declaration</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">nap_iname</span><span class="plain">; </span>    <span class="comment">for an I6 routine to test this NAP</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">nap_iname</span><span class="plain">; </span><span class="comment">for an I6 routine to test this NAP</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">named_action_pattern</span><span class="plain">;</span>
 </pre>
@@ -80,18 +79,17 @@
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="functiontext">PL::Actions::Patterns::Named::nap_new</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">named_action_pattern</span><span class="plain">);</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;text_of_declaration</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+        <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">first</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">text_of_declaration</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">NAMED_AP_MC</span><span class="plain">, </span><span class="identifier">Rvalues::from_named_action_pattern</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">));</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">NAMED_ACTION_PATTERNS_HAP</span><span class="plain">);</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">NAP_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">nap_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">NAP_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nap</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -102,28 +100,28 @@
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Actions::Patterns::Named::identifier</span><span class="plain">(</span><span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">nap_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::Patterns::Named::add</span><span class="plain">(</span><span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">app</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;entered_into_NAP_here</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">entered_into_NAP_here</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">;</span>
 
         <span class="identifier">nap</span><span class="plain"> = </span><span class="functiontext">PL::Actions::Patterns::Named::by_name</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nap</span><span class="plain">) {</span>
             <span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">list</span><span class="plain">;</span>
-            <span class="identifier">list</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">; </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">list</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">list</span><span class="plain"> = </span><span class="identifier">list</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-            <span class="identifier">list</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
+            <span class="identifier">list</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">first</span><span class="plain">; </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">list</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">list</span><span class="plain"> = </span><span class="identifier">list</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+            <span class="identifier">list</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="identifier">nap</span><span class="plain"> = </span><span class="functiontext">PL::Actions::Patterns::Named::nap_new</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
+        <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">first</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Actions::Patterns::Named::within_action_context</span><span class="plain">(</span><span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain">) {</span>
         <span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">; </span><span class="identifier">ap</span><span class="plain">; </span><span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">first</span><span class="plain">; </span><span class="identifier">ap</span><span class="plain">; </span><span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Actions::Patterns::within_action_context</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">an</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -133,23 +131,23 @@
         <span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">num_naps</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">named_action_pattern</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num_naps</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num_naps</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"No names for kinds of action have yet been defined."</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">, </span><span class="reserved">named_action_pattern</span><span class="plain">) {</span>
-            <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%+W&lt;/b&gt;"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;text_of_declaration</span><span class="plain">));</span>
+            <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%+W&lt;/b&gt;"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
+            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">text_of_declaration</span><span class="plain">));</span>
             <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-            <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&lt;i&gt;defined as any of the following acts:&lt;/i&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="identifier">first</span><span class="plain">;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&lt;i&gt;defined as any of the following acts:&lt;/i&gt;\n"</span><span class="plain">);</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;text_of_pattern</span><span class="plain">);</span>
-                <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;text_of_pattern</span><span class="plain">));</span>
-                <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">text_of_pattern</span><span class="plain">);</span>
+                <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">text_of_pattern</span><span class="plain">));</span>
+                <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -159,10 +157,10 @@
         <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">;</span>
         <span class="reserved">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">, </span><span class="reserved">named_action_pattern</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;nap_iname</span><span class="plain">);</span>
-            <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;first</span><span class="plain">;</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">nap_iname</span><span class="plain">);</span>
+            <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="identifier">first</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;entered_into_NAP_here</span><span class="plain">;</span>
+                <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">entered_into_NAP_here</span><span class="plain">;</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="functiontext">PL::Actions::Patterns::emit_pattern_match</span><span class="plain">(*</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -171,7 +169,7 @@
                         <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+                <span class="identifier">ap</span><span class="plain"> = </span><span class="identifier">ap</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -180,12 +178,12 @@
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Actions::Patterns::Named::index_for_extension</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">named_action_pattern</span><span class="plain"> *</span><span class="identifier">nap</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">, </span><span class="reserved">named_action_pattern</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;text_of_declaration</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">text_of_declaration</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">)</span>
                 <span class="identifier">kc</span><span class="plain"> = </span><span class="identifier">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Kinds of action"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kind of action"</span><span class="plain">,</span>
-                    <span class="identifier">nap</span><span class="plain">-</span><span class="element">&gt;text_of_declaration</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+                    <span class="identifier">nap</span><span class="plain">-&gt;</span><span class="element">text_of_declaration</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

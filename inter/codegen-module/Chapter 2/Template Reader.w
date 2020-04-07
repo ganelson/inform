@@ -224,7 +224,6 @@ void TemplateReader::interpret(OUTPUT_STREAM, text_stream *sf,
 				}
 			}
 		}
-		TemplateReader::error("unable to find a contents section to read 'all'", I"Contents.w");
 		return;
 	}
 	TEMPORARY_TEXT(heading_name);

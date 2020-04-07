@@ -459,7 +459,7 @@ main {
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -484,7 +484,6 @@ main {
 <ul class="toc"><li><a href="#SP1">&#167;1. Vocabulary</a></li><li><a href="#SP2">&#167;2. Pronouns</a></li><li><a href="#SP3">&#167;3. Descriptors</a></li><li><a href="#SP4">&#167;4. Numbers</a></li><li><a href="#SP5">&#167;5. Time</a></li><li><a href="#SP6">&#167;6. Directions</a></li><li><a href="#SP7">&#167;7. Translation</a></li><li><a href="#SP8">&#167;8. Articles</a></li><li><a href="#SP9">&#167;9. Commands</a></li><li><a href="#SP10">&#167;10. Stubs</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Vocabulary. </b></p>
-
 
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AGAIN1__WD</span><span class="plain">     = </span><span class="character">'again'</span><span class="plain">;</span>
@@ -542,15 +541,14 @@ main {
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Pronouns. </b></p>
 
-
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguagePronouns</span><span class="plain"> </span><span class="identifier">table</span>
 
-    <span class="comment">! word        possible GNAs                   connected</span>
-    <span class="comment">!             to follow:                      to:</span>
-    <span class="comment">!             a     i</span>
-    <span class="comment">!             s  p  s  p</span>
-    <span class="comment">!             mfnmfnmfnmfn</span>
+    <span class="comment">word        possible GNAs                   connected</span>
+    <span class="comment">to follow:                      to:</span>
+    <span class="comment">a     i</span>
+    <span class="comment">s  p  s  p</span>
+    <span class="comment">mfnmfnmfnmfn</span>
 
         <span class="character">'it'</span><span class="plain">      </span><span class="constant">$$001000111000</span><span class="plain">                    </span><span class="identifier">NULL</span>
         <span class="character">'him'</span><span class="plain">     </span><span class="constant">$$100000000000</span><span class="plain">                    </span><span class="identifier">NULL</span>
@@ -562,15 +560,14 @@ main {
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Descriptors. </b></p>
 
-
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageDescriptors</span><span class="plain"> </span><span class="identifier">table</span>
 
-    <span class="comment">! word        possible GNAs   descriptor      connected</span>
-    <span class="comment">!             to follow:      type:           to:</span>
-    <span class="comment">!             a     i</span>
-    <span class="comment">!             s  p  s  p</span>
-    <span class="comment">!             mfnmfnmfnmfn</span>
+    <span class="comment">word        possible GNAs   descriptor      connected</span>
+    <span class="comment">to follow:      type:           to:</span>
+    <span class="comment">a     i</span>
+    <span class="comment">s  p  s  p</span>
+    <span class="comment">mfnmfnmfnmfn</span>
 
         <span class="character">'my'</span><span class="plain">      </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
         <span class="character">'this'</span><span class="plain">    </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
@@ -594,7 +591,6 @@ main {
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Numbers. </b></p>
 
-
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageNumbers</span><span class="plain"> </span><span class="identifier">table</span>
         <span class="character">'one'</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="character">'two'</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="character">'three'</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="character">'four'</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="character">'five'</span><span class="plain"> </span><span class="constant">5</span>
@@ -611,7 +607,6 @@ main {
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Time. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageTimeOfDay</span><span class="plain"> </span><span class="identifier">hours</span><span class="plain"> </span><span class="identifier">mins</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">hours</span><span class="plain">%12;</span>
@@ -626,7 +621,6 @@ main {
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Directions. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageDirection</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
         <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">d</span><span class="plain">;</span>
@@ -637,7 +631,6 @@ main {
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Translation. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageToInformese</span><span class="plain">; ];</span>
 </pre>
@@ -646,14 +639,13 @@ main {
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Articles. </b></p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageAnimateGender</span><span class="plain">   = </span><span class="identifier">male</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageInanimateGender</span><span class="plain"> = </span><span class="identifier">neuter</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageContractionForms</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;     </span><span class="comment">! English has two:</span>
-                                            <span class="comment">! 0 = starting with a consonant</span>
-                                            <span class="comment">! 1 = starting with a vowel</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageContractionForms</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;     </span><span class="comment">English has two:</span>
+                                            <span class="comment">0 = starting with a consonant</span>
+                                            <span class="comment">1 = starting with a vowel</span>
 
     <span class="plain">[ </span><span class="identifier">LanguageContraction</span><span class="plain"> </span><span class="identifier">text</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">text</span><span class="plain">-&gt;0 == </span><span class="character">'a'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'e'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'i'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'o'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'u'</span>
@@ -661,19 +653,19 @@ main {
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageArticles</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageArticles</span><span class="plain"> --&gt;</span>
 
-    <span class="comment">!   Contraction form 0:     Contraction form 1:</span>
-    <span class="comment">!   Cdef   Def    Indef     Cdef   Def    Indef</span>
+    <span class="comment">Contraction form 0:     Contraction form 1:</span>
+    <span class="comment">Cdef   Def    Indef     Cdef   Def    Indef</span>
 
-        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"a "</span><span class="plain">      </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"an "</span><span class="plain">          </span><span class="comment">! Articles 0</span>
-        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">   </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">;       </span><span class="comment">! Articles 1</span>
+        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"a "</span><span class="plain">      </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"an "</span><span class="plain">          </span><span class="comment">Articles 0</span>
+        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">   </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">;       </span><span class="comment">Articles 1</span>
 
-                    <span class="comment">!             a           i</span>
-                    <span class="comment">!             s     p     s     p</span>
-                    <span class="comment">!             m f n m f n m f n m f n</span>
+                    <span class="comment">a           i</span>
+                    <span class="comment">s     p     s     p</span>
+                    <span class="comment">m f n m f n m f n m f n</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageGNAsToArticles</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageGNAsToArticles</span><span class="plain"> --&gt; </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -692,7 +684,6 @@ long stick?" prompt from the parser. If the reply is another verb
 unless it is one of these words which could be both a verb and an
 adjective in a <code class="display"><span class="extract">name</span></code> property.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageVerb</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
@@ -725,7 +716,6 @@ adjective in a <code class="display"><span class="extract">name</span></code> pr
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Stubs. </b>To reduce the need for conditional compilation, we provide these stub
 routines:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageIsVerb</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain"> </span><span class="identifier">parse</span><span class="plain"> </span><span class="identifier">verb_wordnum</span><span class="plain">;</span>

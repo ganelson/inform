@@ -80,10 +80,9 @@ one to <code class="display"><span class="extract">stderr</span></code>:
 progress bar with a rubric beneath it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_progress_pc</span><span class="plain"> = -100;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">progress_stage_from</span><span class="plain">[] = { 0, 5, 15, 20, 40, 100 };</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">progress_stage_from</span><span class="plain">[] = { </span><span class="constant">0</span><span class="plain">, </span><span class="constant">5</span><span class="plain">, </span><span class="constant">15</span><span class="plain">, </span><span class="constant">20</span><span class="plain">, </span><span class="constant">40</span><span class="plain">, </span><span class="constant">100</span><span class="plain"> };</span>
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">progress_stage_name</span><span class="plain">[] = {</span>
         <span class="string">"Reading text"</span><span class="plain">,</span>
         <span class="string">"Analysing sentences"</span><span class="plain">,</span>
@@ -96,15 +95,15 @@ progress bar with a rubric beneath it.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> = </span><span class="identifier">progress_stage_from</span><span class="plain">[</span><span class="identifier">stage</span><span class="plain">], </span><span class="identifier">r2</span><span class="plain"> = </span><span class="identifier">progress_stage_from</span><span class="plain">[</span><span class="identifier">stage</span><span class="plain">+1];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pc</span><span class="plain"> = </span><span class="identifier">r1</span><span class="plain"> + ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">proportion</span><span class="plain">*(</span><span class="identifier">r2</span><span class="plain">-</span><span class="identifier">r1</span><span class="plain">)));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">show_progress_indicator</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pc</span><span class="plain">-</span><span class="identifier">last_progress_pc</span><span class="plain"> &lt; 3) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"++ %d%% (%s)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pc</span><span class="plain">, </span><span class="identifier">progress_stage_name</span><span class="plain">[</span><span class="identifier">stage</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pc</span><span class="plain">-</span><span class="identifier">last_progress_pc</span><span class="plain"> &lt; </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"++ %d%% (%s)\n"</span><span class="plain">, </span><span class="identifier">pc</span><span class="plain">, </span><span class="identifier">progress_stage_name</span><span class="plain">[</span><span class="identifier">stage</span><span class="plain">]);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
         <span class="identifier">last_progress_pc</span><span class="plain"> = </span><span class="identifier">pc</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProgressBar::final_state_of_progress_bar</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">show_progress_indicator</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"++ 100%% (Finishing work)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"++ 100%% (Finishing work)\n"</span><span class="plain">);</span>
             <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -120,7 +119,6 @@ progress bar with a rubric beneath it.
 a final status indicator.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">ProgressBar::begin_outcome</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">show_progress_indicator</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -130,7 +128,7 @@ a final status indicator.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProgressBar::end_outcome</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">show_progress_indicator</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

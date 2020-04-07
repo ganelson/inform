@@ -72,20 +72,19 @@ inferences to avoid piling up bogus inconsistencies.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">FOUND_IN_INF</span><span class="plain"> 56 </span>    <span class="comment">for backdrop things in many places</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FOUND_EVERYWHERE_INF</span><span class="plain"> 57 </span>    <span class="comment">ditto</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FOUND_IN_INF</span><span class="plain"> </span><span class="constant">56</span><span class="plain"> </span><span class="comment">for backdrop things in many places</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FOUND_EVERYWHERE_INF</span><span class="plain"> </span><span class="constant">57</span><span class="plain"> </span><span class="comment">ditto</span>
 </pre>
 
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_backdrop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_scenery</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">an I7 either/or property marking something as scenery</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_absent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">an I6-only property for backdrops out of play</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_scenery</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">an I7 either/or property marking something as scenery</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_absent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">an I6-only property for backdrops out of play</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">backdrop_found_in_notice</span><span class="plain"> {</span>
@@ -101,7 +100,6 @@ inferences to avoid piling up bogus inconsistencies.
 <p class="endnote">The structure backdrop_found_in_notice is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Initialisation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -123,7 +121,6 @@ for; it recognises the English name when defined by the Standard Rules. (So
 there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">backdrops</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt; ::=</span>
         <span class="identifier">backdrop</span>
@@ -132,7 +129,6 @@ there is no need to translate this to other languages.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -148,7 +144,6 @@ there is no need to translate this to other languages.)
 <p class="endnote">The function PL::Backdrops::backdrops_new_base_kind_notify is used in <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::object_is_a_backdrop</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -167,7 +162,6 @@ support for; it recognises the English name when it is defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">backdrops</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">scenery</span>
@@ -177,16 +171,15 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_new_property_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">backdrops</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">backdrops</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">))</span>
             <span class="identifier">P_scenery</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::object_is_scenery</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_EO_state</span><span class="plain">(</span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">P_scenery</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_EO_state</span><span class="plain">(</span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">P_scenery</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -201,10 +194,9 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Every backdrop needs a single-word property (<code class="display"><span class="extract">found_in</span></code> at the I6 level):
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_estimate_property_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">words_used</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_backdrop</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_backdrop</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -215,12 +207,11 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Inferences. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_log_inference_type</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">it</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">it</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FOUND_IN_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"FOUND_IN_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FOUND_EVERYWHERE_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"FOUND_EVERYWHERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FOUND_IN_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"FOUND_IN_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FOUND_EVERYWHERE_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"FOUND_EVERYWHERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -243,7 +234,6 @@ and text like
 
 <p class="inwebparagraph">would lead to contradiction problem messages.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::assert_relations</span><span class="plain">(</span><span class="identifier">binary_predicate</span><span class="plain"> *</span><span class="identifier">relation</span><span class="plain">,</span>
@@ -290,25 +280,24 @@ a room called <code class="display"><span class="extract">loc</span></code>, or 
 is <code class="display"><span class="extract">NULL</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">details</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">discoveries</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">discoveries</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">bd</span><span class="plain">;</span>
         <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">loc</span><span class="plain">) {</span>
             <span class="identifier">LOOP_OVER_BACKDROPS_IN</span><span class="plain">(</span><span class="identifier">bd</span><span class="plain">, </span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">inf</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">discoveries</span><span class="plain"> == 1) </span>&lt;<span class="cwebmacro">Insert fore-matter</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">discoveries</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span>&lt;<span class="cwebmacro">Insert fore-matter</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">bd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="identifier">details</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">LOOP_OVER_BACKDROPS_EVERYWHERE</span><span class="plain">(</span><span class="identifier">bd</span><span class="plain">, </span><span class="identifier">inf</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">discoveries</span><span class="plain"> == 1) </span>&lt;<span class="cwebmacro">Insert fore-matter</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">discoveries</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span>&lt;<span class="cwebmacro">Insert fore-matter</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">bd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="identifier">details</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">discoveries</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Insert after-matter</span> <span class="cwebmacronumber">14.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">discoveries</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Insert after-matter</span> <span class="cwebmacronumber">14.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -323,8 +312,8 @@ is <code class="display"><span class="extract">NULL</span></code>.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">how</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;Present everywhere:&lt;/b&gt;"</span><span class="plain">); </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;Present everywhere:&lt;/b&gt;"</span><span class="plain">); </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -339,8 +328,8 @@ is <code class="display"><span class="extract">NULL</span></code>.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">how</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -352,7 +341,6 @@ is <code class="display"><span class="extract">NULL</span></code>.
 can be said to be "everywhere", which nothing else can).
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">backdrops</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="identifier">phrases</span><span class="plain">&gt; ::=</span>
         <span class="identifier">everywhere</span>
@@ -361,7 +349,6 @@ can be said to be "everywhere", which nothing else can).
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_intervene_in_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
@@ -396,7 +383,6 @@ can be said to be "everywhere", which nothing else can).
 been asserted true:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::infer_presence_everywhere</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_backdrop</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
@@ -419,21 +405,20 @@ been asserted true:
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Model completion. </b>We intervene only at Stage II, the spatial modelling stage.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::backdrops_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 2) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
             <span class="identifier">P_absent</span><span class="plain"> = </span><span class="identifier">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"absent"</span><span class="plain">);</span>
             <span class="identifier">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="identifier">P_absent</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">If the object is found everywhere, make a found-in property accordingly</span> <span class="cwebmacronumber">18.1</span>&gt;<span class="plain">;</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">room_count</span><span class="plain"> = 0, </span><span class="identifier">region_count</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">room_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">region_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Find how many rooms or regions the object is found inside</span> <span class="cwebmacronumber">18.2</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FOUNDIN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> &lt; 16) &amp;&amp; (</span><span class="identifier">region_count</span><span class="plain"> == 0))</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FOUNDIN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> &lt; </span><span class="constant">16</span><span class="plain">) &amp;&amp; (</span><span class="identifier">region_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">))</span>
                     &lt;<span class="cwebmacro">The object is found only in a few rooms, and no regions, so make it a list</span> <span class="cwebmacronumber">18.3</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FOUNDIN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> + </span><span class="identifier">region_count</span><span class="plain"> &gt; 0))</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FOUNDIN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">room_count</span><span class="plain"> + </span><span class="identifier">region_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
                     &lt;<span class="cwebmacro">The object is found in many rooms or in whole regions, so make it a routine</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FOUNDIN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_backdrop</span><span class="plain">)))</span>
                     &lt;<span class="cwebmacro">The object is found nowhere, so give it a stub found-in property and mark it absent</span> <span class="cwebmacronumber">18.5</span>&gt;<span class="plain">;</span>
@@ -496,7 +481,7 @@ been asserted true:
         <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">FOUND_IN_INF</span><span class="plain">)</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">)));</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
+        <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">FOUNDIN</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -510,11 +495,11 @@ been asserted true:
 
 <pre class="displaydefn">
         <span class="reserved">backdrop_found_in_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">backdrop_found_in_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;many_places</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">many_places</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -535,11 +520,11 @@ code, derived from the old I6 library, requires <code class="display"><span clas
 
 <pre class="displaydefn">
         <span class="reserved">backdrop_found_in_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">backdrop_found_in_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">backdrop</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;many_places</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">BACKDROP_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">many_places</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">FOUNDIN</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain">;</span>
         <span class="identifier">Properties::EitherOr::assert</span><span class="plain">(</span>
             <span class="identifier">P_absent</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
@@ -550,13 +535,12 @@ code, derived from the old I6 library, requires <code class="display"><span clas
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Backdrops::write_found_in_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">backdrop_found_in_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">backdrop_found_in_notice</span><span class="plain">) {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;backdrop</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;many_places</span><span class="plain">)</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">backdrop</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">many_places</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">The object is found in many rooms or in whole regions</span> <span class="cwebmacronumber">19.1</span>&gt;
             <span class="reserved">else</span>
                 &lt;<span class="cwebmacro">The object is found nowhere</span> <span class="cwebmacronumber">19.2</span>&gt;<span class="plain">;</span>
@@ -574,7 +558,7 @@ code, derived from the old I6 library, requires <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain">);</span>
         <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
         <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">FOUND_IN_INF</span><span class="plain">) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
@@ -614,7 +598,7 @@ code, derived from the old I6 library, requires <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;found_in_routine_iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">found_in_routine_iname</span><span class="plain">);</span>
         <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>

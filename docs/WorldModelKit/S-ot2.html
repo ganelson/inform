@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -53,13 +53,12 @@ turn sequence rulebook is being followed directly from <code class="display"><sp
 explained in the Standard Rules.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">EarlyInTurnSequence</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">IterationsOfTurnSequence</span><span class="plain">;</span>
 
     <span class="plain">[ </span><span class="identifier">Main</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">; </span><span class="identifier">max_z_object</span><span class="plain"> = #</span><span class="identifier">largest_object</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">255</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
+        <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">; </span><span class="identifier">max_z_object</span><span class="plain"> = #</span><span class="identifier">largest_object</span><span class="plain"> - </span><span class="constant">255</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">STARTUP_RB</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">; </span><span class="identifier">InternalTestCases</span><span class="plain">(); #</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
@@ -83,7 +82,6 @@ Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
 space the opening text better.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">VIRTUAL_MACHINE_STARTUP_R</span><span class="plain">;</span>
@@ -151,7 +149,6 @@ text: thus, if there is some long text to read before the player finds out
 where he is, the surprise will not be spoiled.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">INITIALISE_MEMORY_R</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">; </span><span class="identifier">VM_PreInitialise</span><span class="plain">(); #</span><span class="identifier">Endif</span><span class="plain">;</span>
@@ -165,9 +162,9 @@ where he is, the surprise will not be spoiled.
         <span class="identifier">location</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
 
         <span class="identifier">CreatePropertyOffsets</span><span class="plain">();</span>
-        <span class="identifier">HeapInitialise</span><span class="plain">(); </span><span class="comment">! Create a completely unused memory allocation heap</span>
-        <span class="identifier">StackFramingInitialise</span><span class="plain">(); </span><span class="comment">! Create an empty stack</span>
-        <span class="identifier">CreateDynamicRelations</span><span class="plain">(); </span><span class="comment">! Create relation structures on the heap</span>
+        <span class="identifier">HeapInitialise</span><span class="plain">(); </span><span class="comment">Create a completely unused memory allocation heap</span>
+        <span class="identifier">StackFramingInitialise</span><span class="plain">(); </span><span class="comment">Create an empty stack</span>
+        <span class="identifier">CreateDynamicRelations</span><span class="plain">(); </span><span class="comment">Create relation structures on the heap</span>
 
         <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -224,7 +221,6 @@ waiting. (Nobody ought to use these variables at this point, but in case
 they do use them by accident in a "when play begins" rule, we want Inform
 to behave predictably and without type-unsafe values entering code.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">POSITION_PLAYER_IN_MODEL_R</span><span class="plain"> </span><span class="identifier">player_to_be</span><span class="plain">;</span>
@@ -329,15 +325,14 @@ used variables? The reasons are purely historical: the I6 parser
 developed gradually over about a decade.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ACTION_PRES</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NO_INPS_PRES</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">INP1_PRES</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">INP2_PRES</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Parser.i6t code assumes this is INP1_PRES + 1</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">INP2_PRES</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">Parser.i6t code assumes this is INP1_PRES + 1</span>
 
     <span class="plain">[ </span><span class="identifier">PARSE_COMMAND_R</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! Prevent use outside top level</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">Prevent use outside top level</span>
         <span class="identifier">not_yet_in_play</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
         <span class="identifier">Parser__parse</span><span class="plain">();</span>
@@ -366,7 +361,6 @@ happens out of world.
 the action resulting from ASK PERSON ABOUT SOMETHING, so that <code class="display"><span class="extract">##Tell</span></code>
 is converted to <code class="display"><span class="extract">##Ask</span></code> in these cases.
 </li></ul>
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TreatParserResults</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain"> == ##</span><span class="identifier">MistakeAction</span><span class="plain">) </span><span class="identifier">meta</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
@@ -444,10 +438,9 @@ the end of action generation: this is what prevents the time of day advancing,
 every turn rules from firing, and so forth &mdash; see the Standard Rules.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GENERATE_ACTION_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! Prevent use outside top level</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EarlyInTurnSequence</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">Prevent use outside top level</span>
         <span class="identifier">EarlyInTurnSequence</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
         <span class="identifier">action</span><span class="plain"> = </span><span class="identifier">parser_results</span><span class="plain">--&gt;</span><span class="identifier">ACTION_PRES</span><span class="plain">;</span>
@@ -513,7 +506,6 @@ in ordinary lists, and might allow the user to play tricks such as gathering
 up reports from a list and delivering them later in some processed way.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GenerateMultipleActions</span><span class="plain"> </span><span class="identifier">initial_location</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">item</span><span class="plain">;</span>
         <span class="identifier">initial_location</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">;</span>
@@ -557,7 +549,6 @@ to be a blank slot in the timer array at or before the current position
 because we have just blanked one.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TIMED_EVENTS_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">event_timer</span><span class="plain"> </span><span class="identifier">fire</span><span class="plain"> </span><span class="identifier">rule</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1: </span><span class="identifier">i</span><span class="plain">&lt;=(</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;0): </span><span class="identifier">i</span><span class="plain">++)</span>
@@ -567,7 +558,7 @@ because we have just blanked one.
                     <span class="plain">(</span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">fire</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">d</span><span class="plain"> = (</span><span class="identifier">the_time</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">event_timer</span><span class="plain"> + </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">) % </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">;</span>
+                    <span class="identifier">d</span><span class="plain"> = (</span><span class="identifier">the_time</span><span class="plain"> - </span><span class="identifier">event_timer</span><span class="plain"> + </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">) % </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="constant">30</span><span class="plain">)) </span><span class="identifier">fire</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fire</span><span class="plain">) {</span>
@@ -594,7 +585,6 @@ does not slowly balloon in size if the user has not been careful to ensure
 that events always fire.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SetTimedEvent</span><span class="plain"> </span><span class="identifier">rule</span><span class="plain"> </span><span class="identifier">event_time</span><span class="plain"> </span><span class="identifier">absolute_time</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">b</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1: </span><span class="identifier">i</span><span class="plain">&lt;=(</span><span class="identifier">TimedEventsTable</span><span class="plain">--&gt;0): </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -604,7 +594,7 @@ that events always fire.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">b</span><span class="plain">==0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TOOMANYEVENTS</span><span class="plain">);</span>
         <span class="identifier">TimedEventsTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="identifier">rule</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">absolute_time</span><span class="plain">) </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="identifier">event_time</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">event_time</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">TimedEventTimesTable</span><span class="plain">--&gt;</span><span class="identifier">b</span><span class="plain"> = -</span><span class="identifier">event_time</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -614,13 +604,12 @@ that events always fire.)
 at present; but might be, some day.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">time_step</span><span class="plain">;</span>
 
     <span class="plain">[ </span><span class="identifier">SetTime</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
         <span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">; </span><span class="identifier">time_rate</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">; </span><span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">0-</span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">-</span><span class="identifier">s</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -629,7 +618,6 @@ at present; but might be, some day.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Advance Time Rule. </b>This rule advances the two measures of the passing of time: the number of
 <code class="display"><span class="extract">turns</span></code> of play, and <code class="display"><span class="extract">the_time</span></code> of day.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ADVANCE_TIME_R</span><span class="plain">;</span>
@@ -640,7 +628,7 @@ at present; but might be, some day.
                 <span class="identifier">time_step</span><span class="plain">--;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">time_step</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="identifier">the_time</span><span class="plain">++;</span>
-                    <span class="identifier">time_step</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">time_rate</span><span class="plain">;</span>
+                    <span class="identifier">time_step</span><span class="plain"> = -</span><span class="identifier">time_rate</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">the_time</span><span class="plain"> % </span><span class="identifier">TWENTY_FOUR_HOURS</span><span class="plain">;</span>
@@ -653,7 +641,6 @@ at present; but might be, some day.
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Note Object Acquisitions Rule. </b>See the Standard Rules for comment on this.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">NOTE_OBJECT_ACQUISITIONS_R</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
@@ -680,7 +667,6 @@ the shutdown rulebook succeed then tells <code class="display"><span class="extr
 sequence.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RESURRECT_PLAYER_IF_ASKED_R</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resurrect_please</span><span class="plain">) {</span>
@@ -700,7 +686,6 @@ UNDO or RESTORE. The question and answer are all managed by the activity,
 which is defined in I7 source text in the Standard Rules.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ASK_FINAL_QUESTION_R</span><span class="plain">;</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
@@ -719,7 +704,6 @@ actual play, but here commands are but a distant memory. So we can use the
 same buffers for the final question as for game commands.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">READ_FINAL_ANSWER_R</span><span class="plain">;</span>
         <span class="identifier">DrawStatusLine</span><span class="plain">();</span>
@@ -736,7 +720,6 @@ same buffers for the final question as for game commands.
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Immediately Restart VM Rule. </b>Now for four rules acting on typical responses to the final question.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">IMMEDIATELY_RESTART_VM_R</span><span class="plain">; @</span><span class="identifier">restart</span><span class="plain">; ];</span>
 </pre>
@@ -750,7 +733,6 @@ a command like "DAPHNE, RESTORE". (Out of world actions should never
 be carried out that way, but again, it's a precaution.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">IMMEDIATELY_RESTORE_SAVED_R</span><span class="plain">; </span><span class="identifier">actor</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; </span><span class="identifier">RESTORE_THE_GAME_R</span><span class="plain">(); ];</span>
 </pre>
@@ -759,7 +741,6 @@ be carried out that way, but again, it's a precaution.)
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Immediately Quit Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">IMMEDIATELY_QUIT_R</span><span class="plain">; @</span><span class="reserved">quit</span><span class="plain">; ];</span>
 </pre>
@@ -767,7 +748,6 @@ be carried out that way, but again, it's a precaution.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Immediately Undo Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">IMMEDIATELY_UNDO_R</span><span class="plain">; </span><span class="identifier">Perform_Undo</span><span class="plain">(); ];</span>
@@ -778,7 +758,6 @@ be carried out that way, but again, it's a precaution.)
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Print Obituary Headline Rule. </b>Finally, definitions of three primitive rules for the "printing the player's
 obituary" activity.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PRINT_OBITUARY_HEADLINE_R</span><span class="plain">;</span>
@@ -804,7 +783,6 @@ obituary" activity.
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Print Final Score Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PRINT_FINAL_SCORE_R</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEMPLATE_CONFIGURATION_BITMAP</span><span class="plain"> &amp; </span><span class="identifier">USE_SCORING_TCBIT</span><span class="plain">) </span><span class="identifier">ANNOUNCE_SCORE_R</span><span class="plain">();</span>
@@ -815,7 +793,6 @@ obituary" activity.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Display Final Status Line Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">DISPLAY_FINAL_STATUS_LINE_R</span><span class="plain">;</span>

@@ -39,7 +39,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">navigation_design</span><span class="plain"> *</span><span class="functiontext">Lacuna::create</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">navigation_design</span><span class="plain"> *</span><span class="identifier">ND</span><span class="plain"> = </span><span class="functiontext">Nav::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"lacuna"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
@@ -56,14 +55,13 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Top. </b>At the front end of a section, before any of its text.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lacuna::lacuna_chapter_title</span><span class="plain">(</span><span class="reserved">navigation_design</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;chapter_full_title</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\n\n"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">chapter_full_title</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lacuna::lacuna_section_title</span><span class="plain">(</span><span class="reserved">navigation_design</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">%c%S\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="constant">SECTION_SYMBOL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n%c%S\n\n"</span><span class="plain">, </span><span class="constant">SECTION_SYMBOL</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

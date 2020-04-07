@@ -114,7 +114,6 @@ and <code class="display"><span class="extract">stored_in_negation</span></code>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Requesting new named properties. </b>This is how the either/or properties declared by the source text are made.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::obtain</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
@@ -128,9 +127,9 @@ and <code class="display"><span class="extract">stored_in_negation</span></code>
                 <span class="string">"that makes a definite statement."</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::obtain</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_meaning_registered</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_meaning_registered</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="functiontext">Properties::EitherOr::create_adjective_from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="functiontext">Properties::EitherOr::make_new_adjective_sense_from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
@@ -153,18 +152,17 @@ by asserting propositions to be true; and type-checking of those propositions
 relies on adjectival meanings.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::new_nameless</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">I6_form</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">I6_form</span><span class="plain">);</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="constant">PROPERTIES_HAP</span><span class="plain">);</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::create</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">I6_form</span><span class="plain">);</span>
         <span class="functiontext">Properties::EitherOr::create_adjective_from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">run_time_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -175,16 +173,15 @@ relies on adjectival meanings.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Initialising details. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::initialise</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_meaning_registered</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_phrase_registered</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_meaning_registered</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_phrase_registered</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;eo_parsing_grammar</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">eo_parsing_grammar</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 </pre>
@@ -198,22 +195,21 @@ two together into a pair. It's allowed to rejoin an existing pair (either way
 around), but not to break one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::make_negations</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">neg</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">neg</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> != </span><span class="identifier">neg</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> != </span><span class="identifier">prn</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">neg</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">negation</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">negation</span><span class="plain"> != </span><span class="identifier">neg</span><span class="plain">) || (</span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain"> != </span><span class="identifier">prn</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(2, </span><span class="identifier">prn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">neg</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">) {</span>
                     <span class="functiontext">Problems::quote_property</span><span class="plain">(4, </span><span class="identifier">prn</span><span class="plain">);</span>
-                    <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">);</span>
+                    <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">negation</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="functiontext">Problems::quote_property</span><span class="plain">(4, </span><span class="identifier">neg</span><span class="plain">);</span>
-                    <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">);</span>
+                    <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="identifier">negation</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BrokenNegationPair</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -226,13 +222,13 @@ around), but not to break one.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> = </span><span class="identifier">neg</span><span class="plain">; </span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain"> = </span><span class="identifier">neg</span><span class="plain">; </span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="functiontext">Properties::EitherOr::make_stored_in_negation</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -244,19 +240,18 @@ around), but not to break one.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::stored_in_negation</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::make_stored_in_negation</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"singleton EO cannot store in negation"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"singleton EO cannot store in negation"</span><span class="plain">);</span>
 
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">) </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">) </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -269,23 +264,22 @@ around), but not to break one.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Miscellaneous details:
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
     <span class="identifier">grammar_verb</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::get_parsing_grammar</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;eo_parsing_grammar</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">eo_parsing_grammar</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::set_parsing_grammar</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">grammar_verb</span><span class="plain"> *</span><span class="identifier">gv</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;eo_parsing_grammar</span><span class="plain"> = </span><span class="identifier">gv</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">eo_parsing_grammar</span><span class="plain"> = </span><span class="identifier">gv</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 
     <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::get_aph</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_phrase_registered</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_phrase_registered</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -299,12 +293,11 @@ around), but not to break one.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Assertion. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::assert</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">certainty</span><span class="plain">) {</span>
         <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::unary_PREDICATE_from_aph</span><span class="plain">(</span>
-            <span class="functiontext">Properties::EitherOr::get_aph</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), (</span><span class="identifier">parity</span><span class="plain">)?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="functiontext">Properties::EitherOr::get_aph</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), (</span><span class="identifier">parity</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">);</span>
         <span class="functiontext">Calculus::Propositions::Assert::assert_true_about</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">certainty</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -321,18 +314,17 @@ only some of our either/or properties will be able to make use of it. See
 keep a flag recording the outcome.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::implemented_as_attribute</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;implemented_as_attribute</span><span class="plain"> == </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;implemented_as_attribute</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">implemented_as_attribute</span><span class="plain"> == </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">implemented_as_attribute</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::implement_as_attribute</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">) </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;negation</span><span class="plain">-</span><span class="element">&gt;implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"non-EO property"</span><span class="plain">);</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">) </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">negation</span><span class="plain">-&gt;</span><span class="element">implemented_as_attribute</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -353,21 +345,20 @@ change the strings of compiled code here without making a matching change in
 "Properties of Objects".)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::compile_value</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">))</span>
-                <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">))</span>
-                <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::compile_default_value</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">))</span>
-            <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -384,23 +375,22 @@ is called every time an either/or property is created, to create its matching
 adjectival meaning:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::create_adjective_from_property</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am</span><span class="plain"> =</span>
             <span class="functiontext">Adjectives::Meanings::new</span><span class="plain">(</span><span class="constant">EORP_KADJ</span><span class="plain">, </span><span class="identifier">STORE_POINTER_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, 1);</span>
+        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="functiontext">Adjectives::Meanings::set_domain_from_kind</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_phrase_registered</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::get_aph_from_am</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_meaning_registered</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_phrase_registered</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::get_aph_from_am</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">);</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_meaning_registered</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::make_new_adjective_sense_from_property</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;adjectival_phrase_registered</span><span class="plain">;</span>
+        <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">adjectival_phrase_registered</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Adjectives::Meanings::applicable_to</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am</span><span class="plain"> =</span>
             <span class="functiontext">Adjectives::Meanings::new</span><span class="plain">(</span><span class="constant">EORP_KADJ</span><span class="plain">, </span><span class="identifier">STORE_POINTER_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, 2);</span>
+        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
         <span class="functiontext">Adjectives::Meanings::set_domain_from_kind</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -414,7 +404,6 @@ adjectival meaning:
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And here are the methods which define <code class="display"><span class="extract">EORP</span></code> adjectives. They arise other
 than by parsing, as we've seen, so:
 </p>
-
 
 <pre class="display">
     <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="functiontext">Properties::EitherOr::ADJ_parse</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">,</span>
@@ -431,7 +420,6 @@ than by parsing, as we've seen, so:
 means using their schemata in the usual way...
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::ADJ_compile</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">emit_flag</span><span class="plain">, </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -446,7 +434,6 @@ means using their schemata in the usual way...
 either/or properties may be paired, partly because of the attribute storage
 optimisation applied to some but not all of them.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::ADJ_compiling_soon</span><span class="plain">(</span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">) {</span>
@@ -554,7 +541,6 @@ which would work just as well, but more slowly.
 property.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::ADJ_assert</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_to_assert_on</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val_to_assert_on</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">) {</span>
@@ -571,7 +557,6 @@ property.
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>And finally:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::EitherOr::ADJ_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">neg</span><span class="plain"> = </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
@@ -581,7 +566,7 @@ property.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">neg</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">))) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" of "</span><span class="plain">); </span><span class="functiontext">World::Permissions::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">neg</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">neg</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", opposite of &lt;/i&gt;%+W&lt;i&gt;"</span><span class="plain">, </span><span class="identifier">neg</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">neg</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", opposite of &lt;/i&gt;%+W&lt;i&gt;"</span><span class="plain">, </span><span class="identifier">neg</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

@@ -87,7 +87,6 @@ mini-language. So:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">AdjustThis(16, 1);</span>
 </pre>
@@ -100,7 +99,7 @@ Standard Rules. They may change without warning.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_INLINE_DEFN_LENGTH</span><span class="plain"> 1024</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_INLINE_DEFN_LENGTH</span><span class="plain"> </span><span class="constant">1024</span>
 </pre>
 
 <pre class="display">
@@ -117,16 +116,16 @@ Standard Rules. They may change without warning.
 
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
 
-        <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">my_vars</span><span class="plain">[10]; </span>    <span class="comment">the "my" variables 0 to 9</span>
+        <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">my_vars</span><span class="plain">[10]; </span><span class="comment">the "my" variables 0 to 9</span>
         &lt;<span class="cwebmacro">Start with all of the implicit my-variables unused</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Create any new local variables explicitly called for</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">csi_state</span><span class="plain"> </span><span class="identifier">CSIS</span><span class="plain">;</span>
-        <span class="identifier">CSIS</span><span class="element">.where_from</span><span class="plain"> = </span><span class="identifier">where_from</span><span class="plain">;</span>
-        <span class="identifier">CSIS</span><span class="element">.ph</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="identifier">CSIS</span><span class="element">.inv</span><span class="plain"> = </span><span class="identifier">inv</span><span class="plain">;</span>
-        <span class="identifier">CSIS</span><span class="element">.tokens</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">;</span>
-        <span class="identifier">CSIS</span><span class="element">.my_vars</span><span class="plain"> = </span><span class="identifier">my_vars</span><span class="plain">;</span>
+        <span class="identifier">CSIS</span><span class="plain">.</span><span class="element">where_from</span><span class="plain"> = </span><span class="identifier">where_from</span><span class="plain">;</span>
+        <span class="identifier">CSIS</span><span class="plain">.</span><span class="element">ph</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
+        <span class="identifier">CSIS</span><span class="plain">.</span><span class="element">inv</span><span class="plain"> = </span><span class="identifier">inv</span><span class="plain">;</span>
+        <span class="identifier">CSIS</span><span class="plain">.</span><span class="element">tokens</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">;</span>
+        <span class="identifier">CSIS</span><span class="plain">.</span><span class="element">my_vars</span><span class="plain"> = </span><span class="identifier">my_vars</span><span class="plain">;</span>
 
         <span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">tail_schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -135,7 +134,7 @@ Standard Rules. They may change without warning.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::TypeData::block_follows</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Open a code block</span> <span class="cwebmacronumber">1.4</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Release any variables created inline</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_mor</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">inline_mor</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -186,7 +185,7 @@ checker has already done all of the work to decide what kind it has.)
 
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_variable_kind</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create a local at this token</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -207,10 +206,10 @@ checker has already done all of the work to decide what kind it has.)
             <span class="functiontext">Frames::Blocks::set_scope_to_block_about_to_open</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="functiontext">Frames::Blocks::set_variable_scope</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
-        <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] =</span>
+        <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] =</span>
             <span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">), </span><span class="identifier">lvar</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
@@ -258,7 +257,7 @@ the <code class="display"><span class="extract">TAIL</span></code> stream: that 
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">) &gt; 0) </span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0];</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0];</span>
         <span class="functiontext">Frames::Blocks::supply_val_and_stream</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">tail_schema</span><span class="plain">, </span><span class="identifier">CSIS</span><span class="plain">);</span>
 </pre>
 
@@ -293,7 +292,6 @@ but there are two ways to escape from that transcription: with a "bracing",
 or with a fragment of Inform 7 source text inside <code class="display"><span class="extract">(+</span></code> and <code class="display"><span class="extract">+)</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Invocations::Inline::csi_inline_inner</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain">, </span><span class="reserved">csi_state</span><span class="plain"> *</span><span class="identifier">CSIS</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_wanted</span><span class="plain"> == </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">) </span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_provided</span><span class="plain"> = </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">;</span>
@@ -314,16 +312,15 @@ or with a fragment of Inform 7 source text inside <code class="display"><span cl
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Invocations::Inline::csi_inline_inner_inner</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">,</span>
         <span class="identifier">inter_schema_token</span><span class="plain"> *</span><span class="identifier">sche</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">CSIS_s</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">prim_cat</span><span class="plain">) {</span>
 
         <span class="reserved">csi_state</span><span class="plain"> *</span><span class="identifier">CSIS</span><span class="plain"> = (</span><span class="reserved">csi_state</span><span class="plain"> *) </span><span class="identifier">CSIS_s</span><span class="plain">;</span>
-        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-</span><span class="element">&gt;ph</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-</span><span class="element">&gt;inv</span><span class="plain">;</span>
-        <span class="reserved">tokens_packet</span><span class="plain"> *</span><span class="identifier">tokens</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-</span><span class="element">&gt;tokens</span><span class="plain">;</span>
-        <span class="reserved">local_variable</span><span class="plain"> **</span><span class="identifier">my_vars</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-</span><span class="element">&gt;my_vars</span><span class="plain">;</span>
+        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-&gt;</span><span class="element">ph</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-&gt;</span><span class="element">inv</span><span class="plain">;</span>
+        <span class="reserved">tokens_packet</span><span class="plain"> *</span><span class="identifier">tokens</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-&gt;</span><span class="element">tokens</span><span class="plain">;</span>
+        <span class="reserved">local_variable</span><span class="plain"> **</span><span class="identifier">my_vars</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">-&gt;</span><span class="identifier">my_vars</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_command</span><span class="plain"> != </span><span class="identifier">no_ISINC</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_command</span><span class="plain"> == </span><span class="identifier">primitive_definition_ISINC</span><span class="plain">)</span>
@@ -350,10 +347,10 @@ are part of the public Inform language. There are four ways this can go:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">OPTS_INSUB</span><span class="plain"> 1		</span>    <span class="comment">the text "phrase options"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OPT_INSUB</span><span class="plain"> 2		</span>    <span class="comment">the name of a specific phrase option</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LOCAL_INSUB</span><span class="plain"> 3	</span>    <span class="comment">the name of a token</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PROBLEM_INSUB</span><span class="plain"> 4	</span>    <span class="comment">the syntax was wrong, so do nothing</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OPTS_INSUB</span><span class="plain"> </span><span class="constant">1</span><span class="plain">		</span><span class="comment">the text "phrase options"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OPT_INSUB</span><span class="plain"> </span><span class="constant">2</span><span class="plain">		</span><span class="comment">the name of a specific phrase option</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LOCAL_INSUB</span><span class="plain"> </span><span class="constant">3</span><span class="plain">	</span><span class="comment">the name of a token</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROBLEM_INSUB</span><span class="plain"> </span><span class="constant">4</span><span class="plain">	</span><span class="comment">the syntax was wrong, so do nothing</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Suppose we are invoking the following inline phrase definition:
 </p>
@@ -371,12 +368,11 @@ invoked) expands to true or false according to whether it has been used;
 the fixed text "phrase options" expands to the whole bitmap.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">inline</span><span class="plain">-</span><span class="identifier">substitution</span><span class="plain">&gt; ::=</span>
         <span class="reserved">phrase</span><span class="plain"> </span><span class="identifier">options</span><span class="plain"> |						==&gt; </span><span class="constant">OPTS_INSUB</span>
         <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">&gt;	|						==&gt; </span><span class="constant">OPT_INSUB</span><span class="plain">; &lt;&lt;</span><span class="identifier">opt</span><span class="plain">&gt;&gt; = </span><span class="identifier">R</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">local</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">inline</span><span class="plain">-</span><span class="identifier">stack</span><span class="plain">-</span><span class="identifier">frame</span><span class="plain">&gt; |	==&gt; </span><span class="constant">LOCAL_INSUB</span><span class="plain">; &lt;&lt;</span><span class="reserved">local_variable</span><span class="plain">:</span><span class="identifier">var</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="plain">&lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">local</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">inline</span><span class="plain">-</span><span class="identifier">stack</span><span class="plain">-</span><span class="identifier">frame</span><span class="plain">&gt; |	==&gt; </span><span class="constant">LOCAL_INSUB</span><span class="plain">; &lt;&lt;</span><span class="identifier">local_variable:var</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="plain">...										==&gt; </span>&lt;<span class="cwebmacro">Issue PM_BadInlineExpansion problem</span> <span class="cwebmacronumber">5.2</span>&gt;
 </pre>
 
@@ -385,11 +381,10 @@ the fixed text "phrase options" expands to the whole bitmap.
 <p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>This matches one of the token names in the preamble to the inline definition.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">local</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">inline</span><span class="plain">-</span><span class="identifier">stack</span><span class="plain">-</span><span class="identifier">frame</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> =</span>
-            <span class="functiontext">LocalVariables::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph_being_parsed</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="functiontext">LocalVariables::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph_being_parsed</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain">) {</span>
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">lvar</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -440,21 +435,21 @@ charlatans" and what they "deserve". I'm a better person now.
 
 
 <pre class="displaydefn">
-        <span class="identifier">phod_being_parsed</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;options_data</span><span class="plain">);</span>
+        <span class="identifier">phod_being_parsed</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">options_data</span><span class="plain">);</span>
         <span class="identifier">ph_being_parsed</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="plain">&lt;</span><span class="identifier">inline</span><span class="plain">-</span><span class="identifier">substitution</span><span class="plain">&gt;(</span><span class="identifier">BRW</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_opts</span><span class="plain"> = </span><span class="functiontext">Invocations::get_phrase_options_bitmap</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OPTS_INSUB</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPTS_INSUB:</span>
                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">current_opts</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OPT_INSUB</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_opts</span><span class="plain"> &amp; &lt;&lt;</span><span class="identifier">opt</span><span class="plain">&gt;&gt;) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPT_INSUB:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_opts</span><span class="plain"> &amp; &lt;&lt;</span><span class="identifier">opt</span><span class="plain">&gt;&gt;) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_INSUB</span><span class="plain">: {</span>
-                <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = &lt;&lt;</span><span class="reserved">local_variable</span><span class="plain">:</span><span class="identifier">var</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_INSUB:</span><span class="plain"> {</span>
+                <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = &lt;&lt;</span><span class="identifier">local_variable:var</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tok</span><span class="plain"> = </span><span class="functiontext">LocalVariables::get_parameter_number</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain"> &gt;= 0) </span>&lt;<span class="cwebmacro">Expand a bracing containing a token name</span> <span class="cwebmacronumber">3.1.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Expand a bracing containing a token name</span> <span class="cwebmacronumber">3.1.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -476,7 +471,7 @@ the presence of annotations can change what we do.
 
 
 <pre class="displaydefn">
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">supplied</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">];</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">supplied</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">];</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">by_value_not_reference</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blank_out</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -490,7 +485,7 @@ the presence of annotations can change what we do.
         <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">Frames::temporarily_set_kvs</span><span class="plain">(</span><span class="identifier">kind_vars_inline</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">changed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_required</span><span class="plain"> =</span>
-            <span class="identifier">Kinds::substitute</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">]</span><span class="element">.token_kind</span><span class="plain">,</span>
+            <span class="identifier">Kinds::substitute</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">].</span><span class="element">token_kind</span><span class="plain">,</span>
             <span class="identifier">kind_vars_inline</span><span class="plain">, &amp;</span><span class="identifier">changed</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">If the token has to be an lvalue, reject it if it isn't</span> <span class="cwebmacronumber">3.1.1.2</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">Compile the token value</span> <span class="cwebmacronumber">3.1.1.3</span>&gt;<span class="plain">;</span>
@@ -511,7 +506,7 @@ the presence of annotations can change what we do.
         <span class="identifier">kind_vars_inline</span><span class="plain">[0] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=26; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Frames::get_kind_variable</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
         <span class="identifier">kind_variable_declaration</span><span class="plain"> *</span><span class="identifier">kvd</span><span class="plain"> = </span><span class="identifier">ParseTree::get_kind_variable_declarations</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -529,7 +524,7 @@ the presence of annotations can change what we do.
             <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">nlv</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">NonlocalVariables::is_constant</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">))) ||</span>
                 <span class="plain">(</span><span class="functiontext">ParseTreeUsage::is_lvalue</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nlv</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">nlv</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">supplied</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAnLvalue</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -557,7 +552,6 @@ It allows this:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">FileIO_PutContents({FN}, {T}, false);</span>
@@ -602,7 +596,7 @@ frame for the can't exit closed containers rule, not to the local stack frame.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reference_exists</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="identifier">TABLE_EXISTENCE_CMODE_ISSBM</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Expanding $P into '%W' with %d, $u%s%s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Expanding $P into '%W' with %d, $u%s%s\n"</span><span class="plain">,</span>
             <span class="identifier">supplied</span><span class="plain">, </span><span class="identifier">BRW</span><span class="plain">, </span><span class="identifier">tok</span><span class="plain">, </span><span class="identifier">kind_required</span><span class="plain">,</span>
             <span class="identifier">changed</span><span class="plain">?</span><span class="string">" (after kind substitution)"</span><span class="plain">:</span><span class="string">""</span><span class="plain">,</span>
             <span class="identifier">by_value_not_reference</span><span class="plain">?</span><span class="string">" (by value)"</span><span class="plain">:</span><span class="string">" (by reference)"</span><span class="plain">);</span>
@@ -622,7 +616,6 @@ invocation-language so baroque.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">{-command:kind name}</span>
@@ -694,7 +687,6 @@ definition:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})</span>
 </pre>
@@ -712,7 +704,7 @@ proposition.
 
 <pre class="displaydefn">
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_kind</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">ParseTree::get_kind_variable_declarations</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
-        <span class="functiontext">Calculus::Deferrals::emit_list_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0], </span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">Calculus::Deferrals::emit_list_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0], </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -940,7 +932,6 @@ which should be supplied as the argument. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-label:pineapple}</span>
 </pre>
@@ -954,7 +945,6 @@ safely:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};</span>
 </pre>
@@ -964,7 +954,6 @@ safely:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;</span>
 </pre>
@@ -973,7 +962,6 @@ safely:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;</span>
@@ -1081,7 +1069,6 @@ useful trick is to allocate storage at run-time. Invoking
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple}</span>
 </pre>
@@ -1101,7 +1088,6 @@ guaranteed to contain one entry for each counter value reached. Thus:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple}I7_ST_pineapple--&gt;{-counter:pineapple} = {N};</span>
 </pre>
@@ -1113,7 +1099,6 @@ than one word of storage per count is needed, try:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple:3}</span>
@@ -1131,8 +1116,8 @@ made with different numbers here, the maximum is taken.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_per_count</span><span class="plain"> = 1;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; 0) </span><span class="identifier">words_per_count</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, 0);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_per_count</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">words_per_count</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="functiontext">JumpLabels::allocate_counter</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">words_per_count</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
@@ -1342,7 +1327,6 @@ having this annotation seems the smaller of the two warts.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">return {-return-value:something};</span>
 </pre>
@@ -1420,7 +1404,7 @@ the problem messages are phrased differently if something goes wrong.
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">kind_needed</span><span class="plain"> = </span><span class="functiontext">Frames::get_kind_returned</span><span class="plain">();</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_supplied</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::get_mor</span><span class="plain">(&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::get_mor</span><span class="plain">(&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">));</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_me</span><span class="plain"> = </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind_needed</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">kind_needed</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
@@ -1439,7 +1423,7 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem for returning a value of the wrong kind</span> <span class="cwebmacronumber">3.1.1.4.7.1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">return</span><span class="plain">; </span>    <span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
+        <span class="reserved">return</span><span class="plain">; </span><span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1518,7 +1502,7 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="identifier">valid_annotation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain">; </span>    <span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
+        <span class="reserved">return</span><span class="plain">; </span><span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1540,7 +1524,7 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KEEP_SILENT_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PUSH_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1552,7 +1536,7 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CLEARPARAGRAPHING_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">PL::Actions::Patterns::emit_try</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">DIVIDEPARAGRAPHPOINT_HL</span><span class="plain">));</span>
@@ -1573,11 +1557,11 @@ the problem messages are phrased differently if something goes wrong.
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">STORED_ACTION_TY_TRY_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_stored_action</span><span class="plain">, </span><span class="identifier">supplied</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="identifier">valid_annotation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain">; </span>    <span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
+        <span class="reserved">return</span><span class="plain">; </span><span class="comment">that is, don't use the regular token compiler: we've done it ourselves</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1598,13 +1582,13 @@ token, because that would be "property name". Instead:
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">supplied</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">))) {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -1626,7 +1610,6 @@ token, because that would be "property name". Instead:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">SetTimedEvent({-mark-event-used:R}, {t}+1, 0);</span>
@@ -1727,10 +1710,10 @@ the second time it's simply printed.)
 
 <pre class="displaydefn">
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, 0) - </span><span class="character">'0'</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, 1) == 0) &amp;&amp; (</span><span class="identifier">n</span><span class="plain"> &gt;= 0) &amp;&amp; (</span><span class="identifier">n</span><span class="plain"> &lt; 10)) </span>&lt;<span class="cwebmacro">A single digit as the name</span> <span class="cwebmacronumber">3.5.1.1</span>&gt;
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) - </span><span class="character">'0'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">1</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">10</span><span class="plain">)) </span>&lt;<span class="cwebmacro">A single digit as the name</span> <span class="cwebmacronumber">3.5.1.1</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">An Inform 6 identifier as the name</span> <span class="cwebmacronumber">3.5.1.2</span>&gt;<span class="plain">;</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prim_cat</span><span class="plain"> == </span><span class="identifier">REF_PRIM_CAT</span><span class="plain">) </span><span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -1755,7 +1738,6 @@ the ones we create will be different from those made by any other invocation
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">(- for ({-my:1}=1; {-my:1}&lt;=2; {-my:1}++) {P} -)</span>
@@ -1819,7 +1801,6 @@ For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(- {-my:warn} = true; -)</span>
 </pre>
@@ -1836,7 +1817,6 @@ For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">({-my:warn})</span>
@@ -1875,13 +1855,12 @@ or when a block value is needed, or where we need to match against descriptions
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-my:1:list of numbers}</span>
 
     &lt;<span class="cwebmacrodefn">Set the kind of the my-variable</span> <span class="cwebmacronumber">3.5.1.1.1</span>&gt; =
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_kind</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">,</span>
                 <span class="identifier">ParseTree::get_kind_variable_declarations</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_object</span><span class="plain">;</span>
@@ -1949,7 +1928,6 @@ the kind of the variable. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-my:1:time}{-initialise:1}</span>
 </pre>
@@ -1970,7 +1948,7 @@ default values when created, so they are always typesafe anyway.
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_identifier</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">tokens</span><span class="plain">, </span><span class="identifier">my_vars</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_kind</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, </span><span class="identifier">ParseTree::get_kind_variable_declarations</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">));</span>
         <span class="reserved">else</span>
             <span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
@@ -1979,7 +1957,7 @@ default values when created, so they are always typesafe anyway.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Frames::Blocks::inside_a_loop_body</span><span class="plain">()) {</span>
                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECOPY_HL</span><span class="plain">));</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
                     <span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">), </span><span class="string">"value"</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1988,7 +1966,7 @@ default values when created, so they are always typesafe anyway.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+                <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
                 <span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">), </span><span class="string">"value"</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2025,7 +2003,6 @@ a list entry), regardless of its kind of value. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{-unprotect:t}{-copy:t:u}</span>
 </pre>
@@ -2043,7 +2020,6 @@ a list entry), regardless of its kind of value. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">tmp_0 = 10;</span>
 </pre>
@@ -2052,7 +2028,6 @@ a list entry), regardless of its kind of value. For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">{-unprotect:t}{t} = {u};</span>
@@ -2078,7 +2053,7 @@ dynamic lists, since Y is a block value not a word value. The point of the
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">copy_form</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">copy_form</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Find what we are copying from, to and how</span> <span class="cwebmacronumber">3.5.4.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Check that we're not copying to something the user isn't allowed to change</span> <span class="cwebmacronumber">3.5.4.2</span>&gt;<span class="plain">;</span>
@@ -2088,10 +2063,10 @@ dynamic lists, since Y is a block value not a word value. The point of the
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
         <span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">storage_class</span><span class="plain"> = </span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">copy_form</span><span class="plain"> != 0) </span>&lt;<span class="cwebmacro">Check that increment or decrement make sense</span> <span class="cwebmacronumber">3.5.4.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">copy_form</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Check that increment or decrement make sense</span> <span class="cwebmacronumber">3.5.4.3</span>&gt;<span class="plain">;</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain"> = </span><span class="functiontext">Lvalues::interpret_store</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">, </span><span class="identifier">K1</span><span class="plain">, </span><span class="identifier">K2</span><span class="plain">, </span><span class="identifier">copy_form</span><span class="plain">);</span>
         <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"%s;"</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Inline copy: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Inline copy: %s\n"</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">);</span>
         <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, &amp;</span><span class="identifier">pt1</span><span class="plain">, &amp;</span><span class="identifier">pt2</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -2129,13 +2104,13 @@ of the variable {-my:1} to S.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'+'</span><span class="plain">) { </span><span class="identifier">copy_form</span><span class="plain"> = 1; </span><span class="identifier">Str::copy_tail</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, 1); }</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">copy_form</span><span class="plain"> = -1; </span><span class="identifier">Str::copy_tail</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, 1); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'+'</span><span class="plain">) { </span><span class="identifier">copy_form</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">Str::copy_tail</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); }</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">copy_form</span><span class="plain"> = -1; </span><span class="identifier">Str::copy_tail</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">) == 0) &amp;&amp; (</span><span class="identifier">copy_form</span><span class="plain"> != 0))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">copy_form</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">))</span>
             <span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_int</span><span class="plain">(1, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_identifier</span><span class="plain">(</span><span class="identifier">from_p</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">tokens</span><span class="plain">, </span><span class="identifier">my_vars</span><span class="plain">);</span>
 
         <span class="identifier">to</span><span class="plain"> = </span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_identifier</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">tokens</span><span class="plain">, </span><span class="identifier">my_vars</span><span class="plain">);</span>
@@ -2219,7 +2194,6 @@ For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">objectloop({-my:itm} ofclass Object)</span>
@@ -2387,7 +2361,7 @@ result would be the same without the optimisation.
 <pre class="displaydefn">
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">to_say</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">to_say</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) == 1) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">), </span><span class="identifier">TEXTWITHSUBS_MC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2640,37 +2614,36 @@ especially those involving complicated linguistic propositions. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(- {-primitive-definition:total-of} -).</span>
 
     &lt;<span class="cwebmacrodefn">Expand an entirely internal-made definition</span> <span class="cwebmacronumber">3.7</span>&gt; =
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">repeat_through_ISINSC</span><span class="plain">) {</span>
-                <span class="functiontext">Calculus::Deferrals::emit_repeat_through_domain_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1],</span>
-                    <span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]));</span>
+                <span class="functiontext">Calculus::Deferrals::emit_repeat_through_domain_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1],</span>
+                    <span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]));</span>
         <span class="plain">}</span>
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">repeat_through_list_ISINSC</span><span class="plain">) {</span>
-            <span class="functiontext">Calculus::Deferrals::emit_loop_over_list_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1],</span>
-                <span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]));</span>
+            <span class="functiontext">Calculus::Deferrals::emit_loop_over_list_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1],</span>
+                <span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]));</span>
         <span class="plain">}</span>
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">number_of_ISINSC</span><span class="plain">) {</span>
-            <span class="functiontext">Calculus::Deferrals::emit_number_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]);</span>
+            <span class="functiontext">Calculus::Deferrals::emit_number_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">random_of_ISINSC</span><span class="plain">) {</span>
-            <span class="functiontext">Calculus::Deferrals::emit_random_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]);</span>
+            <span class="functiontext">Calculus::Deferrals::emit_random_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]);</span>
         <span class="plain">}</span>
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">total_of_ISINSC</span><span class="plain">) {</span>
             <span class="functiontext">Calculus::Deferrals::emit_total_of_S</span><span class="plain">(</span>
-                <span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]), </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1]);</span>
+                <span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]), </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1]);</span>
         <span class="plain">}</span>
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">extremal_ISINSC</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">extremal_property_sign</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">extremal_property</span><span class="plain">)) {</span>
-                <span class="functiontext">Calculus::Deferrals::emit_extremal_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0],</span>
+                <span class="functiontext">Calculus::Deferrals::emit_extremal_of_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0],</span>
                     <span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">extremal_property</span><span class="plain">, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">extremal_property_sign</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span>
                 <span class="functiontext">Problems::Issue::inline_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineExtremal</span><span class="plain">),</span>
@@ -2690,8 +2663,8 @@ especially those involving complicated linguistic propositions. For example:
 
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">verbose_checking_ISINSC</span><span class="plain">) {</span>
             <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">what</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain"> &gt; 0) {</span>
-                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">aspect</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0];</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">tokens_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">aspect</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0];</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">aspect</span><span class="plain">))) {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">aw1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">aspect</span><span class="plain">));</span>
                     <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">aw1</span><span class="plain">);</span>
@@ -2718,7 +2691,7 @@ especially those involving complicated linguistic propositions. For example:
 
 
 <pre class="displaydefn">
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0];</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0];</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">fn_kind</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">fn_kind</span><span class="plain">) != </span><span class="identifier">CON_phrase</span><span class="plain">) {</span>
@@ -2730,16 +2703,16 @@ especially those involving complicated linguistic propositions. For example:
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">fn_kind</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">head</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">tail</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">head</span><span class="plain">, &amp;</span><span class="identifier">tail</span><span class="plain">);</span>
             <span class="identifier">X</span><span class="plain"> = </span><span class="identifier">tail</span><span class="plain">;</span>
-            <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">head</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">head</span><span class="plain">)))</span>
-                <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">head</span><span class="plain">;</span>
+                <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1] = </span><span class="identifier">head</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain">--;</span>
+        <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">tokens_count</span><span class="plain">--;</span>
 
         <span class="functiontext">Invocations::AsCalls::emit_function_call</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 </pre>
@@ -2754,10 +2727,10 @@ especially those involving complicated linguistic propositions. For example:
 
 
 <pre class="displaydefn">
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1];</span>
-        <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1] = </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0];</span>
-        <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0] = </span><span class="functiontext">Rvalues::from_int</span><span class="plain">(-1, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
-        <span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain"> = 2;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1];</span>
+        <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1] = </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0];</span>
+        <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0] = </span><span class="functiontext">Rvalues::from_int</span><span class="plain">(-1, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
+        <span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">tokens_count</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="functiontext">Invocations::AsCalls::emit_function_call</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, -1, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
@@ -2771,9 +2744,9 @@ especially those involving complicated linguistic propositions. For example:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1], </span><span class="identifier">K_equation</span><span class="plain">)) {</span>
-            <span class="functiontext">Equations::emit_solution</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]),</span>
-                <span class="functiontext">Rvalues::to_equation</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[1]));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1], </span><span class="identifier">K_equation</span><span class="plain">)) {</span>
+            <span class="functiontext">Equations::emit_solution</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]),</span>
+                <span class="functiontext">Rvalues::to_equation</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1]));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SolvedNameless</span><span class="plain">),</span>
                 <span class="string">"only specific named equations can be solved"</span><span class="plain">,</span>
@@ -2815,19 +2788,18 @@ with those numbers, if they exist;
 then the operand refers to its value in the current invocation;
 </li><li>(c) and failing that we have the name of a local I6 variable.
 </li></ul>
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_identifier</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">operand</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">,</span>
         <span class="reserved">tokens_packet</span><span class="plain"> *</span><span class="identifier">tokens</span><span class="plain">, </span><span class="reserved">local_variable</span><span class="plain"> **</span><span class="identifier">my_vars</span><span class="plain">) {</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, 1) == 0) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, 0) &gt;= </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, 0) &lt;= </span><span class="character">'9'</span><span class="plain">))</span>
-            <span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">my_vars</span><span class="plain">[</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, 0) - </span><span class="character">'0'</span><span class="plain">];</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">1</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) &gt;= </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) &lt;= </span><span class="character">'9'</span><span class="plain">))</span>
+            <span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">my_vars</span><span class="plain">[</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) - </span><span class="character">'0'</span><span class="plain">];</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">LW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">);</span>
-            <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">), </span><span class="identifier">LW</span><span class="plain">);</span>
+            <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">), </span><span class="identifier">LW</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tok</span><span class="plain"> = </span><span class="functiontext">LocalVariables::get_parameter_number</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">];</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tok</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[</span><span class="identifier">tok</span><span class="plain">];</span>
             <span class="plain">}</span>
             <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::by_name</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -2850,7 +2822,6 @@ In addition two special kind names are recognised:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">return-kind</span>
         <span class="plain">rule-return-kind</span>
@@ -2868,14 +2839,13 @@ which would safely abandon any attempt to define a value like this:
 
 </blockquote>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Invocations::Inline::parse_bracing_operand_as_kind</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">kind_variable_declaration</span><span class="plain"> *</span><span class="identifier">kvd</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"return-kind"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Frames::get_kind_returned</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"rule-return-kind"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Rulebooks::kind_from_context</span><span class="plain">();</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_vars_inline</span><span class="plain">[27];</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;27; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">kind_vars_inline</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">Frames::temporarily_set_kvs</span><span class="plain">(</span><span class="identifier">kind_vars_inline</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">KW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">);</span>
 
@@ -2897,7 +2867,6 @@ relevant class or property, rather than as code to test the predicate
 "X is a room" or "X is lighted", and similarly for bare names
 of defined adjectives. So:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Invocations::Inline::compile_I7_expression_from_text</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -2960,7 +2929,7 @@ of defined adjectives. So:
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">LW</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">LW</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">initial_problem_count</span><span class="plain"> &lt; </span><span class="identifier">problem_count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -2979,7 +2948,7 @@ of defined adjectives. So:
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH2</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_DATA_VHMODE</span><span class="plain">);</span>
                 <span class="functiontext">Specifications::Compiler::compile_inner</span><span class="plain">(&amp;</span><span class="identifier">VH2</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-                <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
+                <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">Holsters::unholster_pair</span><span class="plain">(&amp;</span><span class="identifier">VH2</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v1</span><span class="plain"> == </span><span class="identifier">ALIAS_IVAL</span><span class="plain">) {</span>
                     <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">URL_SYMBOL_CHAR</span><span class="plain">);</span>

@@ -64,7 +64,6 @@ we simply ask the Inter module to output some text, and return true to
 tell the generator that nothing more need be done.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Binary::create_target</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">binary_inter_cgt</span><span class="plain"> = </span><span class="functiontext">CodeGen::Targets::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"binary"</span><span class="plain">);</span>
@@ -72,8 +71,8 @@ tell the generator that nothing more need be done.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Binary::text</span><span class="plain">(</span><span class="reserved">code_generation_target</span><span class="plain"> *</span><span class="identifier">cgt</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from_step</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"temporary generations cannot be output"</span><span class="plain">);</span>
-        <span class="identifier">Inter::Binary::write</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from_step</span><span class="plain">-</span><span class="element">&gt;parsed_filename</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from_step</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"temporary generations cannot be output"</span><span class="plain">);</span>
+        <span class="identifier">Inter::Binary::write</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from_step</span><span class="plain">-&gt;</span><span class="element">parsed_filename</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

@@ -79,7 +79,7 @@ friend.
         <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">name_resolution</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_tags_attached</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_tags_attached</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::attach_noun</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">new_tag</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">));</span>
@@ -108,24 +108,23 @@ with everything placed under a heading, and no sentence having fallen
 through a crack.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::verify_divisions</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">; </span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = 0, </span><span class="identifier">disaster</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">disaster</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">)</span>
-            <span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain"> = 0;</span>
+            <span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">)</span>
             <span class="identifier">LOOP_OVER_NOUNS_UNDER</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">)</span>
                 <span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain">++, </span><span class="identifier">total</span><span class="plain">++;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">noun</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain"> &gt; 1) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$z occurs under %d headings\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$z occurs under %d headings\n"</span><span class="plain">,</span>
                     <span class="identifier">nt</span><span class="plain">, </span><span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">heading_count</span><span class="plain">);</span>
                 <span class="identifier">disaster</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total</span><span class="plain"> != </span><span class="identifier">no_tags_attached</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d tags != %d attached\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d tags != %d attached\n"</span><span class="plain">,</span>
                 <span class="identifier">total</span><span class="plain">, </span><span class="identifier">no_tags_attached</span><span class="plain">);</span>
             <span class="identifier">disaster</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -161,7 +160,6 @@ File (0) and Routine (1), and then sublevels provided by braced blocks:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">File</span>
@@ -227,9 +225,8 @@ only happen here if a new noun is to be created: the assertion-maker
 calls the following routine to let us know.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">noun_search_list_valid_for_this_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">initially it's unbuilt</span>
+    <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">noun_search_list_valid_for_this_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">initially it's unbuilt</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::disturb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">noun_search_list_valid_for_this_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -245,16 +242,15 @@ all nametags of priority 1 as found by recursively searching headings, then all
 nametags of priority 2, and so on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::construct_noun_search_list</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Work out the heading from which we wish to search</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">noun_search_list_valid_for_this_heading</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">rely on the cache</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">noun_search_list_valid_for_this_heading</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">rely on the cache</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Rebuilding noun search list from: $H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Rebuilding noun search list from: $H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Start the search list empty</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
 
@@ -307,7 +303,7 @@ ever get that far.
 <pre class="displaydefn">
         <span class="identifier">nt_search_start</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">nt_search_finish</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="identifier">list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">should always be true, but just in case</span>
+        <span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="identifier">list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">should always be true, but just in case</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -326,13 +322,13 @@ and produce an internal error if not.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0; </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_NT_SEARCH_LIST</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">no_tags_attached</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Reordering failed from $H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d tags created, %d in ordering\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">no_tags_attached</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Reordering failed from $H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d tags created, %d in ordering\n"</span><span class="plain">, </span><span class="identifier">no_tags_attached</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
             <span class="functiontext">Sentences::Headings::log_all_headings</span><span class="plain">();</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Making fresh tree:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Making fresh tree:\n"</span><span class="plain">);</span>
             <span class="identifier">Headings::make_tree</span><span class="plain">();</span>
             <span class="functiontext">Sentences::Headings::log_all_headings</span><span class="plain">();</span>
             <span class="identifier">internal_error_tree_unsafe</span><span class="plain">(</span><span class="string">"reordering of nametags failed"</span><span class="plain">);</span>
@@ -374,7 +370,6 @@ provides an upper bound of about 21, regardless of the size of the source
 text. The running time is linear in both the number of headings and the
 number of nametags in the source text.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::build_search_list_from</span><span class="plain">(</span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">within</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">way_we_came</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">) {</span>
@@ -427,7 +422,6 @@ order being used to break tie-breaks. Note that we return <code class="display">
 in the search list has a positive score.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::set_noun_search_score</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">) {</span>
         <span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">search_score</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">;</span>
@@ -435,7 +429,7 @@ in the search list has a positive score.
 
     <span class="identifier">noun</span><span class="plain"> *</span><span class="functiontext">Sentences::Headings::highest_scoring_noun_searched</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, *</span><span class="identifier">best_nt</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">best_score</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">best_score</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_NT_SEARCH_LIST</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="functiontext">Sentences::Headings::name_resolution_data</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">)-&gt;</span><span class="identifier">search_score</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; </span><span class="identifier">best_score</span><span class="plain">) { </span><span class="identifier">best_nt</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">; </span><span class="identifier">best_score</span><span class="plain"> = </span><span class="identifier">x</span><span class="plain">; }</span>
@@ -456,10 +450,9 @@ words like "it" left over from previous sentences. Headings are for
 organisation, and are not directly functional in themselves.
 </p>
 
-
 <pre class="display">
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">HEADING_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="identifier">HEADING_NT</span><span class="plain">, -1, 0, </span><span class="functiontext">Sentences::Headings::handle_heading</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">HEADING_NT</span><span class="plain">, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="functiontext">Sentences::Headings::handle_heading</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::handle_heading</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
         <span class="functiontext">Assertions::Traverse::new_discussion</span><span class="plain">();</span>
@@ -474,11 +467,10 @@ organisation, and are not directly functional in themselves.
 to the index of the project, and to a freestanding XML file.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::log</span><span class="plain">(</span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">==</span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null heading&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">==&amp;</span><span class="identifier">pseudo_heading</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;pseudo_heading&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">==</span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null heading&gt;\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">==&amp;</span><span class="identifier">pseudo_heading</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;pseudo_heading&gt;\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"H%d "</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">)</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;%f, line %d&gt;"</span><span class="plain">,</span>
@@ -497,21 +489,20 @@ to the index of the project, and to a freestanding XML file.
 surreptitiously check that it is correctly formed at the same time.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::log_all_headings</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="functiontext">Sentences::Headings::log_headings_recursively</span><span class="plain">(&amp;</span><span class="identifier">pseudo_heading</span><span class="plain">, 0);</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="functiontext">Sentences::Headings::log_headings_recursively</span><span class="plain">(&amp;</span><span class="identifier">pseudo_heading</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::log_headings_recursively</span><span class="plain">(</span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">==</span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">depth</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain">-1 != </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">indentation</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"*** indentation should be %d ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">-1);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain">-1 != </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">indentation</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"*** indentation should be %d ***\n"</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">-1);</span>
         <span class="functiontext">Sentences::Headings::log_headings_recursively</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">child_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
         <span class="functiontext">Sentences::Headings::log_headings_recursively</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">next_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -525,9 +516,8 @@ surreptitiously check that it is correctly formed at the same time.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Describing the heading structure, 2: to the index. </b></p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">headings_indexed</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">headings_indexed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
@@ -539,21 +529,21 @@ surreptitiously check that it is correctly formed at the same time.
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="functiontext">Sentences::Headings::index_heading_recursively</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="identifier">child_heading</span><span class="plain">);</span>
         <span class="identifier">contents_entry</span><span class="plain"> *</span><span class="identifier">ce</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">min_positive_level</span><span class="plain"> = 10;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">min_positive_level</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ce</span><span class="plain">, </span><span class="identifier">contents_entry</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> &gt; 0) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> &lt; </span><span class="identifier">min_positive_level</span><span class="plain">))</span>
                 <span class="identifier">min_positive_level</span><span class="plain"> = </span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ce</span><span class="plain">, </span><span class="identifier">contents_entry</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Index this entry in the contents</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">contents_entry</span><span class="plain">) == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">contents_entry</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(This would look more like a contents page if the source text "</span>
                 <span class="string">"were divided up into headings."</span><span class="plain">);</span>
             <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"HEADINGS"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -570,13 +560,13 @@ surreptitiously check that it is correctly formed at the same time.
 <pre class="displaydefn">
         <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">;</span>
         <span class="comment">indent to correct tab position</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">leaders\</span><span class="plain">"</span><span class="string">"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\"leaders\""</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ind_used</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">indentation</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == 0) </span><span class="identifier">ind_used</span><span class="plain"> = 1;</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">leaded indent%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ind_used</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">ind_used</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">, </span><span class="string">"class=\"leaded indent%d\""</span><span class="plain">, </span><span class="identifier">ind_used</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">contents_entry</span><span class="plain">) == 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">contents_entry</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">)</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Source text"</span><span class="plain">);</span>
             <span class="reserved">else</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Preamble"</span><span class="plain">);</span>
@@ -587,14 +577,14 @@ surreptitiously check that it is correctly formed at the same time.
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="identifier">contents_entry</span><span class="plain"> *</span><span class="identifier">next_ce</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">ce</span><span class="plain">, </span><span class="identifier">contents_entry</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> != 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">next_ce</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> &gt; </span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">))</span>
                 <span class="identifier">next_ce</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">next_ce</span><span class="plain">, </span><span class="identifier">contents_entry</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">start_word</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">));</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end_word</span><span class="plain"> = (</span><span class="identifier">next_ce</span><span class="plain">)?(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">next_ce</span><span class="plain">-&gt;</span><span class="identifier">heading_entered</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">)))</span>
             <span class="plain">: (</span><span class="identifier">TextFromFiles::last_lexed_word</span><span class="plain">(</span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="identifier">source_file</span><span class="plain">)));</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">start_word</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">end_word</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
             <span class="identifier">N</span><span class="plain"> += </span><span class="identifier">TextFromFiles::word_count</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> &gt; </span><span class="identifier">min_positive_level</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
@@ -605,7 +595,7 @@ surreptitiously check that it is correctly formed at the same time.
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">List all the objects and kinds created under the given heading, one tap stop deeper</span> <span class="cwebmacronumber">12.1.2</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -618,7 +608,6 @@ File (0) ones &mdash; and which are not within any extensions &mdash; so, are in
 primary source text written by the user.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::index_heading_recursively</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -628,9 +617,9 @@ primary source text written by the user.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">next</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">next</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">)))</span>
             <span class="identifier">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">show_heading</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">headings_indexed</span><span class="plain"> == 0) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">headings_indexed</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">((</span><span class="identifier">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
                     <span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">next</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">)) !=</span>
                         <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">)))))</span>
@@ -666,18 +655,18 @@ in practice strews distractingly many orange berries across the page.
 
 <pre class="displaydefn">
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_NOUNS_UNDER</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ == 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ind_used</span><span class="plain">+1, </span><span class="string">"hanging"</span><span class="plain">);</span>
                     <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%+W&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 0) { </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -696,7 +685,6 @@ is not included.) A special key, the only non-numerical one, called "Application
 Version", contains the Inform build number in its usual form: "4Q34", for instance.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::write_as_xml</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">xf_struct</span><span class="plain">; </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">xf</span><span class="plain"> = &amp;</span><span class="identifier">xf_struct</span><span class="plain">;</span>
@@ -710,18 +698,18 @@ Version", contains the Inform build number in its usual form: "4Q34", for instan
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Headings::write_headings_as_xml_inner</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Write DTD indication for XML headings file</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;plist version=\</span><span class="plain">"</span><span class="string">1.0\</span><span class="plain">"</span><span class="string">&gt;&lt;dict&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;plist version=\"1.0\"&gt;&lt;dict&gt;\n"</span><span class="plain">);</span>
         <span class="identifier">INDENT</span><span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Application Version&lt;/key&gt;&lt;string&gt;%B (build %B)&lt;/string&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Application Version&lt;/key&gt;&lt;string&gt;%B (build %B)&lt;/string&gt;\n"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;%d&lt;/key&gt;&lt;dict&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;%d&lt;/key&gt;&lt;dict&gt;\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="identifier">INDENT</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Write the dictionary of properties for a single heading</span> <span class="cwebmacronumber">13.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">OUTDENT</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">OUTDENT</span><span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;&lt;/plist&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;&lt;/plist&gt;\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -741,9 +729,9 @@ Version", contains the Inform build number in its usual form: "4Q34", for instan
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;?xml version=\</span><span class="plain">"</span><span class="string">1.0\</span><span class="plain">"</span><span class="string"> encoding=\</span><span class="plain">"</span><span class="string">UTF-8\</span><span class="plain">"</span><span class="string">?&gt;\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="string">"&lt;!DOCTYPE plist PUBLIC \</span><span class="plain">"</span><span class="string">-//Apple Computer//DTD PLIST 1.0//EN\</span><span class="plain">"</span><span class="string"> "</span>
-            <span class="string">"\</span><span class="plain">"</span><span class="string">http://www.apple.com/DTDs/PropertyList-1.0.dtd\</span><span class="plain">"</span><span class="string">&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n"</span>
+            <span class="string">"&lt;!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0</span><span class="comment">EN\" "</span>
+            <span class="string">"</span><span class="plain">\</span><span class="string">"http:</span><span class="comment">www.apple.com/DTDs/PropertyList-1.0.dtd\"&gt;\n");</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -766,15 +754,15 @@ but should this arise then the best recourse is to ignore the heading.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Filename&lt;/key&gt;&lt;string&gt;%f&lt;/string&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Filename&lt;/key&gt;&lt;string&gt;%f&lt;/string&gt;\n"</span><span class="plain">,</span>
                 <span class="identifier">TextFromFiles::get_filename</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Line&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Line&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">start_location</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">heading_text</span><span class="plain">))</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Title&lt;/key&gt;&lt;string&gt;%+W&lt;/string&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">heading_text</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Title&lt;/key&gt;&lt;string&gt;%+W&lt;/string&gt;\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">heading_text</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Title&lt;/key&gt;&lt;string&gt;--&lt;/string&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Level&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Indentation&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">indentation</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Title&lt;/key&gt;&lt;string&gt;--&lt;/string&gt;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Level&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Indentation&lt;/key&gt;&lt;integer&gt;%d&lt;/integer&gt;\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">indentation</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

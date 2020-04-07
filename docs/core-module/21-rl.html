@@ -104,27 +104,26 @@ that the routine will decline to act if the situation isn't to its liking.
 <ul class="items"><li>(d) However, the same is not true of "applicability conditions", for which
 see below.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">name of the rule being booked</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">explicitly_named</span><span class="plain">; </span>    <span class="comment">was this rule explicitly named when created?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">italicised_text</span><span class="plain">; </span>    <span class="comment">when indexing a rulebook</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">listed_stv_owners</span><span class="plain">; </span>    <span class="comment">making vars visible here</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">defn_as_phrase</span><span class="plain">; </span>    <span class="comment">the rule being booked</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">name of the rule being booked</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">explicitly_named</span><span class="plain">; </span><span class="comment">was this rule explicitly named when created?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">italicised_text</span><span class="plain">; </span><span class="comment">when indexing a rulebook</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">listed_stv_owners</span><span class="plain">; </span><span class="comment">making vars visible here</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">defn_as_phrase</span><span class="plain">; </span><span class="comment">the rule being booked</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">rule_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">shell_routine_iname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rule_extern_iname</span><span class="plain">; </span>    <span class="comment">if externally defined, this is the I6 routine</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">rule_extern_iname_as_text</span><span class="plain">; </span>    <span class="comment">and this is it in plain text</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rule_extern_iname</span><span class="plain">; </span><span class="comment">if externally defined, this is the I6 routine</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">rule_extern_iname_as_text</span><span class="plain">; </span><span class="comment">and this is it in plain text</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">xiname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rule_extern_response_handler_iname</span><span class="plain">; </span>    <span class="comment">and this produces any response texts it has</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_import</span><span class="plain">; </span>    <span class="comment">veto importation of this from the Standard Rules precompiled inter code</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">defn_compiled</span><span class="plain">; </span>    <span class="comment">has the definition of this rule, if needed, been compiled yet?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">automatic_booking</span><span class="plain">; </span>    <span class="comment">how this is placed in rulebooks</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">first_applicability_condition</span><span class="plain">; </span>    <span class="comment">see below</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">lettered_responses</span><span class="plain">[26]; </span>    <span class="comment">responses (A), (B), ...</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">lettered_responses_used</span><span class="plain">[26]; </span>    <span class="comment">responses (A), (B), ...</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_of_rule</span><span class="plain">; </span>    <span class="comment">determined from its rulebook(s)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rule_extern_response_handler_iname</span><span class="plain">; </span><span class="comment">and this produces any response texts it has</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_import</span><span class="plain">; </span><span class="comment">veto importation of this from the Standard Rules precompiled inter code</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">defn_compiled</span><span class="plain">; </span><span class="comment">has the definition of this rule, if needed, been compiled yet?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">automatic_booking</span><span class="plain">; </span><span class="comment">how this is placed in rulebooks</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">first_applicability_condition</span><span class="plain">; </span><span class="comment">see below</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">lettered_responses</span><span class="plain">[26]; </span><span class="comment">responses (A), (B), ...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">lettered_responses_used</span><span class="plain">[26]; </span><span class="comment">responses (A), (B), ...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_of_rule</span><span class="plain">; </span><span class="comment">determined from its rulebook(s)</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">kind_of_rule_set_from</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">lettered_responses_value</span><span class="plain">[26];</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -137,11 +136,10 @@ see below.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
-    <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">rule_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">rule whose phrase's definition is being compiled</span>
-    <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">adopted_rule_for_compilation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">when a new response is being compiled</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">adopted_marker_for_compilation</span><span class="plain"> = -1; </span>    <span class="comment">when a new response is being compiled</span>
+    <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">rule_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">rule whose phrase's definition is being compiled</span>
+    <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">adopted_rule_for_compilation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">when a new response is being compiled</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">adopted_marker_for_compilation</span><span class="plain"> = -1; </span><span class="comment">when a new response is being compiled</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -162,12 +160,11 @@ for it, and this can be either conditional or unconditional. There can be any
 number of conditions attached to a given rule, so these are stored in a list.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">applicability_condition</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">text_of_condition</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense_of_applicability</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">TRUE</span></code> if condition must hold for rule to have effect</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">substituted_rule</span><span class="plain">; </span>    <span class="comment">rule to use instead if not, or <code class="display"><span class="extract">NULL</span></code> to do nothing</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense_of_applicability</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">TRUE</span></code> if condition must hold for rule to have effect</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">substituted_rule</span><span class="plain">; </span><span class="comment">rule to use instead if not, or <code class="display"><span class="extract">NULL</span></code> to do nothing</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_imposed</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">next_applicability_condition</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -201,35 +198,34 @@ example). Note that the rule may just as well be nameless, as here:
 later: see below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">rule</span><span class="plain"> *</span><span class="functiontext">Rules::new</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">named</span><span class="plain">) {</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Rules::by_name</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
         <span class="identifier">R</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain">);</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;xiname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;italicised_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;listed_stv_owners</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;automatic_booking</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;explicitly_named</span><span class="plain"> = </span><span class="identifier">named</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;shell_routine_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">);</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname_as_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">xiname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_response_handler_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">italicised_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">listed_stv_owners</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">automatic_booking</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">do_not_import</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">explicitly_named</span><span class="plain"> = </span><span class="identifier">named</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">shell_routine_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">RULES_HAP</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
-            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">, </span><span class="constant">RULE_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain">, </span><span class="constant">RULE_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;26; </span><span class="identifier">l</span><span class="plain">++) {</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_value</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_value</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::vet_name</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Register the name of this rule</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
@@ -267,7 +263,6 @@ slightly differently. (Not all rule names do: those for timed events do not.)
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Reversing the process:
 </p>
 
-
 <pre class="display">
     <span class="reserved">rule</span><span class="plain"> *</span><span class="functiontext">Rules::by_name</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -290,7 +285,6 @@ slightly differently. (Not all rule names do: those for timed events do not.)
 <p class="endnote">The function Rules::by_name is used in <a href="#SP5">&#167;5</a>, 21/rps (<a href="21-rps.html#SP2">&#167;2</a>), 22/pu (<a href="22-pu.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">PM_RuleWithComma_issued_at</span><span class="plain"> = -1;</span>
@@ -318,10 +312,9 @@ slightly differently. (Not all rule names do: those for timed events do not.)
 kind is considered to be action-based and resulting in nothing.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Rules::to_kind</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">;</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">actions_plugin</span><span class="plain">))</span>
                 <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
@@ -340,37 +333,36 @@ kind is considered to be action-based and resulting in nothing.
 must be added after the rule has been created:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_I7_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_I6_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">XT</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">XT</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">);</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">EXTERIOR_RULE_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">);</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">EXTERIOR_RULE_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">xiname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">XT</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_generic_constant_xiname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">, </span><span class="identifier">xiname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_generic_constant_xiname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">, </span><span class="identifier">xiname</span><span class="plain">);</span>
 
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;xiname</span><span class="plain"> = </span><span class="identifier">xiname</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname_as_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">XT</span><span class="plain">);</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">xiname</span><span class="plain"> = </span><span class="identifier">xiname</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname_as_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">XT</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">XT</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::get_handler_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain"> =</span>
-                <span class="functiontext">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="constant">RESPONDER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;xiname</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">);</span>
-            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_response_handler_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_response_handler_iname</span><span class="plain"> =</span>
+                <span class="functiontext">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="constant">RESPONDER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">xiname</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_response_handler_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_response_handler_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">rule_extern_response_handler_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">phrase</span><span class="plain"> *</span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">defn_as_phrase</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -385,7 +377,6 @@ must be added after the rule has been created:
 <p class="endnote">The function Rules::get_I7_definition is used in 21/rb (<a href="21-rb.html#SP8">&#167;8</a>, <a href="21-rb.html#SP17">&#167;17</a>, <a href="21-rb.html#SP18">&#167;18</a>, <a href="21-rb.html#SP25">&#167;25</a>), 21/rl2 (<a href="21-rl2.html#SP19">&#167;19</a>), 22/pu (<a href="22-pu.html#SP6_2">&#167;6.2</a>), 25/cii (<a href="25-cii.html#SP3_1_1_4_12">&#167;3.1.1.4.12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Applicability constraints. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::impose_constraint</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
@@ -405,11 +396,11 @@ must be added after the rule has been created:
 
 
 <pre class="displaydefn">
-        <span class="identifier">nac</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">nac</span><span class="plain">-</span><span class="element">&gt;sense_of_applicability</span><span class="plain"> = </span><span class="identifier">sense</span><span class="plain">;</span>
-        <span class="identifier">nac</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">nac</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">nac</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="identifier">nac</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">nac</span><span class="plain">-&gt;</span><span class="element">sense_of_applicability</span><span class="plain"> = </span><span class="identifier">sense</span><span class="plain">;</span>
+        <span class="identifier">nac</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">nac</span><span class="plain">-&gt;</span><span class="element">where_imposed</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">nac</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -422,12 +413,12 @@ must be added after the rule has been created:
 
 
 <pre class="displaydefn">
-        <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain"> = </span><span class="identifier">nac</span><span class="plain">;</span>
+        <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">first_applicability_condition</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain"> = </span><span class="identifier">nac</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">ac</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">))</span>
-                <span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">;</span>
-            <span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain"> = </span><span class="identifier">nac</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">ac</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain">))</span>
+                <span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain">;</span>
+            <span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain"> = </span><span class="identifier">nac</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -439,27 +430,26 @@ must be added after the rule has been created:
 conditions have not been met.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">acl</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">acl</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">) {</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">)) {</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">acl</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain">) {</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">where_imposed</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;sense_of_applicability</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">sense_of_applicability</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NOT_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
                 &lt;<span class="cwebmacro">Compile the constraint condition</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;sense_of_applicability</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">sense_of_applicability</span><span class="plain">) {</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
             &lt;<span class="cwebmacro">Compile the rule termination code used if the constraint was violated</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -480,22 +470,22 @@ conditions have not been met.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain">)) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="functiontext">Dash::check_condition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;text_of_condition</span><span class="plain">);</span>
+                <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">text_of_condition</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadRuleConstraint</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In %1, you placed a constraint '%2' on a rule, but this isn't "</span>
                     <span class="string">"a condition I can understand."</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -517,15 +507,15 @@ failing; so it doesn't terminate the following of its rulebook.
 <pre class="displaydefn">
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">) {</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">subbed</span><span class="plain"> = </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain">) {</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">subbed</span><span class="plain"> = </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Constant::is_routine</span><span class="plain">(</span><span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">subbed</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">subbed</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
@@ -536,12 +526,11 @@ failing; so it doesn't terminate the following of its rulebook.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::log</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-rule&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[$R]"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[%n]"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[$R]"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[%n]"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[-]"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -557,21 +546,20 @@ more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::compare_specificity</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">dflag</span><span class="plain">) {</span>
-        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">, *</span><span class="identifier">ph2</span><span class="plain"> = </span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">;</span>
+        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">, *</span><span class="identifier">ph2</span><span class="plain"> = </span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">;</span>
         <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">phrcd2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph1</span><span class="plain">) </span><span class="identifier">phrcd1</span><span class="plain"> = &amp;(</span><span class="identifier">ph1</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph2</span><span class="plain">) </span><span class="identifier">phrcd2</span><span class="plain"> = &amp;(</span><span class="identifier">ph2</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph1</span><span class="plain">) </span><span class="identifier">phrcd1</span><span class="plain"> = &amp;(</span><span class="identifier">ph1</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph2</span><span class="plain">) </span><span class="identifier">phrcd2</span><span class="plain"> = &amp;(</span><span class="identifier">ph2</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Phrases::Context::compare_specificity</span><span class="plain">(</span><span class="identifier">phrcd1</span><span class="plain">, </span><span class="identifier">phrcd2</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dflag</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Decided by Law %s that "</span><span class="plain">, </span><span class="identifier">c_s_stage_law</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Decided by Law %s that "</span><span class="plain">, </span><span class="identifier">c_s_stage_law</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Decided that "</span><span class="plain">);</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> -1: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(2) is more specific than (1)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"they are equally specific\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(1) is more specific than (2)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> -1: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(2) is more specific than (1)\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"they are equally specific\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(1) is more specific than (2)\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -588,15 +576,14 @@ refer to the same I6 routine. So, we have the following. (It is used only
 late on in the run, and never applied to undefined rules.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> != </span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname_as_text</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname_as_text</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> != </span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname_as_text</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname_as_text</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -622,23 +609,22 @@ a rulebook, the following is called to notify us that it provides information
 about the kind of the rule; and this enables us to check for incompatibilities.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_kind_from</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">RB</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Rulebooks::contains_kind</span><span class="plain">(</span><span class="identifier">RB</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">B1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">B2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">P1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">, &amp;</span><span class="identifier">B1</span><span class="plain">, &amp;</span><span class="identifier">P1</span><span class="plain">);</span>
+                <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain">, &amp;</span><span class="identifier">B1</span><span class="plain">, &amp;</span><span class="identifier">P1</span><span class="plain">);</span>
                 <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">B2</span><span class="plain">, &amp;</span><span class="identifier">P2</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+                <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">B1</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">P1</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">B2</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(6, </span><span class="identifier">P2</span><span class="plain">);</span>
-                <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(7, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule_set_from</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
-                <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(8, </span><span class="identifier">RB</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
+                <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(7, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule_set_from</span><span class="plain">-&gt;</span><span class="element">primary_name</span><span class="plain">);</span>
+                <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(8, </span><span class="identifier">RB</span><span class="plain">-&gt;</span><span class="element">primary_name</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RuleInIncompatibleRulebooks</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You've asked to put the rule '%2' into the rulebook %8, "</span>
@@ -649,8 +635,8 @@ about the kind of the rule; and this enables us to check for incompatibilities.
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule_set_from</span><span class="plain"> = </span><span class="identifier">RB</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule_set_from</span><span class="plain"> = </span><span class="identifier">RB</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -660,11 +646,10 @@ about the kind of the rule; and this enables us to check for incompatibilities.
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Variables accessible from here. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::acquire_stvol</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">stvol</span><span class="plain">) {</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;listed_stv_owners</span><span class="plain"> =</span>
-            <span class="functiontext">StackedVariables::append_owner_list</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;listed_stv_owners</span><span class="plain">, </span><span class="identifier">stvol</span><span class="plain">);</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">listed_stv_owners</span><span class="plain"> =</span>
+            <span class="functiontext">StackedVariables::append_owner_list</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">listed_stv_owners</span><span class="plain">, </span><span class="identifier">stvol</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::acquire_action_variables</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
@@ -708,12 +693,11 @@ on when it can see no other justification for placing one rule either side
 of another.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::request_automatic_placement</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;automatic_booking</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;automatic_booking</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::new</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="functiontext">Rules::Bookings::request_automatic_placement</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;automatic_booking</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">automatic_booking</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">automatic_booking</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::new</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="functiontext">Rules::Bookings::request_automatic_placement</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">automatic_booking</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -726,16 +710,15 @@ to substitute for a rule based on some value (or an action) because of course
 it's perfectly typesafe to ignore the basis value entirely.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::check_placement_safety</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KR</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">;</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KR</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">kind_of_rule</span><span class="plain">;</span>
             <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">ac</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">; </span><span class="identifier">ac</span><span class="plain">; </span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">) {</span>
-                    <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KS</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">-</span><span class="element">&gt;kind_of_rule</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain">; </span><span class="identifier">ac</span><span class="plain">; </span><span class="identifier">ac</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain">) {</span>
+                    <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KS</span><span class="plain"> = </span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain">-&gt;</span><span class="identifier">kind_of_rule</span><span class="plain">;</span>
                     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">B1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">B2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">P1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">KR</span><span class="plain">, &amp;</span><span class="identifier">B1</span><span class="plain">, &amp;</span><span class="identifier">P1</span><span class="plain">);</span>
                     <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">KS</span><span class="plain">, &amp;</span><span class="identifier">B2</span><span class="plain">, &amp;</span><span class="identifier">P2</span><span class="plain">);</span>
@@ -747,9 +730,9 @@ it's perfectly typesafe to ignore the basis value entirely.
                     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">B1</span><span class="plain">, </span><span class="identifier">P1</span><span class="plain">);</span>
                     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_rule</span><span class="plain">, </span><span class="identifier">B2</span><span class="plain">, </span><span class="identifier">P2</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">K2</span><span class="plain">, </span><span class="identifier">K1</span><span class="plain">) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-                        <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain">);</span>
-                        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ac</span><span class="plain">-</span><span class="element">&gt;substituted_rule</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-                        <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+                        <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">where_imposed</span><span class="plain">);</span>
+                        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ac</span><span class="plain">-&gt;</span><span class="element">substituted_rule</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+                        <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
                         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">KR</span><span class="plain">);</span>
                         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">KS</span><span class="plain">);</span>
                         <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RulesCantInterchange</span><span class="plain">));</span>
@@ -775,21 +758,20 @@ an I6 value of metaclass <code class="display"><span class="extract">Routine</sp
 do.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::shell_iname</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;shell_routine_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;shell_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">SHELL_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;shell_routine_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">shell_routine_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">shell_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">SHELL_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_package</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">shell_routine_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain">) {</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Rules::shell_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">rule_extern_iname</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to symbolise nameless rule"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -804,7 +786,6 @@ do.
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Printing rule names at run time. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_HL</span><span class="plain">);</span>
@@ -817,7 +798,7 @@ do.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -900,10 +881,10 @@ do.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">((</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)))</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">((</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
+                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
+                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)))</span>
                         <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -949,12 +930,12 @@ do.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
-            <span class="functiontext">CompiledText::from_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
+            <span class="functiontext">CompiledText::from_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">) {</span>
             <span class="functiontext">CompiledText::from_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
                 <span class="identifier">Articles::remove_the</span><span class="plain">(</span>
-                    <span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">)));</span>
+                    <span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">)));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
 </pre>
 
@@ -964,18 +945,17 @@ do.
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::compile_comment</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">index</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Rule %d/%d"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">": %n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">": %n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-            <span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+            <span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(&amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -988,26 +968,25 @@ do.
 what we compile, of course, is the phrase in question.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::compile_definition</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_i</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">rule_being_compiled</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">)</span>
-                <span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">max_i</span><span class="plain">,</span>
-                    <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;listed_stv_owners</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">)</span>
+                <span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">max_i</span><span class="plain">,</span>
+                    <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">listed_stv_owners</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain">))</span>
                 &lt;<span class="cwebmacro">Compile a shell routine to apply conditions to an I6 rule</span> <span class="cwebmacronumber">22.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">rule_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::unimport</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">do_not_import</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1040,10 +1019,10 @@ as the definition of the rule in future.
 <pre class="displaydefn">
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">shell_iname</span><span class="plain"> = </span><span class="functiontext">Rules::shell_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">shell_iname</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::compile_constraint</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">first_applicability_condition</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain">);</span>
+            <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -1056,10 +1035,9 @@ as the definition of the rule in future.
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Indexing. </b>Some rules are provided with index text:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_italicised_index_text</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;italicised_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">italicised_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1070,7 +1048,6 @@ as the definition of the rule in future.
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>A use option controls whether little rule numbers are shown in the index.
 I wonder how useful this really is, but it was much requested at one time.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_numbered_rules</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1087,14 +1064,13 @@ I wonder how useful this really is, but it was much requested at one time.
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>And off we go:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">rule_context</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_responses_indexed</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;italicised_text</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Index the italicised text to do with the rule</span> <span class="cwebmacronumber">25.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Index the rule name along with Javascript buttons</span> <span class="cwebmacronumber">25.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;italicised_text</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">))</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_responses_indexed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">italicised_text</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Index the italicised text to do with the rule</span> <span class="cwebmacronumber">25.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Index the rule name along with Javascript buttons</span> <span class="cwebmacronumber">25.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">italicised_text</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Index some text extracted from the first line of the otherwise anonymous rule</span> <span class="cwebmacronumber">25.4</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Index a link to the first line of the rule's definition</span> <span class="cwebmacronumber">25.5</span>&gt;<span class="character">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_numbered_rules</span><span class="plain">) </span>&lt;<span class="cwebmacro">Index the small type rule numbering</span> <span class="cwebmacronumber">25.6</span>&gt;<span class="plain">;</span>
@@ -1115,11 +1091,11 @@ I wonder how useful this really is, but it was much requested at one time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;italicised_text</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">italicised_text</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="element">.scene_context</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain">.</span><span class="element">scene_context</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" during "</span><span class="plain">);</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">PL::Scenes::get_name</span><span class="plain">(</span><span class="identifier">rc</span><span class="element">.scene_context</span><span class="plain">);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">PL::Scenes::get_name</span><span class="plain">(</span><span class="identifier">rc</span><span class="plain">.</span><span class="element">scene_context</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">SW</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>
@@ -1134,7 +1110,7 @@ I wonder how useful this really is, but it was much requested at one time.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_PASTEABLE_RULE_NAME_LENGTH</span><span class="plain"> 500</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_PASTEABLE_RULE_NAME_LENGTH</span><span class="plain"> </span><span class="constant">500</span>
 
     <p class="macrodefinition"><code class="display">
     &lt;<span class="cwebmacrodefn">Index the rule name along with Javascript buttons</span> <span class="cwebmacronumber">25.2</span>&gt; =
@@ -1143,29 +1119,29 @@ I wonder how useful this really is, but it was much requested at one time.
 
     <pre class="displaydefn">
             <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"800000"</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
             <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
 
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
             <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&lt;i&gt;name&lt;/i&gt; "</span><span class="plain">);</span>
 
             <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"The %W is not listed in the %W rulebook.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"The %W is not listed in the %W rulebook.\n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">-&gt;</span><span class="element">primary_name</span><span class="plain">);</span>
             <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&lt;i&gt;unlist&lt;/i&gt;"</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
 
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=0, </span><span class="identifier">c</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;26; </span><span class="identifier">l</span><span class="plain">++)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
                     <span class="identifier">c</span><span class="plain">++;</span>
                 <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
-                <span class="identifier">Index::extra_link_with</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1000000+</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="string">"responses"</span><span class="plain">);</span>
+                <span class="identifier">Index::extra_link_with</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1000000</span><span class="plain">+</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="string">"responses"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
@@ -1182,13 +1158,13 @@ I wonder how useful this really is, but it was much requested at one time.
     <pre class="displaydefn">
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=0, </span><span class="identifier">c</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;26; </span><span class="identifier">l</span><span class="plain">++)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0) </span><span class="identifier">Index::extra_div_open_nested</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1000000+</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, 2);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Index::extra_div_open_nested</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1000000</span><span class="plain">+</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
                     <span class="reserved">else</span><span class="plain"> </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-                    <span class="functiontext">Strings::index_response</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]);</span>
+                    <span class="functiontext">Strings::index_response</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]);</span>
                     <span class="identifier">c</span><span class="plain">++;</span>
                 <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 0) </span><span class="identifier">Index::extra_div_close_nested</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Index::extra_div_close_nested</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">no_responses_indexed</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">;</span>
     </pre>
 
@@ -1202,10 +1178,10 @@ I wonder how useful this really is, but it was much requested at one time.
 
 
     <pre class="displaydefn">
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">)))) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%+W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"; ..."</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"; ..."</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
             <span class="plain">}</span>
     </pre>
@@ -1220,8 +1196,8 @@ I wonder how useful this really is, but it was much requested at one time.
 
 
     <pre class="displaydefn">
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">))))</span>
                     <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">)));</span>
             <span class="plain">}</span>
@@ -1238,8 +1214,8 @@ I wonder how useful this really is, but it was much requested at one time.
 
     <pre class="displaydefn">
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">smaller\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"smaller\""</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"primitive"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
     </pre>
@@ -1255,10 +1231,10 @@ I wonder how useful this really is, but it was much requested at one time.
 
     <pre class="displaydefn">
             <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">acl</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;next_applicability_condition</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain">; </span><span class="identifier">acl</span><span class="plain"> = </span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">next_applicability_condition</span><span class="plain">) {</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-                <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain">)));</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-</span><span class="element">&gt;where_imposed</span><span class="plain">));</span>
+                <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">where_imposed</span><span class="plain">)));</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">acl</span><span class="plain">-&gt;</span><span class="element">where_imposed</span><span class="plain">));</span>
             <span class="plain">}</span>
     </pre>
 
@@ -1272,32 +1248,31 @@ I wonder how useful this really is, but it was much requested at one time.
     rules with I6 definitions, i.e., where <code class="display"><span class="extract">defn_as_phrase</span></code> is <code class="display"><span class="extract">NULL</span></code>.
     </p>
 
-
     <pre class="display">
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_always_test_actor</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
                 <span class="functiontext">Phrases::Context::set_always_test_actor</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_never_test_actor</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
                 <span class="functiontext">Phrases::Context::set_never_test_actor</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::set_marked_for_anyone</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
                 <span class="functiontext">Phrases::Context::set_marked_for_anyone</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::suppress_action_testing</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) {</span>
-                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) {</span>
+                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
                 <span class="functiontext">Phrases::Context::suppress_action_testing</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -1306,9 +1281,9 @@ I wonder how useful this really is, but it was much requested at one time.
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R_from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"improper catf"</span><span class="plain">);</span>
 
             <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd_from</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_from</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="identifier">phrcd_from</span><span class="plain"> = &amp;(</span><span class="identifier">R_from</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_from</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">) </span><span class="identifier">phrcd_from</span><span class="plain"> = &amp;(</span><span class="identifier">R_from</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
             <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_to</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">) </span><span class="identifier">phrcd_to</span><span class="plain"> = &amp;(</span><span class="identifier">R_to</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_to</span><span class="plain">-&gt;</span><span class="identifier">defn_as_phrase</span><span class="plain">) </span><span class="identifier">phrcd_to</span><span class="plain"> = &amp;(</span><span class="identifier">R_to</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phrcd_to</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phrcd_from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
@@ -1322,35 +1297,35 @@ I wonder how useful this really is, but it was much requested at one time.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::rule_is_named</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;explicitly_named</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">explicitly_named</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">code</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">code</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">lettered_responses</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::check_response_usages</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
             <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">) {</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;26; </span><span class="identifier">l</span><span class="plain">++) {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) &amp;&amp;</span>
-                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) &amp;&amp;</span>
+                        <span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">offers</span><span class="plain">);</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;26; </span><span class="identifier">l</span><span class="plain">++)</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]) {</span>
                                 <span class="identifier">c</span><span class="plain">++;</span>
-                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 1) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">offers</span><span class="plain">, </span><span class="string">", "</span><span class="plain">);</span>
+                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">offers</span><span class="plain">, </span><span class="string">", "</span><span class="plain">);</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">offers</span><span class="plain">, </span><span class="string">"%c"</span><span class="plain">, </span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">l</span><span class="plain">);</span>
                             <span class="plain">}</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">letter</span><span class="plain">);</span>
                         <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">letter</span><span class="plain">, </span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">l</span><span class="plain">);</span>
-                        <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]);</span>
-                        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+                        <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_used</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]);</span>
+                        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
                         <span class="identifier">Problems::quote_stream</span><span class="plain">(3, </span><span class="identifier">letter</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0) </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"no lettered responses at all"</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"no lettered responses at all"</span><span class="plain">);</span>
                         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_stream</span><span class="plain">(4, </span><span class="identifier">offers</span><span class="plain">);</span>
                         <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoSuchResponse</span><span class="plain">));</span>
                         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -1366,42 +1341,42 @@ I wonder how useful this really is, but it was much requested at one time.
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::now_rule_defines_response</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null rule defines response"</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">resp</span><span class="plain">;</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">resp</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::now_rule_needs_response</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null rule uses response"</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_used</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_value</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">W</span><span class="plain">;</span>
+            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_used</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">lettered_responses_value</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">] = </span><span class="identifier">W</span><span class="plain">;</span>
             <span class="functiontext">Rules::unimport</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Rules::get_response_value</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null rule uses response"</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_value</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">lettered_responses_value</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
         <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Rules::get_response_sentence</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null rule uses response"</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;lettered_responses_used</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">lettered_responses_used</span><span class="plain">[</span><span class="identifier">code</span><span class="plain">];</span>
         <span class="plain">}</span>
 
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="functiontext">Rules::stack_frame</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::portable</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;first_applicability_condition</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;defn_as_phrase</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) == </span><span class="functiontext">Modules::SR</span><span class="plain">()))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">first_applicability_condition</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">rule_extern_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">defn_as_phrase</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">) == </span><span class="functiontext">Modules::SR</span><span class="plain">()))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;rule_package</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">rule_package</span><span class="plain">;</span>
         <span class="plain">}</span>
     </pre>
 

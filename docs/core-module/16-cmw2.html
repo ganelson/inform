@@ -63,9 +63,8 @@
 objects of given kinds, for the sake of the index:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">rough_array_memory_used</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">in words, not bytes; for kinds only</span>
+    <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">rough_array_memory_used</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">in words, not bytes; for kinds only</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">World::Compile::set_rough_memory_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_used</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -75,7 +74,7 @@ objects of given kinds, for the sake of the index:
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">World::Compile::get_rough_memory_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rough_array_memory_used</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"rough_array_memory_used unallocated"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rough_array_memory_used</span><span class="plain">[</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)-&gt;</span><span class="identifier">allocation_id</span><span class="plain">];</span>
@@ -92,14 +91,13 @@ objects of given kinds, for the sake of the index:
 to write anything, then put the same question to the subjects.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">World::Compile::compile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Plugins::Call::compile_model_tables</span><span class="plain">();</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nc</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">kind_constructor</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="identifier">rough_array_memory_used</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain"> *)</span>
             <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">nc</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">int</span><span class="plain">), </span><span class="constant">COMPILATION_SIZE_MREASON</span><span class="plain">));</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">nc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">rough_array_memory_used</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = 0;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">nc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">rough_array_memory_used</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">InferenceSubjects::compile_all</span><span class="plain">();</span>
         <span class="identifier">Memory::I7_array_free</span><span class="plain">(</span><span class="identifier">rough_array_memory_used</span><span class="plain">, </span><span class="constant">COMPILATION_SIZE_MREASON</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">int</span><span class="plain">));</span>
         <span class="identifier">rough_array_memory_used</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>

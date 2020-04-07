@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -87,7 +87,6 @@ Z-machine. If both use options are explicitly set &mdash; which might happen
 due to a disagreement between extensions &mdash; "fast" wins.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">SLOW_ROUTE_FINDING</span><span class="plain">;</span>
@@ -127,12 +126,11 @@ by enumerating them in the property <code class="display"><span class="extract">
 <code class="display"><span class="extract">DoorRoutingViable</span></code> array respectively.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NUM_DOORS</span><span class="plain"> = </span><span class="identifier">ICOUNT_DOOR</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NUM_ROOMS</span><span class="plain"> = </span><span class="identifier">ICOUNT_ROOM</span><span class="plain">;</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">DoorRoutingViable</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">NUM_DOORS</span><span class="plain">+1;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">DoorRoutingViable</span><span class="plain"> -&gt; </span><span class="identifier">NUM_DOORS</span><span class="plain">+1;</span>
 
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_filter</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_use_doors</span><span class="plain">;</span>
@@ -149,11 +147,11 @@ by enumerating them in the property <code class="display"><span class="extract">
         <span class="identifier">oyi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">oy</span><span class="plain">))) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> == -1) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                 <span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> = </span><span class="identifier">oyi</span><span class="plain">++;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">map_has_changed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-                <span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+                <span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> = -1;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">oyi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -229,10 +227,9 @@ for every time the state of doors and map connections changes), and the
 cache is useful for all future routes whatever their endpoints.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">FWMatrix</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">NUM_ROOMS</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">FWMatrix</span><span class="plain"> --&gt; </span><span class="identifier">NUM_ROOMS</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain">;</span>
 
     <span class="plain">[ </span><span class="identifier">FastRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">diri</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">oy</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
@@ -249,7 +246,7 @@ cache is useful for all future routes whatever their endpoints.
     <span class="plain">[ </span><span class="identifier">FastCountRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain">  </span><span class="identifier">k</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">k</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">from</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="reserved">to</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
     <span class="plain">];</span>
 
@@ -286,12 +283,12 @@ cache is useful for all future routes whatever their endpoints.
                     <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">oj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
                         <span class="identifier">ayj</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span><span class="identifier">No_Directions</span><span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ayj</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-                            <span class="comment">!print "Is it faster to go from ", (name) ox, " to ",</span>
-                            <span class="comment">!   (name) oj, " via ", (name) oy, "?^";</span>
+                            <span class="comment">rint "Is it faster to go from ", (name) ox, " to ",</span>
+                            <span class="comment">(name) oj, " via ", (name) oy, "?^";</span>
                             <span class="identifier">axj</span><span class="plain"> = (</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))/</span>
                                 <span class="identifier">No_Directions</span><span class="plain">;</span>
                             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">axj</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">axy</span><span class="plain"> + </span><span class="identifier">ayj</span><span class="plain"> &lt; </span><span class="identifier">axj</span><span class="plain">)) {</span>
-                                <span class="comment">!print "Yes^";</span>
+                                <span class="comment">rint "Yes^";</span>
                                 <span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oj</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">) =</span>
                                     <span class="plain">(</span><span class="identifier">axy</span><span class="plain"> + </span><span class="identifier">ayj</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> +</span>
                                     <span class="plain">(</span><span class="identifier">FWMatrix</span><span class="plain">--&gt;(</span><span class="identifier">ox</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">*</span><span class="identifier">NUM_ROOMS</span><span class="plain"> + </span><span class="identifier">oy</span><span class="plain">.</span><span class="identifier">room_index</span><span class="plain">))%</span>
@@ -358,7 +355,6 @@ length n, and that every <code class="display"><span class="extract">vector</spa
 the direction of the shortest path from there to R_y.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">FAST_ROUTE_FINDING</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">SlowRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain">  </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">in_direction</span><span class="plain"> </span><span class="identifier">progressed</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> </span><span class="identifier">through_door</span><span class="plain">;</span>
@@ -367,23 +363,23 @@ the direction of the shortest path from there to R_y.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
         <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">to</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="comment">!print "Routing from ", (the) from, " to ", (the) to, "^";</span>
+        <span class="comment">rint "Routing from ", (the) from, " to ", (the) to, "^";</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
             <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
-            <span class="comment">!print "Pass begins^";</span>
+            <span class="comment">rint "Pass begins^";</span>
             <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">)))</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                         <span class="reserved">objectloop</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K3_direction</span><span class="plain">) {</span>
                             <span class="identifier">in_direction</span><span class="plain"> = </span><span class="identifier">Map_Storage</span><span class="plain">--&gt;((</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">IK1_Count</span><span class="plain">)*</span><span class="identifier">No_Directions</span><span class="plain"> + </span><span class="identifier">dir</span><span class="plain">.</span><span class="identifier">IK3_Count</span><span class="plain">);</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">in_direction</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                            <span class="comment">!print (the) obj, " &gt; ", (the) dir, " &gt; ", (the) in_direction, "^";</span>
+                            <span class="comment">rint (the) obj, " &gt; ", (the) dir, " &gt; ", (the) in_direction, "^";</span>
                             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">in_direction</span><span class="plain">)</span>
                                 <span class="plain">&amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
                                 <span class="plain">&amp;&amp; (</span><span class="identifier">in_direction</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                                 <span class="plain">&amp;&amp; ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">in_direction</span><span class="plain">)))) {</span>
                                 <span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain"> | </span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
-                                <span class="comment">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
+                                <span class="comment">rint "* ", (the) obj, " vector is ", (the) dir, "^";</span>
                                 <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                                 <span class="reserved">continue</span><span class="plain">;</span>
                             <span class="plain">}</span>
@@ -394,13 +390,13 @@ the direction of the shortest path from there to R_y.
                                 <span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">location</span><span class="plain">; </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
                                 <span class="identifier">through_door</span><span class="plain"> = </span><span class="identifier">in_direction</span><span class="plain">.</span><span class="identifier">door_to</span><span class="plain">();</span>
                                 <span class="identifier">location</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
-                                <span class="comment">!print "Through door is ", (the) through_door, "^";</span>
+                                <span class="comment">rint "Through door is ", (the) through_door, "^";</span>
                                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">through_door</span><span class="plain">)</span>
                                     <span class="plain">&amp;&amp; (</span><span class="identifier">through_door</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">)</span>
                                     <span class="plain">&amp;&amp; (</span><span class="identifier">through_door</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                                     <span class="plain">&amp;&amp; ((</span><span class="identifier">filter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">filter</span><span class="plain">(</span><span class="identifier">through_door</span><span class="plain">)))) {</span>
                                     <span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain"> | </span><span class="identifier">WORD_HIGHBIT</span><span class="plain">;</span>
-                                    <span class="comment">!print "* ", (the) obj, " vector is ", (the) dir, "^";</span>
+                                    <span class="comment">rint "* ", (the) obj, " vector is ", (the) dir, "^";</span>
                                     <span class="identifier">progressed</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                                     <span class="reserved">continue</span><span class="plain">;</span>
                                 <span class="plain">}</span>
@@ -413,17 +409,17 @@ the direction of the shortest path from there to R_y.
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">SlowCountRouteTo</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">filter</span><span class="plain"> </span><span class="identifier">use_doors</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="reserved">to</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="reserved">to</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain"> &amp;&amp; </span><span class="reserved">to</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">mark_as_room</span><span class="plain">) {</span>
             <span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">MapRouteTo</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">,</span><span class="reserved">to</span><span class="plain">,</span><span class="identifier">filter</span><span class="plain">,</span><span class="identifier">use_doors</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">obj</span><span class="plain"> ~= </span><span class="reserved">to</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NUM_ROOMS</span><span class="plain">)) { </span><span class="identifier">i</span><span class="plain">++; </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">MapConnection</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">,</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">vector</span><span class="plain">); }</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">];</span>
     <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">;</span>
 

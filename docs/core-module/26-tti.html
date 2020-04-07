@@ -69,12 +69,12 @@
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">INVALID_I6TR</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PROPERTY_I6TR</span><span class="plain"> 0 </span>    <span class="comment">"The open property translates into I6 as "open"."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOUN_I6TR</span><span class="plain"> 1 </span>    <span class="comment">"The north object translates into I6 as "n\_obj"."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">RULE_I6TR</span><span class="plain"> 2 </span>    <span class="comment">"The baffling rule translates into I6 as "BAFFLING\_R"."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VARIABLE_I6TR</span><span class="plain"> 3 </span>    <span class="comment">"The sludge count variable translates into I6 as "sldgc".</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ACTION_I6TR</span><span class="plain"> 4 </span>    <span class="comment">"The taking action translates into I6 as "Take".</span>
-    <span class="definitionkeyword">define</span> <span class="constant">GRAMMAR_TOKEN_I6TR</span><span class="plain"> 5 </span>    <span class="comment">"The grammar token "[whatever]" translates into I6 as "WHATEVER".</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROPERTY_I6TR</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">"The open property translates into I6 as "open"."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOUN_I6TR</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">"The north object translates into I6 as "n\_obj"."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RULE_I6TR</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">"The baffling rule translates into I6 as "BAFFLING\_R"."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VARIABLE_I6TR</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">"The sludge count variable translates into I6 as "sldgc".</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ACTION_I6TR</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">"The taking action translates into I6 as "Take".</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GRAMMAR_TOKEN_I6TR</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">"The grammar token "[whatever]" translates into I6 as "WHATEVER".</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>I7 provides the ability for the user to specify exactly what identifier name
 to use as the I6 image of something, overriding the automatically composed
@@ -92,13 +92,12 @@ such as "The yourself object" in
 
 </blockquote>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="reserved">property</span><span class="plain"> |						==&gt; </span><span class="constant">PROPERTY_I6TR</span>
         <span class="plain">... </span><span class="identifier">object</span><span class="plain">/</span><span class="identifier">kind</span><span class="plain"> |					==&gt; </span><span class="constant">NOUN_I6TR</span>
         <span class="plain">{... </span><span class="reserved">rule</span><span class="plain">} |						==&gt; </span><span class="constant">RULE_I6TR</span>
-        <span class="plain">...</span><span class="element"> variable</span><span class="plain"> |						==&gt; </span><span class="constant">VARIABLE_I6TR</span>
+        <span class="plain">... </span><span class="identifier">variable</span><span class="plain"> |						==&gt; </span><span class="constant">VARIABLE_I6TR</span>
         <span class="plain">... </span><span class="identifier">action</span><span class="plain"> |						==&gt; </span><span class="constant">ACTION_I6TR</span>
         <span class="identifier">understand</span><span class="plain"> </span><span class="identifier">token</span><span class="plain"> ... |				==&gt; </span><span class="constant">GRAMMAR_TOKEN_I6TR</span>
         <span class="plain">...									==&gt; </span>&lt;<span class="cwebmacro">Issue PM_TranslatedUnknownCategory problem</span> <span class="cwebmacronumber">3.1</span>&gt;
@@ -117,7 +116,7 @@ such as "The yourself object" in
             <span class="string">"that isn't one of the things which can be translated to I6"</span><span class="plain">,</span>
             <span class="string">"and should be '... variable', '... property', '... object', "</span>
             <span class="string">"'... kind', '... rule', or '... action'. For instance, 'The yourself "</span>
-            <span class="string">"object translates into I6 as \</span><span class="plain">"</span><span class="string">selfobj\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
+            <span class="string">"object translates into I6 as \"selfobj\".'"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -130,7 +129,6 @@ Following the optional "with" is an articled list, each entry of which
 will be required to pass <code class="display"><span class="extract">&lt;extra-response&gt;</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; </span><span class="identifier">with</span><span class="plain"> &lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[2];</span>
@@ -141,19 +139,18 @@ will be required to pass <code class="display"><span class="extract">&lt;extra-r
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">IdentifierTranslations::as</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">responses_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain"> = </span><span class="constant">INVALID_I6TR</span><span class="plain">;</span>
         <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p1</span><span class="plain">));</span>
         <span class="identifier">category</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">category</span><span class="plain"> == </span><span class="constant">INVALID_I6TR</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">, </span><span class="constant">INVALID_I6TR</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Ensure that we are translating to a quoted I6 identifier</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">);</span>
@@ -180,19 +177,19 @@ traversing the parse tree to look for translation sentences of the right sort.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_I6TR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_I6TR:</span>
                 <span class="functiontext">Properties::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">);</span>
                 <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">, </span><span class="constant">INVALID_I6TR</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOUN_I6TR</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RULE_I6TR</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="functiontext">Rules::Placement::declare_I6_written_rule</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">traverse</span><span class="plain"> == 2) &amp;&amp; (</span><span class="identifier">p2</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (&lt;</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)))</span>
-                    <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOUN_I6TR:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RULE_I6TR:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="functiontext">Rules::Placement::declare_I6_written_rule</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p2</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (&lt;</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)))</span>
+                    <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARIABLE_I6TR</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) </span><span class="functiontext">NonlocalVariables::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARIABLE_I6TR:</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="functiontext">NonlocalVariables::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ACTION_I6TR</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) </span><span class="identifier">PL::Actions::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GRAMMAR_TOKEN_I6TR</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) </span><span class="identifier">PL::Parsing::Verbs::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACTION_I6TR:</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">PL::Actions::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GRAMMAR_TOKEN_I6TR:</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">PL::Parsing::Verbs::translates</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">}</span>
 </pre>
@@ -248,7 +245,6 @@ traversing the parse tree to look for translation sentences of the right sort.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Extra responses look just as they would in running code.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">extra</span><span class="plain">-</span><span class="identifier">response</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; ( &lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt; )				==&gt; </span><span class="identifier">R</span><span class="plain">[2];</span>
@@ -258,12 +254,11 @@ traversing the parse tree to look for translation sentences of the right sort.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-            <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+            <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+            <span class="functiontext">IdentifierTranslations::plus_responses</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">extra</span><span class="plain">-</span><span class="identifier">response</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>

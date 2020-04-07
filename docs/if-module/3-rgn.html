@@ -67,7 +67,6 @@
 define it separately, even though there's no difference in English syntax. So:
 </p>
 
-
 <pre class="display">
     <span class="identifier">binary_predicate</span><span class="plain"> *</span><span class="identifier">R_regional_containment</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -78,12 +77,11 @@ define it separately, even though there's no difference in English syntax. So:
 hierarchy, alongside thing, room and direction.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_map_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a value property giving the region of a room</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_regional_found_in</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">an I6-only property used for implementation</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_map_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a value property giving the region of a room</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_regional_found_in</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">an I6-only property used for implementation</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -93,12 +91,11 @@ following minimal structure, though it will only be relevant for instances of
 "room":
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">regions_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">in_region</span><span class="plain">; </span>    <span class="comment">smallest region containing me (rooms only)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">in_region_set_at</span><span class="plain">; </span>    <span class="comment">where this is decided</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">in_region_iname</span><span class="plain">; </span>    <span class="comment">for testing regional containment found-ins</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">in_region</span><span class="plain">; </span><span class="comment">smallest region containing me (rooms only)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">in_region_set_at</span><span class="plain">; </span><span class="comment">where this is decided</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">in_region_iname</span><span class="plain">; </span><span class="comment">for testing regional containment found-ins</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">regions_data</span><span class="plain">;</span>
 </pre>
@@ -108,7 +105,6 @@ following minimal structure, though it will only be relevant for instances of
 <p class="endnote">The structure regions_data is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Initialising. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Regions::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -128,16 +124,16 @@ following minimal structure, though it will only be relevant for instances of
 
     <span class="reserved">regions_data</span><span class="plain"> *</span><span class="functiontext">PL::Regions::new_data</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="reserved">regions_data</span><span class="plain"> *</span><span class="identifier">rd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">regions_data</span><span class="plain">);</span>
-        <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">rd</span><span class="plain">-</span><span class="element">&gt;in_region_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">rd</span><span class="plain">-&gt;</span><span class="element">in_region</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">rd</span><span class="plain">-&gt;</span><span class="element">in_region_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">rd</span><span class="plain">-&gt;</span><span class="element">in_region_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rd</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Regions::found_in_iname</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">REGION_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">in_region_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">in_region_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">REGION_FOUND_IN_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">in_region_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -154,7 +150,6 @@ for; it recognises the English name when defined by the Standard Rules. (So
 there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">regions</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt; ::=</span>
         <span class="identifier">region</span>
@@ -163,7 +158,6 @@ there is no need to translate this to other languages.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text_stream</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -188,11 +182,10 @@ there is no need to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Region needs to be an abstract object, not a thing or a room, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_region</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionAdrift</span><span class="plain">),</span>
                     <span class="string">"'region' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
@@ -209,7 +202,6 @@ there is no need to translate this to other languages.)
 <p class="endnote">The function PL::Regions::regions_set_subkind_notify is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::object_is_a_region</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -229,20 +221,19 @@ equally specific. (This is used in sorting rules by the specificity of their
 domains.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_more_specific</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> = </span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> = </span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I2</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reg1</span><span class="plain"> = </span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reg2</span><span class="plain"> = </span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I2</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">r1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">reg2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">r1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">reg2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">reg1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">r2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">reg1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">reg2</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::encloses</span><span class="plain">(</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::encloses</span><span class="plain">(</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::encloses</span><span class="plain">(</span><span class="identifier">I2</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -255,7 +246,6 @@ support for; it recognises the English name when it is defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">regions</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">map</span><span class="plain"> </span><span class="identifier">region</span>
@@ -265,10 +255,9 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_new_property_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">regions</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">regions</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">))</span>
             <span class="identifier">P_map_region</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -280,10 +269,9 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_estimate_property_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">words_used</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_region</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -295,7 +283,6 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Assertions. </b>The following doesn't really intervene at all: it simply produces two problem
 messages which would have been less helpful if core Inform had produced them.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_intervene_in_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
@@ -343,7 +330,6 @@ messages which would have been less helpful if core Inform had produced them.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Relations. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_name_to_early_infs</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> **</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">regions</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">K_region</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_region</span><span class="plain">;</span>
@@ -356,7 +342,6 @@ messages which would have been less helpful if core Inform had produced them.
 <p class="endnote">The function PL::Regions::regions_name_to_early_infs is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Regions::create_relations</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -381,7 +366,6 @@ or X incorporates Y; and only when X is a region. (This of course only
 applies to the built-in spatial relationships; regions are entirely free
 to participate in nonspatial relations.)
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::assert_relations</span><span class="plain">(</span><span class="identifier">binary_predicate</span><span class="plain"> *</span><span class="identifier">relation</span><span class="plain">,</span>
@@ -428,8 +412,8 @@ to participate in nonspatial relations.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain"> != </span><span class="identifier">I0</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-&gt;</span><span class="element">in_region</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-&gt;</span><span class="element">in_region</span><span class="plain"> != </span><span class="identifier">I0</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RegionInTwoRegions</span><span class="plain">),</span>
                 <span class="string">"each region can only be declared to be inside a single "</span>
                 <span class="string">"other region"</span><span class="plain">,</span>
@@ -437,8 +421,8 @@ to participate in nonspatial relations.)
                 <span class="string">"they are not permitted to overlap."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain"> = </span><span class="identifier">I0</span><span class="plain">;</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-</span><span class="element">&gt;in_region_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-&gt;</span><span class="element">in_region</span><span class="plain"> = </span><span class="identifier">I0</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">)-&gt;</span><span class="element">in_region_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -486,11 +470,10 @@ that one region is inside another, it follows that the progenitor of a
 region is either the next broadest region containing it, or else <code class="display"><span class="extract">NULL</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="identifier">instance</span><span class="plain"> *</span><span class="functiontext">PL::Regions::enclosing</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">reg</span><span class="plain">) {</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">reg</span><span class="plain">)) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">reg</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">reg</span><span class="plain">)) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">reg</span><span class="plain">)-&gt;</span><span class="element">in_region</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Regions::object_is_a_region</span><span class="plain">(</span><span class="identifier">reg</span><span class="plain">)) </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">reg</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Regions::object_is_a_region</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
@@ -503,11 +486,10 @@ region is either the next broadest region containing it, or else <code class="di
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Model completion. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Assert map-region properties of rooms and regions</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 3) </span>&lt;<span class="cwebmacro">Assert regional-found-in properties of regions</span> <span class="cwebmacronumber">19.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Assert map-region properties of rooms and regions</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span>&lt;<span class="cwebmacro">Assert regional-found-in properties of regions</span> <span class="cwebmacronumber">19.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -541,8 +523,8 @@ region is either the next broadest region containing it, or else <code class="di
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) {</span>
                     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">reg</span><span class="plain"> =</span>
                         <span class="identifier">Rvalues::to_object_instance</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">);</span>
-                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region</span><span class="plain"> = </span><span class="identifier">reg</span><span class="plain">;</span>
-                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;in_region_set_at</span><span class="plain"> = </span><span class="identifier">where</span><span class="plain">;</span>
+                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">in_region</span><span class="plain"> = </span><span class="identifier">reg</span><span class="plain">;</span>
+                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">in_region_set_at</span><span class="plain"> = </span><span class="identifier">where</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
 </pre>
@@ -573,7 +555,6 @@ region is either the next broadest region containing it, or else <code class="di
 <p class="endnote">This code is used in <a href="#SP19">&#167;19</a>.</p>
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Regions::write_regional_found_in_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -606,12 +587,11 @@ region is either the next broadest region containing it, or else <code class="di
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Regions::regions_add_to_World_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">O</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">))) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">PL::Regions::enclosing</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) </span><span class="functiontext">PL::HTMLMap::colour_chip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-</span><span class="element">&gt;in_region_set_at</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) </span><span class="functiontext">PL::HTMLMap::colour_chip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">regions</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-&gt;</span><span class="element">in_region_set_at</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>

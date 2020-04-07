@@ -63,12 +63,11 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">properties_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">FBNA_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">properties_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">attribute_slots_used</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">FBNA_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">properties_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">attribute_slots_used</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_property_frames</span><span class="plain"> = 0, </span><span class="identifier">no_instance_frames</span><span class="plain"> = 0, </span><span class="identifier">no_kind_frames</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_property_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">no_instance_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">no_kind_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="identifier">inter_tree_node</span><span class="plain"> **</span><span class="identifier">property_frames</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_tree_node</span><span class="plain"> **</span><span class="identifier">instance_frames</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inter_tree_node</span><span class="plain"> **</span><span class="identifier">kind_frames</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -77,20 +76,20 @@
         <span class="identifier">properties_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">FBNA_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">properties_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">attribute_slots_used</span><span class="plain"> = 0;</span>
-        <span class="identifier">no_property_frames</span><span class="plain"> = 0; </span><span class="identifier">no_instance_frames</span><span class="plain"> = 0; </span><span class="identifier">no_kind_frames</span><span class="plain"> = 0;</span>
-        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::IP::count</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_property_frames</span><span class="plain"> &gt; 0)</span>
+        <span class="identifier">attribute_slots_used</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">no_property_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">no_instance_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">no_kind_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">, </span><span class="functiontext">CodeGen::IP::count</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_property_frames</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">property_frames</span><span class="plain"> = (</span><span class="identifier">inter_tree_node</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_property_frames</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_tree_node</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_instance_frames</span><span class="plain"> &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_instance_frames</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">instance_frames</span><span class="plain"> = (</span><span class="identifier">inter_tree_node</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_instance_frames</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_tree_node</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kind_frames</span><span class="plain"> &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kind_frames</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">kind_frames</span><span class="plain"> = (</span><span class="identifier">inter_tree_node</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_kind_frames</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_tree_node</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
-        <span class="identifier">no_property_frames</span><span class="plain"> = 0; </span><span class="identifier">no_instance_frames</span><span class="plain"> = 0; </span><span class="identifier">no_kind_frames</span><span class="plain"> = 0;</span>
-        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::IP::store</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">no_property_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">no_instance_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">no_kind_frames</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">, </span><span class="functiontext">CodeGen::IP::store</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::count</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -110,10 +109,10 @@
             <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::default_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::CL::quartet_present</span><span class="plain">()) {</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object Compass \</span><span class="plain">"</span><span class="string">compass\</span><span class="plain">"</span><span class="string"> has concealed;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object thedark \</span><span class="plain">"</span><span class="string">(darkness object)\</span><span class="plain">"</span><span class="string">;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object InformParser \</span><span class="plain">"</span><span class="string">(Inform Parser)\</span><span class="plain">"</span><span class="string"> has proper;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object InformLibrary \</span><span class="plain">"</span><span class="string">(Inform Library)\</span><span class="plain">"</span><span class="string"> has proper;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object Compass \"compass\" has concealed;\n"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object thedark \"(darkness object)\";\n"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object InformParser \"(Inform Parser)\" has proper;\n"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="string">"Object InformLibrary \"(Inform Library)\" has proper;\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="functiontext">CodeGen::IP::knowledge</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
             <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
@@ -220,14 +219,13 @@ also have this kind, so the annotation is the only way to be sure.
 limited number can be stored this way. Here we choose which.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::property</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prop_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">EITHER_OR_IANN</span><span class="plain">) &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">EITHER_OR_IANN</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">translated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">EXPLICIT_ATTRIBUTE_IANN</span><span class="plain">) &gt;= 0) </span><span class="identifier">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) &gt;= 0) </span><span class="identifier">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">EXPLICIT_ATTRIBUTE_IANN</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">make_attribute</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Any either/or property which can belong to a value instance is ineligible</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
@@ -326,7 +324,7 @@ to be frequently used.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ATTRIBUTE_SLOTS_TO_GIVE_AWAY</span><span class="plain"> 11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ATTRIBUTE_SLOTS_TO_GIVE_AWAY</span><span class="plain"> </span><span class="constant">11</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -361,10 +359,10 @@ check that here. (It tells us by marking the property name with the
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">made_attribute</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">) &gt;= 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">made_attribute</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">made_attribute</span><span class="plain"> != </span><span class="identifier">make_attribute</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Disagree on %S: %d vs %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">made_attribute</span><span class="plain">, </span><span class="identifier">make_attribute</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Disagree on %S: %d vs %d\n"</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">made_attribute</span><span class="plain">, </span><span class="identifier">make_attribute</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"attribute allocation dispute"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -387,14 +385,14 @@ in the I6 template, or some extension), and we therefore do nothing.
 
 
 <pre class="displaydefn">
-        <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::basic_constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, 1));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) &gt;= 0) {</span>
+        <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::basic_constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="constant">1</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::get_translate</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">A</span><span class="plain"> = </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Attribute %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Attribute %S;\n"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">translated</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Attribute %S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">), </span><span class="string">"Attribute %S;\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="functiontext">CodeGen::deselect</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">saved</span><span class="plain">);</span>
 </pre>
@@ -451,11 +449,10 @@ compiles an I6 constant for this value.
 above has been tried on all properties:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::knowledge</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
-        <span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
+        <span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">FBNA_found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">properties_found</span><span class="plain">)) {</span>
             <span class="reserved">generated_segment</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="functiontext">CodeGen::select</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="functiontext">CodeGen::Targets::constant_segment</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">));</span>
             <span class="functiontext">CodeGen::Targets::begin_constant</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"FBNA_PROP_NUMBER"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -465,7 +462,7 @@ above has been tried on all properties:
         <span class="plain">}</span>
         <span class="identifier">inter_symbol</span><span class="plain"> **</span><span class="identifier">all_props_in_source_order</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">inter_symbol</span><span class="plain"> **</span><span class="identifier">props_in_source_order</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_properties</span><span class="plain"> = 0, </span><span class="identifier">total_no_properties</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_properties</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">total_no_properties</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Make a list of properties in source order</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile the property numberspace forcer</span> <span class="cwebmacronumber">5.5</span>&gt;<span class="plain">;</span>
 
@@ -501,21 +498,21 @@ above has been tried on all properties:
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_property_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">property_frames</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_PROP_IFLD</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
                 <span class="identifier">total_no_properties</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
                 <span class="identifier">no_properties</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_properties</span><span class="plain"> &gt; 0) </span><span class="identifier">properties_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_properties</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">properties_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total_no_properties</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total_no_properties</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">all_props_in_source_order</span><span class="plain"> = (</span><span class="identifier">inter_symbol</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">total_no_properties</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_property_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">property_frames</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_PROP_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
                     <span class="identifier">all_props_in_source_order</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">++] = </span><span class="identifier">prop_name</span><span class="plain">;</span>
                 <span class="reserved">else</span>
                     <span class="functiontext">CodeGen::IP::property</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">);</span>
@@ -531,19 +528,19 @@ above has been tried on all properties:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">properties_found</span><span class="plain">) {</span>
             <span class="identifier">props_in_source_order</span><span class="plain"> = (</span><span class="identifier">inter_symbol</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_properties</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_property_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">property_frames</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_PROP_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
                     <span class="identifier">props_in_source_order</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">++] = </span><span class="identifier">prop_name</span><span class="plain">;</span>
             <span class="plain">}</span>
 
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_property_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">property_frames</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_PROP_IFLD</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) == 1) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">) != 1)) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)) {</span>
                     <span class="functiontext">CodeGen::Targets::declare_property</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -560,7 +557,7 @@ above has been tried on all properties:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kind_frames</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kind_frames</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="identifier">kinds_in_source_order</span><span class="plain"> = (</span><span class="identifier">inter_symbol</span><span class="plain"> **)</span>
             <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_kind_frames</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
@@ -604,7 +601,7 @@ above has been tried on all properties:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_instance_frames</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_instance_frames</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">instances_in_declaration_order</span><span class="plain"> = (</span><span class="identifier">inter_symbol</span><span class="plain"> **)</span>
                 <span class="plain">(</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_instance_frames</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *), </span><span class="constant">CODE_GENERATION_MREASON</span><span class="plain">));</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_instance_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -644,17 +641,17 @@ bother to force them.)
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">properties_found</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Object property_numberspace_forcer\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Object property_numberspace_forcer\n"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">no_properties</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">props_in_source_order</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_MARK_BIT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain"> = </span><span class="identifier">Inter::Property::kind_of</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">truth_state_kind_symbol</span><span class="plain">) {</span>
-                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  with %S false\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
+                        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  with %S false\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -668,7 +665,7 @@ bother to force them.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 1;</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_kind_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain"> = </span><span class="identifier">kinds_in_source_order</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::IP::is_kind_of_object</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">))</span>
@@ -698,13 +695,13 @@ property usage is legal.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_kos</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_kos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_kind_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain"> = </span><span class="identifier">kinds_in_source_order</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::IP::is_kind_of_object</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">)) </span><span class="identifier">no_kos</span><span class="plain">++;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kos</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_kos</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array KindHierarchy --&gt; K0_kind (0)"</span><span class="plain">);</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_kind_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain"> = </span><span class="identifier">kinds_in_source_order</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
@@ -718,9 +715,9 @@ property usage is legal.
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array KindHierarchy --&gt; (0) (0);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array KindHierarchy --&gt; (0) (0);\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -740,7 +737,6 @@ Given <code class="display"><span class="extract">K</span></code> we find <code 
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">value_property_holders</span>
@@ -765,7 +761,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">max_weak_id</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_name_in_main_or_basics</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MAX_WEAK_ID"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">max_weak_id</span><span class="plain">) {</span>
             <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::definition</span><span class="plain">(</span><span class="identifier">max_weak_id</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">M</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain"> + 1];</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">M</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
 
             &lt;<span class="cwebmacro">Decide who gets a VPH</span> <span class="cwebmacronumber">5.8.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Write the VPH lookup array</span> <span class="cwebmacronumber">5.8.3</span>&gt;<span class="plain">;</span>
@@ -775,7 +771,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::IP::weak_id</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">) == </span><span class="identifier">w</span><span class="plain">) {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">, </span><span class="identifier">VPH_MARK_BIT</span><span class="plain">)) {</span>
                             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">);</span>
-                            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"VPH_Class VPH_%d\</span><span class="plain">n</span><span class="string">    with value_range %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"VPH_Class VPH_%d\n    with value_range %d\n"</span><span class="plain">,</span>
                                 <span class="identifier">w</span><span class="plain">, </span><span class="identifier">Inter::Kind::instance_count</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">));</span>
                             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">no_properties</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
                                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">props_in_source_order</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
@@ -792,7 +788,7 @@ take lightly in the Z-machine. But speed and flexibility are worth more.
                                     &lt;<span class="cwebmacro">Work through this frame list of permissions</span> <span class="cwebmacronumber">5.8.4</span>&gt;<span class="plain">;</span>
                                 <span class="plain">}</span>
                             <span class="plain">}</span>
-                            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">sticks</span><span class="plain">);</span>
+                            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n%S\n"</span><span class="plain">, </span><span class="identifier">sticks</span><span class="plain">);</span>
                             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">);</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
@@ -822,7 +818,7 @@ words, the number of instances of this kind.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Class VPH_Class;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Class VPH_Class;\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -884,7 +880,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
 
 <pre class="displaydefn">
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array value_property_holders --&gt; 0"</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vph</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vph</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">w</span><span class="plain">=1; </span><span class="identifier">w</span><span class="plain">&lt;</span><span class="identifier">M</span><span class="plain">; </span><span class="identifier">w</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_kind_frames</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -898,7 +894,7 @@ doesn't have a VPH, or the object number of its VPH if it has.
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">written</span><span class="plain">) </span><span class="identifier">vph</span><span class="plain">++; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" 0"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Stub a faux VPH if none have otherwise been created</span> <span class="cwebmacronumber">5.8.3.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -920,7 +916,7 @@ just to force the property into being.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vph</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"VPH_Class UnusedVPH with value_range 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vph</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"VPH_Class UnusedVPH with value_range 0;\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -948,7 +944,7 @@ just to force the property into being.
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     &lt;<span class="cwebmacro">Compile a stick of property values and put its address here</span> <span class="cwebmacronumber">5.8.4.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -987,7 +983,7 @@ because I6 doesn't allow function calls in a constant context.
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">no_instance_frames</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">inst_name</span><span class="plain"> = </span><span class="identifier">instances_in_declaration_order</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Kind::is_a</span><span class="plain">(</span><span class="identifier">Inter::Instance::kind_of</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">), </span><span class="identifier">kind_name</span><span class="plain">)) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">inter_node_list</span><span class="plain"> *</span><span class="identifier">PVL</span><span class="plain"> =</span>
                     <span class="identifier">Inter::Node::ID_to_frame_list</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">,</span>
                         <span class="identifier">Inter::Instance::properties_list</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">));</span>
@@ -995,10 +991,10 @@ because I6 doesn't allow function calls in a constant context.
                 <span class="identifier">PVL</span><span class="plain"> = </span><span class="identifier">Inter::Node::ID_to_frame_list</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">,</span>
                         <span class="identifier">Inter::Kind::properties_list</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">));</span>
                 &lt;<span class="cwebmacro">Work through this frame list of values</span> <span class="cwebmacronumber">5.8.4.1.1</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == 0) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">, </span><span class="string">" (0)"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">, </span><span class="string">" (0)"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">, </span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">, </span><span class="string">";\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1014,8 +1010,8 @@ because I6 doesn't allow function calls in a constant context.
         <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">Y</span><span class="plain">;</span>
         <span class="identifier">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">PVL</span><span class="plain">) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">p_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_id</span><span class="plain">(</span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">), </span><span class="identifier">Y</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">PROP_PVAL_IFLD</span><span class="plain">]);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p_name</span><span class="plain"> == </span><span class="identifier">prop_name</span><span class="plain">) &amp;&amp; (</span><span class="identifier">found</span><span class="plain"> == 0)) {</span>
-                <span class="identifier">found</span><span class="plain"> = 1;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p_name</span><span class="plain"> == </span><span class="identifier">prop_name</span><span class="plain">) &amp;&amp; (</span><span class="identifier">found</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) {</span>
+                <span class="identifier">found</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">Y</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL1_PVAL_IFLD</span><span class="plain">];</span>
                 <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">Y</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">];</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sticks</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">);</span>
@@ -1041,14 +1037,14 @@ because I6 doesn't allow function calls in a constant context.
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain"> = </span><span class="identifier">kinds_in_declaration_order</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">object_kind_symbol</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="functiontext">CodeGen::IP::is_kind_of_object</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">))) {</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Class %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">));</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Class %S\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">));</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">super_name</span><span class="plain"> = </span><span class="identifier">Inter::Kind::super</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">super_name</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    class %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">super_name</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">super_name</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    class %S\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">super_name</span><span class="plain">));</span>
                 <span class="functiontext">CodeGen::IP::append</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">kind_name</span><span class="plain">);</span>
                 <span class="identifier">inter_node_list</span><span class="plain"> *</span><span class="identifier">FL</span><span class="plain"> =</span>
                     <span class="identifier">Inter::Warehouse::get_frame_list</span><span class="plain">(</span><span class="identifier">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">Inter::Kind::properties_list</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">));</span>
                 <span class="functiontext">CodeGen::IP::plist</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">FL</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -1108,30 +1104,30 @@ though this won't happen for any property created by I7 source text.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">properties_found</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"[ CreatePropertyOffsets i;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">STREAM_INDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"[ CreatePropertyOffsets i;\n"</span><span class="plain">); </span><span class="identifier">STREAM_INDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"for (i=0: i&lt;attributed_property_offsets_SIZE: i++)"</span><span class="plain">); </span><span class="identifier">STREAM_INDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"attributed_property_offsets--&gt;i = -1;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"attributed_property_offsets--&gt;i = -1;\n"</span><span class="plain">); </span><span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"for (i=0: i&lt;valued_property_offsets_SIZE: i++)"</span><span class="plain">); </span><span class="identifier">STREAM_INDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"valued_property_offsets--&gt;i = -1;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"valued_property_offsets--&gt;i = -1;\n"</span><span class="plain">); </span><span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
 
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array property_metadata --&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 0;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Array property_metadata --&gt;\n"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">no_properties</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">props_in_source_order</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"! offset %d: property %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"! offset %d: property %S\n"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">));</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_MARK_BIT</span><span class="plain">))</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"attributed_property_offsets"</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"valued_property_offsets"</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"--&gt;%S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">), </span><span class="identifier">pos</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"--&gt;%S = %d;\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">), </span><span class="identifier">pos</span><span class="plain">);</span>
 
                 &lt;<span class="cwebmacro">Write the property name in double quotes</span> <span class="cwebmacronumber">5.11.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write a list of kinds or objects which are permitted to have this property</span> <span class="cwebmacronumber">5.11.2</span>&gt;<span class="plain">;</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"NULL\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"NULL\n"</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
             <span class="plain">}</span>
-            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n"</span><span class="plain">);</span>
             <span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"];\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">, </span><span class="string">"];\n"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pm_writer</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pm_writer</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -1147,11 +1143,11 @@ though this won't happen for any property created by I7 source text.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\""</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">PROPERTY_NAME_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt;= 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;nameless&gt;"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;nameless&gt;"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">Inter::Warehouse::get_text</span><span class="plain">(</span><span class="identifier">Inter::Tree::warehouse</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\" "</span><span class="plain">);</span>
         <span class="identifier">pos</span><span class="plain">++;</span>
 </pre>
 
@@ -1243,7 +1239,7 @@ linearly with the size of the source text, even though N does.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">eprop_name</span><span class="plain">, </span><span class="identifier">RTO_IANN</span><span class="plain">) &lt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">eprop_name</span><span class="plain">, </span><span class="identifier">RTO_IANN</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">;</span>
             <span class="identifier">LOOP_THROUGH_INTER_NODE_LIST</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">EVL</span><span class="plain">) {</span>
                 <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">owner_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">OWNER_PERM_IFLD</span><span class="plain">);</span>
@@ -1273,7 +1269,7 @@ linearly with the size of the source text, even though N does.
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">&lt;</span><span class="identifier">no_properties</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
             <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain"> = </span><span class="identifier">props_in_source_order</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ASSIMILATED_IANN</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="functiontext">CodeGen::Targets::declare_property</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -1284,7 +1280,6 @@ linearly with the size of the source text, even though N does.
 <p class="endnote">This code is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Instances. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::instance</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -1314,12 +1309,11 @@ linearly with the size of the source text, even though N does.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::pnum</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">prop_name</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">SOURCE_ORDER_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::compare_kind_symbols</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">elem1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">elem2</span><span class="plain">) {</span>
@@ -1346,20 +1340,20 @@ linearly with the size of the source text, even though N does.
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::kind_sequence_number</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">, </span><span class="identifier">SOURCE_ORDER_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 100000000;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">100000000</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::kind_sequence_number_decl</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">, </span><span class="identifier">DECLARATION_ORDER_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 100000000;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">100000000</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::weak_id</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">, </span><span class="identifier">WEAK_ID_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
 
@@ -1394,7 +1388,6 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 "compass".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::object_instance</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">inst_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_INST_IFLD</span><span class="plain">);</span>
@@ -1405,15 +1398,15 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Object "</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">, </span><span class="identifier">ARROW_COUNT_IANN</span><span class="plain">);</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">c</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-&gt; "</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S \</span><span class="plain">"</span><span class="string">\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">));</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S \"\""</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Kind::is_a</span><span class="plain">(</span><span class="identifier">inst_kind</span><span class="plain">, </span><span class="identifier">direction_kind_symbol</span><span class="plain">)) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" Compass"</span><span class="plain">); }</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">    class %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">inst_kind</span><span class="plain">));</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n    class %S\n"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">inst_kind</span><span class="plain">));</span>
             <span class="functiontext">CodeGen::IP::append</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inst_name</span><span class="plain">);</span>
             <span class="identifier">inter_node_list</span><span class="plain"> *</span><span class="identifier">FL</span><span class="plain"> =</span>
                 <span class="identifier">Inter::Node::ID_to_frame_list</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">,</span>
                     <span class="identifier">Inter::Instance::properties_list</span><span class="plain">(</span><span class="identifier">inst_name</span><span class="plain">));</span>
             <span class="functiontext">CodeGen::IP::plist</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">FL</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">";\n\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -1428,14 +1421,14 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::get_flag</span><span class="plain">(</span><span class="identifier">prop_name</span><span class="plain">, </span><span class="identifier">ATTRIBUTE_MARK_BIT</span><span class="plain">)) {</span>
                 <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">maybe</span><span class="plain"> = </span><span class="string">""</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL1_PVAL_IFLD</span><span class="plain">] == </span><span class="identifier">LITERAL_IVAL</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">] == 0)) </span><span class="identifier">maybe</span><span class="plain"> = </span><span class="string">"~"</span><span class="plain">;</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    has %s%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">maybe</span><span class="plain">, </span><span class="identifier">call_it</span><span class="plain">);</span>
+                    <span class="plain">(</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">] == </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">maybe</span><span class="plain"> = </span><span class="string">"~"</span><span class="plain">;</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    has %s%S\n"</span><span class="plain">, </span><span class="identifier">maybe</span><span class="plain">, </span><span class="identifier">call_it</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    with %S "</span><span class="plain">, </span><span class="identifier">call_it</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::is_stored_in_data</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL1_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">])) {</span>
                     <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_data_pair_and_frame</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL1_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">X</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">S</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">) == 1)) {</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">S</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">)) {</span>
                         <span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::definition</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
                         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">extent</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+2) {</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">DATA_CONST_IFLD</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
@@ -1447,16 +1440,16 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">done</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="functiontext">CodeGen::CL::literal</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">Inter::Packages::scope_of</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">),</span>
                         <span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL1_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="identifier">W</span><span class="plain">.</span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">DVAL2_PVAL_IFLD</span><span class="plain">], </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::append</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">symb</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
-        <span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">;</span>
+        <span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">;</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation_t</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">APPEND_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    "</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -1472,7 +1465,7 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">CodeGen::CL::name</span><span class="plain">(</span><span class="identifier">symb</span><span class="plain">));</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)-1)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">)-1)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    "</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -1486,7 +1479,6 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 <p class="endnote">The function CodeGen::IP::append is used in <a href="#SP5_9">&#167;5.9</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::is_kind_of_object</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain">) {</span>
@@ -1505,13 +1497,12 @@ really make much conceptual sense, and I7 dropped the idea &mdash; it has no
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Counting kinds of object, not very quickly:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_t</span><span class="plain"> </span><span class="functiontext">CodeGen::IP::kind_of_object_count</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">kind_name</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">object_kind_symbol</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">kind_name</span><span class="plain"> == </span><span class="identifier">object_kind_symbol</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">Inter::Symbols::read_annotation</span><span class="plain">(</span><span class="identifier">kind_name</span><span class="plain">, </span><span class="identifier">OBJECT_KIND_COUNTER_IANN</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

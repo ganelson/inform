@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -128,7 +128,6 @@ long block for a constant needs to be immortal, since this memory must
 never be freed: it's therefore given a reference count of "infinity".
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RC_INFINITY</span><span class="plain"> = </span><span class="identifier">MAX_POSITIVE_NUMBER</span><span class="plain">;</span>
 </pre>
@@ -153,13 +152,12 @@ is stored in the second word of the short block.
 <ul class="items"><li>(c) Otherwise the short block has length 1 and contains only a pointer to
 the long block.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP</span><span class="plain">           = </span><span class="constant">$ff</span><span class="plain">;</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_LONGBLOCK</span><span class="plain"> = </span><span class="constant">$10</span><span class="plain">; </span><span class="comment">! Word 1 of SB is pointer to LB</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_TEXT</span><span class="plain">      = </span><span class="constant">$20</span><span class="plain">; </span><span class="comment">! BV holds a TEXT_TY value</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_CONSTANT</span><span class="plain">  = </span><span class="constant">$40</span><span class="plain">; </span><span class="comment">! BV holds a TEXT_TY value</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_LONGBLOCK</span><span class="plain"> = </span><span class="constant">$10</span><span class="plain">; </span><span class="comment">Word 1 of SB is pointer to LB</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_TEXT</span><span class="plain">      = </span><span class="constant">$20</span><span class="plain">; </span><span class="comment">BV holds a TEXT_TY value</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_CONSTANT</span><span class="plain">  = </span><span class="constant">$40</span><span class="plain">; </span><span class="comment">BV holds a TEXT_TY value</span>
 
     <span class="plain">#</span><span class="identifier">IFTRUE</span><span class="plain"> </span><span class="identifier">WORDSIZE</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain"> = </span><span class="constant">$ffffff10</span><span class="plain">;</span>
@@ -176,7 +174,6 @@ the long block.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Long Block Access. </b>Illustrating this:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueGetLongBlock</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
@@ -200,7 +197,6 @@ information is stored in the long block, but that poses a problem for BVs
 which have no long block: we must use the bitmap instead.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueWeakKind</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bv</span><span class="plain">) {</span>
@@ -223,7 +219,6 @@ long block: doctrinally, any block value with no long block at all (such
 as a piece of packed text) has reference count infinity.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueGetRefCountPrimitive</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">long_block</span><span class="plain">;</span>
         <span class="identifier">long_block</span><span class="plain"> = </span><span class="identifier">BlkValueGetLongBlock</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain">);</span>
@@ -239,7 +234,6 @@ reduces. Note that the decrement function returns the new reference count,
 but the increment function returns nothing. It's only when reference counts
 go downwards that we have to worry about whether something happens.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueIncRefCountPrimitive</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">long_block</span><span class="plain"> </span><span class="identifier">refc</span><span class="plain">;</span>
@@ -272,7 +266,6 @@ it's organised as if it were an array, with entries 8, 16 or 32 bits wide.
 At any given time, the "capacity" of the LB is the number of entries in
 this array: that doesn't mean that the BV is using them all at any given moment.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueLBCapacity</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain">  </span><span class="identifier">long_block</span><span class="plain"> </span><span class="identifier">array_size_in_bytes</span><span class="plain"> </span><span class="identifier">entry_size_in_bytes</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">;</span>
@@ -317,7 +310,6 @@ We abstract that with two routines to read and write entries.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">BlkValueRead(bv, n)</span>
 </pre>
@@ -327,14 +319,12 @@ We abstract that with two routines to read and write entries.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">BlkValueRead(long_block, n, true)</span>
 </pre>
 
 <p class="inwebparagraph">read it from the given long block directly. <code class="display"><span class="extract">BlkValueWrite</span></code> is similar.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueRead</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">do_not_indirect</span>
@@ -355,7 +345,7 @@ We abstract that with two routines to read and write entries.
 
         <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">*</span><span class="identifier">entry_size_in_bytes</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (: </span><span class="identifier">long_block</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">: </span><span class="identifier">long_block</span><span class="plain">=</span><span class="identifier">long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
-            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
+            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) - </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">seek_byte_position</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">seek_byte_position</span><span class="plain">&lt;</span><span class="identifier">chunk_size_in_bytes</span><span class="plain">)) {</span>
                 <span class="identifier">long_block</span><span class="plain"> = </span><span class="identifier">long_block</span><span class="plain"> + </span><span class="identifier">header_size_in_bytes</span><span class="plain"> + </span><span class="identifier">seek_byte_position</span><span class="plain">;</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">entry_size_in_bytes</span><span class="plain">) {</span>
@@ -366,7 +356,7 @@ We abstract that with two routines to read and write entries.
                     <span class="constant">4</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">long_block</span><span class="plain">--&gt;0;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">seek_byte_position</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
+            <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">seek_byte_position</span><span class="plain"> - </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">print_ret</span><span class="plain"> </span><span class="string">"*** BlkValueRead: reading from index out of range: "</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="string">" in "</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="string">" ***"</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -391,7 +381,7 @@ We abstract that with two routines to read and write entries.
 
         <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">*</span><span class="identifier">entry_size_in_bytes</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (:</span><span class="identifier">long_block</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">:</span><span class="identifier">long_block</span><span class="plain">=</span><span class="identifier">long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
-            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
+            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) - </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">seek_byte_position</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">seek_byte_position</span><span class="plain">&lt;</span><span class="identifier">chunk_size_in_bytes</span><span class="plain">)) {</span>
                 <span class="identifier">long_block</span><span class="plain"> = </span><span class="identifier">long_block</span><span class="plain"> + </span><span class="identifier">header_size_in_bytes</span><span class="plain"> + </span><span class="identifier">seek_byte_position</span><span class="plain">;</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">entry_size_in_bytes</span><span class="plain">) {</span>
@@ -403,7 +393,7 @@ We abstract that with two routines to read and write entries.
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">seek_byte_position</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
+            <span class="identifier">seek_byte_position</span><span class="plain"> = </span><span class="identifier">seek_byte_position</span><span class="plain"> - </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">print_ret</span><span class="plain"> </span><span class="string">"*** BlkValueWrite: writing to index out of range: "</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="string">" in "</span><span class="plain">, </span><span class="reserved">to</span><span class="plain">, </span><span class="string">" ***"</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -415,12 +405,11 @@ We abstract that with two routines to read and write entries.
 or -1 if it has no zeros.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueSeekZeroEntry</span><span class="plain"> </span><span class="identifier">from</span>
         <span class="identifier">long_block</span><span class="plain"> </span><span class="identifier">chunk_size_in_bytes</span><span class="plain"> </span><span class="identifier">header_size_in_bytes</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain"> </span><span class="identifier">entry_size_in_bytes</span>
         <span class="identifier">byte_position</span><span class="plain"> </span><span class="identifier">addr</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain"> </span><span class="identifier">to_addr</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="identifier">long_block</span><span class="plain"> = </span><span class="identifier">BlkValueGetLongBlock</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
 
         <span class="identifier">flags</span><span class="plain"> = </span><span class="identifier">long_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_FLAGS</span><span class="plain">;</span>
@@ -433,32 +422,32 @@ or -1 if it has no zeros.
 
         <span class="identifier">byte_position</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (: </span><span class="identifier">long_block</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">: </span><span class="identifier">long_block</span><span class="plain">=</span><span class="identifier">long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
-            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
+            <span class="identifier">chunk_size_in_bytes</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">) - </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
             <span class="identifier">from_addr</span><span class="plain"> = </span><span class="identifier">long_block</span><span class="plain"> + </span><span class="identifier">header_size_in_bytes</span><span class="plain">;</span>
             <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain"> + </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">entry_size_in_bytes</span><span class="plain">) {</span>
                 <span class="constant">1</span><span class="plain">:</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain"> &lt; </span><span class="identifier">to_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain">++)</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain">-&gt;0 == </span><span class="constant">0</span><span class="plain">)</span>
-                            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain">;</span>
+                            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">from_addr</span><span class="plain">;</span>
                 <span class="constant">2</span><span class="plain">:</span>
                     <span class="plain">#</span><span class="identifier">iftrue</span><span class="plain"> </span><span class="identifier">WORDSIZE</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain"> &lt; </span><span class="identifier">to_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain">=</span><span class="identifier">addr</span><span class="plain">+2)</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain">--&gt;0 == </span><span class="constant">0</span><span class="plain">)</span>
-                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain">)/2;</span>
+                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">from_addr</span><span class="plain">)/2;</span>
                     <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain"> &lt; </span><span class="identifier">to_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain">=</span><span class="identifier">addr</span><span class="plain">+2)</span>
                         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">addr</span><span class="plain">-&gt;0 == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">addr</span><span class="plain">-&gt;1 == </span><span class="constant">0</span><span class="plain">))</span>
-                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain">)/2;</span>
+                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">from_addr</span><span class="plain">)/2;</span>
                     <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
                 <span class="constant">4</span><span class="plain">:</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain"> &lt; </span><span class="identifier">to_addr</span><span class="plain">: </span><span class="identifier">addr</span><span class="plain">=</span><span class="identifier">addr</span><span class="plain">+4)</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">addr</span><span class="plain">--&gt;0 == </span><span class="constant">0</span><span class="plain">)</span>
-                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain">)/4;</span>
+                            <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">from_addr</span><span class="plain">)/4;</span>
             <span class="plain">}</span>
             <span class="identifier">byte_position</span><span class="plain"> = </span><span class="identifier">byte_position</span><span class="plain"> + </span><span class="identifier">chunk_size_in_bytes</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -471,7 +460,6 @@ Functionally, it's identical to
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">for (n=0: n&lt;no_entries_to_copy: n++)</span>
         <span class="plain">	BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));</span>
@@ -480,7 +468,6 @@ Functionally, it's identical to
 <p class="inwebparagraph">but it's much, much faster, and runs in a reasonably small number of cycles
 given what it needs to do.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueMassCopyEntries</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain"> </span><span class="identifier">no_entries_to_copy</span>
@@ -509,9 +496,9 @@ given what it needs to do.
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">to_header_size_in_bytes</span><span class="plain"> = </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
 
         <span class="identifier">from_addr</span><span class="plain"> = </span><span class="identifier">from_long_block</span><span class="plain"> + </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
-        <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">from_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
+        <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">from_long_block</span><span class="plain">) - </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
         <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain"> + </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
-        <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
+        <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) - </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
 
         <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">entry_size_in_bytes</span><span class="plain">*</span><span class="identifier">no_entries_to_copy</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="reserved">true</span><span class="plain">) {</span>
@@ -519,12 +506,12 @@ given what it needs to do.
                 <span class="identifier">from_long_block</span><span class="plain"> = </span><span class="identifier">from_long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_long_block</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">BlkValueError</span><span class="plain">(</span><span class="string">"copy destination exhausted"</span><span class="plain">);</span>
                 <span class="identifier">from_addr</span><span class="plain"> = </span><span class="identifier">from_long_block</span><span class="plain"> + </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
-                <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">from_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
+                <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">from_long_block</span><span class="plain">) - </span><span class="identifier">from_header_size_in_bytes</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_bytes_left</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">to_long_block</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_long_block</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">BlkValueError</span><span class="plain">(</span><span class="string">"copy source exhausted"</span><span class="plain">);</span>
                 <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain"> + </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
-                <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
+                <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) - </span><span class="identifier">to_header_size_in_bytes</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">min</span><span class="plain"> = </span><span class="identifier">from_bytes_left</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_bytes_left</span><span class="plain"> &lt; </span><span class="identifier">min</span><span class="plain">) </span><span class="identifier">min</span><span class="plain"> = </span><span class="identifier">to_bytes_left</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bytes_to_copy</span><span class="plain"> &lt;= </span><span class="identifier">min</span><span class="plain">) {</span>
@@ -532,11 +519,11 @@ given what it needs to do.
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="identifier">Memcpy</span><span class="plain">(</span><span class="identifier">to_addr</span><span class="plain">, </span><span class="identifier">from_addr</span><span class="plain">, </span><span class="identifier">min</span><span class="plain">);</span>
-                <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">bytes_to_copy</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">min</span><span class="plain">;</span>
+                <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">bytes_to_copy</span><span class="plain"> - </span><span class="identifier">min</span><span class="plain">;</span>
                 <span class="identifier">from_addr</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain"> + </span><span class="identifier">min</span><span class="plain">;</span>
-                <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">from_bytes_left</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">min</span><span class="plain">;</span>
+                <span class="identifier">from_bytes_left</span><span class="plain"> = </span><span class="identifier">from_bytes_left</span><span class="plain"> - </span><span class="identifier">min</span><span class="plain">;</span>
                 <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">to_addr</span><span class="plain"> + </span><span class="identifier">min</span><span class="plain">;</span>
-                <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">to_bytes_left</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">min</span><span class="plain">;</span>
+                <span class="identifier">to_bytes_left</span><span class="plain"> = </span><span class="identifier">to_bytes_left</span><span class="plain"> - </span><span class="identifier">min</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -546,7 +533,6 @@ given what it needs to do.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Mass Copy From Array. </b>The following is helpful when reading an array of characters into a text:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueMassCopyFromArray</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_array</span><span class="plain"> </span><span class="identifier">from_entry_size</span><span class="plain"> </span><span class="identifier">no_entries_to_copy</span>
@@ -570,16 +556,16 @@ given what it needs to do.
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">to_header_size</span><span class="plain"> = </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
 
         <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain"> + </span><span class="identifier">to_header_size</span><span class="plain">;</span>
-        <span class="identifier">to_entries_left</span><span class="plain"> = (</span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">to_header_size</span><span class="plain">)/</span><span class="identifier">to_entry_size</span><span class="plain">;</span>
+        <span class="identifier">to_entries_left</span><span class="plain"> = (</span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) - </span><span class="identifier">to_header_size</span><span class="plain">)/</span><span class="identifier">to_entry_size</span><span class="plain">;</span>
 
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">no_entries_to_copy</span><span class="plain"> &gt; </span><span class="identifier">to_entries_left</span><span class="plain">) {</span>
             <span class="identifier">Arrcpy</span><span class="plain">(</span><span class="identifier">to_addr</span><span class="plain">, </span><span class="identifier">to_entry_size</span><span class="plain">, </span><span class="identifier">from_array</span><span class="plain">, </span><span class="identifier">from_entry_size</span><span class="plain">, </span><span class="identifier">to_entries_left</span><span class="plain">);</span>
-            <span class="identifier">no_entries_to_copy</span><span class="plain"> = </span><span class="identifier">no_entries_to_copy</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">to_entries_left</span><span class="plain">;</span>
+            <span class="identifier">no_entries_to_copy</span><span class="plain"> = </span><span class="identifier">no_entries_to_copy</span><span class="plain"> - </span><span class="identifier">to_entries_left</span><span class="plain">;</span>
             <span class="identifier">from_array</span><span class="plain"> = </span><span class="identifier">from_array</span><span class="plain"> + </span><span class="identifier">to_entries_left</span><span class="plain">*</span><span class="identifier">from_entry_size</span><span class="plain">;</span>
             <span class="identifier">to_long_block</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_long_block</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">BlkValueError</span><span class="plain">(</span><span class="string">"copy source exhausted"</span><span class="plain">);</span>
             <span class="identifier">to_addr</span><span class="plain"> = </span><span class="identifier">to_long_block</span><span class="plain"> + </span><span class="identifier">to_header_size</span><span class="plain">;</span>
-            <span class="identifier">to_entries_left</span><span class="plain"> = (</span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">to_header_size</span><span class="plain">)/</span><span class="identifier">to_entry_size</span><span class="plain">;</span>
+            <span class="identifier">to_entries_left</span><span class="plain"> = (</span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">to_long_block</span><span class="plain">) - </span><span class="identifier">to_header_size</span><span class="plain">)/</span><span class="identifier">to_entry_size</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries_to_copy</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Arrcpy</span><span class="plain">(</span><span class="identifier">to_addr</span><span class="plain">, </span><span class="identifier">to_entry_size</span><span class="plain">, </span><span class="identifier">from_array</span><span class="plain">, </span><span class="identifier">from_entry_size</span><span class="plain">, </span><span class="identifier">no_entries_to_copy</span><span class="plain">);</span>
@@ -609,7 +595,6 @@ as its first argument: it then has a further one to three arguments
 depending on the task in hand.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CREATE_KOVS</span><span class="plain">      = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CAST_KOVS</span><span class="plain">        = </span><span class="constant">2</span><span class="plain">;</span>
@@ -627,7 +612,7 @@ depending on the task in hand.
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">HASH_KOVS</span><span class="plain">        = </span><span class="constant">14</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">DEBUG_KOVS</span><span class="plain">       = </span><span class="constant">15</span><span class="plain">;</span>
 
-    <span class="comment">! Constant BLKVALUE_TRACE; ! Uncomment this to expose masses of tracery</span>
+    <span class="plain">! </span><span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLKVALUE_TRACE</span><span class="plain">; </span><span class="comment">Uncomment this to expose masses of tracery</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -637,7 +622,6 @@ depending on the task in hand.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">BlkValueCreate(kind)</span>
 </pre>
@@ -646,7 +630,6 @@ depending on the task in hand.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">BlkValueCreate(K, short_block)</span>
@@ -664,14 +647,12 @@ outside the heap, for reasons to be seen below.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(CREATE_KOVS, strong_kind, short_block)</span>
 </pre>
 
 <p class="inwebparagraph">which returns the address of the short block for the new value.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCreate</span><span class="plain"> </span><span class="identifier">strong_kind</span><span class="plain"> </span><span class="identifier">short_block</span><span class="plain">  </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -681,7 +662,7 @@ outside the heap, for reasons to be seen below.
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">BLKVALUE_TRACE</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Created: "</span><span class="plain">, (</span><span class="identifier">BlkValueDebug</span><span class="plain">) </span><span class="identifier">short_block</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
 
-        <span class="comment">! The new value is represented in I6 as the pointer to its short block:</span>
+        <span class="comment">The new value is represented in I6 as the pointer to its short block:</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">short_block</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -691,7 +672,6 @@ outside the heap, for reasons to be seen below.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Errors. </b>No I7 source text should ever result in a call to this, unless it does
 unpleasant things at the I6 level.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueError</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">;</span>
@@ -712,7 +692,6 @@ That incurs a fair amount of overhead in time and memory, though. The
 SB data is stored in the data portion of the Flex block, which is why
 we get its address from by adding the data offset to the block address.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCreateSB1</span><span class="plain"> </span><span class="identifier">short_block</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
@@ -745,14 +724,13 @@ the short block at the given word offset in the current stack frame.
 local variables.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">StackFramingInitialise</span><span class="plain">;</span>
         <span class="identifier">I7SFRAME</span><span class="plain"> = </span><span class="identifier">blockv_stack</span><span class="plain"> + </span><span class="identifier">WORDSIZE</span><span class="plain">*</span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">StackFrameCreate</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">new</span><span class="plain">;</span>
-        <span class="identifier">new</span><span class="plain"> = </span><span class="identifier">I7SFRAME</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">WORDSIZE</span><span class="plain">*</span><span class="identifier">size</span><span class="plain">;</span>
+        <span class="identifier">new</span><span class="plain"> = </span><span class="identifier">I7SFRAME</span><span class="plain"> - </span><span class="identifier">WORDSIZE</span><span class="plain">*</span><span class="identifier">size</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">new</span><span class="plain"> &lt; </span><span class="identifier">blockv_stack</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_HEAPERROR</span><span class="plain">); @</span><span class="reserved">quit</span><span class="plain">; }</span>
         <span class="identifier">I7SFRAME</span><span class="plain"> = </span><span class="identifier">new</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -774,7 +752,6 @@ freed by calling the following routine exactly once:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">BlkValueFree(value)</span>
 </pre>
@@ -789,19 +766,18 @@ the heap, using <code class="display"><span class="extract">FlexAllocate</span><
 the relevant Flex block.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueFree</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="comment">! Dispose of any data in the long block</span>
+        <span class="comment">Dispose of any data in the long block</span>
         <span class="identifier">kovs</span><span class="plain"> = </span><span class="identifier">KOVSupportFunction</span><span class="plain">(</span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain">), </span><span class="string">"impossible deallocation"</span><span class="plain">);</span>
         <span class="identifier">BlkValueDestroyPrimitive</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain">, </span><span class="identifier">kovs</span><span class="plain">);</span>
 
-        <span class="comment">! Free any heap memory occupied by the short block</span>
-        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">bv</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">Flex_Heap</span><span class="plain">;</span>
+        <span class="comment">Free any heap memory occupied by the short block</span>
+        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">bv</span><span class="plain"> - </span><span class="identifier">Flex_Heap</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="identifier">MEMORY_HEAP_SIZE</span><span class="plain"> + </span><span class="constant">16</span><span class="plain">))</span>
-            <span class="identifier">FlexFree</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">);</span>
+            <span class="identifier">FlexFree</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain"> - </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
 
@@ -818,14 +794,12 @@ reference count of B.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(COPYSB_KOVS, to_bv, from_bv)</span>
 </pre>
 
 <p class="inwebparagraph">by copying the short blocks alone.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueQuickCopyPrimitive</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -844,7 +818,6 @@ surprising line in this routine is to deal with the convention that a
 pointer value of 0 means the LB immediately follows the SB: if that's
 true in <code class="display"><span class="extract">from_bv</span></code>, it won't be true in <code class="display"><span class="extract">to_bv</span></code>, so we must correct it.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCopySB1</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain">;</span>
@@ -875,7 +848,6 @@ here's where.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(KINDDATA_KOVS, to_bv)</span>
 </pre>
@@ -903,7 +875,6 @@ we copy the raw data of the long block; and finally we:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(COPY_KOVS, to_bv, from_bv, k)</span>
 </pre>
@@ -914,7 +885,6 @@ as for instance it will if we're copying a list of texts. Note that <code class=
 is the value given us by <code class="display"><span class="extract">KINDDATA_KOVS</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueSlowCopyPrimitive</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain"> </span><span class="identifier">recycling</span>
         <span class="identifier">k</span><span class="plain"> </span><span class="identifier">from_long_block</span><span class="plain"> </span><span class="identifier">no_entries_to_copy</span><span class="plain">;</span>
@@ -924,7 +894,7 @@ is the value given us by <code class="display"><span class="extract">KINDDATA_KO
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_long_block</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">recycling</span><span class="plain">) </span><span class="identifier">BlkValueRecyclePrimitive</span><span class="plain">(</span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">kovs</span><span class="plain">);</span>
             <span class="identifier">no_entries_to_copy</span><span class="plain"> = </span><span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">EXTENT_KOVS</span><span class="plain">, </span><span class="identifier">from_bv</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries_to_copy</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="identifier">no_entries_to_copy</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">from_bv</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries_to_copy</span><span class="plain"> == -1) </span><span class="identifier">no_entries_to_copy</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">from_bv</span><span class="plain">);</span>
             <span class="identifier">BlkValueMassCopyEntries</span><span class="plain">(</span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">from_bv</span><span class="plain">, </span><span class="identifier">no_entries_to_copy</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -940,14 +910,12 @@ asking the kind's support function:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(COPYQUICK_KOVS, to_bv, from_bv)</span>
 </pre>
 
 <p class="inwebparagraph">which should return true if a quick copy is okay, or false if not.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCopy</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain">  </span><span class="identifier">to_kind</span><span class="plain"> </span><span class="identifier">from_kind</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -997,7 +965,6 @@ long block, we have to ask the KOVS to do this by means of:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(DESTROY_KOVS, bv)</span>
 </pre>
@@ -1007,7 +974,6 @@ freeing of some of the data, which in turn means that that data must be
 destroyed, and so on. So it's essential that block values be well-founded:
 a list must not, for example, contain itself.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueDestroyPrimitive</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain"> </span><span class="identifier">long_block</span><span class="plain">;</span>
@@ -1028,7 +994,6 @@ won't work if other people are still using it, so in the case where its
 reference count is 2 or more, we simply reduce the count by 1 and then
 replace the small block with a new one (at the same address).
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueRecyclePrimitive</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -1054,7 +1019,6 @@ corrupting other block values.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(MAKEMUTABLE_KOVS, bv)</span>
 </pre>
@@ -1066,7 +1030,6 @@ to allocate the short block for this safe copy on the heap and then free it
 again moments later, so instead we put the short block on the stack, making
 a temporary one-value stack frame instead to hold it.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkMakeMutable</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">block</span><span class="plain"> </span><span class="identifier">bv_kind</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain"> </span><span class="identifier">sb_size</span><span class="plain">;</span>
@@ -1103,7 +1066,6 @@ or at least, for some kinds of value we can.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(CAST_KOVS, to_bv, original_kind, original_value)</span>
 </pre>
@@ -1112,7 +1074,6 @@ or at least, for some kinds of value we can.
 value <code class="display"><span class="extract">to_bv</span></code>. Note that the source value doesn't need to be a BV itself.
 This mechanism is used, for example, to cast snippets to text.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCast</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">original_kind</span><span class="plain"> </span><span class="identifier">original_value</span><span class="plain">  </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -1129,7 +1090,6 @@ This mechanism is used, for example, to cast snippets to text.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(COMPARE_KOVS, bv_left, bv_right)</span>
 </pre>
@@ -1140,16 +1100,15 @@ not. The interpretation of "greater than" depends on the kind, but should be
 something which the user would find natural.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueCompare</span><span class="plain"> </span><span class="identifier">bv_left</span><span class="plain"> </span><span class="identifier">bv_right</span><span class="plain">  </span><span class="identifier">kind_left</span><span class="plain"> </span><span class="identifier">kind_right</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bv_left</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">bv_right</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bv_left</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bv_right</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bv_right</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
 
         <span class="identifier">kind_left</span><span class="plain"> = </span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">bv_left</span><span class="plain">);</span>
         <span class="identifier">kind_right</span><span class="plain"> = </span><span class="identifier">BlkValueWeakKind</span><span class="plain">(</span><span class="identifier">bv_right</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind_left</span><span class="plain"> ~= </span><span class="identifier">kind_right</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind_left</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">kind_right</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind_left</span><span class="plain"> ~= </span><span class="identifier">kind_right</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">kind_left</span><span class="plain"> - </span><span class="identifier">kind_right</span><span class="plain">;</span>
 
         <span class="identifier">kovs</span><span class="plain"> = </span><span class="identifier">KOVSupportFunction</span><span class="plain">(</span><span class="identifier">kind_left</span><span class="plain">, </span><span class="string">"impossible comparison"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">COMPARE_KOVS</span><span class="plain">, </span><span class="identifier">bv_left</span><span class="plain">, </span><span class="identifier">bv_right</span><span class="plain">);</span>
@@ -1169,7 +1128,6 @@ hash code. Otherwise, we ask:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(HASH_KOVS, bv)</span>
 </pre>
@@ -1178,7 +1136,6 @@ hash code. Otherwise, we ask:
 property that two equivalent blocks (for which <code class="display"><span class="extract">COMPARE_KOVS</span></code> returns 0)
 produce the same hash value.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GetHashValue</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> </span><span class="identifier">value</span><span class="plain">;</span>
@@ -1205,7 +1162,6 @@ The following routines abstract that.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(READ_FILE_KOVS, bv, auxf, ch)</span>
 </pre>
@@ -1219,7 +1175,6 @@ form of the data.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kovs(WRITE_FILE_KOVS, bv)</span>
 </pre>
@@ -1232,7 +1187,6 @@ screen, it seems reasonable to call it a file input-output function just the
 same. The <code class="display"><span class="extract">WRITE_FILE_KOVS</span></code> should return <code class="display"><span class="extract">true</span></code> or <code class="display"><span class="extract">false</span></code> according to
 whether it was able to write the data.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueReadFromFile</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">auxf</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">bv_kind</span><span class="plain">  </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -1253,7 +1207,6 @@ whether it was able to write the data.
 <p class="inwebparagraph"><a id="SP29"></a><b>&#167;29. Debugging. </b>Surprisingly, the above system of reference-counted double indirection didn't
 work first time, so it turned out to be useful to have these routines on hand.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkValueDebug</span><span class="plain"> </span><span class="identifier">bv</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain"> </span><span class="identifier">refc</span><span class="plain"> </span><span class="identifier">long_block</span><span class="plain"> </span><span class="identifier">kovs</span><span class="plain">;</span>
@@ -1283,20 +1236,19 @@ used as the required output in an Inform test case without tiny movements
 in memory between builds invalidating this required output.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkDebugAddress</span><span class="plain"> </span><span class="identifier">addr</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain">) { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"###"</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
 
-        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">blockv_stack</span><span class="plain">;</span>
+        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">blockv_stack</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">d</span><span class="plain"> &lt;= </span><span class="identifier">WORDSIZE</span><span class="plain">*</span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain">)) {</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"s+"</span><span class="plain">, (</span><span class="identifier">BlkPrintHexadecimal</span><span class="plain">) </span><span class="identifier">d</span><span class="plain">;</span>
-            <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">I7SFRAME</span><span class="plain">;</span>
+            <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">I7SFRAME</span><span class="plain">;</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"=f"</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"+"</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">Flex_Heap</span><span class="plain">;</span>
+        <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">addr</span><span class="plain"> - </span><span class="identifier">Flex_Heap</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">d</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="identifier">MEMORY_HEAP_SIZE</span><span class="plain"> + </span><span class="constant">16</span><span class="plain">)) {</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"h+"</span><span class="plain">, (</span><span class="identifier">BlkPrintHexadecimal</span><span class="plain">) </span><span class="identifier">d</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -1309,7 +1261,6 @@ in memory between builds invalidating this required output.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31. Hexadecimal Printing. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BlkPrintHexadecimal</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
@@ -1331,7 +1282,7 @@ in memory between builds invalidating this required output.
 
     <span class="plain">[ </span><span class="identifier">BlkPrintHexDigit</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
         <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain"> &amp; </span><span class="constant">$F</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> &lt; </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">v</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">10</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> &lt; </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">v</span><span class="plain"> - </span><span class="constant">10</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 

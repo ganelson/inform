@@ -67,7 +67,6 @@ a function. Sometimes that's in order to define a phrase, but often not.
 already been set up, or not. Here's not:
 </p>
 
-
 <pre class="display">
     <span class="identifier">packaging_state</span><span class="plain"> </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
@@ -82,12 +81,11 @@ already been set up, or not. Here's not:
 we need to keep track of:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">currently_compiling_in_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the stack frame for this routine</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">currently_compiling_nnp</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">is this a nonphrasal stack frame we made ourselves?</span>
-    <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">currently_compiling_inter_block</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where Inter is being emitted to</span>
-    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">currently_compiling_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">routine we end up with</span>
+    <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">currently_compiling_in_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the stack frame for this routine</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">currently_compiling_nnp</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">is this a nonphrasal stack frame we made ourselves?</span>
+    <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">currently_compiling_inter_block</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where Inter is being emitted to</span>
+    <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">currently_compiling_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">routine we end up with</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -95,7 +93,6 @@ we need to keep track of:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>So here is the general version, in which <code class="display"><span class="extract">phsf</span></code> may or may not be a
 pre-existing stack frame:
 </p>
-
 
 <pre class="display">
     <span class="identifier">packaging_state</span><span class="plain"> </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain">, </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">) {</span>
@@ -149,14 +146,13 @@ where the code we've just compiled required allocation of heap memory
 did not.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">R_kind</span><span class="plain"> = </span><span class="functiontext">LocalVariables::deduced_function_kind</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kernel_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">public_name</span><span class="plain"> = </span><span class="identifier">currently_compiling_iname</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain"> &gt; 0))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">no_formal_parameters_needed</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
             <span class="identifier">kernel_name</span><span class="plain"> = </span><span class="identifier">Produce::kernel</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">public_name</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">needed</span><span class="plain"> = </span><span class="functiontext">LocalVariables::count</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">);</span>
@@ -167,7 +163,7 @@ did not.
         <span class="functiontext">LocalVariables::declare</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Produce::end_block</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-        <span class="functiontext">Emit::routine</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">?</span><span class="identifier">kernel_name</span><span class="plain">:</span><span class="identifier">public_name</span><span class="plain">,</span>
+        <span class="functiontext">Emit::routine</span><span class="plain">(</span><span class="identifier">kernel_name</span><span class="plain">?</span><span class="identifier">kernel_name:public_name</span><span class="plain">,</span>
             <span class="identifier">R_kind</span><span class="plain">, </span><span class="identifier">currently_compiling_inter_block</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kernel_name</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile an outer shell routine with the public-facing name</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
@@ -190,12 +186,12 @@ did not.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">returns_block_value</span><span class="plain"> =</span>
-            <span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;kind_returned</span><span class="plain">);</span>
+            <span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">kind_returned</span><span class="plain">);</span>
 
         <span class="identifier">inter_package</span><span class="plain"> *</span><span class="identifier">block_package</span><span class="plain"> = </span><span class="identifier">Produce::block</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">public_name</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile I6 locals for the outer shell</span> <span class="cwebmacronumber">4.1.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NBV</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NBV</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile some setup code to make ready for the kernel</span> <span class="cwebmacronumber">4.1.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile a call to the kernel</span> <span class="cwebmacronumber">4.1.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile some teardown code now that the kernel has finished</span> <span class="cwebmacronumber">4.1.4</span>&gt;<span class="plain">;</span>
@@ -223,9 +219,9 @@ after the call parameters, and is used only as a scratch variable.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returns_block_value</span><span class="plain">) </span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="functiontext">Emit::local</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"I7RBLK"</span><span class="plain">, 0, </span><span class="identifier">I</span><span class="string">"pointer to return value"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">returns_block_value</span><span class="plain">) </span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="functiontext">Emit::local</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"I7RBLK"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pointer to return value"</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::declare</span><span class="plain">(</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">returns_block_value</span><span class="plain">) </span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="functiontext">Emit::local</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"I7RBLK"</span><span class="plain">, 0, </span><span class="identifier">I</span><span class="string">"pointer to stack frame"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">returns_block_value</span><span class="plain">) </span><span class="identifier">I7RBLK_symbol</span><span class="plain"> = </span><span class="functiontext">Emit::local</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"I7RBLK"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pointer to stack frame"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -244,8 +240,8 @@ after the call parameters, and is used only as a scratch variable.
 <pre class="displaydefn">
         <span class="identifier">Produce::push</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">I7SFRAME_HL</span><span class="plain">));</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain"> &gt; </span><span class="identifier">NBV</span><span class="plain">) </span><span class="identifier">NBV</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">next_in_frame</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="identifier">offset_past</span><span class="plain"> &gt; </span><span class="identifier">NBV</span><span class="plain">) </span><span class="identifier">NBV</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_past</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">STACKFRAMECREATE_HL</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
@@ -253,10 +249,10 @@ after the call parameters, and is used only as a scratch variable.
         <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">NBV</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain">)</span>
-            <span class="functiontext">Kinds::RunTime::emit_heap_allocation</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;allocation</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">next_in_frame</span><span class="plain">)</span>
+            <span class="functiontext">Kinds::RunTime::emit_heap_allocation</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">allocation</span><span class="plain">);</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">no_formal_parameters_needed</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
             <span class="identifier">Produce::push</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">));</span>
         <span class="plain">}</span>
@@ -307,16 +303,16 @@ after the call parameters, and is used only as a scratch variable.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;=0; </span><span class="identifier">i</span><span class="plain">--) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">no_formal_parameters_needed</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;=0; </span><span class="identifier">i</span><span class="plain">--) {</span>
             <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
             <span class="identifier">Produce::pull</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">NonlocalVariables::iname</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">));</span>
         <span class="plain">}</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">currently_compiling_in_frame</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">; </span><span class="identifier">pall</span><span class="plain">=</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">next_in_frame</span><span class="plain">) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUEFREEONSTACK_HL</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain">);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 

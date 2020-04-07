@@ -81,14 +81,13 @@ which use this module:
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">parse_node</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">parse_node_annotation</span><span class="plain">, 500)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">parse_node_annotation</span><span class="plain">, </span><span class="constant">500</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <code class="display"><span class="extract">start</span></code> and <code class="display"><span class="extract">end</span></code> function:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SyntaxModule::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

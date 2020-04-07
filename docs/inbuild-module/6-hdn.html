@@ -95,7 +95,7 @@ in a source text is 30 to 100.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_HEADING_LEVELS</span><span class="plain"> 10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_HEADING_LEVELS</span><span class="plain"> </span><span class="constant">10</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Although it is implicit in the parse tree already, the heading structure
 is not easy to deduce, and so in this section we build a much smaller tree
@@ -103,21 +103,20 @@ consisting just of the hierarchy of headings. The heading tree has nodes
 made from the following structures:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heading</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence_declaring</span><span class="plain">; </span>    <span class="comment">if any: file starts are undeclared</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">start_location</span><span class="plain">; </span>    <span class="comment">first word under this heading is here</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">; </span>    <span class="comment">0 for Volume (highest) to 5 for Section (lowest)</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indentation</span><span class="plain">; </span>    <span class="comment">in a hierarchical listing</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_definitions_made_under_this</span><span class="plain">; </span>    <span class="comment">for instance, global variables made here?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">for_release</span><span class="plain">; </span>    <span class="comment">include this material in a release version?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">omit_material</span><span class="plain">; </span>    <span class="comment">if set, simply ignore all of this</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_with_or_without</span><span class="plain">; </span>    <span class="comment">if TRUE, use with the extension; if FALSE, without</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">for_use_with</span><span class="plain">; </span>    <span class="comment">e.g. "for use with ... by ..."</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">in_place_of_text</span><span class="plain">; </span>    <span class="comment">e.g. "in place of ... in ... by ..."</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">heading_text</span><span class="plain">; </span>    <span class="comment">once provisos have been stripped away</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">list_of_contents</span><span class="plain">; </span>    <span class="comment">tagged names defined under this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence_declaring</span><span class="plain">; </span><span class="comment">if any: file starts are undeclared</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">start_location</span><span class="plain">; </span><span class="comment">first word under this heading is here</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">; </span><span class="comment">0 for Volume (highest) to 5 for Section (lowest)</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indentation</span><span class="plain">; </span><span class="comment">in a hierarchical listing</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_definitions_made_under_this</span><span class="plain">; </span><span class="comment">for instance, global variables made here?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">for_release</span><span class="plain">; </span><span class="comment">include this material in a release version?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">omit_material</span><span class="plain">; </span><span class="comment">if set, simply ignore all of this</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_with_or_without</span><span class="plain">; </span><span class="comment">if TRUE, use with the extension; if FALSE, without</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">for_use_with</span><span class="plain">; </span><span class="comment">e.g. "for use with ... by ..."</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">in_place_of_text</span><span class="plain">; </span><span class="comment">e.g. "in place of ... in ... by ..."</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">heading_text</span><span class="plain">; </span><span class="comment">once provisos have been stripped away</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">list_of_contents</span><span class="plain">; </span><span class="comment">tagged names defined under this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">last_in_list_of_contents</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">parent_heading</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">child_heading</span><span class="plain">;</span>
@@ -136,9 +135,8 @@ of this tree; the entire text falls under it. It is not a real heading at all,
 and has no "level" or "indentation" as such.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">heading</span><span class="plain"> </span><span class="identifier">pseudo_heading</span><span class="plain">; </span>    <span class="comment">The entire source falls under this top-level heading</span>
+    <span class="reserved">heading</span><span class="plain"> </span><span class="identifier">pseudo_heading</span><span class="plain">; </span><span class="comment">The entire source falls under this top-level heading</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -149,7 +147,6 @@ the heading tree:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">(the pseudo-heading)  level -1, indentation -1</span>
@@ -212,7 +209,6 @@ individual file of source text: at the top of file,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">for (i=0; i&lt;NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;</span>
 </pre>
@@ -223,7 +219,6 @@ and call:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">int find_indentation(int level) {</span>
@@ -254,13 +249,12 @@ than assist.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">name_resolution_data</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain">; </span>    <span class="comment">used when tallying up objects under their headings</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">next_under_heading</span><span class="plain">; </span>    <span class="comment">next in the list under that</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_score</span><span class="plain">; </span>    <span class="comment">used when searching nametags to parse names</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">next_to_search</span><span class="plain">; </span>    <span class="comment">similarly</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain">; </span><span class="comment">used when tallying up objects under their headings</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">next_under_heading</span><span class="plain">; </span><span class="comment">next in the list under that</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_score</span><span class="plain">; </span><span class="comment">used when searching nametags to parse names</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">next_to_search</span><span class="plain">; </span><span class="comment">similarly</span>
     <span class="plain">} </span><span class="reserved">name_resolution_data</span><span class="plain">;</span>
 </pre>
 
@@ -269,7 +263,6 @@ than assist.
 <p class="endnote">The structure name_resolution_data is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">contents_entry</span><span class="plain"> {</span>
@@ -289,7 +282,6 @@ for the remote chance of further headings being added, by keeping the following
 flag:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_tree_made_at_least_once</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -306,7 +298,6 @@ new source file), but this has no significance other than its location,
 and cannot contain information about releasing or about virtual machines.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">], </span><span class="identifier">lial_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work_identified</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -315,7 +306,6 @@ and cannot contain information about releasing or about virtual machines.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">heading</span><span class="plain"> *</span><span class="functiontext">Headings::from_node</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
@@ -346,29 +336,29 @@ and cannot contain information about releasing or about virtual machines.
     <span class="reserved">heading</span><span class="plain"> *</span><span class="functiontext">Headings::declare</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain">);</span>
 
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;last_in_list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_release</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;omit_material</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;index_definitions_made_under_this</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">last_in_list_of_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_release</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">omit_material</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">index_definitions_made_under_this</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PN</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">))))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"heading at textless node"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">) != </span><span class="identifier">HEADING_NT</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"declared a non-HEADING node as heading"</span><span class="plain">);</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;start_location</span><span class="plain"> = </span><span class="identifier">Wordings::location</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">));</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="identifier">heading_level_ANNOT</span><span class="plain">);</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;heading_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">start_location</span><span class="plain"> = </span><span class="identifier">Wordings::location</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">));</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">, </span><span class="identifier">heading_level_ANNOT</span><span class="plain">);</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">heading_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Parse heading text for release or other stipulations</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Parse heading text for release or other stipulations</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> &lt; 0) || (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> &gt;= </span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"impossible level"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> &gt;= </span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"impossible level"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Determine the indentation from the level</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Created heading $H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Created heading $H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_tree_made_at_least_once</span><span class="plain">) </span><span class="functiontext">Headings::make_tree</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -396,9 +386,9 @@ and cannot contain information about releasing or about virtual machines.
             <span class="identifier">lial_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;indentation</span><span class="plain"> = </span><span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain">] + 1;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain">+1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;indentation</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">indentation</span><span class="plain"> = </span><span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain">] + </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">+1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">indentation</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -409,14 +399,14 @@ and cannot contain information about releasing or about virtual machines.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_UNMET_HQ</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_MET_HQ</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOT_FOR_RELEASE_HQ</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FOR_RELEASE_ONLY_HQ</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNINDEXED_HQ</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">USE_WITH_HQ</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">USE_WITHOUT_HQ</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IN_PLACE_OF_HQ</span><span class="plain"> 7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_UNMET_HQ</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_MET_HQ</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOT_FOR_RELEASE_HQ</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FOR_RELEASE_ONLY_HQ</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNINDEXED_HQ</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">USE_WITH_HQ</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">USE_WITHOUT_HQ</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IN_PLACE_OF_HQ</span><span class="plain"> </span><span class="constant">7</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -430,21 +420,21 @@ and cannot contain information about releasing or about virtual machines.
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> (&lt;</span><span class="reserved">heading</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">PLATFORM_UNMET_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;omit_material</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOT_FOR_RELEASE_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_release</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">FOR_RELEASE_ONLY_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_release</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNINDEXED_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;index_definitions_made_under_this</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">USE_WITH_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">USE_WITHOUT_HQ</span><span class="plain">: </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">IN_PLACE_OF_HQ</span><span class="plain">:</span>
-                    <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;, 1);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PLATFORM_UNMET_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">omit_material</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOT_FOR_RELEASE_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_release</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FOR_RELEASE_ONLY_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_release</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNINDEXED_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">index_definitions_made_under_this</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">USE_WITH_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">USE_WITHOUT_HQ:</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IN_PLACE_OF_HQ:</span>
+                    <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="reserved">heading</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;, 1);</span>
+            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="reserved">heading</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;heading_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain"> = </span><span class="identifier">work_identified</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">heading_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain"> = </span><span class="identifier">work_identified</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -475,7 +465,6 @@ the source text it governs. For example,
 allowed; they should probably be withdrawn.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">heading</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt; ::=</span>
         <span class="plain">... ( &lt;</span><span class="identifier">bracketed</span><span class="plain">-</span><span class="reserved">heading</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt; ) |	==&gt;	</span><span class="identifier">R</span><span class="plain">[1]</span>
@@ -491,8 +480,8 @@ allowed; they should probably be withdrawn.
         <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt;					==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
 
     <span class="plain">&lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">qualifier</span><span class="plain">&gt; ::=</span>
-        <span class="reserved">for</span><span class="plain"> &lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt; </span><span class="identifier">only</span><span class="plain"> |		==&gt;	(</span><span class="identifier">R</span><span class="plain">[1])?</span><span class="constant">PLATFORM_MET_HQ</span><span class="plain">:</span><span class="constant">PLATFORM_UNMET_HQ</span>
-        <span class="identifier">not</span><span class="plain"> </span><span class="reserved">for</span><span class="plain"> &lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;			==&gt;	(</span><span class="identifier">R</span><span class="plain">[1])?</span><span class="constant">PLATFORM_UNMET_HQ</span><span class="plain">:</span><span class="constant">PLATFORM_MET_HQ</span>
+        <span class="reserved">for</span><span class="plain"> &lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt; </span><span class="identifier">only</span><span class="plain"> |		==&gt;	(</span><span class="identifier">R</span><span class="plain">[1])?</span><span class="identifier">PLATFORM_MET_HQ:PLATFORM_UNMET_HQ</span>
+        <span class="identifier">not</span><span class="plain"> </span><span class="reserved">for</span><span class="plain"> &lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;			==&gt;	(</span><span class="identifier">R</span><span class="plain">[1])?</span><span class="identifier">PLATFORM_UNMET_HQ:PLATFORM_MET_HQ</span>
 
     <span class="plain">&lt;</span><span class="identifier">platform</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">element</span><span class="plain">&gt; </span><span class="identifier">language</span><span class="plain"> </span><span class="identifier">element</span><span class="plain"> |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
@@ -551,11 +540,11 @@ allowed; they should probably be withdrawn.
 
 
 <pre class="displaydefn">
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">[0] + 4;</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">[0] + </span><span class="constant">4</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">exft</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">exfa</span><span class="plain">);</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">TW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;, 1);</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;, 2);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">TW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">identifier</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">exft</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">TW</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">exfa</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">AW</span><span class="plain">);</span>
         <span class="identifier">work_identified</span><span class="plain"> = </span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="identifier">exft</span><span class="plain">, </span><span class="identifier">exfa</span><span class="plain">);</span>
@@ -569,7 +558,6 @@ allowed; they should probably be withdrawn.
 <p class="endnote">This code is used in <a href="#SP13">&#167;13</a>.</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">current</span><span class="plain">-</span><span class="identifier">virtual</span><span class="plain">-</span><span class="identifier">machine</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -591,7 +579,6 @@ structure. Because we want to be able to call this more than once, perhaps
 to make revisions if late news comes in of a new heading (see above), we
 begin by removing any existing relationships between the heading nodes.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::make_tree</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -625,10 +612,10 @@ pseudo-heading, which was explicitly placed in static memory above.
 
 <pre class="displaydefn">
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
-        <span class="identifier">pseudo_heading</span><span class="element">.child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">pseudo_heading</span><span class="element">.parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">pseudo_heading</span><span class="element">.next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="element">child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="element">parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pseudo_heading</span><span class="plain">.</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">) {</span>
-            <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -650,7 +637,7 @@ at the top of the tree.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, &amp;</span><span class="identifier">pseudo_heading</span><span class="plain">);</span>
 </pre>
 
@@ -665,7 +652,6 @@ Volume 1, Chapter I, Section A, Chapter II, the tree is adjusted twice:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">when h = Volume 1:        then when h = Chapter I:</span>
@@ -690,13 +676,13 @@ most 9, it runs in linear time.)
 
 <pre class="displaydefn">
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">subseq</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">); </span>    <span class="comment">start from the next heading in source</span>
-            <span class="plain">(</span><span class="identifier">subseq</span><span class="plain">) &amp;&amp; (</span><span class="identifier">subseq</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> &gt;= </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain">); </span>    <span class="comment">for a run with level below or equal h</span>
-            <span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)) { </span>    <span class="comment">in source declaration order</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">subseq</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> == </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain">) { </span>    <span class="comment">a heading of equal status ends the run...</span>
-                <span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">; </span>    <span class="comment">...and becomes h's sibling</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">); </span><span class="comment">start from the next heading in source</span>
+            <span class="plain">(</span><span class="identifier">subseq</span><span class="plain">) &amp;&amp; (</span><span class="identifier">subseq</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> &gt;= </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain">); </span><span class="comment">for a run with level below or equal h</span>
+            <span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)) { </span><span class="comment">in source declaration order</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">subseq</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> == </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain">) { </span><span class="comment">a heading of equal status ends the run...</span>
+                <span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">...and becomes h's sibling</span>
             <span class="plain">}</span>
-            <span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">); </span>    <span class="comment">all lesser headings in the run become h's children</span>
+            <span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="identifier">subseq</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">); </span><span class="comment">all lesser headings in the run become h's children</span>
         <span class="plain">}</span>
 </pre>
 
@@ -708,13 +694,12 @@ most 9, it runs in linear time.)
 to the tree as a child of a given parent:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::make_child_heading</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">ch</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">) {</span>
-        <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">former_pa</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain">;</span>
+        <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">former_pa</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_pa</span><span class="plain"> == </span><span class="identifier">pa</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Detach ch from the heading tree if it is already there</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">ch</span><span class="plain">-</span><span class="element">&gt;parent_heading</span><span class="plain"> = </span><span class="identifier">pa</span><span class="plain">;</span>
+        <span class="identifier">ch</span><span class="plain">-&gt;</span><span class="element">parent_heading</span><span class="plain"> = </span><span class="identifier">pa</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Add ch to the end of the list of children of pa</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -737,18 +722,18 @@ we can remove ch by striking it out from the children list of the parent.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_pa</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> == </span><span class="identifier">ch</span><span class="plain">)</span>
-                <span class="identifier">former_pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_pa</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain"> == </span><span class="identifier">ch</span><span class="plain">)</span>
+                <span class="identifier">former_pa</span><span class="plain">-&gt;</span><span class="identifier">child_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">sibling</span><span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">former_pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> == </span><span class="identifier">ch</span><span class="plain">) {</span>
-                        <span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain">;</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">former_pa</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> == </span><span class="identifier">ch</span><span class="plain">) {</span>
+                        <span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">ch</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ch</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -766,11 +751,11 @@ we can remove ch by striking it out from the children list of the parent.
 
 <pre class="displaydefn">
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">sibling</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pa</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pa</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">;</span>
         <span class="reserved">else</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">pa</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="identifier">sibling</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">pa</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain">; </span><span class="identifier">sibling</span><span class="plain"> = </span><span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                    <span class="identifier">sibling</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
 </pre>
@@ -786,7 +771,6 @@ these two methods have given the same answer provides a convenient check on
 our working.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_tree_damaged</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::verify_heading_tree</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -796,12 +780,12 @@ our working.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::verify_heading_tree_r</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> != &amp;</span><span class="identifier">pseudo_heading</span><span class="plain">) &amp;&amp; (</span><span class="identifier">depth</span><span class="plain"> != </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;indentation</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> != &amp;</span><span class="identifier">pseudo_heading</span><span class="plain">) &amp;&amp; (</span><span class="identifier">depth</span><span class="plain"> != </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">indentation</span><span class="plain">)) {</span>
             <span class="identifier">heading_tree_damaged</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\</span><span class="plain">n</span><span class="string">*** indentation should be %d ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$H\n*** indentation should be %d ***\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Headings::verify_heading_tree_r</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;child_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
-        <span class="functiontext">Headings::verify_heading_tree_r</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;next_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+        <span class="functiontext">Headings::verify_heading_tree_r</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">child_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
+        <span class="functiontext">Headings::verify_heading_tree_r</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">next_heading</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -818,19 +802,18 @@ heading with the disclaimer "(for Glulx only)" will not be included
 if the target virtual machine on this run of Inform is the Z-machine.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Headings::include_material</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">releasing</span><span class="plain"> = </span><span class="functiontext">Inbuild::currently_releasing</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_release</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">releasing</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_release</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">releasing</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;omit_material</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_release</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">releasing</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_release</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">releasing</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">omit_material</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Headings::indexed</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">definitions made nowhere are normally indexed</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;index_definitions_made_under_this</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">definitions made nowhere are normally indexed</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">index_definitions_made_under_this</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -843,11 +826,10 @@ if the target virtual machine on this run of Inform is the Z-machine.)
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>A utility to do with the file of origin:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Headings::get_extension_containing</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -861,11 +843,10 @@ it isn't a heading actually typed by the user, which is all that we are
 interested in for this purpose. So we send back a null word range.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Headings::get_text</span><span class="plain">(</span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> == 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;heading_text</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">heading_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -886,14 +867,13 @@ the original source location is well formed (i.e., has a non-null source
 file and a line number of at least 1).
 </p>
 
-
 <pre class="display">
     <span class="reserved">heading</span><span class="plain"> *</span><span class="functiontext">Headings::heading_of</span><span class="plain">(</span><span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">) {</span>
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_BACKWARDS_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain"> &gt;= </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;start_location</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> == </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">start_location</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain"> &gt;= </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">start_location</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to determine the heading level of source material"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -929,7 +909,7 @@ But when the following is called, we do know that.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::satisfy_dependencies</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> != </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> != </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">)</span>
                 <span class="functiontext">Headings::satisfy_individual_heading_dependency</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -943,22 +923,21 @@ thing is carefully timed so that we can still afford to cut up and rearrange
 the parse tree on quite a large scale, and that's just what we do.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::satisfy_individual_heading_dependency</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> &lt; 1) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">loaded</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::no_times_used_in_context</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">, </span><span class="constant">LOADED_WDBC</span><span class="plain">) != 0) </span><span class="identifier">loaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"SIHD on $H: loaded %d: annotation %d: %W: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">loaded</span><span class="plain">,</span>
-            <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">,</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::no_times_used_in_context</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">, </span><span class="constant">LOADED_WDBC</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">loaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"SIHD on $H: loaded %d: annotation %d: %W: %d\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">loaded</span><span class="plain">,</span>
+            <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">,</span>
                 <span class="identifier">suppress_heading_dependencies_ANNOT</span><span class="plain">),</span>
-            <span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">)) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">,</span>
+            <span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">)) {</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">,</span>
                 <span class="identifier">suppress_heading_dependencies_ANNOT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt;(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt;(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">)) {</span>
                     <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
                     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
                     <span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
@@ -967,22 +946,22 @@ the parse tree on quite a large scale, and that's just what we do.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">loaded</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Can't replace heading in an unincluded extension</span> <span class="cwebmacronumber">23.1</span>&gt;
                 <span class="reserved">else</span><span class="plain"> {</span>
                     <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">h2</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain">)</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;heading_text</span><span class="plain">)) &amp;&amp;</span>
-                            <span class="plain">(</span><span class="identifier">Wordings::match_perhaps_quoted</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;heading_text</span><span class="plain">)) &amp;&amp;</span>
+                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="element">heading_text</span><span class="plain">)) &amp;&amp;</span>
+                            <span class="plain">(</span><span class="identifier">Wordings::match_perhaps_quoted</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="element">heading_text</span><span class="plain">)) &amp;&amp;</span>
                             <span class="plain">(</span><span class="functiontext">Works::match</span><span class="plain">(</span>
-                                <span class="functiontext">Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">h2</span><span class="plain">)-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">))) {</span>
+                                <span class="functiontext">Headings::get_extension_containing</span><span class="plain">(</span><span class="identifier">h2</span><span class="plain">)-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">))) {</span>
                             <span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain"> != </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;level</span><span class="plain">)</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain"> != </span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="element">level</span><span class="plain">)</span>
                                 &lt;<span class="cwebmacro">Can't replace heading unless level matches</span> <span class="cwebmacronumber">23.3</span>&gt;<span class="character">;</span>
                             <span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-                            <span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+                            <span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Can't find heading in the given extension</span> <span class="cwebmacronumber">23.2</span>&gt;<span class="character">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;use_with_or_without</span><span class="plain"> != </span><span class="identifier">loaded</span><span class="plain">) </span><span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">use_with_or_without</span><span class="plain"> != </span><span class="identifier">loaded</span><span class="plain">) </span><span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -997,8 +976,8 @@ the parse tree on quite a large scale, and that's just what we do.
 
 <pre class="displaydefn">
         <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfUnincluded_SYNERROR</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain">);</span>
         <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
@@ -1018,14 +997,13 @@ replacing something elsewhere (which would effectively delete the content
 elsewhere).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::excise_material_under</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">transfer_to</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Excision under $H\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">hpn</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stipulations on a non-sentence heading"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">HEADINGS</span><span class="plain">, </span><span class="string">"Excision under $H\n"</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">);</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">hpn</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stipulations on a non-sentence heading"</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">)) {</span>
             <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h2</span><span class="plain"> = </span><span class="functiontext">Headings::find_dependent_heading</span><span class="plain">(</span><span class="identifier">hpn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Can't replace heading subordinate to another replaced heading</span> <span class="cwebmacronumber">24.1</span>&gt;<span class="character">;</span>
         <span class="plain">}</span>
@@ -1038,9 +1016,9 @@ elsewhere).
     <span class="reserved">heading</span><span class="plain"> *</span><span class="functiontext">Headings::find_dependent_heading</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">HEADING_NT</span><span class="plain">) {</span>
             <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="functiontext">Headings::from_node</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="reserved">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="functiontext">Headings::from_node</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">h</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1050,7 +1028,7 @@ elsewhere).
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Headings::suppress_dependencies</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">HEADING_NT</span><span class="plain">)</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">suppress_heading_dependencies_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
             <span class="functiontext">Headings::suppress_dependencies</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -1070,8 +1048,8 @@ elsewhere).
 
 <pre class="displaydefn">
         <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfSubordinate_SYNERROR</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_works</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_nodes</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_works</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="identifier">for_use_with</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_nodes</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h2</span><span class="plain">-&gt;</span><span class="identifier">sentence_declaring</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">);</span>
         <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 
@@ -1089,14 +1067,14 @@ elsewhere).
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">, </span><span class="string">"unspecified, that is, the extension didn't have a version number"</span><span class="plain">);</span>
         <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">)) {</span>
                 <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">);</span>
-                <span class="identifier">VersionNumbers::to_text</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">);</span>
+                <span class="identifier">VersionNumbers::to_text</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new_T</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">HeadingInPlaceOfUnknown_SYNERROR</span><span class="plain">, </span><span class="identifier">vt</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;for_use_with</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_wording</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;in_place_of_text</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_work</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">for_use_with</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_wording</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">in_place_of_text</span><span class="plain">);</span>
         <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">);</span>
 </pre>
@@ -1112,7 +1090,7 @@ elsewhere).
 
 <pre class="displaydefn">
         <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain"> = </span><span class="functiontext">CopyErrors::new</span><span class="plain">(</span><span class="constant">SYNTAX_CE</span><span class="plain">, </span><span class="constant">UnequalHeadingInPlaceOf_SYNERROR</span><span class="plain">);</span>
-        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-</span><span class="element">&gt;sentence_declaring</span><span class="plain">);</span>
+        <span class="functiontext">CopyErrors::supply_node</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="element">sentence_declaring</span><span class="plain">);</span>
         <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">);</span>
 </pre>
 

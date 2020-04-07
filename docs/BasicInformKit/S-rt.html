@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -58,13 +58,12 @@ return values.
 </li><li>(3) <code class="display"><span class="extract">RS_NEITHER</span></code> is similar except that it cannot return any value, so that
 words 2 and 3 are meaningless.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_NEITHER</span><span class="plain">		= </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">	= </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">RS_FAILS</span><span class="plain">		= </span><span class="constant">2</span><span class="plain">;</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">latest_rule_result</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">3</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">latest_rule_result</span><span class="plain"> --&gt; </span><span class="constant">3</span><span class="plain">;</span>
 
     <span class="plain">[ </span><span class="identifier">RecordRuleOutcome</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> </span><span class="identifier">rule1</span><span class="plain"> </span><span class="identifier">rule2</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">RS_FAILS</span><span class="plain">) &amp;&amp;</span>
@@ -128,7 +127,6 @@ or failed if &mdash;
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(latest_rule_result--&gt;0 == RS_SUCCEEDS)</span>
         <span class="plain">(latest_rule_result--&gt;0 == RS_FAILS)</span>
@@ -137,10 +135,9 @@ or failed if &mdash;
 <p class="inwebparagraph">and otherwise there was no decision.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">process_rulebook_count</span><span class="plain">; </span><span class="comment">! Depth of processing recursion</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="comment">! Are we tracing rule invocations?</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">process_rulebook_count</span><span class="plain">; </span><span class="comment">Depth of processing recursion</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="comment">Are we tracing rule invocations?</span>
 
     <span class="plain">[ </span><span class="identifier">FollowRulebook</span><span class="plain"> </span><span class="identifier">rulebook</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain"> </span><span class="identifier">no_paragraph_skips</span>
         <span class="identifier">rv</span><span class="plain"> </span><span class="identifier">ss</span><span class="plain"> </span><span class="identifier">spv</span><span class="plain">;</span>
@@ -151,7 +148,7 @@ or failed if &mdash;
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter</span><span class="plain">) { </span><span class="identifier">self</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">; </span><span class="identifier">parameter_object</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">; }</span>
         <span class="identifier">spv</span><span class="plain"> = </span><span class="identifier">parameter_value</span><span class="plain">; </span><span class="identifier">parameter_value</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">;</span>
-        <span class="comment">! we won't need parameter again, so can reuse it</span>
+        <span class="comment">we won't need parameter again, so can reuse it</span>
         <span class="identifier">parameter</span><span class="plain"> = </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">) {</span>
@@ -178,7 +175,7 @@ or failed if &mdash;
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) {</span>
             <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">) {</span>
-                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
+                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> - </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">process_rulebook_count</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">spaces</span><span class="plain">(2*</span><span class="identifier">process_rulebook_count</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 == </span><span class="identifier">RS_SUCCEEDS</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[stopped: success]^"</span><span class="plain">;</span>
@@ -187,7 +184,7 @@ or failed if &mdash;
             <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugging_rules</span><span class="plain">)</span>
-                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
+                <span class="identifier">process_rulebook_count</span><span class="plain"> = </span><span class="identifier">process_rulebook_count</span><span class="plain"> - </span><span class="identifier">debugging_rules</span><span class="plain">;</span>
             <span class="identifier">latest_rule_result</span><span class="plain">--&gt;0 = </span><span class="identifier">RS_NEITHER</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">debugging_rules</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">;</span>
@@ -212,7 +209,6 @@ of the most recent rule completed, not the current one. (It's used only
 when saving and restoring this in the actions machinery: rules should not
 call it.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ActRulebookSucceeds</span><span class="plain"> </span><span class="identifier">rule_id</span><span class="plain">;</span>
@@ -246,7 +242,6 @@ call it.)
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Discovering Outcomes. </b>And here is how to tell what the results were.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RulebookOutcome</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">;</span>
@@ -292,7 +287,6 @@ precious readable memory on the Z-machine.)
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Casting. </b>Nothing needs to be done to a rulebook value to make it a rule value.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RULEBOOK_TY_to_RULE_TY</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
@@ -304,7 +298,6 @@ precious readable memory on the Z-machine.)
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Debugging. </b>Two modest routines to print out the names of rules and rulebooks when they
 occur, in so far as memory economy allows this.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">DebugRulebooks</span><span class="plain"> </span><span class="identifier">subs</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
@@ -331,7 +324,6 @@ occur, in so far as memory economy allows this.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The Default Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LITTLE_USED_DO_NOTHING_R</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; ];</span>

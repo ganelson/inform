@@ -129,19 +129,18 @@ in any case.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Anyway, here is a property permission:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">property_owner</span><span class="plain">; </span>    <span class="comment">to whom permission is granted</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">next_for_this_owner</span><span class="plain">; </span>    <span class="comment">in list of permissions</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">property_owner</span><span class="plain">; </span><span class="comment">to whom permission is granted</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">next_for_this_owner</span><span class="plain">; </span><span class="comment">in list of permissions</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">property_granted</span><span class="plain">; </span>    <span class="comment">which property is permitted</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">next_for_this_property</span><span class="plain">; </span>    <span class="comment">in list of permissions</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">property_granted</span><span class="plain">; </span><span class="comment">which property is permitted</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">next_for_this_property</span><span class="plain">; </span><span class="comment">in list of permissions</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_granted</span><span class="plain">; </span>    <span class="comment">sentence granting the permission</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_granted</span><span class="plain">; </span><span class="comment">sentence granting the permission</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">pp_storage_data</span><span class="plain">; </span>    <span class="comment">how we'll compile this at run-time</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">plugin_pp</span><span class="plain">[</span><span class="constant">MAX_PLUGINS</span><span class="plain">]; </span>    <span class="comment">storage for plugins to attach, if they want to</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">pp_storage_data</span><span class="plain">; </span><span class="comment">how we'll compile this at run-time</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">plugin_pp</span><span class="plain">[</span><span class="constant">MAX_PLUGINS</span><span class="plain">]; </span><span class="comment">storage for plugins to attach, if they want to</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">property_permission</span><span class="plain">;</span>
@@ -158,9 +157,9 @@ objects.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)</span>
-        <span class="plain">((</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_pp_data</span><span class="plain"> *) </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;plugin_pp</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
+        <span class="plain">((</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_pp_data</span><span class="plain"> *) </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">plugin_pp</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
     <span class="definitionkeyword">define</span> <span class="identifier">CREATE_PLUGIN_PP_DATA</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">creator</span><span class="plain">)</span>
-        <span class="plain">(</span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;plugin_pp</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">] = (</span><span class="reserved">void</span><span class="plain"> *) (</span><span class="identifier">creator</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
+        <span class="plain">(</span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">plugin_pp</span><span class="plain">[</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">] = (</span><span class="reserved">void</span><span class="plain"> *) (</span><span class="identifier">creator</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This loop trawls through the two cross-lists:
 </p>
@@ -168,9 +167,9 @@ objects.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_PROPERTY</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">)</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_property</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_property</span><span class="plain">)</span>
     <span class="definitionkeyword">define</span> <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_INFS</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = *(</span><span class="functiontext">InferenceSubjects::get_permissions</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_owner</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = *(</span><span class="functiontext">InferenceSubjects::get_permissions</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_owner</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Searching for permission. </b>Note that an either/or property and its antonym (say, "open" and "closed")
 are equivalent here: to find one is to find the other.
@@ -183,7 +182,6 @@ whereas the unpredictable order might make the Index or SHOWME output harder
 to verify with <code class="display"><span class="extract">intest</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property_permission</span><span class="plain"> *</span><span class="functiontext">World::Permissions::find</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_inheritance</span><span class="plain">) {</span>
@@ -194,7 +192,7 @@ to verify with <code class="display"><span class="extract">intest</span></code>.
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">) {</span>
                 <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_INFS</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_granted</span><span class="plain"> == </span><span class="identifier">prn</span><span class="plain">) || (</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_granted</span><span class="plain"> == </span><span class="identifier">prnbar</span><span class="plain">))</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">property_granted</span><span class="plain"> == </span><span class="identifier">prn</span><span class="plain">) || (</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">property_granted</span><span class="plain"> == </span><span class="identifier">prnbar</span><span class="plain">))</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">;</span>
                 <span class="identifier">infs</span><span class="plain"> = (</span><span class="identifier">allow_inheritance</span><span class="plain">)?(</span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -216,13 +214,12 @@ for a property to have different characteristics (say, visibility in the
 parser) for some of its owners as compared with others.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property_permission</span><span class="plain"> *</span><span class="functiontext">World::Permissions::grant</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_inheritance</span><span class="plain">) {</span>
         <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">new_pp</span><span class="plain"> = </span><span class="functiontext">World::Permissions::find</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">allow_inheritance</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">new_pp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_PROVISION</span><span class="plain">, </span><span class="string">"Allowing $j to provide $Y\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_PROVISION</span><span class="plain">, </span><span class="string">"Allowing $j to provide $Y\n"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Create the new permission structure</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Add the new permission to the owner's list</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="character">;</span>
             &lt;<span class="cwebmacro">Add the new permission to the property's list</span> <span class="cwebmacronumber">9.3</span>&gt;<span class="character">;</span>
@@ -243,8 +240,8 @@ parser) for some of its owners as compared with others.
 
 <pre class="displaydefn">
         <span class="identifier">new_pp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain">);</span>
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;where_granted</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;pp_storage_data</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">where_granted</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">pp_storage_data</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -257,15 +254,15 @@ parser) for some of its owners as compared with others.
 
 
 <pre class="displaydefn">
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;property_owner</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">property_owner</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
         <span class="reserved">property_permission</span><span class="plain"> **</span><span class="identifier">ppl</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_permissions</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">ppl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">ppl</span><span class="plain"> = </span><span class="identifier">new_pp</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = *</span><span class="identifier">ppl</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_owner</span><span class="plain">) </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_owner</span><span class="plain">;</span>
-            <span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_owner</span><span class="plain"> = </span><span class="identifier">new_pp</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">next_for_this_owner</span><span class="plain">) </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_owner</span><span class="plain">;</span>
+            <span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_owner</span><span class="plain"> = </span><span class="identifier">new_pp</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_owner</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_owner</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -278,15 +275,15 @@ parser) for some of its owners as compared with others.
 
 
 <pre class="displaydefn">
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;property_granted</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">property_granted</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="functiontext">Properties::set_permission_list</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">new_pp</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_property</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_property</span><span class="plain">;</span>
-            <span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_property</span><span class="plain"> = </span><span class="identifier">new_pp</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">next_for_this_property</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_property</span><span class="plain">;</span>
+            <span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_property</span><span class="plain"> = </span><span class="identifier">new_pp</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;next_for_this_property</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">next_for_this_property</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -300,7 +297,7 @@ parser) for some of its owners as compared with others.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PLUGINS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">new_pp</span><span class="plain">-</span><span class="element">&gt;plugin_pp</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PLUGINS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">new_pp</span><span class="plain">-&gt;</span><span class="element">plugin_pp</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">Plugins::Call::new_permission_notify</span><span class="plain">(</span><span class="identifier">new_pp</span><span class="plain">);</span>
 </pre>
 
@@ -312,22 +309,21 @@ parser) for some of its owners as compared with others.
 to do except provide access to the details of the permission.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">World::Permissions::get_property</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_granted</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">property_granted</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">World::Permissions::get_subject</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_owner</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">property_owner</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">World::Permissions::get_storage_data</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;pp_storage_data</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">pp_storage_data</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">World::Permissions::where_granted</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;where_granted</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="identifier">where_granted</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -345,21 +341,20 @@ to do except provide access to the details of the permission.
 property &mdash; when indexing who can own it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">World::Permissions::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ac</span><span class="plain"> = 0, </span><span class="identifier">s</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> = 1; </span><span class="identifier">s</span><span class="plain"> &lt;= 2; </span><span class="identifier">s</span><span class="plain">++) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ac</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">s</span><span class="plain"> &lt;= </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">s</span><span class="plain">++) {</span>
             <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_PROPERTY</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">) {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_name_text</span><span class="plain">(</span><span class="functiontext">World::Permissions::get_subject</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> == 1) </span><span class="identifier">ac</span><span class="plain">++;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">s</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">ac</span><span class="plain">++;</span>
                     <span class="reserved">else</span><span class="plain"> {</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/i&gt;%+W&lt;i&gt;"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
                         <span class="identifier">ac</span><span class="plain">--;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> == 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" or "</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> &gt; 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" or "</span><span class="plain">);</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ac</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>

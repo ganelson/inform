@@ -65,7 +65,6 @@
 it in a single text stream:
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">PBUFF</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -93,7 +92,7 @@ any sentence in one go:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">QUOTATION_TOLERANCE_LIMIT</span><span class="plain"> 100</span>
+    <span class="definitionkeyword">define</span> <span class="constant">QUOTATION_TOLERANCE_LIMIT</span><span class="plain"> </span><span class="constant">100</span>
 </pre>
 
 <pre class="display">
@@ -109,7 +108,6 @@ any sentence in one go:
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Diverting source quotes.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">redirected_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -143,10 +141,10 @@ text (because of being absent from the ZSCII character set).
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SOURCE_REF_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\</span><span class="plain">x</span><span class="character">f0'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FORCE_NEW_PARA_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\</span><span class="plain">x</span><span class="character">d0'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PROTECTED_LT_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\</span><span class="plain">x</span><span class="character">01'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PROTECTED_GT_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\</span><span class="plain">x</span><span class="character">02'</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SOURCE_REF_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\xf0'</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FORCE_NEW_PARA_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\xd0'</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROTECTED_LT_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\x01'</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROTECTED_GT_CHAR</span><span class="plain"> </span><span class="identifier">L</span><span class="character">'\x02'</span>
 </pre>
 
 <pre class="display">
@@ -218,16 +216,15 @@ chunk of text, not a single line. The unprintable <code class="display"><span cl
 HTML, they are dealt with elsewhere.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">problem_count_at_last_in</span><span class="plain"> = 1;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">problem_count_at_last_in</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">PROBLEMS_HTML_EMITTER</span>
     <span class="plain">#</span><span class="identifier">define</span><span class="plain"> </span><span class="identifier">PROBLEMS_HTML_EMITTER</span><span class="plain"> </span><span class="identifier">PUT_TO</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">indentation</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">line_width</span><span class="plain"> = 0, </span><span class="identifier">html_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">line_width</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">html_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OUT</span><span class="plain"> == </span><span class="identifier">problems_file</span><span class="plain">) </span><span class="identifier">html_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">=0; </span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">indentation</span><span class="plain">; </span><span class="identifier">k</span><span class="plain">++) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain">+=2; }</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">L</span><span class="plain">=</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -239,7 +236,7 @@ HTML, they are dealt with elsewhere.
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Output single character of problem message</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">)</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -269,12 +266,12 @@ indentation. And similarly for <code class="display"><span class="extract">&gt;+
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="identifier">problem_count_at_last_in</span><span class="plain">) {</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">hang\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"hang\""</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;Problem.&lt;/b&gt; "</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">+=3; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&gt;++&gt;"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">in2\</span><span class="plain">"</span><span class="string">"</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"in2\""</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">+=3; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&gt;---&gt;"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
@@ -285,11 +282,11 @@ indentation. And similarly for <code class="display"><span class="extract">&gt;+
             <span class="identifier">i</span><span class="plain">+=4; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&gt;+++&gt;"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"halftightin3\</span><span class="plain">"</span><span class="string">"</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"halftightin3\""</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">+=4; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&gt;++++&gt;"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">tightin3\</span><span class="plain">"</span><span class="string">"</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"tightin3\""</span><span class="plain">) </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">);</span>
             <span class="identifier">i</span><span class="plain">+=5; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -349,7 +346,6 @@ out when writing to plain text format.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">XparaphraseXfilenameXnumberX</span>
 </pre>
@@ -378,7 +374,7 @@ and Windows caused by the slashes going the wrong way, and so on.
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain">++;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, ++</span><span class="identifier">i</span><span class="plain">) != </span><span class="constant">SOURCE_REF_CHAR</span><span class="plain">) </span>&lt;<span class="cwebmacro">Output single character of problem message</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, ++</span><span class="identifier">i</span><span class="plain">) != </span><span class="constant">SOURCE_REF_CHAR</span><span class="plain">) ;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", line "</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain"> += 7;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", line "</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain"> += </span><span class="constant">7</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, ++</span><span class="identifier">i</span><span class="plain">) != </span><span class="constant">SOURCE_REF_CHAR</span><span class="plain">) </span>&lt;<span class="cwebmacro">Output single character of problem message</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain">++;</span>
 </pre>
@@ -394,10 +390,10 @@ and Windows caused by the slashes going the wrong way, and so on.
 
 <pre class="displaydefn">
         <span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">)) { </span>    <span class="comment">this starts a run of whitespace</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">)) { </span><span class="comment">this starts a run of whitespace</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">; </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">))) </span><span class="identifier">l</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">) == 0) </span><span class="reserved">break</span><span class="plain">; </span>    <span class="comment">omit any trailing spaces</span>
-            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain"> - 1; </span>    <span class="comment">skip to final whitespace character of the run</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">omit any trailing spaces</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">; </span><span class="comment">skip to final whitespace character of the run</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">html_flag</span><span class="plain">) </span><span class="identifier">PROBLEMS_HTML_EMITTER</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="character">' '</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">In plain text mode, wrap the line or print a space as necessary</span> <span class="cwebmacronumber">5.4.1</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -419,7 +415,7 @@ after the sequence of whitespace.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PROBLEM_WORD_WRAP_WIDTH</span><span class="plain"> 80</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PROBLEM_WORD_WRAP_WIDTH</span><span class="plain"> </span><span class="constant">80</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -428,12 +424,12 @@ after the sequence of whitespace.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">word_width</span><span class="plain"> = 0;</span>
-        <span class="reserved">while</span><span class="plain"> ((!</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">) != 0)</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">word_width</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> ((!</span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">PBUFF</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">) != </span><span class="constant">SOURCE_REF_CHAR</span><span class="plain">))</span>
             <span class="identifier">l</span><span class="plain">++, </span><span class="identifier">word_width</span><span class="plain">++;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_width</span><span class="plain"> + </span><span class="identifier">word_width</span><span class="plain"> + 1 &gt;= </span><span class="constant">PROBLEM_WORD_WRAP_WIDTH</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain"> = 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">line_width</span><span class="plain"> + </span><span class="identifier">word_width</span><span class="plain"> + </span><span class="constant">1</span><span class="plain"> &gt;= </span><span class="constant">PROBLEM_WORD_WRAP_WIDTH</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=0; </span><span class="identifier">l</span><span class="plain">&lt;</span><span class="identifier">indentation</span><span class="plain">+1; </span><span class="identifier">l</span><span class="plain">++) { </span><span class="identifier">line_width</span><span class="plain">+=2; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">); }</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">); </span><span class="identifier">line_width</span><span class="plain">++;</span>
@@ -450,7 +446,6 @@ temporarily setting the <code class="display"><span class="extract">probl</span>
 informational messages such as appear in index files, for instance.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">probl</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
@@ -461,16 +456,16 @@ informational messages such as appear in index files, for instance.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Buffer::output_problem_buffer</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">indentation</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">probl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain">);</span>
             <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">telemetry_recording</span><span class="plain">) {</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
                 <span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Problems::Buffer::output_problem_buffer_to</span><span class="plain">(</span><span class="identifier">probl</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain">);</span>
     <span class="plain">}</span>

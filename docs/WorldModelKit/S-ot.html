@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -51,7 +51,6 @@ ICL mode.
 </p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Constants. </b></p>
-
 
 <pre class="display">
 </pre>
@@ -156,128 +155,127 @@ appearance of text in particular scenes to be. (Cf. Adam Cadre's I6 patch
 but not for the more commonly used versions 5 or 8, whose screen model is
 based on character cells.
 </li></ul>
-
 <pre class="display">
-    <span class="comment">! [1]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">InformLibrary</span><span class="plain">; </span><span class="comment">! does not = I7 "location": see below</span>
+    <span class="comment">[1]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">location</span><span class="plain"> = </span><span class="identifier">InformLibrary</span><span class="plain">; </span><span class="comment">does not = I7 "location": see below</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">sline1</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">sline2</span><span class="plain">;</span>
 
-    <span class="comment">! [2]</span>
+    <span class="comment">[2]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">undo_flag</span><span class="plain">;</span>
 
-    <span class="comment">! [4]</span>
+    <span class="comment">[4]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_complete</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">resurrect_please</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
-    <span class="comment">! [5]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">not_yet_in_play</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; </span><span class="comment">! set false when first command received</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">turns</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! = I7 "turn count"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">! = I7 "time of day"</span>
+    <span class="comment">[5]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">not_yet_in_play</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; </span><span class="comment">set false when first command received</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">turns</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">= I7 "turn count"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">the_time</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">= I7 "time of day"</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">time_rate</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NUMBER_SCENES_CREATED</span><span class="plain"> = </span><span class="identifier">ICOUNT_SCENE</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain"> = (</span><span class="identifier">NUMBER_SCENES_CREATED</span><span class="plain">+2);</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_started</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_ended</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_status</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_endings</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_latest_ending</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_started</span><span class="plain"> --&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_ended</span><span class="plain"> --&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_status</span><span class="plain"> --&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_endings</span><span class="plain"> --&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">scene_latest_ending</span><span class="plain"> --&gt; </span><span class="identifier">SCENE_ARRAY_SIZE</span><span class="plain">;</span>
 
-    <span class="comment">! [6]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">score</span><span class="plain">; </span><span class="comment">! = I7 "score"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_score</span><span class="plain">; </span><span class="comment">! = I7 "last notified score"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">notify_mode</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! score notification on or off</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">left_hand_status_line</span><span class="plain"> = </span><span class="identifier">T_SL_Location</span><span class="plain">; </span><span class="comment">! = I7 "left hand status line"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">right_hand_status_line</span><span class="plain"> = </span><span class="identifier">T_SL_Score_Moves</span><span class="plain">; </span><span class="comment">! = I7 "right hand status line"</span>
+    <span class="comment">[6]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">score</span><span class="plain">; </span><span class="comment">= I7 "score"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">last_score</span><span class="plain">; </span><span class="comment">= I7 "last notified score"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">notify_mode</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">score notification on or off</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">left_hand_status_line</span><span class="plain"> = </span><span class="identifier">T_SL_Location</span><span class="plain">; </span><span class="comment">= I7 "left hand status line"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">right_hand_status_line</span><span class="plain"> = </span><span class="identifier">T_SL_Score_Moves</span><span class="plain">; </span><span class="comment">= I7 "right hand status line"</span>
 
-    <span class="comment">! [7]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">player</span><span class="plain">; </span><span class="comment">! = I7 "player"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">; </span><span class="comment">! = I7 "location"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">visibility_ceiling</span><span class="plain">; </span><span class="comment">! highest object in tree visible to player</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">visibility_levels</span><span class="plain">; </span><span class="comment">! distance in tree to that</span>
+    <span class="comment">[7]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">player</span><span class="plain">; </span><span class="comment">= I7 "player"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">real_location</span><span class="plain">; </span><span class="comment">= I7 "location"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">visibility_ceiling</span><span class="plain">; </span><span class="comment">highest object in tree visible to player</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">visibility_levels</span><span class="plain">; </span><span class="comment">distance in tree to that</span>
 
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">SACK_OBJECT</span><span class="plain">; </span><span class="comment">! current player's holdall item in use</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">SACK_OBJECT</span><span class="plain">; </span><span class="comment">current player's holdall item in use</span>
 
-    <span class="comment">! [8]</span>
+    <span class="comment">[8]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">act_requester</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">; </span><span class="comment">! = I7 "person asked" = I7 "person reaching"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actors_location</span><span class="plain">; </span><span class="comment">! like real_location, but for the actor</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actor_location</span><span class="plain">; </span><span class="comment">! = I7 "actor-location"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actor</span><span class="plain">; </span><span class="comment">= I7 "person asked" = I7 "person reaching"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actors_location</span><span class="plain">; </span><span class="comment">like real_location, but for the actor</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">actor_location</span><span class="plain">; </span><span class="comment">= I7 "actor-location"</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">action</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">meta</span><span class="plain">; </span><span class="comment">! action is out of world</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">meta</span><span class="plain">; </span><span class="comment">action is out of world</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">inp1</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">inp2</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain">  </span><span class="identifier">multiple_object</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">MATCH_LIST_WORDS</span><span class="plain">; </span><span class="comment">! multiple-object list (I6 table array)</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">toomany_flag</span><span class="plain">; </span><span class="comment">! multiple-object list overflowed</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">multiflag</span><span class="plain">; </span><span class="comment">! multiple-object being processed</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">multiple_object_item</span><span class="plain">; </span><span class="comment">! item currently being processed in multiple-object list</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain">; </span><span class="comment">! = I7 "noun"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">second</span><span class="plain">; </span><span class="comment">! = I7 "second noun"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">keep_silent</span><span class="plain">; </span><span class="comment">! true if current action is being tried silently</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">etype</span><span class="plain">; </span><span class="comment">! parser error number if command not recognised</span>
+    <span class="reserved">Array</span><span class="plain">  </span><span class="identifier">multiple_object</span><span class="plain"> --&gt; </span><span class="identifier">MATCH_LIST_WORDS</span><span class="plain">; </span><span class="comment">multiple-object list (I6 table array)</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">toomany_flag</span><span class="plain">; </span><span class="comment">multiple-object list overflowed</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">multiflag</span><span class="plain">; </span><span class="comment">multiple-object being processed</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">multiple_object_item</span><span class="plain">; </span><span class="comment">item currently being processed in multiple-object list</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain">; </span><span class="comment">= I7 "noun"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">second</span><span class="plain">; </span><span class="comment">= I7 "second noun"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">keep_silent</span><span class="plain">; </span><span class="comment">true if current action is being tried silently</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">etype</span><span class="plain">; </span><span class="comment">parser error number if command not recognised</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">trace_actions</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">untouchable_object</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">untouchable_silence</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">touch_persona</span><span class="plain">;</span>
 
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_word</span><span class="plain">; </span><span class="comment">! dictionary address of first word in "[text]" token</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">consult_from</span><span class="plain">; </span><span class="comment">! word number of start of "[text]" token</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">consult_words</span><span class="plain">; </span><span class="comment">! number of words in "[text]" token</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parsed_number</span><span class="plain">; </span><span class="comment">! value from any token not an object</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_number1</span><span class="plain">; </span><span class="comment">! first value, if token not an object</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_number2</span><span class="plain">; </span><span class="comment">! second value, if token not an object</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_word</span><span class="plain">; </span><span class="comment">dictionary address of first word in "[text]" token</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">consult_from</span><span class="plain">; </span><span class="comment">word number of start of "[text]" token</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">consult_words</span><span class="plain">; </span><span class="comment">number of words in "[text]" token</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parsed_number</span><span class="plain">; </span><span class="comment">value from any token not an object</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_number1</span><span class="plain">; </span><span class="comment">first value, if token not an object</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">special_number2</span><span class="plain">; </span><span class="comment">second value, if token not an object</span>
 
-    <span class="reserved">Array</span><span class="plain">  </span><span class="identifier">parser_results</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">16</span><span class="plain">; </span><span class="comment">! for parser to write its results in</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_trace</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! normally 0, but 1 to 5 traces parser workings</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">pronoun_word</span><span class="plain">; </span><span class="comment">! records which pronoun ("it", "them", ...) caused an error</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">pronoun_obj</span><span class="plain">; </span><span class="comment">! and what object it was thought to refer to</span>
+    <span class="reserved">Array</span><span class="plain">  </span><span class="identifier">parser_results</span><span class="plain"> --&gt; </span><span class="constant">16</span><span class="plain">; </span><span class="comment">for parser to write its results in</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_trace</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">normally 0, but 1 to 5 traces parser workings</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">pronoun_word</span><span class="plain">; </span><span class="comment">records which pronoun ("it", "them", ...) caused an error</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">pronoun_obj</span><span class="plain">; </span><span class="comment">and what object it was thought to refer to</span>
 
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">players_command</span><span class="plain"> = </span><span class="constant">100</span><span class="plain">; </span><span class="comment">! = I7 "player's command"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">matched_text</span><span class="plain">; </span><span class="comment">! = I7 "matched text"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">understand_as_mistake_number</span><span class="plain">; </span><span class="comment">! which form of "Understand... as a mistake"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">particular_possession</span><span class="plain">; </span><span class="comment">! = I7 "particular possession"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">players_command</span><span class="plain"> = </span><span class="constant">100</span><span class="plain">; </span><span class="comment">= I7 "player's command"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">matched_text</span><span class="plain">; </span><span class="comment">= I7 "matched text"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">understand_as_mistake_number</span><span class="plain">; </span><span class="comment">which form of "Understand... as a mistake"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">particular_possession</span><span class="plain">; </span><span class="comment">= I7 "particular possession"</span>
 
-    <span class="comment">! [9]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_action</span><span class="plain">; </span><span class="comment">! written by the parser for the benefit of GPRs</span>
+    <span class="comment">[9]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_action</span><span class="plain">; </span><span class="comment">written by the parser for the benefit of GPRs</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_one</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parser_two</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameters</span><span class="plain">; </span><span class="comment">! number of I7 tokens parsed on the current line</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">action_to_be</span><span class="plain">; </span><span class="comment">! (if the current line were accepted)</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">action_reversed</span><span class="plain">; </span><span class="comment">! (parameters would be reversed in order)</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">; </span><span class="comment">! word number within "parse" buffer (from 1)</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">num_words</span><span class="plain">; </span><span class="comment">! number of words in buffer</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">verb_word</span><span class="plain">; </span><span class="comment">! dictionary address of command verb</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">verb_wordnum</span><span class="plain">; </span><span class="comment">! word number of command verb</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameters</span><span class="plain">; </span><span class="comment">number of I7 tokens parsed on the current line</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">action_to_be</span><span class="plain">; </span><span class="comment">(if the current line were accepted)</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">action_reversed</span><span class="plain">; </span><span class="comment">(parameters would be reversed in order)</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">; </span><span class="comment">word number within "parse" buffer (from 1)</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">num_words</span><span class="plain">; </span><span class="comment">number of words in buffer</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">verb_word</span><span class="plain">; </span><span class="comment">dictionary address of command verb</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">verb_wordnum</span><span class="plain">; </span><span class="comment">word number of command verb</span>
 
-    <span class="comment">! [10]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_reason</span><span class="plain"> = </span><span class="identifier">PARSING_REASON</span><span class="plain">; </span><span class="comment">! current reason for searching scope</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_token</span><span class="plain">; </span><span class="comment">! for "scope=Routine" grammar tokens</span>
+    <span class="comment">[10]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_reason</span><span class="plain"> = </span><span class="identifier">PARSING_REASON</span><span class="plain">; </span><span class="comment">current reason for searching scope</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_token</span><span class="plain">; </span><span class="comment">for "scope=Routine" grammar tokens</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_error</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_stage</span><span class="plain">; </span><span class="comment">! 1, 2 then 3</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">advance_warning</span><span class="plain">; </span><span class="comment">! what a later-named thing will be</span>
-    <span class="comment">! Global reason_code = NULL; ! for the I6 veneer</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">scope_stage</span><span class="plain">; </span><span class="comment">1, 2 then 3</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">advance_warning</span><span class="plain">; </span><span class="comment">what a later-named thing will be</span>
+    <span class="plain">! </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">reason_code</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">for the I6 veneer</span>
 
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">ats_flag</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! for AddToScope routines</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">ats_flag</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">for AddToScope routines</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">ats_hls</span><span class="plain">;</span>
 
-    <span class="comment">! [11]</span>
+    <span class="comment">[11]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">move_pushing</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">move_from</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">move_to</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">move_by</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">move_through</span><span class="plain">;</span>
 
-    <span class="comment">! [12]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">lookmode</span><span class="plain"> = </span><span class="identifier">TEMPLATE_CONFIGURATION_LOOKMODE</span><span class="plain">; </span><span class="comment">! 1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_style</span><span class="plain">; </span><span class="comment">! current list-writer style</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_depth</span><span class="plain">; </span><span class="comment">! current recursion depth</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_iterator</span><span class="plain">; </span><span class="comment">! current iteration function</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">lt_value</span><span class="plain"> = </span><span class="identifier">EMPTY_TEXT_VALUE</span><span class="plain">; </span><span class="comment">! common value of list_together</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">listing_together</span><span class="plain">; </span><span class="comment">! object number of one member of a group being listed together</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">listing_size</span><span class="plain">; </span><span class="comment">! size of such a group</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_margin</span><span class="plain">; </span><span class="comment">! current level of indentation printed by WriteListFrom()</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">inventory_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! 1 or 2 according to the context in which list_together uses</span>
+    <span class="comment">[12]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">lookmode</span><span class="plain"> = </span><span class="identifier">TEMPLATE_CONFIGURATION_LOOKMODE</span><span class="plain">; </span><span class="comment">1 = BRIEF, 2 = VERBOSE, 3 = SUPERBRIEF</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_style</span><span class="plain">; </span><span class="comment">current list-writer style</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_depth</span><span class="plain">; </span><span class="comment">current recursion depth</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_iterator</span><span class="plain">; </span><span class="comment">current iteration function</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">lt_value</span><span class="plain"> = </span><span class="identifier">EMPTY_TEXT_VALUE</span><span class="plain">; </span><span class="comment">common value of list_together</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">listing_together</span><span class="plain">; </span><span class="comment">object number of one member of a group being listed together</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">listing_size</span><span class="plain">; </span><span class="comment">size of such a group</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">c_margin</span><span class="plain">; </span><span class="comment">current level of indentation printed by WriteListFrom()</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">inventory_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">1 or 2 according to the context in which list_together uses</span>
 
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debug_scenes</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
@@ -290,7 +288,6 @@ and is used for no other purpose.) Because of the traditional structure
 of language definitions, this needs to come first.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Object</span><span class="plain"> </span><span class="identifier">Compass</span><span class="plain"> </span><span class="string">"compass"</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">concealed</span><span class="plain">;</span>
 </pre>
@@ -302,7 +299,6 @@ and/or <code class="display"><span class="extract">RANKING_TABLE</span></code>, 
 no ranking table, <code class="display"><span class="extract">RANKING_TABLE</span></code> is left undefined, so that we can <code class="display"><span class="extract">#ifdef</span></code> this
 possibility later.
 </p>
-
 
 <pre class="display">
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">MAX_SCORE</span><span class="plain"> = </span><span class="identifier">INITIAL_MAX_SCORE</span><span class="plain">;</span>
@@ -317,7 +313,6 @@ are gone, with the equivalent functionality having moved upstairs into
 I7 source text in the Standard Rules; and the rest of the library largely
 lives here:
 </p>
-
 
 <pre class="display">
 </pre>
@@ -341,7 +336,6 @@ the <code class="display"><span class="extract">Protect_I7_Arrays</span></code> 
 If it is ever discovered to contain the wrong data, the alarm sounds.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Object</span><span class="plain"> </span><span class="identifier">InformParser</span><span class="plain"> </span><span class="string">"(Inform Parser)"</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">;</span>
 
@@ -358,7 +352,6 @@ If it is ever discovered to contain the wrong data, the alarm sounds.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Order of Play. </b>The <code class="display"><span class="extract">Main</span></code> routine, where execution begins, and the primitive rules in the
 principal rulebooks.
 </p>
-
 
 <pre class="display">
 </pre>
@@ -405,7 +398,6 @@ is only a (word) array of rule addresses, terminated with a <code class="display
 material new in I7 usage.
 </p>
 
-
 <pre class="display">
 </pre>
 
@@ -414,7 +406,6 @@ material new in I7 usage.
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Parsing Tokens. </b>GPRs, scope and noun filters to be used in grammar lines, but no actual
 grammar lines as yet.
 </p>
-
 
 <pre class="display">
 </pre>
@@ -425,7 +416,6 @@ grammar lines as yet.
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Testing commands. </b></p>
 
-
 <pre class="display">
 </pre>
 
@@ -434,7 +424,6 @@ grammar lines as yet.
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. I6 Inclusions. </b>This paragraph contains no code, by default: it's a hook on which to hang
 verbatim I6 material.
 </p>
-
 
 <pre class="display">
 </pre>
@@ -462,7 +451,6 @@ propositions which must be deferred into routines.
 point, we cannot safely compile any I7 condition in the past tense.
 </p>
 
-
 <pre class="display">
 </pre>
 
@@ -476,7 +464,6 @@ should not be dismissed as an aberration). This is therefore the earliest
 point at which we can know for sure that no further grammar lines are
 needed.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">UnknownVerb</span><span class="plain">;</span>
@@ -530,9 +517,8 @@ the counters, and therefore the amount of storage we need to allocate.
 </li></ul>
 <ul class="items"><li>(6) Similarly, each "quotation" box needs its own cell of memory.
 </li></ul>
-
 <pre class="display">
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Runtime_Quotations_Displayed</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">CCOUNT_QUOTATIONS</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Runtime_Quotations_Displayed</span><span class="plain"> --&gt; </span><span class="identifier">CCOUNT_QUOTATIONS</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -542,7 +528,6 @@ rather than values in themselves: they point to "blocks". A section of code
 handles the heap, and there is then one further section to support each of
 the kinds of value in question.
 </p>
-
 
 <pre class="display">
 </pre>

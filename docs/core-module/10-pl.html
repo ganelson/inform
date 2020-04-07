@@ -73,7 +73,6 @@ is a little blurry, but it's still grammatically useful.
 <p class="inwebparagraph">Note that ordinal numbers are not valid as literals: "2nd" is not a noun.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">&gt; |						==&gt; </span><span class="functiontext">Rvalues::from_int</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">)</span>
@@ -84,7 +83,7 @@ is a little blurry, but it's still grammatically useful.
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">truth</span><span class="plain">-</span><span class="identifier">state</span><span class="plain">&gt; |				==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; |						==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="identifier">unicode</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">character</span><span class="plain">&gt; |			==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">time</span><span class="plain">&gt; |						==&gt; </span><span class="identifier">RP</span><span class="plain">[1] </span>    <span class="comment">times\_plugin</span>
+        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">time</span><span class="plain">&gt; |						==&gt; </span><span class="identifier">RP</span><span class="plain">[1] </span><span class="comment">times\_plugin</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">unit</span><span class="plain">-</span><span class="identifier">notation</span><span class="plain">&gt;				==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
 
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">unit</span><span class="plain">-</span><span class="identifier">notation</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -104,11 +103,10 @@ is a little blurry, but it's still grammatically useful.
 A to Z.
 </p>
 
-
 <pre class="display">
-    <span class="plain">&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 1 {</span>
+    <span class="plain">&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> {</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[0] &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[0] &lt;= </span><span class="character">'Z'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[1] == 0)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[0] &gt;= </span><span class="character">'A'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[0] &lt;= </span><span class="character">'Z'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[1] == </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">[0] - </span><span class="character">'A'</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -124,7 +122,6 @@ there are always necessarily exactly two truth states, whereas there could
 in principle be any number of people, colours, vehicles, and such.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">truth</span><span class="plain">-</span><span class="identifier">state</span><span class="plain">&gt; ::=</span>
         <span class="identifier">false</span><span class="plain"> |						==&gt; </span><span class="functiontext">Rvalues::from_boolean</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
@@ -135,7 +132,6 @@ in principle be any number of people, colours, vehicles, and such.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The problem message for engineering notation should only appear once:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e_notation_problem_issued</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -154,27 +150,27 @@ Still:
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">real</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">_</span><span class="plain"> </span><span class="identifier">pi</span><span class="plain"> |						==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(0</span><span class="identifier">x40490FDB</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
-        <span class="identifier">_</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> |						==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(0</span><span class="identifier">x402DF854</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
-        <span class="identifier">plus</span><span class="plain"> </span><span class="identifier">infinity</span><span class="plain"> |				==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(0</span><span class="identifier">x7F800000</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
-        <span class="identifier">minus</span><span class="plain"> </span><span class="identifier">infinity</span><span class="plain"> |			==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(0</span><span class="identifier">xFF800000</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="identifier">_</span><span class="plain"> </span><span class="identifier">pi</span><span class="plain"> |						==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(</span><span class="constant">0x40490FDB</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="identifier">_</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> |						==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(</span><span class="constant">0x402DF854</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="identifier">plus</span><span class="plain"> </span><span class="identifier">infinity</span><span class="plain"> |				==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(</span><span class="constant">0x7F800000</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="identifier">minus</span><span class="plain"> </span><span class="identifier">infinity</span><span class="plain"> |			==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">(</span><span class="constant">0xFF800000</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
         <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">real</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">digits</span><span class="plain">&gt;	==&gt; </span><span class="functiontext">Rvalues::from_IEEE_754</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">)</span>
 
     <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">real</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">digits</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) != 1) &amp;&amp; (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) != 3)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) != </span><span class="constant">3</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">=0; </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">intv</span><span class="plain">=0, </span><span class="identifier">fracv</span><span class="plain">=0;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">expocount</span><span class="plain">=0, </span><span class="identifier">intcount</span><span class="plain">=0, </span><span class="identifier">fraccount</span><span class="plain">=0;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">signbit</span><span class="plain"> = 0;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">distinctive</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">as a floating-point rather than integer number</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">signbit</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">distinctive</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">as a floating-point rather than integer number</span>
 
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Parse the sign at the front</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Parse any digits into intv</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Parse a decimal expansion</span> <span class="cwebmacronumber">5.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">intcount</span><span class="plain"> + </span><span class="identifier">fraccount</span><span class="plain"> &gt; 0) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 1) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) </span>&lt;<span class="cwebmacro">Parse an exponent</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">intcount</span><span class="plain"> + </span><span class="identifier">fraccount</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) </span>&lt;<span class="cwebmacro">Parse an exponent</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">distinctive</span><span class="plain">) || (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">CONSTANT_CMODE</span><span class="plain">))) {</span>
                     <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Literals::construct_float</span><span class="plain">(</span><span class="identifier">signbit</span><span class="plain">, </span><span class="identifier">intv</span><span class="plain">, </span><span class="identifier">fracv</span><span class="plain">, </span><span class="identifier">expo</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -193,8 +189,8 @@ Still:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">signbit</span><span class="plain"> = 1; </span><span class="identifier">i</span><span class="plain">++; }</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'+'</span><span class="plain">) { </span><span class="identifier">signbit</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain">++; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">signbit</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++; }</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'+'</span><span class="plain">) { </span><span class="identifier">signbit</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++; }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -208,7 +204,7 @@ Still:
 
 <pre class="displaydefn">
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) {</span>
-            <span class="identifier">intv</span><span class="plain"> = 10.0*</span><span class="identifier">intv</span><span class="plain"> + (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] - </span><span class="character">'0'</span><span class="plain">);</span>
+            <span class="identifier">intv</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">.0*</span><span class="identifier">intv</span><span class="plain"> + (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] - </span><span class="character">'0'</span><span class="plain">);</span>
             <span class="identifier">intcount</span><span class="plain">++;</span>
             <span class="identifier">i</span><span class="plain">++;</span>
         <span class="plain">}</span>
@@ -227,9 +223,9 @@ Still:
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'.'</span><span class="plain">) {</span>
             <span class="identifier">distinctive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">i</span><span class="plain">++;</span>
-            <span class="reserved">double</span><span class="plain"> </span><span class="identifier">fracpow</span><span class="plain"> = 1.0;</span>
+            <span class="reserved">double</span><span class="plain"> </span><span class="identifier">fracpow</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">.0;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) {</span>
-                <span class="identifier">fracpow</span><span class="plain"> *= 0.1;</span>
+                <span class="identifier">fracpow</span><span class="plain"> *= </span><span class="constant">0</span><span class="plain">.1;</span>
                 <span class="identifier">fracv</span><span class="plain"> = </span><span class="identifier">fracv</span><span class="plain"> + </span><span class="identifier">fracpow</span><span class="plain">*(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] - </span><span class="character">'0'</span><span class="plain">);</span>
                 <span class="identifier">fraccount</span><span class="plain">++;</span>
                 <span class="identifier">i</span><span class="plain">++;</span>
@@ -249,31 +245,31 @@ Still:
 <pre class="displaydefn">
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain"> + </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e_notation_used</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 1) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[0] != 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + 1);</span>
-            <span class="reserved">if</span><span class="plain"> (!((</span><span class="functiontext">Literals::ismultiplicationsign</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">[0])) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">[1] == 0))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + 2);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[0] != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (!((</span><span class="functiontext">Literals::ismultiplicationsign</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">[0])) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">[1] == </span><span class="constant">0</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="constant">2</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">fraccount</span><span class="plain"> &gt; 0) &amp;&amp; ((</span><span class="identifier">q</span><span class="plain">[0] == </span><span class="character">'e'</span><span class="plain">) || (</span><span class="identifier">q</span><span class="plain">[0] == </span><span class="character">'E'</span><span class="plain">))) </span><span class="identifier">e_notation_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">fraccount</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">q</span><span class="plain">[0] == </span><span class="character">'e'</span><span class="plain">) || (</span><span class="identifier">q</span><span class="plain">[0] == </span><span class="character">'E'</span><span class="plain">))) </span><span class="identifier">e_notation_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (!(</span><span class="functiontext">Literals::ismultiplicationsign</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">[0]))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">q</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">e_notation_used</span><span class="plain">) {</span>
-            <span class="identifier">i</span><span class="plain"> = 0;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (!((</span><span class="identifier">q</span><span class="plain">[0] == </span><span class="character">'1'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">[1] == </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">[2] == </span><span class="character">'^'</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">i</span><span class="plain"> = 3;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">exposign</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'+'</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">++; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">exposign</span><span class="plain"> = 1; </span><span class="identifier">i</span><span class="plain">++; }</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">exposign</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'+'</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">++; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">exposign</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++; }</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) {</span>
-            <span class="identifier">expo</span><span class="plain"> = 10*</span><span class="identifier">expo</span><span class="plain"> + (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] - </span><span class="character">'0'</span><span class="plain">);</span>
+            <span class="identifier">expo</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">*</span><span class="identifier">expo</span><span class="plain"> + (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] - </span><span class="character">'0'</span><span class="plain">);</span>
             <span class="identifier">expocount</span><span class="plain">++;</span>
             <span class="identifier">i</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expocount</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expocount</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exposign</span><span class="plain">) { </span><span class="identifier">expo</span><span class="plain"> = -</span><span class="identifier">expo</span><span class="plain">; }</span>
         <span class="identifier">distinctive</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">e_notation_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">allow_engineering_notation</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
@@ -298,7 +294,6 @@ Still:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Literals::ismultiplicationsign</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'x'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'*'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -317,7 +312,6 @@ number. See:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">http://www.psc.edu/general/software/packages/ieee/ieee.php</span>
 </pre>
@@ -330,11 +324,10 @@ minus infinity; if the magnitude is too small (below about <code class="display"
 a zero value. If any of the inputs are NaN, this returns NaN.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Literals::construct_float</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">signbit</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">intv</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">fracv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">) {</span>
         <span class="reserved">double</span><span class="plain"> </span><span class="identifier">absval</span><span class="plain"> = (</span><span class="identifier">intv</span><span class="plain"> + </span><span class="identifier">fracv</span><span class="plain">) * </span><span class="functiontext">Literals::ten_to_the</span><span class="plain">(</span><span class="identifier">expo</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> = (</span><span class="identifier">signbit</span><span class="plain"> ? ((</span><span class="reserved">int</span><span class="plain">) 0</span><span class="identifier">x80000000</span><span class="plain">) : 0</span><span class="identifier">x0</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> = (</span><span class="identifier">signbit</span><span class="plain"> ? ((</span><span class="reserved">int</span><span class="plain">) </span><span class="constant">0x80000000</span><span class="plain">) : </span><span class="constant">0x0</span><span class="plain">);</span>
 
         <span class="identifier">latest_constructed_real</span><span class="plain"> = </span><span class="identifier">absval</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">signbit</span><span class="plain">) </span><span class="identifier">latest_constructed_real</span><span class="plain"> = -</span><span class="identifier">absval</span><span class="plain">;</span>
 
@@ -344,14 +337,14 @@ a zero value. If any of the inputs are NaN, this returns NaN.
         <span class="reserved">double</span><span class="plain"> </span><span class="identifier">mant</span><span class="plain"> = </span><span class="identifier">frexp</span><span class="plain">(</span><span class="identifier">absval</span><span class="plain">, &amp;</span><span class="identifier">expo</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Normalize mantissa to be in the range [1.0, 2.0)</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &gt;= 128) </span>&lt;<span class="cwebmacro">Return plus or minus infinity</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &gt;= </span><span class="constant">128</span><span class="plain">) </span>&lt;<span class="cwebmacro">Return plus or minus infinity</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &lt; -126) </span>&lt;<span class="cwebmacro">Denormalize this very small number</span> <span class="cwebmacronumber">7.2</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">expo</span><span class="plain"> == 0 &amp;&amp; </span><span class="identifier">mant</span><span class="plain"> == 0.0)) </span>&lt;<span class="cwebmacro">Denormalize this non-zero number</span> <span class="cwebmacronumber">7.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">expo</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> &amp;&amp; </span><span class="identifier">mant</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">.0)) </span>&lt;<span class="cwebmacro">Denormalize this non-zero number</span> <span class="cwebmacronumber">7.3</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fbits</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fbits</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Set fbits to the mantissa times 2 to the 23, rounded to the nearest integer</span> <span class="cwebmacronumber">7.4</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">sign</span><span class="plain">) | ((</span><span class="reserved">int</span><span class="plain">)(</span><span class="identifier">expo</span><span class="plain"> &lt;&lt; 23)) | (</span><span class="identifier">fbits</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">sign</span><span class="plain">) | ((</span><span class="reserved">int</span><span class="plain">)(</span><span class="identifier">expo</span><span class="plain"> &lt;&lt; </span><span class="constant">23</span><span class="plain">)) | (</span><span class="identifier">fbits</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -365,11 +358,11 @@ a zero value. If any of the inputs are NaN, this returns NaN.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((0.5 &lt;= </span><span class="identifier">mant</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mant</span><span class="plain"> &lt; 1.0)) {</span>
-            <span class="identifier">mant</span><span class="plain"> *= 2.0;</span>
+        <span class="reserved">if</span><span class="plain"> ((0.5 &lt;= </span><span class="identifier">mant</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mant</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">.0)) {</span>
+            <span class="identifier">mant</span><span class="plain"> *= </span><span class="constant">2</span><span class="plain">.0;</span>
             <span class="identifier">expo</span><span class="plain">--;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mant</span><span class="plain"> == 0.0) {</span>
-            <span class="identifier">expo</span><span class="plain"> = 0;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mant</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">.0) {</span>
+            <span class="identifier">expo</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return plus or minus infinity</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -388,8 +381,8 @@ now being in the range 0 to 255, and the mantissa in [0, 1).
 
 
 <pre class="displaydefn">
-        <span class="identifier">mant</span><span class="plain"> = </span><span class="identifier">ldexp</span><span class="plain">(</span><span class="identifier">mant</span><span class="plain">, 126 + </span><span class="identifier">expo</span><span class="plain">);</span>
-        <span class="identifier">expo</span><span class="plain"> = 0; </span>    <span class="comment">0 now represents 10 to the minus 127</span>
+        <span class="identifier">mant</span><span class="plain"> = </span><span class="identifier">ldexp</span><span class="plain">(</span><span class="identifier">mant</span><span class="plain">, </span><span class="constant">126</span><span class="plain"> + </span><span class="identifier">expo</span><span class="plain">);</span>
+        <span class="identifier">expo</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">0 now represents 10 to the minus 127</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -402,8 +395,8 @@ now being in the range 0 to 255, and the mantissa in [0, 1).
 
 
 <pre class="displaydefn">
-        <span class="identifier">expo</span><span class="plain"> += 127; </span>    <span class="comment">127 now represents 10 to the 0, that is, 1</span>
-        <span class="identifier">mant</span><span class="plain"> -= 1.0; </span>    <span class="comment">the mantissa was in the range [1, 2), is now in [0, 1)</span>
+        <span class="identifier">expo</span><span class="plain"> += </span><span class="constant">127</span><span class="plain">; </span><span class="comment">127 now represents 10 to the 0, that is, 1</span>
+        <span class="identifier">mant</span><span class="plain"> -= </span><span class="constant">1</span><span class="plain">.0; </span><span class="comment">the mantissa was in the range [1, 2), is now in [0, 1)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -427,10 +420,10 @@ exponent increments, and we round to that power of 10 exactly.
 
 
 <pre class="displaydefn">
-        <span class="identifier">fbits</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) ((</span><span class="identifier">mant</span><span class="plain">*8388608.0) + 0.5); </span>    <span class="comment">round to nearest integer</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fbits</span><span class="plain"> &gt;&gt; 23) {</span>
-            <span class="identifier">fbits</span><span class="plain"> = 0;</span>
-            <span class="identifier">expo</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &gt;= 255) </span>&lt;<span class="cwebmacro">Return plus or minus infinity</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
+        <span class="identifier">fbits</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) ((</span><span class="identifier">mant</span><span class="plain">*8388608.0) + </span><span class="constant">0</span><span class="plain">.5); </span><span class="comment">round to nearest integer</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fbits</span><span class="plain"> &gt;&gt; </span><span class="constant">23</span><span class="plain">) {</span>
+            <span class="identifier">fbits</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">expo</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &gt;= </span><span class="constant">255</span><span class="plain">) </span>&lt;<span class="cwebmacro">Return plus or minus infinity</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -444,7 +437,7 @@ exponent increments, and we round to that power of 10 exactly.
 
 
 <pre class="displaydefn">
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> | 0</span><span class="identifier">x7f800000</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> | </span><span class="constant">0x7f800000</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -457,7 +450,7 @@ exponent increments, and we round to that power of 10 exactly.
 
 
 <pre class="displaydefn">
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> | 0</span><span class="identifier">x7fc00000</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sign</span><span class="plain"> | </span><span class="constant">0x7fc00000</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -469,20 +462,20 @@ exponent increments, and we round to that power of 10 exactly.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">POW10_RANGE</span><span class="plain"> 8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">POW10_RANGE</span><span class="plain"> </span><span class="constant">8</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">double</span><span class="plain"> </span><span class="functiontext">Literals::ten_to_the</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">expo</span><span class="plain">) {</span>
         <span class="reserved">static</span><span class="plain"> </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">powers</span><span class="plain">[</span><span class="constant">POW10_RANGE</span><span class="plain">*2+1] = {</span>
-            <span class="plain">0.00000001, 0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1,</span>
-            <span class="plain">1.0,</span>
-            <span class="plain">10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0</span>
+            <span class="constant">0</span><span class="plain">.00000001, </span><span class="constant">0</span><span class="plain">.0000001, </span><span class="constant">0</span><span class="plain">.000001, </span><span class="constant">0</span><span class="plain">.00001, </span><span class="constant">0</span><span class="plain">.0001, </span><span class="constant">0</span><span class="plain">.001, </span><span class="constant">0</span><span class="plain">.01, </span><span class="constant">0</span><span class="plain">.1,</span>
+            <span class="constant">1</span><span class="plain">.0,</span>
+            <span class="constant">10</span><span class="plain">.0, </span><span class="constant">100</span><span class="plain">.0, </span><span class="constant">1000</span><span class="plain">.0, </span><span class="constant">10000</span><span class="plain">.0, </span><span class="constant">100000</span><span class="plain">.0, </span><span class="constant">1000000</span><span class="plain">.0, </span><span class="constant">10000000</span><span class="plain">.0, </span><span class="constant">100000000</span><span class="plain">.0</span>
         <span class="plain">};</span>
 
-        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> = 1.0;</span>
+        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">.0;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &lt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">expo</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">expo</span><span class="plain"> &lt; -</span><span class="constant">POW10_RANGE</span><span class="plain">; </span><span class="identifier">expo</span><span class="plain"> += </span><span class="constant">POW10_RANGE</span><span class="plain">)</span>
                 <span class="identifier">res</span><span class="plain"> *= </span><span class="identifier">powers</span><span class="plain">[0];</span>
         <span class="reserved">else</span>

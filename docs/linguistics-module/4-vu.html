@@ -72,7 +72,6 @@ it's convenient for the verb currently being considered to be stored in
 a global variable.
 </p>
 
-
 <pre class="display">
     <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">permitted_verb_identity</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -90,29 +89,28 @@ at present tense forms of verbs in the third person, or at imperative forms.
 be turned into one of the following structures:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">vu_text</span><span class="plain">;			</span>    <span class="comment">text to recognise</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vu_allow_unexpected_upper_case</span><span class="plain">; 	</span>    <span class="comment">for verbs like "to Hoover" or "to Google"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">vu_text</span><span class="plain">;			</span><span class="comment">text to recognise</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vu_allow_unexpected_upper_case</span><span class="plain">; 	</span><span class="comment">for verbs like "to Hoover" or "to Google"</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">verb_used</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">negated_form_of_verb</span><span class="plain">; 				</span>    <span class="comment">is this a negated form?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mood</span><span class="plain">;								</span>    <span class="comment">active/passive: one of the two <code class="display"><span class="extract">*_MOOD</span></code> values</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tensed</span><span class="plain">; 							</span>    <span class="comment">one of the <code class="display"><span class="extract">*_TENSE</span></code> values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">negated_form_of_verb</span><span class="plain">; 				</span><span class="comment">is this a negated form?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mood</span><span class="plain">;								</span><span class="comment">active/passive: one of the two <code class="display"><span class="extract">*_MOOD</span></code> values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tensed</span><span class="plain">; 							</span><span class="comment">one of the <code class="display"><span class="extract">*_TENSE</span></code> values</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">lexicon_entry</span><span class="plain"> *</span><span class="identifier">vu_lex_entry</span><span class="plain">; 	</span>    <span class="comment">for use when indexing</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">lexicon_entry</span><span class="plain"> *</span><span class="identifier">vu_lex_entry</span><span class="plain">; 	</span><span class="comment">for use when indexing</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_vu_created</span><span class="plain">; 	</span>    <span class="comment">for use if problem messages needed</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_vu_created</span><span class="plain">; 	</span><span class="comment">for use if problem messages needed</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">next_in_search_list</span><span class="plain">; </span>    <span class="comment">within a linked list of all usages in length order</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">next_within_tier</span><span class="plain">;	</span>    <span class="comment">within the linked list for this tier (see below)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">next_in_search_list</span><span class="plain">; </span><span class="comment">within a linked list of all usages in length order</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">next_within_tier</span><span class="plain">;	</span><span class="comment">within the linked list for this tier (see below)</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">verb_usage</span><span class="plain">;</span>
 
-    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">regular_to_be</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">"is"</span>
-    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">negated_to_be</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">"is not"</span>
+    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">regular_to_be</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">"is"</span>
+    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">negated_to_be</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">"is not"</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -122,12 +120,11 @@ be turned into one of the following structures:
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>One simple search list arranges these in order of (word count) length:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu_search_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">head of linked list of usages in length order</span>
+    <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu_search_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of linked list of usages in length order</span>
 
     <span class="definitionkeyword">define</span> <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">)</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">vu_search_list</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">vu_search_list</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -152,16 +149,15 @@ the earlier one in the sentence is preferred.
 <p class="inwebparagraph">The tiers are stored as a linked list, in priority order:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage_tier</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">tier_contents</span><span class="plain">; </span>    <span class="comment">head of linked list for this tier</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">tier_contents</span><span class="plain">; </span><span class="comment">head of linked list for this tier</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_usage_tier</span><span class="plain"> *</span><span class="identifier">next_tier</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">verb_usage_tier</span><span class="plain">;</span>
 
-    <span class="reserved">verb_usage_tier</span><span class="plain"> *</span><span class="identifier">first_search_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">head of linked list of tiers</span>
+    <span class="reserved">verb_usage_tier</span><span class="plain"> *</span><span class="identifier">first_search_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of linked list of tiers</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -171,26 +167,25 @@ the earlier one in the sentence is preferred.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Registration. </b>Here we create a single verb usage; note that the empty text cannot be used.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">set_where_created</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="functiontext">VerbUsages::register_single_usage</span><span class="plain">(</span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">negated</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tense</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mood</span><span class="plain">, </span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::nonempty</span><span class="plain">(</span><span class="identifier">wa</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_USAGES</span><span class="plain">, </span><span class="string">"new usage: '%A'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;</span><span class="identifier">wa</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_USAGES</span><span class="plain">, </span><span class="string">"new usage: '%A'\n"</span><span class="plain">, &amp;</span><span class="identifier">wa</span><span class="plain">);</span>
         <span class="functiontext">VerbUsages::mark_as_verb</span><span class="plain">(</span><span class="identifier">WordAssemblages::first_word</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">));</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain">);</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_text</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;negated_form_of_verb</span><span class="plain"> = </span><span class="identifier">negated</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;tensed</span><span class="plain"> = </span><span class="identifier">tense</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_text</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">negated_form_of_verb</span><span class="plain"> = </span><span class="identifier">negated</span><span class="plain">; </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">tensed</span><span class="plain"> = </span><span class="identifier">tense</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_lex_entry</span><span class="plain"> = </span><span class="identifier">current_main_verb</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_lex_entry</span><span class="plain"> = </span><span class="identifier">current_main_verb</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;where_vu_created</span><span class="plain"> = </span><span class="identifier">set_where_created</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;mood</span><span class="plain"> = </span><span class="identifier">mood</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_allow_unexpected_upper_case</span><span class="plain"> = </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;next_within_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">where_vu_created</span><span class="plain"> = </span><span class="identifier">set_where_created</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">mood</span><span class="plain"> = </span><span class="identifier">mood</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_allow_unexpected_upper_case</span><span class="plain"> = </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">next_within_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Add to the length-order search list</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vu</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -213,15 +208,15 @@ first in the case of equal length:
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu_search_list</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">vu_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">evu</span><span class="plain"> = </span><span class="identifier">vu_search_list</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">evu</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">, </span><span class="identifier">evu</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::longer</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">, &amp;(</span><span class="identifier">evu</span><span class="plain">-</span><span class="element">&gt;vu_text</span><span class="plain">)) &gt; 0) {</span>
-                    <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">evu</span><span class="plain"> = </span><span class="identifier">vu_search_list</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">evu</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">, </span><span class="identifier">evu</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::longer</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">, &amp;(</span><span class="identifier">evu</span><span class="plain">-&gt;</span><span class="element">vu_text</span><span class="plain">)) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain"> = </span><span class="identifier">evu</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">vu_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="identifier">next_in_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">evu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="identifier">evu</span><span class="plain">-</span><span class="element">&gt;next_in_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">evu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                    <span class="identifier">evu</span><span class="plain">-&gt;</span><span class="element">next_in_search_list</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -243,11 +238,10 @@ as equivalent to "Peter wears the hat", but not "1 is been by X" as
 equivalent to "X is 1".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VerbUsages::register_all_usages_of_verb</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">) {</span>
-        <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">;</span>
+        <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vc</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="identifier">Index::Lexicon::new_main_verb</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">, </span><span class="identifier">VERB_LEXE</span><span class="plain">);</span>
@@ -307,7 +301,6 @@ meaning. Both forms are then internally implemented as prepositional forms
 of "to be", which is convenient however dubious in linguistic terms.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VerbUsages::register_moods_of_verb</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mood</span><span class="plain">,</span>
         <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">) {</span>
@@ -316,7 +309,7 @@ of "to be", which is convenient however dubious in linguistic terms.
             <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> =</span>
                 <span class="functiontext">Prepositions::make</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">-&gt;</span><span class="identifier">to_be_auxiliary</span><span class="plain">, </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">);</span>
             <span class="functiontext">Verbs::add_form</span><span class="plain">(</span><span class="identifier">copular_verb</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
-                <span class="functiontext">VerbMeanings::new_indirection</span><span class="plain">(</span><span class="identifier">vi</span><span class="plain">, (</span><span class="identifier">mood</span><span class="plain"> == </span><span class="identifier">PASSIVE_MOOD</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">),</span>
+                <span class="functiontext">VerbMeanings::new_indirection</span><span class="plain">(</span><span class="identifier">vi</span><span class="plain">, (</span><span class="identifier">mood</span><span class="plain"> == </span><span class="identifier">PASSIVE_MOOD</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">),</span>
                 <span class="constant">SVO_FS_BIT</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -344,7 +337,7 @@ the persons from 1PS to 3PP.
 
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tense</span><span class="plain"> = </span><span class="identifier">WILLBE_TENSE</span><span class="plain">; </span><span class="identifier">tense</span><span class="plain"> &lt; </span><span class="identifier">NO_KNOWN_TENSES</span><span class="plain">; </span><span class="identifier">tense</span><span class="plain">++)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = 1; </span><span class="identifier">sense</span><span class="plain"> &gt;= 0; </span><span class="identifier">sense</span><span class="plain">--)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">sense</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">sense</span><span class="plain">--)</span>
                 &lt;<span class="cwebmacro">Register usages in this combination</span> <span class="cwebmacronumber">8.1.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">HASBEEN_TENSE</span><span class="plain">, </span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">HADBEEN_TENSE</span><span class="plain">;</span>
@@ -363,7 +356,7 @@ the persons from 1PS to 3PP.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = 1; </span><span class="identifier">sense</span><span class="plain"> &gt;= 0; </span><span class="identifier">sense</span><span class="plain">--) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">sense</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">sense</span><span class="plain">--) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tense</span><span class="plain"> = </span><span class="identifier">t1</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Register usages in this combination</span> <span class="cwebmacronumber">8.1.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">tense</span><span class="plain"> = </span><span class="identifier">t2</span><span class="plain">;</span>
@@ -386,19 +379,19 @@ out whether it's needed.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">person</span><span class="plain"> = 0; </span><span class="identifier">person</span><span class="plain"> &lt; </span><span class="identifier">NO_KNOWN_PERSONS</span><span class="plain">; </span><span class="identifier">person</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">person</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">person</span><span class="plain"> &lt; </span><span class="identifier">NO_KNOWN_PERSONS</span><span class="plain">; </span><span class="identifier">person</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">priority</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">ALLOW_VERB_USAGE_IN_ASSERTIONS</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ALLOW_VERB_USAGE_IN_ASSERTIONS</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ALLOW_VERB_USAGE_IN_ASSERTIONS</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">#</span><span class="reserved">else</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbUsages::allow_in_assertions</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbUsages::allow_in_assertions</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">ALLOW_VERB_USAGE_GENERALLY</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ALLOW_VERB_USAGE_GENERALLY</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = -1;</span>
             <span class="plain">#</span><span class="reserved">else</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbUsages::allow_generally</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">person</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = -1;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &gt;= 0) </span>&lt;<span class="cwebmacro">Actually register this usage</span> <span class="cwebmacronumber">8.1.2.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Actually register this usage</span> <span class="cwebmacronumber">8.1.2.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -413,11 +406,11 @@ out whether it's needed.
 
 <pre class="displaydefn">
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain"> = </span><span class="functiontext">VerbUsages::register_single_usage</span><span class="plain">(</span><span class="identifier">vt</span><span class="plain">-&gt;</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">tense</span><span class="plain">][</span><span class="identifier">sense</span><span class="plain">][</span><span class="identifier">person</span><span class="plain">],</span>
-            <span class="plain">(</span><span class="identifier">sense</span><span class="plain">==1)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">mood</span><span class="plain">, </span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">);</span>
+            <span class="plain">(</span><span class="identifier">sense</span><span class="plain">==1)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">, </span><span class="identifier">tense</span><span class="plain">, </span><span class="identifier">mood</span><span class="plain">, </span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">) </span><span class="functiontext">VerbUsages::set_search_priority</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain"> == </span><span class="identifier">copular_verb</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tense</span><span class="plain"> == </span><span class="identifier">IS_TENSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">person</span><span class="plain"> == </span><span class="identifier">THIRD_PERSON_SINGULAR</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == 1) </span><span class="identifier">negated_to_be</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">negated_to_be</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">regular_to_be</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -431,11 +424,10 @@ out whether it's needed.
 what are used by Inform. In assertions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::allow_in_assertions</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tense</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">person</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tense</span><span class="plain"> == </span><span class="identifier">IS_TENSE</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">sense</span><span class="plain"> == 0) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">sense</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">((</span><span class="identifier">person</span><span class="plain"> == </span><span class="identifier">THIRD_PERSON_SINGULAR</span><span class="plain">) || (</span><span class="identifier">person</span><span class="plain"> == </span><span class="identifier">THIRD_PERSON_PLURAL</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -448,7 +440,6 @@ what are used by Inform. In assertions:
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>And in other usages (e.g., in Inform's "now the pink door is not open"):
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::allow_generally</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tense</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">person</span><span class="plain">) {</span>
@@ -476,39 +467,38 @@ that tier if need be. Newly created tiers are insertion-sorted into a
 list, with lower priority numbers before higher ones.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VerbUsages::set_search_priority</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">verb_usage_tier</span><span class="plain"> *</span><span class="identifier">tier</span><span class="plain"> = </span><span class="identifier">first_search_tier</span><span class="plain">, *</span><span class="identifier">last_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_USAGES</span><span class="plain">, </span><span class="string">"Usage '%A' has priority %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_text</span><span class="plain">), </span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">tier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;priority</span><span class="plain"> &lt;= </span><span class="identifier">p</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;priority</span><span class="plain"> == </span><span class="identifier">p</span><span class="plain">) {</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_USAGES</span><span class="plain">, </span><span class="string">"Usage '%A' has priority %d\n"</span><span class="plain">, &amp;(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_text</span><span class="plain">), </span><span class="identifier">p</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">tier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">priority</span><span class="plain"> &lt;= </span><span class="identifier">p</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tier</span><span class="plain">-&gt;</span><span class="identifier">priority</span><span class="plain"> == </span><span class="identifier">p</span><span class="plain">) {</span>
                 <span class="functiontext">VerbUsages::add_to_tier</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">, </span><span class="identifier">tier</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">last_tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">;</span>
-            <span class="identifier">tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;next_tier</span><span class="plain">;</span>
+            <span class="identifier">tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">next_tier</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">tier</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">verb_usage_tier</span><span class="plain">);</span>
-        <span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;priority</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
-        <span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;tier_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">priority</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">tier_contents</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">VerbUsages::add_to_tier</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">, </span><span class="identifier">tier</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_tier</span><span class="plain">) {</span>
-            <span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;next_tier</span><span class="plain"> = </span><span class="identifier">last_tier</span><span class="plain">-</span><span class="element">&gt;next_tier</span><span class="plain">;</span>
-            <span class="identifier">last_tier</span><span class="plain">-</span><span class="element">&gt;next_tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">;</span>
+            <span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">next_tier</span><span class="plain"> = </span><span class="identifier">last_tier</span><span class="plain">-&gt;</span><span class="element">next_tier</span><span class="plain">;</span>
+            <span class="identifier">last_tier</span><span class="plain">-&gt;</span><span class="identifier">next_tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;next_tier</span><span class="plain"> = </span><span class="identifier">first_search_tier</span><span class="plain">;</span>
+            <span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">next_tier</span><span class="plain"> = </span><span class="identifier">first_search_tier</span><span class="plain">;</span>
             <span class="identifier">first_search_tier</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VerbUsages::add_to_tier</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">, </span><span class="reserved">verb_usage_tier</span><span class="plain"> *</span><span class="identifier">tier</span><span class="plain">) {</span>
-        <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">known</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;tier_contents</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">known</span><span class="plain">) &amp;&amp; (</span><span class="identifier">known</span><span class="plain">-</span><span class="element">&gt;next_within_tier</span><span class="plain">))</span>
-            <span class="identifier">known</span><span class="plain"> = </span><span class="identifier">known</span><span class="plain">-</span><span class="element">&gt;next_within_tier</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">known</span><span class="plain">) </span><span class="identifier">known</span><span class="plain">-</span><span class="element">&gt;next_within_tier</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">tier</span><span class="plain">-</span><span class="element">&gt;tier_contents</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
-        <span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;next_within_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">known</span><span class="plain"> = </span><span class="identifier">tier</span><span class="plain">-&gt;</span><span class="element">tier_contents</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">known</span><span class="plain">) &amp;&amp; (</span><span class="identifier">known</span><span class="plain">-&gt;</span><span class="element">next_within_tier</span><span class="plain">))</span>
+            <span class="identifier">known</span><span class="plain"> = </span><span class="identifier">known</span><span class="plain">-&gt;</span><span class="element">next_within_tier</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">known</span><span class="plain">) </span><span class="identifier">known</span><span class="plain">-&gt;</span><span class="element">next_within_tier</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">tier</span><span class="plain">-&gt;</span><span class="identifier">tier_contents</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
+        <span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">next_within_tier</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -521,12 +511,11 @@ list, with lower priority numbers before higher ones.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Miscellaneous utility routines. </b>A usage is "foreign" if it belongs to a language other than English:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::is_foreign</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain"> != </span><span class="identifier">English_language</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain"> != </span><span class="identifier">English_language</span><span class="plain">)) {</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -540,25 +529,24 @@ list, with lower priority numbers before higher ones.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And some access routines.
 </p>
 
-
 <pre class="display">
     <span class="constant">VERB_MEANING_TYPE</span><span class="plain"> *</span><span class="functiontext">VerbUsages::get_regular_meaning</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">second_prep</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">verb_meaning</span><span class="plain"> *</span><span class="identifier">uvm</span><span class="plain"> = </span><span class="functiontext">Verbs::regular_meaning</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">);</span>
+        <span class="reserved">verb_meaning</span><span class="plain"> *</span><span class="identifier">uvm</span><span class="plain"> = </span><span class="functiontext">Verbs::regular_meaning</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uvm</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="constant">VERB_MEANING_TYPE</span><span class="plain"> *</span><span class="identifier">root</span><span class="plain"> = </span><span class="functiontext">VerbMeanings::get_relational_meaning</span><span class="plain">(</span><span class="identifier">uvm</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;mood</span><span class="plain"> == </span><span class="identifier">PASSIVE_MOOD</span><span class="plain">) &amp;&amp; (</span><span class="identifier">root</span><span class="plain"> != </span><span class="identifier">VERB_MEANING_EQUALITY</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">mood</span><span class="plain"> == </span><span class="identifier">PASSIVE_MOOD</span><span class="plain">) &amp;&amp; (</span><span class="identifier">root</span><span class="plain"> != </span><span class="identifier">VERB_MEANING_EQUALITY</span><span class="plain">))</span>
             <span class="identifier">root</span><span class="plain"> = </span><span class="functiontext">VerbMeanings::reverse_VMT</span><span class="plain">(</span><span class="identifier">root</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">root</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::get_tense_used</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;tensed</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="identifier">tensed</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::is_used_negatively</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;negated_form_of_verb</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="identifier">negated_form_of_verb</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -581,12 +569,11 @@ even though there are typically fairly few verbs in the S-grammar, so we
 confine ourselves to words flagged in the vocabulary as being used in verbs.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_allow_unexpected_upper_case</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_allow_unexpected_upper_case</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Word::unexpectedly_upper_case</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)))) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::parse_as_strictly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;vu_text</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::parse_as_strictly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">vu_text</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -624,21 +611,20 @@ Rome) is (a room)", not "(The Glory That) is (Rome is a room)".
 which has a meaning.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">meaningful</span><span class="plain">-</span><span class="identifier">nonimperative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) {</span>
-            <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;form_structures</span><span class="plain"> &amp; (</span><span class="constant">SVO_FS_BIT</span><span class="plain"> + </span><span class="constant">SVOO_FS_BIT</span><span class="plain">))) {</span>
+            <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">form_structures</span><span class="plain"> &amp; (</span><span class="constant">SVO_FS_BIT</span><span class="plain"> + </span><span class="constant">SVOO_FS_BIT</span><span class="plain">))) {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-                            <span class="plain">(</span><span class="identifier">WordAssemblages::is_at</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)))) {</span>
+                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">preposition</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
+                            <span class="plain">(</span><span class="identifier">WordAssemblages::is_at</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">preposition</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)))) {</span>
                             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
-                            <span class="identifier">permitted_verb_identity</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain">;</span>
+                            <span class="identifier">permitted_verb_identity</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain">;</span>
                             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">-1;</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
@@ -655,19 +641,18 @@ that means it's "to be". So the following matches "is", "were not",
 and so on.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">copular</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_backtrack</span><span class="plain">) { </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">preform_backtrack</span><span class="plain">; </span><span class="reserved">goto</span><span class="plain"> </span><span class="identifier">BacktrackFrom</span><span class="plain">; }</span>
         <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain"> == </span><span class="identifier">copular_verb</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain"> == </span><span class="identifier">copular_verb</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> -(</span><span class="identifier">i</span><span class="plain">-1);</span>
                 <span class="plain">}</span>
-                <span class="identifier">BacktrackFrom</span><span class="plain">: ;</span>
+                <span class="identifier">BacktrackFrom:</span><span class="plain"> ;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -681,21 +666,20 @@ it to be in the present tense and the negative sense. So, for example, "does
 not carry" qualifies; "is not" or "supports" don't qualify.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">noncopular</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">-</span><span class="identifier">present</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_backtrack</span><span class="plain">) { </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">preform_backtrack</span><span class="plain">; </span><span class="reserved">goto</span><span class="plain"> </span><span class="identifier">BacktrackFrom</span><span class="plain">; }</span>
         <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;tensed</span><span class="plain"> == </span><span class="identifier">IS_TENSE</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;verb_used</span><span class="plain"> != </span><span class="identifier">copular_verb</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;negated_form_of_verb</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">tensed</span><span class="plain"> == </span><span class="identifier">IS_TENSE</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">verb_used</span><span class="plain"> != </span><span class="identifier">copular_verb</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">negated_form_of_verb</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> -(</span><span class="identifier">i</span><span class="plain">-1);</span>
                 <span class="plain">}</span>
-                <span class="identifier">BacktrackFrom</span><span class="plain">: ;</span>
+                <span class="identifier">BacktrackFrom:</span><span class="plain"> ;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -707,7 +691,6 @@ not carry" qualifies; "is not" or "supports" don't qualify.
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>A universal verb is one which implies the universal relation: in practice,
 that means it's "to relate".
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">universal</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
@@ -731,19 +714,18 @@ that means it's "to relate".
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>Any verb usage which is negative in sense: this is used only to diagnose problems.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_backtrack</span><span class="plain">) { </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">preform_backtrack</span><span class="plain">; </span><span class="reserved">goto</span><span class="plain"> </span><span class="identifier">BacktrackFrom</span><span class="plain">; }</span>
         <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;negated_form_of_verb</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">negated_form_of_verb</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> -(</span><span class="identifier">i</span><span class="plain">-1);</span>
                 <span class="plain">}</span>
-                <span class="identifier">BacktrackFrom</span><span class="plain">: ;</span>
+                <span class="identifier">BacktrackFrom:</span><span class="plain"> ;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -755,19 +737,18 @@ that means it's "to relate".
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>Any verb usage which is in the past tense: this is used only to diagnose problems.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">past</span><span class="plain">-</span><span class="identifier">tense</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preform_backtrack</span><span class="plain">) { </span><span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">preform_backtrack</span><span class="plain">; </span><span class="reserved">goto</span><span class="plain"> </span><span class="identifier">BacktrackFrom</span><span class="plain">; }</span>
         <span class="identifier">LOOP_OVER_USAGES</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-</span><span class="element">&gt;tensed</span><span class="plain"> != </span><span class="identifier">IS_TENSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain">-&gt;</span><span class="element">tensed</span><span class="plain"> != </span><span class="identifier">IS_TENSE</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">VerbUsages::parse_against_verb</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vu</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> -(</span><span class="identifier">i</span><span class="plain">-1);</span>
                 <span class="plain">}</span>
-                <span class="identifier">BacktrackFrom</span><span class="plain">: ;</span>
+                <span class="identifier">BacktrackFrom:</span><span class="plain"> ;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -779,7 +760,6 @@ that means it's "to relate".
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>The following are used only when recognising text expansions for adaptive
 uses of verbs:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">adaptive</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -819,17 +799,16 @@ names for verbs. For example, the parsing of the Inform constants "the verb take
 or "the verb to be able to see" use these.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">instance</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">, </span><span class="reserved">verb_form</span><span class="plain">) {</span>
-            <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;underlying_verb</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">;</span>
+            <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">underlying_verb</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vc</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">auxiliary_only</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">instance_of_verb</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">; *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">; *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -840,9 +819,9 @@ or "the verb to be able to see" use these.
     <span class="plain">&lt;</span><span class="identifier">instance</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">infinitive</span><span class="plain">-</span><span class="identifier">form</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">, </span><span class="reserved">verb_form</span><span class="plain">) {</span>
-            <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;underlying_verb</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">;</span>
+            <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">underlying_verb</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vc</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">auxiliary_only</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">instance_of_verb</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">; *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -855,7 +834,7 @@ or "the verb to be able to see" use these.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">verb_conjugation</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">auxiliary_only</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">VerbUsages::adaptive_person</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">modal_auxiliary_usage</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][0][</span><span class="identifier">p</span><span class="plain">] != 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">modal_auxiliary_usage</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][0][</span><span class="identifier">p</span><span class="plain">] != </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="identifier">word_assemblage</span><span class="plain"> *</span><span class="identifier">we_form</span><span class="plain"> = &amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][0][</span><span class="identifier">p</span><span class="plain">]);</span>
                     <span class="identifier">word_assemblage</span><span class="plain"> *</span><span class="identifier">we_dont_form</span><span class="plain"> = &amp;(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][1][</span><span class="identifier">p</span><span class="plain">]);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare_with_wording</span><span class="plain">(</span><span class="identifier">we_form</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)) {</span>
@@ -873,7 +852,6 @@ or "the verb to be able to see" use these.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Optimisation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VerbUsages::mark_as_verb</span><span class="plain">(</span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
@@ -902,7 +880,6 @@ or "the verb to be able to see" use these.
 <p class="endnote">The function VerbUsages::preform_optimiser is used in 1/lm (<a href="1-lm.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Adaptive person. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VerbUsages::adaptive_person</span><span class="plain">(</span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>

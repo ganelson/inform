@@ -81,15 +81,15 @@ inside the flask..." has the flask as focus.
 </li></ul>
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ACTION_FOCUS</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PARAMETER_FOCUS</span><span class="plain"> 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ACTION_FOCUS</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARAMETER_FOCUS</span><span class="plain"> </span><span class="constant">1</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">focus</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rulebook_focus</span><span class="plain">; </span>    <span class="comment">always <code class="display"><span class="extract">ACTION_FOCUS</span></code> or <code class="display"><span class="extract">PARAMETER_FOCUS</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_of_parameter</span><span class="plain">; </span>    <span class="comment">if created as <code class="display"><span class="extract">NO_FOCUS</span></code>, this is <code class="display"><span class="extract">NULL</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rules_always_test_actor</span><span class="plain">; </span>    <span class="comment">for action-tied check, carry out, report</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rulebook_focus</span><span class="plain">; </span><span class="comment">always <code class="display"><span class="extract">ACTION_FOCUS</span></code> or <code class="display"><span class="extract">PARAMETER_FOCUS</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_of_parameter</span><span class="plain">; </span><span class="comment">if created as <code class="display"><span class="extract">NO_FOCUS</span></code>, this is <code class="display"><span class="extract">NULL</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rules_always_test_actor</span><span class="plain">; </span><span class="comment">for action-tied check, carry out, report</span>
     <span class="plain">} </span><span class="reserved">focus</span><span class="plain">;</span>
 </pre>
 
@@ -123,17 +123,17 @@ it to proceed, because the default is <code class="display"><span class="extract
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">UNRECOGNISED_OUTCOME</span><span class="plain"> -1 </span>    <span class="comment">used in parsing only</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NO_OUTCOME</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SUCCESS_OUTCOME</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FAILURE_OUTCOME</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNRECOGNISED_OUTCOME</span><span class="plain"> -1 </span><span class="comment">used in parsing only</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_OUTCOME</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SUCCESS_OUTCOME</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FAILURE_OUTCOME</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">outcomes</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_outcome_declared</span><span class="plain">; </span>    <span class="comment">flag: whether author has declared this</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_rule_outcome</span><span class="plain">; </span>    <span class="comment">success, failure or none: see above</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">default_named_outcome</span><span class="plain">; </span>    <span class="comment">alternative to the above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_outcome_declared</span><span class="plain">; </span><span class="comment">flag: whether author has declared this</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_rule_outcome</span><span class="plain">; </span><span class="comment">success, failure or none: see above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">default_named_outcome</span><span class="plain">; </span><span class="comment">alternative to the above</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">named_outcomes</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">value_outcome_kind</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">outcomes</span><span class="plain">;</span>
@@ -147,10 +147,9 @@ it to proceed, because the default is <code class="display"><span class="extract
 its outcomes.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">named_rulebook_outcome</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">Name in source text</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">; </span><span class="comment">Name in source text</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">nro_iname</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">named_rulebook_outcome</span><span class="plain">;</span>
@@ -158,7 +157,7 @@ its outcomes.
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook_outcome</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">outcome_name</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_of_outcome</span><span class="plain">; </span>    <span class="comment">one of the three values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_of_outcome</span><span class="plain">; </span><span class="comment">one of the three values above</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">rulebook_outcome</span><span class="plain">;</span>
 </pre>
@@ -171,21 +170,20 @@ its outcomes.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::initialise_outcomes</span><span class="plain">(</span><span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">def</span><span class="plain">) {</span>
-        <span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;value_outcome_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
-        <span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">value_outcome_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_outcome_declared</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
+        <span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_named_outcome</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::set_default_outcome</span><span class="plain">(</span><span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">def</span><span class="plain">) {</span>
-        <span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
+        <span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Rulebooks::Outcomes::get_outcome_kind</span><span class="plain">(</span><span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;value_outcome_kind</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">value_outcome_kind</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -201,7 +199,6 @@ its outcomes.
 failure, or with no outcome. Any of these can be the default outcome, that is,
 can be what rulebook does if it none of its rules cause an outcome.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="reserved">default</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt; ::=</span>
@@ -222,13 +219,13 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_outcome_declared</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeTwice</span><span class="plain">),</span>
                 <span class="string">"the default outcome for this rulebook has already been declared"</span><span class="plain">,</span>
                 <span class="string">"and this is something which can only be done once."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">[1];</span>
+            <span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_outcome_declared</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">[1];</span>
         <span class="plain">}</span>
 </pre>
 
@@ -254,7 +251,6 @@ can be what rulebook does if it none of its rules cause an outcome.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_rbno_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -274,19 +270,18 @@ each of these still has one of the three results noted above; which will be
 
 </blockquote>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... |															==&gt; 0; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span>    <span class="comment">match only when looking ahead</span>
-        <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |	==&gt; 0</span>
-        <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;								==&gt; 0</span>
+        <span class="plain">... |															==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span><span class="comment">match only when looking ahead</span>
+        <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |	==&gt; </span><span class="constant">0</span>
+        <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;								==&gt; </span><span class="constant">0</span>
 
     <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; ::=</span>
-        <span class="plain">, </span><span class="identifier">_and</span><span class="plain">/</span><span class="identifier">or</span><span class="plain"> &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; |								==&gt; 0</span>
-        <span class="identifier">_</span><span class="plain">,/</span><span class="identifier">and</span><span class="plain">/</span><span class="identifier">or</span><span class="plain"> &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;								==&gt; 0</span>
+        <span class="plain">, </span><span class="identifier">_and</span><span class="plain">/</span><span class="identifier">or</span><span class="plain"> &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; |								==&gt; </span><span class="constant">0</span>
+        <span class="identifier">_</span><span class="plain">,/</span><span class="identifier">and</span><span class="plain">/</span><span class="identifier">or</span><span class="plain"> &lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;								==&gt; </span><span class="constant">0</span>
 
     <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; ::=</span>
-        <span class="plain">&lt;</span><span class="identifier">form</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt;			==&gt; 0; </span><span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">preform_lookahead_mode</span><span class="plain">) </span>&lt;<span class="cwebmacro">Adopt this new named rule outcome</span> <span class="cwebmacronumber">8.2</span>&gt;
+        <span class="plain">&lt;</span><span class="identifier">form</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt;			==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">preform_lookahead_mode</span><span class="plain">) </span>&lt;<span class="cwebmacro">Adopt this new named rule outcome</span> <span class="cwebmacronumber">8.2</span>&gt;
 
     <span class="plain">&lt;</span><span class="identifier">form</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt; ::=</span>
         <span class="plain">... ( &lt;</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt; - </span><span class="identifier">the</span><span class="plain"> </span><span class="reserved">default</span><span class="plain"> ) |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]; </span><span class="identifier">default_rbno_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span>
@@ -327,10 +322,10 @@ each of these still has one of the three results noted above; which will be
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">form</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">form</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rule</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">def</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">default_rbno_flag</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_named_outcome</span><span class="plain">) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultNamedOutcomeTwice</span><span class="plain">),</span>
                     <span class="string">"at most one of the named outcomes from a rulebook "</span>
                     <span class="string">"can be the default"</span><span class="plain">,</span>
@@ -338,22 +333,22 @@ each of these still has one of the three results noted above; which will be
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">def</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_outcome_declared</span><span class="plain">) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultOutcomeAlready</span><span class="plain">),</span>
                     <span class="string">"the default outcome for this rulebook has already "</span>
                     <span class="string">"been declared"</span><span class="plain">,</span>
                     <span class="string">"and this is something which can only be done once."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_outcome_declared</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_outcome_declared</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">koo</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">[1];</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">koo</span><span class="plain"> != </span><span class="constant">UNRECOGNISED_OUTCOME</span><span class="plain">) {</span>
             <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain"> = </span><span class="functiontext">Rulebooks::Outcomes::rbno_by_name</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">);</span>
             <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">ro</span><span class="plain">, *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dup</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) </span><span class="identifier">dup</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="identifier">named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) </span><span class="identifier">dup</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="identifier">last</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dup</span><span class="plain">) {</span>
@@ -362,11 +357,11 @@ each of these still has one of the three results noted above; which will be
                     <span class="string">"and to the same rulebook."</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">nro</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rulebook_outcome</span><span class="plain">);</span>
-                <span class="identifier">nro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">nro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain"> = </span><span class="identifier">rbno</span><span class="plain">;</span>
-                <span class="identifier">nro</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain"> = </span><span class="identifier">koo</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def</span><span class="plain">) </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last</span><span class="plain">) </span><span class="identifier">last</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">;</span>
+                <span class="identifier">nro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">nro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain"> = </span><span class="identifier">rbno</span><span class="plain">;</span>
+                <span class="identifier">nro</span><span class="plain">-&gt;</span><span class="element">kind_of_outcome</span><span class="plain"> = </span><span class="identifier">koo</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def</span><span class="plain">) </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">default_named_outcome</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last</span><span class="plain">) </span><span class="identifier">last</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">outcomes_being_parsed</span><span class="plain">-&gt;</span><span class="element">named_outcomes</span><span class="plain"> = </span><span class="identifier">nro</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -378,7 +373,6 @@ each of these still has one of the three results noted above; which will be
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>This family of constants (named rulebook outcomes) is special because it
 can be used in a void context as a sort of return-from-rule phrase.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">named</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -395,7 +389,6 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="functiontext">Rulebooks::Outcomes::rbno_by_name</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -406,23 +399,23 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="constant">OUTCOME_NAME_HMD</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
         <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">named_rulebook_outcome</span><span class="plain">);</span>
-        <span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+        <span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_named_rulebook_outcome</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">));</span>
-        <span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">OUTCOME_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">OUTCOME_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="reserved">outcomes</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = -1;</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO4_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO3_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO2_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO1_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO0_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO4_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO3_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO2_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO1_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">RBNO0_INAME_HL</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
-                <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+                <span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rbno</span><span class="plain">;</span>
@@ -430,48 +423,48 @@ can be used in a void context as a sort of return-from-rule phrase.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::compile_default_outcome</span><span class="plain">(</span><span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rtrue</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbo</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain">;</span>
+        <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbo</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_named_outcome</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rbo</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
+            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-&gt;</span><span class="element">kind_of_outcome</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUCCESS_OUTCOME:</span><span class="plain"> {</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbo</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">rtrue</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAILURE_OUTCOME:</span><span class="plain"> {</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbo</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">rtrue</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
+            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUCCESS_OUTCOME:</span><span class="plain"> {</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">rtrue</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAILURE_OUTCOME:</span><span class="plain"> {</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">rtrue</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
@@ -489,8 +482,8 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
             <span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain"> = </span><span class="functiontext">Rulebooks::get_outcomes</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
             <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">ro</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::Bookings::list_contains_ph</span><span class="plain">(</span><span class="functiontext">Rulebooks::first_booking</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">), </span><span class="identifier">ph</span><span class="plain">))</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ro</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -509,8 +502,8 @@ can be used in a void context as a sort of return-from-rule phrase.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::Bookings::list_contains_ph</span><span class="plain">(</span><span class="functiontext">Rulebooks::first_booking</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">), </span><span class="identifier">ph</span><span class="plain">)) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">okay</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">ro</span><span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">)</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">)</span>
                         <span class="identifier">okay</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">okay</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">rb</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -525,8 +518,8 @@ can be used in a void context as a sort of return-from-rule phrase.
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain">) {</span>
                 <span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain"> = </span><span class="functiontext">Rulebooks::get_outcomes</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
                 <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">ro</span><span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) {</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain"> == </span><span class="identifier">rbno</span><span class="plain">) {</span>
                         <span class="identifier">rbo</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
@@ -534,31 +527,31 @@ can be used in a void context as a sort of return-from-rule phrase.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rbo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"rbno with no rb context"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: {</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">rbo</span><span class="plain">-&gt;</span><span class="element">kind_of_outcome</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUCCESS_OUTCOME:</span><span class="plain"> {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKSUCCEEDS_HL</span><span class="plain">);</span>
                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
-                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAILURE_OUTCOME:</span><span class="plain"> {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEBOOKFAILS_HL</span><span class="plain">);</span>
                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K_rulebook_outcome</span><span class="plain">);</span>
-                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_OUTCOME</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_OUTCOME:</span>
                 <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad RBO outcome kind"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -566,31 +559,31 @@ can be used in a void context as a sort of return-from-rule phrase.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::index_outcomes</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">outcomes</span><span class="plain"> *</span><span class="identifier">outs</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">suppress_outcome</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">suppress_outcome</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">rulebook_outcome</span><span class="plain"> *</span><span class="identifier">ro</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-                <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;outcome_name</span><span class="plain">;</span>
-                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"hanging"</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">named_outcomes</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain">; </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+                <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="element">outcome_name</span><span class="plain">;</span>
+                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"hanging"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;outcome&lt;/i&gt;&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain"> == </span><span class="identifier">ro</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;"</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain"> == </span><span class="identifier">ro</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/b&gt; (default)"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="identifier">default_named_outcome</span><span class="plain"> == </span><span class="identifier">ro</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="identifier">default_named_outcome</span><span class="plain"> == </span><span class="identifier">ro</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/b&gt; (default)"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" - &lt;i&gt;"</span><span class="plain">);</span>
-                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ro</span><span class="plain">-</span><span class="element">&gt;kind_of_outcome</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a success"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a failure"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_OUTCOME</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"no outcome"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ro</span><span class="plain">-&gt;</span><span class="identifier">kind_of_outcome</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUCCESS_OUTCOME:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a success"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAILURE_OUTCOME:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a failure"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_OUTCOME:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"no outcome"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/i&gt;"</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_named_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain"> != </span><span class="constant">NO_OUTCOME</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="identifier">default_named_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain"> != </span><span class="constant">NO_OUTCOME</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">suppress_outcome</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"hanging"</span><span class="plain">);</span>
+            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"hanging"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;default outcome is&lt;/i&gt; "</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">outs</span><span class="plain">-</span><span class="element">&gt;default_rule_outcome</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUCCESS_OUTCOME</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"success"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">FAILURE_OUTCOME</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"failure"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">outs</span><span class="plain">-&gt;</span><span class="element">default_rule_outcome</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUCCESS_OUTCOME:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"success"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FAILURE_OUTCOME:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"failure"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -600,8 +593,8 @@ can be used in a void context as a sort of return-from-rule phrase.
         <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">, </span><span class="reserved">named_rulebook_outcome</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-            <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">, </span><span class="identifier">RV</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
+            <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">, </span><span class="identifier">RV</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">RV</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -613,7 +606,7 @@ can be used in a void context as a sort of return-from-rule phrase.
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rbnov_s</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -637,7 +630,7 @@ can be used in a void context as a sort of return-from-rule phrase.
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Rulebooks::Outcomes::get_default_value</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">rbno</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rbno</span><span class="plain">, </span><span class="reserved">named_rulebook_outcome</span><span class="plain">)</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rbno</span><span class="plain">-</span><span class="element">&gt;nro_iname</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rbno</span><span class="plain">-&gt;</span><span class="element">nro_iname</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -662,10 +655,9 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::initialise_focus</span><span class="plain">(</span><span class="reserved">focus</span><span class="plain"> *</span><span class="identifier">foc</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">parameter_kind</span><span class="plain">) {</span>
-        <span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rules_always_test_actor</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rules_always_test_actor</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parametrisation</span><span class="plain"> = </span><span class="constant">PARAMETER_FOCUS</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">parameter_kind</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">)) </span><span class="identifier">parametrisation</span><span class="plain"> = </span><span class="constant">ACTION_FOCUS</span><span class="plain">;</span>
@@ -678,9 +670,9 @@ can be used in a void context as a sort of return-from-rule phrase.
                 <span class="string">"rules are a value based rulebook' is too vague."</span><span class="plain">);</span>
             <span class="identifier">parameter_kind</span><span class="plain"> = </span><span class="identifier">K_object</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;kind_of_parameter</span><span class="plain"> = </span><span class="identifier">parameter_kind</span><span class="plain">;</span>
+        <span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">kind_of_parameter</span><span class="plain"> = </span><span class="identifier">parameter_kind</span><span class="plain">;</span>
 
-        <span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rulebook_focus</span><span class="plain"> = </span><span class="identifier">parametrisation</span><span class="plain">;</span>
+        <span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rulebook_focus</span><span class="plain"> = </span><span class="identifier">parametrisation</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -690,32 +682,31 @@ can be used in a void context as a sort of return-from-rule phrase.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::modify_rule_to_suit_focus</span><span class="plain">(</span><span class="reserved">focus</span><span class="plain"> *</span><span class="identifier">foc</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rules_always_test_actor</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rules_always_test_actor</span><span class="plain">) {</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">,</span>
-                <span class="string">"Setting always test actor for destination rulebook\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="string">"Setting always test actor for destination rulebook\n"</span><span class="plain">);</span>
             <span class="functiontext">Rules::set_always_test_actor</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rulebook_focus</span><span class="plain"> == </span><span class="constant">PARAMETER_FOCUS</span><span class="plain">){</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rulebook_focus</span><span class="plain"> == </span><span class="constant">PARAMETER_FOCUS</span><span class="plain">){</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">,</span>
-                <span class="string">"Setting never test actor for destination rulebook\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="string">"Setting never test actor for destination rulebook\n"</span><span class="plain">);</span>
             <span class="functiontext">Rules::set_never_test_actor</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::get_focus</span><span class="plain">(</span><span class="reserved">focus</span><span class="plain"> *</span><span class="identifier">foc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rulebook_focus</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rulebook_focus</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Rulebooks::Outcomes::get_focus_parameter_kind</span><span class="plain">(</span><span class="reserved">focus</span><span class="plain"> *</span><span class="identifier">foc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;kind_of_parameter</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">kind_of_parameter</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rulebooks::Outcomes::set_focus_ata</span><span class="plain">(</span><span class="reserved">focus</span><span class="plain"> *</span><span class="identifier">foc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ata</span><span class="plain">) {</span>
-        <span class="identifier">foc</span><span class="plain">-</span><span class="element">&gt;rules_always_test_actor</span><span class="plain"> = </span><span class="identifier">ata</span><span class="plain">;</span>
+        <span class="identifier">foc</span><span class="plain">-&gt;</span><span class="element">rules_always_test_actor</span><span class="plain"> = </span><span class="identifier">ata</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

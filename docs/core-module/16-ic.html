@@ -67,12 +67,11 @@
 structure, but it only has relevance if the subject represents an object:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">counting_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">instance_count_prop</span><span class="plain">; </span>    <span class="comment">the (<code class="display"><span class="extract">I6</span></code> only) IK-Count property for this kind</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">instance_link_prop</span><span class="plain">; </span>    <span class="comment">the (<code class="display"><span class="extract">I6</span></code> only) IK-Link property for this kind</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">has_instances</span><span class="plain">; </span>    <span class="comment">are there any instances of this kind?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">instance_count_prop</span><span class="plain">; </span><span class="comment">the (<code class="display"><span class="extract">I6</span></code> only) IK-Count property for this kind</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">instance_link_prop</span><span class="plain">; </span><span class="comment">the (<code class="display"><span class="extract">I6</span></code> only) IK-Link property for this kind</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">has_instances</span><span class="plain">; </span><span class="comment">are there any instances of this kind?</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">counting_data</span><span class="plain">;</span>
 </pre>
@@ -86,16 +85,14 @@ additional property called <code class="display"><span class="extract">vector</s
 route-finding through relations on objects.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_vector</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_KD_Count</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">see below</span>
+    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_KD_Count</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">see below</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Plugin startup. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Counting::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -113,7 +110,6 @@ route-finding through relations on objects.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Initialising. </b>Counting data is actually relevant only for kinds, and remains blank for instances.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::counting_new_subject_notify</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="identifier">CREATE_PF_DATA</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">, </span><span class="functiontext">PL::Counting::new_data</span><span class="plain">);</span>
@@ -122,9 +118,9 @@ route-finding through relations on objects.
 
     <span class="reserved">counting_data</span><span class="plain"> *</span><span class="functiontext">PL::Counting::new_data</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="reserved">counting_data</span><span class="plain"> *</span><span class="identifier">cd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">counting_data</span><span class="plain">);</span>
-        <span class="identifier">cd</span><span class="plain">-</span><span class="element">&gt;instance_count_prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">cd</span><span class="plain">-</span><span class="element">&gt;instance_link_prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">cd</span><span class="plain">-</span><span class="element">&gt;has_instances</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">cd</span><span class="plain">-&gt;</span><span class="element">instance_count_prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">cd</span><span class="plain">-&gt;</span><span class="element">instance_link_prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">cd</span><span class="plain">-&gt;</span><span class="element">has_instances</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cd</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -153,7 +149,7 @@ numbered 0.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">kind_instance_counts</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_kind_instance_count</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_kind_instance_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Counting::make_instance_counts</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Allocate the instance count array in memory</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
@@ -201,7 +197,7 @@ a problem in practice; the number seldom exceeds a few hundred.
 
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix_count</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)</span>
                     <span class="identifier">INSTANCE_COUNT</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) = </span><span class="identifier">ix_count</span><span class="plain">++;</span>
             <span class="plain">}</span>
@@ -213,7 +209,6 @@ a problem in practice; the number seldom exceeds a few hundred.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Instance counts are actually useful to several other plugins, so we provide:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::instance_count</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -240,7 +235,6 @@ to get rid of the <code class="display"><span class="extract">selfobj</span></co
 an explicit player.
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">PL::Counting::next_instance_of</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -251,7 +245,7 @@ an explicit player.
             <span class="identifier">resuming</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::aliased_but_diverted</span><span class="plain">(</span><span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)))</span>
-                <span class="reserved">continue</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">selfobj</span></code> may not count</span>
+                <span class="reserved">continue</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">selfobj</span></code> may not count</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -264,7 +258,6 @@ an explicit player.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>For compilation purposes, it's useful to express this as a specification:
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">PL::Counting::next_instance_of_as_value</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
@@ -290,7 +283,6 @@ need only be defined as a constant, and need not be stored in a memory word,
 since Inform always compiles code which knows which kind it's looping over.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::first_instance</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -314,16 +306,16 @@ since Inform always compiles code which knows which kind it's looping over.
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::instance_count_iname</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::I6_classnumber</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_1_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 2) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_2_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 3) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_3_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 4) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_4_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 5) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_5_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 6) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_6_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 7) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_7_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 8) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_8_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 9) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_9_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 10) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_10_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_1_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_2_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_3_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_4_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">5</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_5_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">6</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_6_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">7</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_7_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">8</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_8_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">9</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_9_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_10_HL</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Hierarchy::derive_iname_in</span><span class="plain">(</span><span class="constant">COUNT_INSTANCE_HL</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
     <span class="plain">}</span>
 
@@ -356,18 +348,17 @@ since Inform always compiles code which knows which kind it's looping over.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Counting kinds of object, not very quickly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::kind_of_object_count</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">IK</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">IK</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">IK</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
                 <span class="identifier">c</span><span class="plain">++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">IK</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -393,13 +384,12 @@ this is what <code class="display"><span class="extract">IK4_Count</span></code>
 of model completion:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::counting_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Create and assert zero values of the vector property</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 4) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Create the two instance properties for each kind of object</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
             <span class="functiontext">PL::Counting::make_instance_counts</span><span class="plain">();</span>
             &lt;<span class="cwebmacro">Assert values of the two instance properties for each instance</span> <span class="cwebmacronumber">12.3</span>&gt;<span class="plain">;</span>
@@ -447,11 +437,11 @@ for the relation-route-finding code at run time.
                 <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">count_iname</span><span class="plain"> = </span><span class="functiontext">PL::Counting::instance_count_iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
 
-                <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_count_prop</span><span class="plain"> =</span>
+                <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">instance_count_prop</span><span class="plain"> =</span>
                     <span class="functiontext">Properties::Valued::new_nameless_using</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">count_iname</span><span class="plain">);</span>
 
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">next_iname</span><span class="plain"> = </span><span class="functiontext">PL::Counting::next_instance</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_link_prop</span><span class="plain"> =</span>
+                <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">instance_link_prop</span><span class="plain"> =</span>
                     <span class="functiontext">Properties::Valued::new_nameless_using</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">next_iname</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="identifier">P_KD_Count</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"KD_Count"</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
@@ -476,7 +466,7 @@ for the relation-route-finding code at run time.
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
                     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                    <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;has_instances</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">has_instances</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Fill in this IK-Count property</span> <span class="cwebmacronumber">12.3.2</span>&gt;<span class="plain">;</span>
                     &lt;<span class="cwebmacro">Fill in this IK-Link property</span> <span class="cwebmacronumber">12.3.3</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
@@ -535,7 +525,7 @@ and so on for all other kinds.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ic</span><span class="plain"> = </span><span class="identifier">INSTANCE_COUNT</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">the_count</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_int</span><span class="plain">(</span><span class="identifier">ic</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
         <span class="functiontext">Properties::Valued::assert</span><span class="plain">(</span>
-            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_count_prop</span><span class="plain">,</span>
+            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">instance_count_prop</span><span class="plain">,</span>
             <span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">the_count</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
 
@@ -555,7 +545,7 @@ records the next instance in compilation order:
 
 <pre class="displaydefn">
         <span class="functiontext">Properties::Valued::assert</span><span class="plain">(</span>
-            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_link_prop</span><span class="plain">,</span>
+            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">instance_link_prop</span><span class="plain">,</span>
             <span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="functiontext">PL::Counting::next_instance_of_as_value</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
 
@@ -565,12 +555,11 @@ records the next instance in compilation order:
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">PL::Counting::instance_count_property_symbol</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;instance_count_prop</span><span class="plain">;</span>
+            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">instance_count_prop</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -585,7 +574,6 @@ records the next instance in compilation order:
 per instance per kind, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::counting_estimate_property_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">words_used</span><span class="plain">) {</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">;</span>
@@ -593,7 +581,7 @@ per instance per kind, so:
             <span class="identifier">infs</span><span class="plain">; </span><span class="identifier">infs</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k2</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">k2</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))</span>
-                <span class="plain">*</span><span class="identifier">words_used</span><span class="plain"> += 4;</span>
+                <span class="plain">*</span><span class="identifier">words_used</span><span class="plain"> += </span><span class="constant">4</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -608,12 +596,11 @@ perform loops through kinds quickly at run-time. We start from the First
 constants, and use the Link constants to progress; we stop at <code class="display"><span class="extract">nothing</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Counting::optimise_loop</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">counting_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-</span><span class="element">&gt;has_instances</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span>    <span class="comment">(to avoid writing misleading code)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">counting</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">)-&gt;</span><span class="element">has_instances</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="comment">(to avoid writing misleading code)</span>
             <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">,</span>
                 <span class="string">"for (*1=nothing: false: )"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>

@@ -115,7 +115,6 @@ description of what it is:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span>
         <span class="plain">extension: Locksmith by Emily Short v12 in directory inform7/Internal/Extensions/Emily Short</span>
@@ -129,7 +128,6 @@ example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x</span>
         <span class="plain">extension: Complex Listing by Emily Short v9 in directory junk.</span>
@@ -140,7 +138,6 @@ For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">extension: Skeleton Keys by Emily Short - 1 error</span>
@@ -155,7 +152,6 @@ the software, but it's still helpful.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'</span>
@@ -179,7 +175,6 @@ source text is as follows:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Include Basic Help Menu by Emily Short.</span>
         
@@ -190,7 +185,6 @@ source text is as follows:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inbuild/Tangled/inbuild -inspect 'Menu Time.inform'</span>
@@ -203,7 +197,6 @@ resources.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">[f59] Menu Time.inform/Build/output.ulx</span>
@@ -256,7 +249,6 @@ want to know is: what do I need to use, or to build, something?
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">extension: Basic Help Menu by Emily Short</span>
         <span class="plain">  extension: Menus by Emily Short v3</span>
@@ -267,7 +259,6 @@ want to know is: what do I need to use, or to build, something?
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">projectbundle: Menu Time.inform</span>
@@ -280,7 +271,6 @@ extension, we get:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">extension: Basic Help Menu by Emily Short</span>
 </pre>
@@ -290,7 +280,6 @@ to build them. But <code class="display"><span class="extract">-build-needs</spa
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">projectbundle: Menu Time.inform</span>
@@ -350,7 +339,6 @@ for the project, we see that it includes:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">missing extension: Xylophones by Jimmy Stewart, any version will do</span>
 </pre>
@@ -367,7 +355,6 @@ for the project, we see that it includes:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">missing extension: Xylophones by Jimmy Stewart, need version in range [6.2,7-A)</span>
@@ -399,7 +386,6 @@ binary files of Inter, one for each possible architecture.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -build Example.inform</span>
 </pre>
@@ -426,7 +412,6 @@ Inbuild is a call to <code class="display"><span class="extract">inblorb</span><
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -release -build Example.inform</span>
@@ -464,7 +449,6 @@ can be an Inform project. Multiple extensions, or kits, are fine.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter</span>
         <span class="plain">kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit</span>
@@ -479,7 +463,6 @@ the project target using <code class="display"><span class="extract">-project</s
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -build -project Example.inform</span>
@@ -500,7 +483,6 @@ Inbuild will act on every copy it can find which matches that. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'</span>
 </pre>
@@ -509,7 +491,6 @@ Inbuild will act on every copy it can find which matches that. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'</span>
@@ -523,7 +504,6 @@ and minimum version number, use <code class="display"><span class="extract">max<
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'</span>
@@ -561,7 +541,6 @@ for the authpr's name. Thus:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Extensions/Emily Short/Locksmith.i7x</span>
 </pre>
@@ -577,7 +556,6 @@ Thus, we can have e.g.:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Extensions/Emily Short/Locksmith-v3_2.i7x</span>
@@ -680,7 +658,6 @@ useful filing commands.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x</span>

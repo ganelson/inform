@@ -77,7 +77,7 @@ we don't want to assume that.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">feed_t</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span>    <span class="comment">(not a typedef only because it makes trouble for inweb)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">feed_t</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="comment">(not a typedef only because it makes trouble for inweb)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Feed sessions. </b>There are two ways to make a feed. One is simply to call one of the <code class="display"><span class="extract">feed_text</span></code>
 routines below and use its output. The other is for a multi-stage process,
@@ -85,7 +85,6 @@ that is, for when multiple pieces of text need to go into the same feed:
 to start such, call <code class="display"><span class="extract">Feeds::begin</span></code> and get an ID; to end, call <code class="display"><span class="extract">Feeds::end</span></code>
 with the corresponding ID back again.
 </p>
-
 
 <pre class="display">
     <span class="constant">feed_t</span><span class="plain"> </span><span class="functiontext">Feeds::begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -105,7 +104,6 @@ with the corresponding ID back again.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Feeding a feed. </b>Within a feed session, we can pass two sorts of text into the lexer: first,
 raw strings.
 </p>
-
 
 <pre class="display">
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
@@ -146,12 +144,11 @@ raw strings.
 running long after the initial vocabulary identification phase of Inform.
 </p>
 
-
 <pre class="display">
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Feeds::feed_text_full</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">expand_strings</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">nonstandard</span><span class="plain">) {</span>
         <span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">as_if_from_nowhere</span><span class="plain">;</span>
-        <span class="identifier">as_if_from_nowhere</span><span class="element">.file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">as_if_from_nowhere</span><span class="element">.line_number</span><span class="plain"> = 1;</span>
+        <span class="identifier">as_if_from_nowhere</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">as_if_from_nowhere</span><span class="plain">.</span><span class="element">line_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
         <span class="functiontext">Lexer::feed_begins</span><span class="plain">(</span><span class="identifier">as_if_from_nowhere</span><span class="plain">);</span>
 
@@ -163,11 +160,11 @@ running long after the initial vocabulary identification phase of Inform.
         <span class="plain">} </span><span class="reserved">else</span>
             <span class="identifier">lexer_punctuation_marks</span><span class="plain"> = </span><span class="constant">STANDARD_PUNCTUATION_MARKS</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != 0; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1]; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">-1]; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
             <span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> != 0) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
             <span class="functiontext">Lexer::feed_triplet</span><span class="plain">(</span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -178,8 +175,8 @@ running long after the initial vocabulary identification phase of Inform.
 
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Feeds::feed_stream_full</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">expand_strings</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">nonstandard</span><span class="plain">) {</span>
         <span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">as_if_from_nowhere</span><span class="plain">;</span>
-        <span class="identifier">as_if_from_nowhere</span><span class="element">.file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">as_if_from_nowhere</span><span class="element">.line_number</span><span class="plain"> = 1;</span>
+        <span class="identifier">as_if_from_nowhere</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">as_if_from_nowhere</span><span class="plain">.</span><span class="element">line_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
         <span class="functiontext">Lexer::feed_begins</span><span class="plain">(</span><span class="identifier">as_if_from_nowhere</span><span class="plain">);</span>
 
@@ -193,9 +190,9 @@ running long after the initial vocabulary identification phase of Inform.
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">L</span><span class="plain">=</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
             <span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> != 0) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+1); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+1); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
             <span class="functiontext">Lexer::feed_triplet</span><span class="plain">(</span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -213,7 +210,6 @@ running long after the initial vocabulary identification phase of Inform.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The only other possible action is to splice:
 </p>
-
 
 <pre class="display">
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Feeds::feed_wording</span><span class="plain">(</span><span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>

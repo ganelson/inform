@@ -77,11 +77,10 @@ possible values these are.)
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Conditions::initialise</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_of</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_anonymously_named</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_of</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_anonymously_named</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -90,7 +89,6 @@ possible values these are.)
 <p class="endnote">The function Properties::Conditions::initialise is used in 15/vp (<a href="15-vp.html#SP4">&#167;4</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::Conditions::new</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">set</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">already</span><span class="plain">) {</span>
@@ -101,10 +99,10 @@ possible values these are.)
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">common_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mixed_kind</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">some_new</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CKW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NKW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">option</span><span class="plain"> = </span><span class="identifier">set</span><span class="plain">; </span><span class="identifier">option</span><span class="plain">; </span><span class="identifier">option</span><span class="plain"> = (</span><span class="identifier">option</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">)?(</span><span class="identifier">option</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">option</span><span class="plain"> = </span><span class="identifier">set</span><span class="plain">; </span><span class="identifier">option</span><span class="plain">; </span><span class="identifier">option</span><span class="plain"> = (</span><span class="identifier">option</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">)?(</span><span class="identifier">option</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">option</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">)</span>
-                    <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">option</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+                    <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">option</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">option</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">PW</span><span class="plain">)) {</span>
@@ -140,7 +138,7 @@ possible values these are.)
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">common_kind</span><span class="plain">);</span>
-                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">)); </span>    <span class="comment">because it won't parse</span>
+                    <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">)); </span><span class="comment">because it won't parse</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                         <span class="string">"In %1, every value you supply as a possibility is %2. "</span>
                         <span class="string">"That would be okay if it were a property which is a condition "</span>
@@ -161,9 +159,9 @@ possible values these are.)
         <span class="functiontext">Calculus::Propositions::Assert::assert_true</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">prevailing_mood</span><span class="plain">);</span>
 
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_of</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_anonymously_named</span><span class="plain"> = </span><span class="identifier">anon</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_of</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_anonymously_named</span><span class="plain"> = </span><span class="identifier">anon</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -198,17 +196,17 @@ nameless subjects.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ct</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ct</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_of</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_anonymously_named</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">condition_of</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_anonymously_named</span><span class="plain">))</span>
                 <span class="identifier">ct</span><span class="plain">++;</span>
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W2</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W2</span><span class="plain">)) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">W2</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">" nameless "</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">L</span><span class="string">" condition "</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ct</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ct</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">numb</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">numb</span><span class="plain">, </span><span class="string">" %d "</span><span class="plain">, </span><span class="identifier">ct</span><span class="plain">+1);</span>
             <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">numb</span><span class="plain">);</span>
@@ -223,11 +221,10 @@ nameless subjects.)
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Properties::Conditions::of_what</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;condition_of</span><span class="plain">; </span>    <span class="comment">which will be null if not a condition property</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">condition_of</span><span class="plain">; </span><span class="comment">which will be null if not a condition property</span>
     <span class="plain">}</span>
 </pre>
 
@@ -250,21 +247,20 @@ In particular, this happens with conditions:
 becomes the name of a property.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::Conditions::name_can_coincide_with_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">can_coincide_with_property</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="identifier">can_coincide_with_property</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">coinciding_property</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="identifier">coinciding_property</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Conditions::set_coinciding_property</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">coinciding_property</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">coinciding_property</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
     <span class="plain">}</span>
 
 </pre>

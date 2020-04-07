@@ -107,7 +107,6 @@ token list:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">drink # milk #</span>
 </pre>
@@ -128,13 +127,13 @@ generated from its token list, and a pointer to some structure.
 
 <pre class="display">
 
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain"> 32</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain"> </span><span class="constant">32</span>
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">excerpt_meaning</span><span class="plain"> {</span>
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">meaning_code</span><span class="plain">; </span>    <span class="comment">what kind of meaning: a single MC, not a bitmap</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">; </span>    <span class="comment">data structure being referred to</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_em_tokens</span><span class="plain">; </span>    <span class="comment">length of token list</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">em_tokens</span><span class="plain">[</span><span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain">]; </span>    <span class="comment">token list</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">excerpt_hash</span><span class="plain">; </span>    <span class="comment">hash code generated from the token list</span>
+        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">meaning_code</span><span class="plain">; </span><span class="comment">what kind of meaning: a single MC, not a bitmap</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">; </span><span class="comment">data structure being referred to</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_em_tokens</span><span class="plain">; </span><span class="comment">length of token list</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">em_tokens</span><span class="plain">[</span><span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain">]; </span><span class="comment">token list</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">excerpt_hash</span><span class="plain">; </span><span class="comment">hash code generated from the token list</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">excerpt_meaning</span><span class="plain">;</span>
 </pre>
@@ -162,9 +161,9 @@ one of the <code class="display"><span class="extract">*_MC</span></code> values
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MISCELLANEOUS_MC</span><span class="plain">			0</span><span class="identifier">x00000001</span><span class="plain"> </span>    <span class="comment">a grab-bag of other possible nouns</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOUN_MC</span><span class="plain">					0</span><span class="identifier">x00000002</span><span class="plain"> </span>    <span class="comment">e.g., <code class="display"><span class="extract">upright chair</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">ADJECTIVE_MC</span><span class="plain">				0</span><span class="identifier">x00000004</span><span class="plain"> </span>    <span class="comment">e.g., <code class="display"><span class="extract">invisible</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">MISCELLANEOUS_MC</span><span class="plain">			</span><span class="constant">0x00000001</span><span class="plain"> </span><span class="comment">a grab-bag of other possible nouns</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOUN_MC</span><span class="plain">					</span><span class="constant">0x00000002</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">upright chair</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">ADJECTIVE_MC</span><span class="plain">				</span><span class="constant">0x00000004</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">invisible</span></code></span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Each word in our vocabulary will be annotated with this structure:
 </p>
@@ -176,12 +175,12 @@ one of the <code class="display"><span class="extract">*_MC</span></code> values
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">vocabulary_meaning</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">one_word_kind</span><span class="plain">; </span>    <span class="comment">ditto as a kind with single-word name</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">start_list</span><span class="plain">; </span>    <span class="comment">meanings starting with this</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">end_list</span><span class="plain">; </span>    <span class="comment">meanings ending with this</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">middle_list</span><span class="plain">; </span>    <span class="comment">meanings with this inside but at neither end</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">subset_list</span><span class="plain">; </span>    <span class="comment">meanings allowing subsets which include this</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">subset_list_length</span><span class="plain">; </span>    <span class="comment">number of meanings in the subset list</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">one_word_kind</span><span class="plain">; </span><span class="comment">ditto as a kind with single-word name</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">start_list</span><span class="plain">; </span><span class="comment">meanings starting with this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">end_list</span><span class="plain">; </span><span class="comment">meanings ending with this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">middle_list</span><span class="plain">; </span><span class="comment">meanings with this inside but at neither end</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">subset_list</span><span class="plain">; </span><span class="comment">meanings allowing subsets which include this</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">subset_list_length</span><span class="plain">; </span><span class="comment">number of meanings in the subset list</span>
     <span class="plain">} </span><span class="reserved">vocabulary_meaning</span><span class="plain">;</span>
 </pre>
 
@@ -192,7 +191,6 @@ one of the <code class="display"><span class="extract">*_MC</span></code> values
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>With the following initialiser:
 </p>
 
-
 <pre class="display">
     <span class="reserved">vocabulary_meaning</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::new_meaning</span><span class="plain">(</span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -202,9 +200,9 @@ one of the <code class="display"><span class="extract">*_MC</span></code> values
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ve</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">ORDINAL_MC</span><span class="plain">) </span><span class="functiontext">Cardinals::mark_as_ordinal</span><span class="plain">(</span><span class="identifier">ve</span><span class="plain">);</span>
 
         <span class="reserved">vocabulary_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">;</span>
-        <span class="identifier">vm</span><span class="element">.start_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="element">.end_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="element">.middle_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">vm</span><span class="element">.subset_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="element">.subset_list_length</span><span class="plain"> = 0;</span>
-        <span class="identifier">vm</span><span class="element">.one_word_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vm</span><span class="plain">.</span><span class="element">start_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="plain">.</span><span class="element">end_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="plain">.</span><span class="element">middle_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vm</span><span class="plain">.</span><span class="element">subset_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">vm</span><span class="plain">.</span><span class="element">subset_list_length</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">vm</span><span class="plain">.</span><span class="element">one_word_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -217,14 +215,13 @@ one of the <code class="display"><span class="extract">*_MC</span></code> values
 as yet.
 </p>
 
-
 <pre class="display">
     <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="functiontext">ExcerptMeanings::new</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mc</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">) {</span>
         <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">excerpt_meaning</span><span class="plain">);</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;meaning_code</span><span class="plain"> = </span><span class="identifier">mc</span><span class="plain">;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;data</span><span class="plain"> = </span><span class="identifier">data</span><span class="plain">;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> = 0;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;excerpt_hash</span><span class="plain"> = 0;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">meaning_code</span><span class="plain"> = </span><span class="identifier">mc</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">data</span><span class="plain"> = </span><span class="identifier">data</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">excerpt_hash</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -236,10 +233,9 @@ as yet.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Access routines:
 </p>
 
-
 <pre class="display">
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::data</span><span class="plain">(</span><span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;data</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="identifier">data</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -250,26 +246,25 @@ as yet.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Debugging log. </b>First to log a general bitmap made up from meaning codes:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vem</span><span class="plain">) {</span>
         <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain"> = (</span><span class="reserved">excerpt_meaning</span><span class="plain"> *) </span><span class="identifier">vem</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-em&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"{"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"#"</span><span class="plain">); </span><span class="reserved">continue</span><span class="plain">; }</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%V"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"#"</span><span class="plain">); </span><span class="reserved">continue</span><span class="plain">; }</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%V"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
         <span class="plain">}</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">" = $N"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;meaning_code</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">" = $N"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">meaning_code</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"}"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::log_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">, </span><span class="reserved">excerpt_meaning</span><span class="plain">)</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%02d: %08x $M\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">pointer_sized_int</span><span class="plain">) </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%02d: %08x $M\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">pointer_sized_int</span><span class="plain">) </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -304,14 +299,13 @@ the most recent.
 bits 31 and 32 left clear.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cached_hash_w1</span><span class="plain"> = -2, </span><span class="identifier">cached_hash_w2</span><span class="plain"> = -2, </span><span class="identifier">cached_value</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::hash_code</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">w1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">w2</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">h</span><span class="plain"> = 0; </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">h</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">w1</span><span class="plain"> == </span><span class="identifier">cached_hash_w1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">w2</span><span class="plain"> == </span><span class="identifier">cached_hash_w2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">cached_value</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">w1</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">w2</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
@@ -343,25 +337,25 @@ same meaning as in the first case above.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">CAPITALISED_VARIANT_FORM</span><span class="plain"> (1 &lt;&lt; 30)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CAPITALISED_VARIANT_FORM</span><span class="plain"> (1 &lt;&lt; </span><span class="constant">30</span><span class="plain">)</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::hash_code_from_token_list</span><span class="plain">(</span><span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">h</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Empty text when registering"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> &gt;= 1) &amp;&amp; (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0])) {</span>
-            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">lcf</span><span class="plain"> = </span><span class="identifier">Vocabulary::get_lower_case_form</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0]);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">h</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Empty text when registering"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0])) {</span>
+            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">lcf</span><span class="plain"> = </span><span class="identifier">Vocabulary::get_lower_case_form</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0]);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lcf</span><span class="plain">) {</span>
                 <span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | </span><span class="constant">CAPITALISED_VARIANT_FORM</span><span class="plain">;</span>
-                <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0] = </span><span class="identifier">lcf</span><span class="plain">;</span>
+                <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0] = </span><span class="identifier">lcf</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain">) </span>&lt;<span class="cwebmacro">Allow this vocabulary entry to contribute to the excerpt's hash code</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="character">;</span>
         <span class="plain">}</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;excerpt_hash</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">excerpt_hash</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -385,10 +379,10 @@ for the whole excerpt is as follows.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">NUMBER_MC</span><span class="plain">)    </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | 1;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">TEXT_MC</span><span class="plain">) </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | 2;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">I6_MC</span><span class="plain">)   </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | 4;</span>
-        <span class="reserved">else</span><span class="plain">                           </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | (8 &lt;&lt; ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">hash</span><span class="plain">) % 27));</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">NUMBER_MC</span><span class="plain">)    </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">TEXT_MC</span><span class="plain">) </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">flags</span><span class="plain">) &amp; </span><span class="identifier">I6_MC</span><span class="plain">)   </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | </span><span class="constant">4</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain">                           </span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">h</span><span class="plain"> | (8 &lt;&lt; ((</span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">hash</span><span class="plain">) % </span><span class="constant">27</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -467,39 +461,38 @@ alternative would be a stupendously long start list for "unicode".
 we should keep them as small as possible. This is why (b4) above is our last
 resort; happily phrases both starting and ending with <code class="display"><span class="extract">#</span></code> are uncommon.
 </li></ul>
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">blank_says_p</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::register_em</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">ExParser::warn_expression_cache</span><span class="plain">(); </span>    <span class="comment">the existence of new meanings jeopardises any cached parsing results</span>
+        <span class="identifier">ExParser::warn_expression_cache</span><span class="plain">(); </span><span class="comment">the existence of new meanings jeopardises any cached parsing results</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
         &lt;<span class="cwebmacro">Compute the new excerpt's hash code from its token list</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">Watermark each word in the token list with the meaning code being applied</span> <span class="cwebmacronumber">13.2</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXCERPT_MEANINGS</span><span class="plain">,</span>
-            <span class="string">"Logging meaning: $M with hash %08x, mc=%d, %d tokens\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;excerpt_hash</span><span class="plain">, </span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">);</span>
+            <span class="string">"Logging meaning: $M with hash %08x, mc=%d, %d tokens\n"</span><span class="plain">,</span>
+            <span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">excerpt_hash</span><span class="plain">, </span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meaning_code</span><span class="plain"> &amp; </span><span class="constant">SUBSET_PARSING_BITMAP</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Place the new meaning under the subset list for each non-article word</span> <span class="cwebmacronumber">13.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">EM_ALLOW_BLANK_TEST</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> == 1) &amp;&amp; (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0] == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0] == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">EM_ALLOW_BLANK_TEST</span><span class="plain">(</span><span class="identifier">meaning_code</span><span class="plain">))) {</span>
             &lt;<span class="cwebmacro">Place the new meaning under the say-blank list</span> <span class="cwebmacronumber">13.4</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0]) {</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0]) {</span>
             &lt;<span class="cwebmacro">Place the new meaning under the start list of the first word</span> <span class="cwebmacronumber">13.5</span>&gt;<span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">-1]) {</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">-1]) {</span>
             &lt;<span class="cwebmacro">Place the new meaning under the end list of the last word</span> <span class="cwebmacronumber">13.6</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) { </span>&lt;<span class="cwebmacro">Place the new meaning under the middle list of word i</span> <span class="cwebmacronumber">13.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">-1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"registered meaning of two or more #s"</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) { </span>&lt;<span class="cwebmacro">Place the new meaning under the middle list of word i</span> <span class="cwebmacronumber">13.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">-1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"registered meaning of two or more #s"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -548,9 +541,9 @@ positives.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])</span>
-                <span class="plain">((</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])-&gt;</span><span class="identifier">flags</span><span class="plain">) |= </span><span class="identifier">meaning_code</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])</span>
+                <span class="plain">((</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])-&gt;</span><span class="identifier">flags</span><span class="plain">) |= </span><span class="identifier">meaning_code</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -570,17 +563,17 @@ object "Gregory the Great".
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Logging meaning: $M with hash %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;excerpt_hash</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Logging meaning: $M with hash %08x\n"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">excerpt_hash</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"# in registration of subset meaning"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Preform::test_vocabulary</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, &lt;</span><span class="identifier">article</span><span class="plain">&gt;)) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">ExcerptMeanings::new_em_pnode</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">);</span>
-            <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="element">.subset_list</span><span class="plain">;</span>
-            <span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="element">.subset_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
-            <span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="element">.subset_list_length</span><span class="plain">++;</span>
+            <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">subset_list</span><span class="plain">;</span>
+            <span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">subset_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+            <span class="identifier">v</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">subset_list_length</span><span class="plain">++;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -607,7 +600,7 @@ constructions translate to.
         <span class="plain">}</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">blank_says_p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXCERPT_MEANINGS</span><span class="plain">,</span>
-            <span class="string">"The blank list with $M is now:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">blank_says_p</span><span class="plain">);</span>
+            <span class="string">"The blank list with $M is now:\n$T"</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">, </span><span class="identifier">blank_says_p</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -621,8 +614,8 @@ constructions translate to.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">ExcerptMeanings::new_em_pnode</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">);</span>
-        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0]-&gt;</span><span class="identifier">means</span><span class="element">.start_list</span><span class="plain">;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[0]-&gt;</span><span class="identifier">means</span><span class="element">.start_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">start_list</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[0]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">start_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -640,8 +633,8 @@ constructions translate to.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">ExcerptMeanings::new_em_pnode</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">);</span>
-        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">-1]-&gt;</span><span class="identifier">means</span><span class="element">.end_list</span><span class="plain">;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain">-1]-&gt;</span><span class="identifier">means</span><span class="element">.end_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">-1]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">end_list</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain">-1]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">end_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -659,8 +652,8 @@ constructions translate to.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">ExcerptMeanings::new_em_pnode</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">);</span>
-        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="identifier">means</span><span class="element">.middle_list</span><span class="plain">;</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="identifier">means</span><span class="element">.middle_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">middle_list</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="element">middle_list</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -671,10 +664,9 @@ constructions translate to.
 excerpt parser, so these never live on into trees.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExcerptMeanings::new_em_pnode</span><span class="plain">(</span><span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">) {</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;meaning_code</span><span class="plain">);</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">meaning_code</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_meaning</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pn</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -687,7 +679,6 @@ excerpt parser, so these never live on into trees.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Registration. </b>The following is the main routine used throughout Inform to register new
 meanings.
 </p>
-
 
 <pre class="display">
     <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="functiontext">ExcerptMeanings::register</span><span class="plain">(</span>
@@ -716,7 +707,7 @@ meanings.
 
         <span class="functiontext">ExcerptMeanings::register_em</span><span class="plain">(</span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == 0)</span>
+        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">player</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">meaning_code</span><span class="plain"> &amp; </span><span class="identifier">VARIABLE_MC</span><span class="plain">)) </span><span class="identifier">meaning_of_player</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_parse_node</span><span class="plain">(</span><span class="identifier">data</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
@@ -740,7 +731,7 @@ text substitutions need to distinguish (for instance) "say [the X]" from
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">meaning_code</span><span class="plain"> &amp; </span><span class="constant">PARAMETRISED_PARSING_BITMAP</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">meaning_code</span><span class="plain"> &amp; </span><span class="constant">PARAMETRISED_PARSING_BITMAP</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Preform::test_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), &lt;</span><span class="identifier">article</span><span class="plain">&gt;)) {</span>
                 <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
@@ -785,12 +776,12 @@ sensitivity.)
 
 <pre class="displaydefn">
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">tx</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tx</span><span class="plain">[0]) &amp;&amp; ((</span><span class="identifier">isupper</span><span class="plain">(</span><span class="identifier">tx</span><span class="plain">[0])) || (</span><span class="identifier">tx</span><span class="plain">[1] == 0))) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tx</span><span class="plain">[0]) &amp;&amp; ((</span><span class="identifier">isupper</span><span class="plain">(</span><span class="identifier">tx</span><span class="plain">[0])) || (</span><span class="identifier">tx</span><span class="plain">[1] == </span><span class="constant">0</span><span class="plain">))) {</span>
             <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ucf</span><span class="plain"> = </span><span class="identifier">Vocabulary::make_case_sensitive</span><span class="plain">(</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
             <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">Characters::isupper</span><span class="plain">(</span><span class="identifier">tx</span><span class="plain">[0])) </span><span class="identifier">ucf</span><span class="plain"> = </span><span class="identifier">Vocabulary::get_lower_case_form</span><span class="plain">(</span><span class="identifier">ucf</span><span class="plain">);</span>
             <span class="identifier">Lexer::set_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">ucf</span><span class="plain">);</span>
             <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXCERPT_MEANINGS</span><span class="plain">,</span>
-                <span class="string">"Allowing initial capitalised word %w: meaning_code = %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                <span class="string">"Allowing initial capitalised word %w: meaning_code = %08x\n"</span><span class="plain">,</span>
                     <span class="identifier">tx</span><span class="plain">, </span><span class="identifier">meaning_code</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -813,7 +804,6 @@ tokens denoting gaps, to result in something like:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">award # points</span>
 </pre>
@@ -828,18 +818,18 @@ tokens denoting gaps, to result in something like:
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> &gt;= </span><span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain">) {</span>
                 &lt;<span class="cwebmacro">Complain of excessive length of the new excerpt</span> <span class="cwebmacronumber">15.3.3</span>&gt;<span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">OPENBRACKET_V</span><span class="plain">)) {</span>
-                <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Skip over bracketed token description</span> <span class="cwebmacronumber">15.3.1</span>&gt;<span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">-&gt;</span><span class="identifier">em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">i</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -857,10 +847,10 @@ their way down to this plughole:
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = 1; </span><span class="identifier">i</span><span class="plain">++;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))  {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad meaning: &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad meaning: &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Bracket mismatch when registering"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">OPENBRACKET_V</span><span class="plain">)) </span><span class="identifier">bl</span><span class="plain">++;</span>
@@ -868,7 +858,7 @@ their way down to this plughole:
             <span class="identifier">i</span><span class="plain">++;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">OPENBRACKET_V</span><span class="plain">))) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad meaning: &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad meaning: &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Two consecutive bracketed tokens when registering"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">i</span><span class="plain">--;</span>
@@ -887,7 +877,6 @@ taking it from a word assemblage.
 token lists with gaps in.
 </p>
 
-
 <pre class="display">
     <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="functiontext">ExcerptMeanings::register_assemblage</span><span class="plain">(</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">) {</span>
@@ -896,15 +885,15 @@ token lists with gaps in.
         <span class="identifier">vocabulary_entry</span><span class="plain"> **</span><span class="identifier">array</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">len</span><span class="plain">;</span>
         <span class="identifier">WordAssemblages::as_array</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">, &amp;</span><span class="identifier">array</span><span class="plain">, &amp;</span><span class="identifier">len</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">len</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> &gt;= </span><span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain">) {</span>
                 &lt;<span class="cwebmacro">Complain of excessive length of the new excerpt</span> <span class="cwebmacronumber">15.3.3</span>&gt;<span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+            <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">em_tokens</span><span class="plain">[</span><span class="identifier">tc</span><span class="plain">++] = </span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
         <span class="plain">}</span>
-        <span class="identifier">em</span><span class="plain">-</span><span class="element">&gt;no_em_tokens</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">em</span><span class="plain">-&gt;</span><span class="element">no_em_tokens</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
 
         <span class="functiontext">ExcerptMeanings::register_em</span><span class="plain">(</span><span class="identifier">meaning_code</span><span class="plain">, </span><span class="identifier">em</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">em</span><span class="plain">;</span>
@@ -928,7 +917,7 @@ going to any trouble to prevent this.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">ExcerptMeanings::problem_handler</span><span class="plain">(</span><span class="constant">TooLongName_LINERROR</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="functiontext">ExcerptMeanings::problem_handler</span><span class="plain">(</span><span class="constant">TooLongName_LINERROR</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -941,7 +930,6 @@ texts in HTML. So the client is allowed to define <code class="display"><span cl
 to some routine of her own, gazumping this one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExcerptMeanings::problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ref</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">LINGUISTICS_PROBLEM_HANDLER</span>
@@ -951,7 +939,7 @@ to some routine of her own, gazumping this one.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TooLongName_LINERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TooLongName_LINERROR:</span>
                 <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"noun too long"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>

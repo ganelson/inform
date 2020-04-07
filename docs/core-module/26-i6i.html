@@ -72,11 +72,10 @@ material in Class or Object definitions, or simply in between other
 declarations in the I6 output, but always outside of a routine.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">i6_inclusion_matter</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">material_to_include</span><span class="plain">; </span>    <span class="comment">normally an I6 escape <code class="display"><span class="extract">(- ... -)</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_to_include_with</span><span class="plain">; </span>    <span class="comment">typically an object or class definition</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">material_to_include</span><span class="plain">; </span><span class="comment">normally an I6 escape <code class="display"><span class="extract">(- ... -)</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_to_include_with</span><span class="plain">; </span><span class="comment">typically an object or class definition</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">i6_inclusion_matter</span><span class="plain">;</span>
 </pre>
@@ -91,14 +90,13 @@ where they go.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SEGMENT_LEVEL_INC</span><span class="plain"> 1		</span>    <span class="comment">before, instead of, or after a segment of I6 template</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SECTION_LEVEL_INC</span><span class="plain"> 2		</span>    <span class="comment">before, instead of, or after a section of I6 template</span>
-    <span class="definitionkeyword">define</span> <span class="constant">WHEN_DEFINING_INC</span><span class="plain"> 3		</span>    <span class="comment">as part of an Object or Class definition</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AS_PREFORM_INC</span><span class="plain"> 4 		</span>    <span class="comment">include it not as I6, but as Preform grammar</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SEGMENT_LEVEL_INC</span><span class="plain"> </span><span class="constant">1</span><span class="plain">		</span><span class="comment">before, instead of, or after a segment of I6 template</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SECTION_LEVEL_INC</span><span class="plain"> </span><span class="constant">2</span><span class="plain">		</span><span class="comment">before, instead of, or after a section of I6 template</span>
+    <span class="definitionkeyword">define</span> <span class="constant">WHEN_DEFINING_INC</span><span class="plain"> </span><span class="constant">3</span><span class="plain">		</span><span class="comment">as part of an Object or Class definition</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AS_PREFORM_INC</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> 		</span><span class="comment">include it not as I6, but as Preform grammar</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Some variables used only in parsing inclusion instructions:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inclusion_side</span><span class="plain">, </span><span class="identifier">section_inclusion_wn</span><span class="plain">, </span><span class="identifier">segment_inclusion_wn</span><span class="plain">;</span>
@@ -122,12 +120,11 @@ though seasoned I6 hackers tend to reach for them a little sooner than that.
 <p class="inwebparagraph">and the following grammar defines the "when defining a thing" end.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">inform6</span><span class="plain">-</span><span class="identifier">inclusion</span><span class="plain">-</span><span class="identifier">location</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">inclusion</span><span class="plain">-</span><span class="identifier">side</span><span class="plain">&gt; {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">-</span><span class="identifier">without</span><span class="plain">-</span><span class="identifier">subs</span><span class="plain">&gt;} |	==&gt; </span>&lt;<span class="cwebmacro">Note segment-level inclusion</span> <span class="cwebmacronumber">5.1</span>&gt;
         <span class="plain">&lt;</span><span class="identifier">inclusion</span><span class="plain">-</span><span class="identifier">side</span><span class="plain">&gt; {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">-</span><span class="identifier">without</span><span class="plain">-</span><span class="identifier">subs</span><span class="plain">&gt;} </span><span class="identifier">in</span><span class="plain"> {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">-</span><span class="identifier">without</span><span class="plain">-</span><span class="identifier">subs</span><span class="plain">&gt;} |	==&gt; </span>&lt;<span class="cwebmacro">Note section-level inclusion</span> <span class="cwebmacronumber">5.2</span>&gt;
-        <span class="identifier">when</span><span class="plain"> </span><span class="identifier">defining</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">&gt; |			==&gt; </span><span class="constant">WHEN_DEFINING_INC</span><span class="plain">; &lt;&lt;</span><span class="identifier">parse_node</span><span class="plain">:</span><span class="identifier">s</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="identifier">when</span><span class="plain"> </span><span class="identifier">defining</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">&gt; |			==&gt; </span><span class="constant">WHEN_DEFINING_INC</span><span class="plain">; &lt;&lt;</span><span class="identifier">parse_node:s</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="identifier">when</span><span class="plain"> </span><span class="identifier">defining</span><span class="plain"> ... |								==&gt; </span>&lt;<span class="cwebmacro">Issue PM_WhenDefiningUnknown problem</span> <span class="cwebmacronumber">5.3</span>&gt;
         <span class="identifier">before</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> </span><span class="identifier">library</span><span class="plain"> |							==&gt; </span>&lt;<span class="cwebmacro">Issue PM_BeforeTheLibrary problem</span> <span class="cwebmacronumber">5.4</span>&gt;
         <span class="identifier">in</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> </span><span class="identifier">preform</span><span class="plain"> </span><span class="identifier">grammar</span><span class="plain">							==&gt; </span><span class="constant">AS_PREFORM_INC</span>
@@ -192,7 +189,7 @@ though seasoned I6 hackers tend to reach for them a little sooner than that.
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BeforeTheLibrary</span><span class="plain">),</span>
             <span class="string">"this syntax was withdrawn in January 2008"</span><span class="plain">,</span>
             <span class="string">"in favour of a more finely controlled I6 inclusion command. The effect "</span>
-            <span class="string">"you want can probably be achieved by writing 'after \</span><span class="plain">"</span><span class="string">Definitions.i6t\</span><span class="plain">"</span><span class="string">.' "</span>
+            <span class="string">"you want can probably be achieved by writing 'after \"Definitions.i6t\".' "</span>
             <span class="string">"instead of 'before the library.'"</span><span class="plain">);</span>
 </pre>
 
@@ -205,10 +202,9 @@ and share the grammar above, they're nevertheless a different thing and aren't
 handled here: if we see one, we ignore it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">INFORM6CODE_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="identifier">INFORM6CODE_NT</span><span class="plain">, -1, 2, </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">INFORM6CODE_NT</span><span class="plain">, -1, </span><span class="constant">2</span><span class="plain">, </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Config::Inclusions::inform_6_inclusion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
@@ -221,13 +217,13 @@ handled here: if we see one, we ignore it.
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">inform6</span><span class="plain">-</span><span class="identifier">inclusion</span><span class="plain">-</span><span class="identifier">location</span><span class="plain">&gt;(</span><span class="identifier">IW</span><span class="plain">)) {</span>
             <span class="identifier">problem</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SEGMENT_LEVEL_INC</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SEGMENT_LEVEL_INC:</span>
                     &lt;<span class="cwebmacro">It's positioned with respect to a template segment</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="character">; break;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SECTION_LEVEL_INC</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SECTION_LEVEL_INC:</span>
                     &lt;<span class="cwebmacro">It's positioned with respect to a template section</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="character">; break;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">WHEN_DEFINING_INC</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WHEN_DEFINING_INC:</span>
                     &lt;<span class="cwebmacro">It's positioned in the middle of a class or object definition</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="character">; break;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">AS_PREFORM_INC</span><span class="plain">: </span><span class="reserved">return</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AS_PREFORM_INC:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue problem message for bad inclusion instructions</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">;</span>
@@ -263,7 +259,7 @@ appropriate time.
 
 <pre class="displaydefn">
         <span class="functiontext">Config::Inclusions::new_intervention</span><span class="plain">(</span><span class="identifier">AFTER_LINK_STAGE</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Output.i6t"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"I6 Inclusions"</span><span class="plain">,</span>
-            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + 2), </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + </span><span class="constant">2</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -281,7 +277,7 @@ appropriate time.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">segment_inclusion_wn</span><span class="plain">));</span>
         <span class="functiontext">Config::Inclusions::new_intervention</span><span class="plain">(</span><span class="identifier">inclusion_side</span><span class="plain">, </span><span class="identifier">seg</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
-            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + 2), </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + </span><span class="constant">2</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">);</span>
 </pre>
 
@@ -302,7 +298,7 @@ appropriate time.
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sec</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">section_inclusion_wn</span><span class="plain">));</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">segment_inclusion_wn</span><span class="plain">));</span>
         <span class="functiontext">Config::Inclusions::new_intervention</span><span class="plain">(</span><span class="identifier">inclusion_side</span><span class="plain">, </span><span class="identifier">seg</span><span class="plain">, </span><span class="identifier">sec</span><span class="plain">,</span>
-            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + 2), </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">)) + </span><span class="constant">2</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">sec</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">seg</span><span class="plain">);</span>
 </pre>
@@ -322,12 +318,12 @@ code instructions; we remember what's needed ourselves:
 
 
 <pre class="displaydefn">
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">parse_node</span><span class="plain">:</span><span class="identifier">s</span><span class="plain">&gt;&gt;;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">parse_node:s</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::from_specification</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">) {</span>
             <span class="reserved">i6_inclusion_matter</span><span class="plain"> *</span><span class="identifier">inclm</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">i6_inclusion_matter</span><span class="plain">);</span>
-            <span class="identifier">inclm</span><span class="plain">-</span><span class="element">&gt;material_to_include</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
-            <span class="identifier">inclm</span><span class="plain">-</span><span class="element">&gt;infs_to_include_with</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
+            <span class="identifier">inclm</span><span class="plain">-&gt;</span><span class="element">material_to_include</span><span class="plain"> = </span><span class="identifier">PN</span><span class="plain">;</span>
+            <span class="identifier">inclm</span><span class="plain">-&gt;</span><span class="element">infs_to_include_with</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">problem</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 </pre>
 
@@ -349,8 +345,8 @@ code instructions; we remember what's needed ourselves:
             <span class="string">"put it), or 'when defining' plus the name of an object or kind "</span>
             <span class="string">"of object, or 'before', 'instead of' or 'after' a double-quoted "</span>
             <span class="string">"name of a template layer segment, or of a part of one. For "</span>
-            <span class="string">"instance, 'before \</span><span class="plain">"</span><span class="string">Parser.i6t\</span><span class="plain">"</span><span class="string">.' or 'after \</span><span class="plain">"</span><span class="string">Pronouns\</span><span class="plain">"</span><span class="string"> in "</span>
-            <span class="string">"\</span><span class="plain">"</span><span class="string">Language.i6t\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
+            <span class="string">"instance, 'before \"Parser.i6t\".' or 'after \"Pronouns\" in "</span>
+            <span class="string">"\"Language.i6t\".'"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -358,7 +354,6 @@ code instructions; we remember what's needed ourselves:
 <p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Config::Inclusions::new_intervention</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">part</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">i6</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">seg</span><span class="plain">) {</span>
@@ -379,16 +374,15 @@ code instructions; we remember what's needed ourselves:
 requests, which, again, we do by instructing the Template code.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Config::Inclusions::compile_inclusions_for_subject</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">i6_inclusion_matter</span><span class="plain"> *</span><span class="identifier">inclm</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain"> (</span><span class="identifier">inclm</span><span class="plain">, </span><span class="reserved">i6_inclusion_matter</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inclm</span><span class="plain">-</span><span class="element">&gt;infs_to_include_with</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inclm</span><span class="plain">-&gt;</span><span class="identifier">infs_to_include_with</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) {</span>
                 <span class="functiontext">I6T::interpret_i6t</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inclm</span><span class="plain">-</span><span class="element">&gt;material_to_include</span><span class="plain">)) + 2),</span>
+                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">inclm</span><span class="plain">-&gt;</span><span class="element">material_to_include</span><span class="plain">)) + </span><span class="constant">2</span><span class="plain">),</span>
                     <span class="plain">-1);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

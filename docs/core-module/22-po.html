@@ -79,15 +79,15 @@ valid as values, since a condition is not also a value in Inform 7.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain"> 16 </span>    <span class="comment">because held in a 16-bit Z-machine bitmap</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain"> </span><span class="constant">16</span><span class="plain"> </span><span class="comment">because held in a 16-bit Z-machine bitmap</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_options_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_option</span><span class="plain"> *</span><span class="identifier">options_permitted</span><span class="plain">[</span><span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain">]; </span>    <span class="comment">see below</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_option</span><span class="plain"> *</span><span class="identifier">options_permitted</span><span class="plain">[</span><span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain">]; </span><span class="comment">see below</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_options_permitted</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">options_declaration</span><span class="plain">; </span>    <span class="comment">the text declaring the whole set of options</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multiple_options_permitted</span><span class="plain">; </span>    <span class="comment">can be combined, or mutually exclusive?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">options_declaration</span><span class="plain">; </span><span class="comment">the text declaring the whole set of options</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multiple_options_permitted</span><span class="plain">; </span><span class="comment">can be combined, or mutually exclusive?</span>
     <span class="plain">} </span><span class="reserved">ph_options_data</span><span class="plain">;</span>
 </pre>
 
@@ -98,10 +98,9 @@ valid as values, since a condition is not also a value in Inform 7.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>There's nothing to a phrase option, really:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_option</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">text of name</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">text of name</span>
     <span class="plain">} </span><span class="reserved">phrase_option</span><span class="plain">;</span>
 </pre>
 
@@ -112,18 +111,17 @@ valid as values, since a condition is not also a value in Inform 7.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b>By default, a phrase has no options.
 </p>
 
-
 <pre class="display">
     <span class="reserved">ph_options_data</span><span class="plain"> </span><span class="functiontext">Phrases::Options::new</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">ph_options_data</span><span class="plain"> </span><span class="identifier">phod</span><span class="plain">;</span>
-        <span class="identifier">phod</span><span class="element">.no_options_permitted</span><span class="plain"> = 0;</span>
-        <span class="identifier">phod</span><span class="element">.multiple_options_permitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">phod</span><span class="element">.options_declaration</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">phod</span><span class="plain">.</span><span class="element">no_options_permitted</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">phod</span><span class="plain">.</span><span class="element">multiple_options_permitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">phod</span><span class="plain">.</span><span class="element">options_declaration</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phod</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::Options::allows_options</span><span class="plain">(</span><span class="reserved">ph_options_data</span><span class="plain"> *</span><span class="identifier">phod</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="identifier">no_options_permitted</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -139,11 +137,10 @@ are parsed only in a condition context, not in a value context, and
 these are relatively rare in Inform source text.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::Options::parse</span><span class="plain">(</span><span class="reserved">ph_options_data</span><span class="plain"> *</span><span class="identifier">phod</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;options_permitted</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-</span><span class="element">&gt;name</span><span class="plain">))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">options_permitted</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="element">name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> (1 &lt;&lt; </span><span class="identifier">i</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">}</span>
@@ -155,26 +152,25 @@ these are relatively rare in Inform source text.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Indexing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Options::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">ph_options_data</span><span class="plain"> *</span><span class="identifier">phod</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">phrase_option</span><span class="plain"> *</span><span class="identifier">po</span><span class="plain"> = </span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;options_permitted</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">phrase_option</span><span class="plain"> *</span><span class="identifier">po</span><span class="plain"> = </span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">options_permitted</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">==0) {</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;optionally&lt;/i&gt; "</span><span class="plain">);</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain">-1) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;multiple_options_permitted</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;and/or&lt;/i&gt; "</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain">-1) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="identifier">multiple_options_permitted</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;and/or&lt;/i&gt; "</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;or&lt;/i&gt; "</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">HTML::Javascript::paste_W</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">po</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">po</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain">-1) {</span>
+            <span class="identifier">HTML::Javascript::paste_W</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">po</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">po</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain">-1) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">","</span><span class="plain">);</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -185,7 +181,6 @@ these are relatively rare in Inform source text.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Parsing phrase options in a declaration. </b></p>
 
-
 <pre class="display">
     <span class="reserved">ph_options_data</span><span class="plain"> *</span><span class="identifier">phod_being_parsed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph_being_parsed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -195,7 +190,7 @@ these are relatively rare in Inform source text.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">phod_being_parsed</span><span class="plain"> = &amp;</span><span class="identifier">phod</span><span class="plain">;</span>
             <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) </span><span class="identifier">phod</span><span class="element">.multiple_options_permitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) </span><span class="identifier">phod</span><span class="plain">.</span><span class="element">multiple_options_permitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phod</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -242,10 +237,9 @@ For example, in:
 <p class="inwebparagraph">and creates two options with &lt;phrase-option-declaration-setting-entry&gt;.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... |											==&gt; </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span>    <span class="comment">match only when looking ahead</span>
+        <span class="plain">... |											==&gt; </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span><span class="comment">match only when looking ahead</span>
         <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; &lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]</span>
         <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">declaration</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;		==&gt; </span><span class="identifier">FALSE</span>
 
@@ -263,12 +257,11 @@ For example, in:
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">too_many_POs_error</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Options::phod_add_phrase_option</span><span class="plain">(</span><span class="reserved">ph_options_data</span><span class="plain"> *</span><span class="identifier">phod</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_CREATIONS</span><span class="plain">, </span><span class="string">"Adding phrase option &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain"> &gt;= </span><span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain">) {</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_CREATIONS</span><span class="plain">, </span><span class="string">"Adding phrase option &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="identifier">no_options_permitted</span><span class="plain"> &gt;= </span><span class="constant">MAX_OPTIONS_PER_PHRASE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">too_many_POs_error</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyPhraseOptions</span><span class="plain">),</span>
                     <span class="string">"a phrase is only allowed to have 16 different options"</span><span class="plain">,</span>
@@ -278,11 +271,11 @@ For example, in:
             <span class="identifier">too_many_POs_error</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">too_many_POs_error</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">so that the problem can recur on later phrases</span>
+        <span class="identifier">too_many_POs_error</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">so that the problem can recur on later phrases</span>
 
         <span class="reserved">phrase_option</span><span class="plain"> *</span><span class="identifier">po</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">phrase_option</span><span class="plain">);</span>
-        <span class="identifier">po</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;options_permitted</span><span class="plain">[</span><span class="identifier">phod</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain">++] = </span><span class="identifier">po</span><span class="plain">;</span>
+        <span class="identifier">po</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">options_permitted</span><span class="plain">[</span><span class="identifier">phod</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain">++] = </span><span class="identifier">po</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -317,18 +310,17 @@ not, and the <code class="display"><span class="extract">silently</span></code> 
 produce.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">phod_being_parsed_silently</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">context for the grammar below</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">phod_being_parsed_silently</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">context for the grammar below</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::Options::parse_invoked_options</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">silently</span><span class="plain">) {</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Invocations::get_phrase_options</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
 
         <span class="identifier">ph_being_parsed</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="identifier">phod_being_parsed</span><span class="plain"> = &amp;(</span><span class="identifier">ph_being_parsed</span><span class="plain">-</span><span class="element">&gt;options_data</span><span class="plain">);</span>
+        <span class="identifier">phod_being_parsed</span><span class="plain"> = &amp;(</span><span class="identifier">ph_being_parsed</span><span class="plain">-&gt;</span><span class="element">options_data</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pc</span><span class="plain"> = </span><span class="identifier">problem_count</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Parse the supplied list of options into a bitmap</span> <span class="cwebmacronumber">10.1</span>&gt;<span class="plain">;</span>
 
@@ -354,7 +346,7 @@ produce.
         <span class="identifier">phod_being_parsed_silently</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="identifier">pc</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;multiple_options_permitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+            <span class="plain">(</span><span class="identifier">phod_being_parsed</span><span class="plain">-&gt;</span><span class="element">multiple_options_permitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Reject this if multiple options are set</span> <span class="cwebmacronumber">10.1.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -379,12 +371,12 @@ this residue is zero.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bitmap</span><span class="plain"> &amp; (</span><span class="identifier">bitmap</span><span class="plain"> - 1)) != 0) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bitmap</span><span class="plain"> &amp; (</span><span class="identifier">bitmap</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">)) != </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">silently</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_phrase</span><span class="plain">(3, </span><span class="identifier">ph</span><span class="plain">);</span>
-                <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;options_declaration</span><span class="plain">);</span>
+                <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-&gt;</span><span class="element">options_declaration</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PhraseOptionsExclusive</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, supplying the options '%2' to the phrase '%3', but "</span>
@@ -403,10 +395,9 @@ this residue is zero.
 by "and":
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... |												==&gt; </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span>    <span class="comment">match only when looking ahead</span>
+        <span class="plain">... |												==&gt; </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span><span class="comment">match only when looking ahead</span>
         <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; &lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; | ==&gt; </span><span class="identifier">R</span><span class="plain">[1] | </span><span class="identifier">R</span><span class="plain">[2]</span>
         <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">setting</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;						==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
 
@@ -431,8 +422,8 @@ by "and":
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_phrase</span><span class="plain">(3, </span><span class="identifier">ph_being_parsed</span><span class="plain">);</span>
-            <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;options_declaration</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod_being_parsed</span><span class="plain">-</span><span class="element">&gt;no_options_permitted</span><span class="plain"> &gt; 1) {</span>
+            <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">phod_being_parsed</span><span class="plain">-&gt;</span><span class="element">options_declaration</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phod_being_parsed</span><span class="plain">-&gt;</span><span class="element">no_options_permitted</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NotAPhraseOption</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"You wrote %1, but '%2' is not one of the options allowed on "</span>
@@ -455,7 +446,6 @@ by "and":
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>The following matches any single phrase option for the phrase being used.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>

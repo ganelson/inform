@@ -97,21 +97,20 @@ box" (not just a leaf, since it will be a tree showing the containment
 relationship as well as the noun).
 </p>
 
-
 <pre class="display">
-    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">ASSERT_SH_handler</span><span class="plain"> = { </span><span class="identifier">SENTENCE_NT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">, 0, </span><span class="functiontext">Assertions::Copular::assertion</span><span class="plain"> };</span>
+    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">ASSERT_SH_handler</span><span class="plain"> = { </span><span class="identifier">SENTENCE_NT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="functiontext">Assertions::Copular::assertion</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Copular::assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pv</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">possessive_verb_ANNOT</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">possessive_verb_ANNOT</span><span class="plain">))</span>
             <span class="functiontext">Assertions::Copular::to_have</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="functiontext">Assertions::Copular::to_be</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Copular::to_be</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pv</span><span class="plain">) {</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) &gt; 1)</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)) &gt; </span><span class="constant">1</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span>
                 <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">)), </span><span class="identifier">TEXT_MC</span><span class="plain">+</span><span class="identifier">TEXTWITHSUBS_MC</span><span class="plain">))) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextNotClosing</span><span class="plain">),</span>
@@ -150,11 +149,10 @@ since it talks about the possession of a property.)
 called in traverse 2, when there are no uses of "to have" left in the tree.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Copular::to_have</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pv</span><span class="plain">) {</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain"> = </span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Reject two ungrammatical forms of "to have"</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
 
@@ -165,8 +163,8 @@ called in traverse 2, when there are no uses of "to have" left in the tree.
         <span class="reserved">else</span>
             &lt;<span class="cwebmacro">Handle "X has P" where P is a list of properties</span> <span class="cwebmacronumber">4.4</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">possessive_verb_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">Assertions::Copular::to_be</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">); </span>    <span class="comment">and start again as if it had never been possessive</span>
+        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">possessive_verb_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Assertions::Copular::to_be</span><span class="plain">(</span><span class="identifier">pv</span><span class="plain">); </span><span class="comment">and start again as if it had never been possessive</span>
     <span class="plain">}</span>
 </pre>
 
@@ -215,7 +213,7 @@ as a <code class="display"><span class="extract">PROPERTYCALLED_NT</span></code>
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">))) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SuperfluousCalled</span><span class="plain">),</span>
                 <span class="string">"'called' should be used only when the name is different from the kind"</span><span class="plain">,</span>
                 <span class="string">"so this sentence should be simplified. For example, 'A door has a "</span>
@@ -225,24 +223,24 @@ as a <code class="display"><span class="extract">PROPERTYCALLED_NT</span></code>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">, </span><span class="constant">PROPERTYCALLED_NT</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">ParseTree::left_edge_of</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">),</span>
-                    <span class="identifier">R</span><span class="plain"> = </span><span class="identifier">ParseTree::right_edge_of</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">ParseTree::left_edge_of</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">),</span>
+                    <span class="identifier">R</span><span class="plain"> = </span><span class="identifier">ParseTree::right_edge_of</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">);</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">));</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                <span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-                <span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">;</span>
+                <span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+                <span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">;</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Thus $T"</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ALLOWED_NT</span><span class="plain">);</span>
-            <span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
+            <span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ALLOWED_NT</span><span class="plain">);</span>
+            <span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">prohibited</span><span class="plain"> = &lt;</span><span class="identifier">prohibited</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">owners</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">prohibited</span><span class="plain">) {</span>
-                <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
-                <span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
+                <span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">py</span><span class="plain"> = </span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">py</span><span class="plain"> = </span><span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -268,9 +266,9 @@ node. This is for something like
 
 
 <pre class="displaydefn">
-        <span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ALLOWED_NT</span><span class="plain">);</span>
-        <span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
-        <span class="identifier">py</span><span class="plain"> = </span><span class="identifier">px</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">ALLOWED_NT</span><span class="plain">);</span>
+        <span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
+        <span class="identifier">py</span><span class="plain"> = </span><span class="identifier">px</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -318,10 +316,9 @@ the massive <code class="display"><span class="extract">Assertions::Maker::make_
 <p class="inwebparagraph">In traverse 2, only (c) takes place; (a) and (b) are one-time events.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Copular::make_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pc</span><span class="plain"> = </span><span class="identifier">problem_count</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (!(&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">existential</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">))))</span>
                 <span class="functiontext">Assertions::Refiner::refine</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="constant">ALLOW_CREATION</span><span class="plain">);</span>
@@ -332,7 +329,7 @@ the massive <code class="display"><span class="extract">Assertions::Maker::make_
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_sentences</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">existential</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">))) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">);</span>
             <span class="identifier">px</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Assertions::Maker::make_assertion_recursive</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">);</span>
@@ -387,17 +384,16 @@ conclusion we would have reached.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Assertions::Copular::discussed_at_node</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) != </span><span class="identifier">KIND_NT</span><span class="plain">) </span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">RELATIONSHIP_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">))</span>
-            <span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">))</span>
-            <span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">RELATIONSHIP_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">))</span>
+            <span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">))</span>
+            <span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -408,15 +404,14 @@ conclusion we would have reached.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) {</span>
-            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+            <span class="functiontext">Assertions::Copular::make_existential_assertion</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">) {</span>

@@ -48,7 +48,6 @@ been declared if and only if it is an existing key for the following hash,
 and the associated value is "y".
 </p>
 
-
 <pre class="display">
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">defined_symbols</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -62,14 +61,12 @@ For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">{^indoc:}You'll probably never see this paragraph.</span>
 </pre>
 
 <p class="inwebparagraph">provides rawtext visible only if <code class="display"><span class="extract">indoc</span></code> isn't the renderer.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Symbols::start_up_symbols</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -83,20 +80,19 @@ For example,
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Making and unmaking. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Symbols::declare_symbol</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">defined_symbols</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">defined_symbols</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(10, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">entry</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">defined_symbols</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">entry</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"y"</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Declaring &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Declaring &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Symbols::undeclare_symbol</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">entry</span><span class="plain"> = </span><span class="functiontext">Dictionaries::get_text</span><span class="plain">(</span><span class="identifier">defined_symbols</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">entry</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"n"</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Undeclaring &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Undeclaring &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -110,7 +106,6 @@ For example,
 otherwise.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Symbols::perform_ifdef</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">L</span><span class="plain">=</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -121,7 +116,7 @@ otherwise.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> = </span><span class="functiontext">Symbols::perform_ifdef_inner</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Ifdef &lt;%S&gt; --&gt; %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SYMBOLS</span><span class="plain">, </span><span class="string">"Ifdef &lt;%S&gt; --&gt; %s\n"</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -155,7 +150,6 @@ Whereas
 <p class="inwebparagraph">are both true if alpha and beta are undeclared but gamma is declared.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Symbols::perform_ifdef_inner</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Subexpressions can be bracketed</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
@@ -180,7 +174,7 @@ Whereas
 <pre class="displaydefn">
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%((%c*)%)"</span><span class="plain">)) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Symbols::perform_ifdef</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Symbols::perform_ifdef</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
             <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -197,7 +191,7 @@ Whereas
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">Symbols::find_operator</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="character">','</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">);</span>
@@ -221,7 +215,7 @@ Whereas
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">Symbols::find_operator</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="character">'+'</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">);</span>
@@ -246,9 +240,9 @@ Whereas
 <pre class="displaydefn">
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%^(%c*)"</span><span class="plain">)) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Symbols::perform_ifdef</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Symbols::perform_ifdef</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
             <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">?</span><span class="constant">FALSE</span><span class="plain">:</span><span class="constant">TRUE</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -281,7 +275,7 @@ Whereas
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"malformed condition: %S"</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"malformed condition: %S"</span><span class="plain">, </span><span class="identifier">cond</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -292,21 +286,20 @@ Whereas
 parts of the text <code class="display"><span class="extract">cond</span></code>, and looks out for mismatched brackets on the way.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Symbols::find_operator</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">op</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = 0, </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">); </span><span class="identifier">k</span><span class="plain"> &lt; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">k</span><span class="plain">++) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">); </span><span class="identifier">k</span><span class="plain"> &lt; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">k</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> = </span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'('</span><span class="plain">) </span><span class="identifier">bl</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">')'</span><span class="plain">) </span><span class="identifier">bl</span><span class="plain">--;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain"> -2; </span>    <span class="comment">Too many close brackets</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bl</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">k</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">k</span><span class="plain"> &lt; </span><span class="identifier">L</span><span class="plain"> - 1) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">op</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -2; </span><span class="comment">Too many close brackets</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bl</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">k</span><span class="plain"> &lt; </span><span class="identifier">L</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">op</span><span class="plain">)) {</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> != 0) </span><span class="reserved">return</span><span class="plain"> -2; </span>    <span class="comment">Too many open brackets</span>
-        <span class="reserved">return</span><span class="plain"> -1; </span>    <span class="comment">Not found</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -2; </span><span class="comment">Too many open brackets</span>
+        <span class="reserved">return</span><span class="plain"> -1; </span><span class="comment">Not found</span>
     <span class="plain">}</span>
 </pre>
 

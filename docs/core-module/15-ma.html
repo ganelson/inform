@@ -83,8 +83,8 @@ enumerate the possible shapes of this region.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MEASURE_T_OR_LESS</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEASURE_T_EXACTLY</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEASURE_T_OR_MORE</span><span class="plain"> 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MEASURE_T_EXACTLY</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MEASURE_T_OR_MORE</span><span class="plain"> </span><span class="constant">1</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>We then need to create the comparative form "roomier" as a relation, and the
 superlative "roomiest" as a phrasal form &mdash; not in general an adjective, since
@@ -124,26 +124,25 @@ be picked up at the next.
 <p class="inwebparagraph">At any rate, here's the structure:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">measurement_definition</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">measurement_node</span><span class="plain">; </span>    <span class="comment">where the actual definition is</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">measurement_node</span><span class="plain">; </span><span class="comment">where the actual definition is</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">headword</span><span class="plain">; </span>    <span class="comment">adjective being defined (must be single word)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">headword_as_adjective</span><span class="plain">; </span>    <span class="comment">which adjective meaning</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">superlative</span><span class="plain">; </span>    <span class="comment">its superlative form</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">headword</span><span class="plain">; </span><span class="comment">adjective being defined (must be single word)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">headword_as_adjective</span><span class="plain">; </span><span class="comment">which adjective meaning</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">superlative</span><span class="plain">; </span><span class="comment">its superlative form</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">; </span>    <span class="comment">the property being compared, if any</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name_of_property_to_compare</span><span class="plain">; </span>    <span class="comment">text of the name of the property to compare</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">; </span><span class="comment">the property being compared, if any</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name_of_property_to_compare</span><span class="plain">; </span><span class="comment">text of the name of the property to compare</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">mdef_iname</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_shape</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">MEASURE_T_*</span></code> constants</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_threshold</span><span class="plain">; </span>    <span class="comment">numerical value of threshold (if any)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">region_kind</span><span class="plain">; </span>    <span class="comment">of this value</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_threshold_evaluated</span><span class="plain">; </span>    <span class="comment">have we evaluated this one yet?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">region_threshold_text</span><span class="plain">; </span>    <span class="comment">text of threshold value</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_shape</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">MEASURE_T_*</span></code> constants</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_threshold</span><span class="plain">; </span><span class="comment">numerical value of threshold (if any)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">region_kind</span><span class="plain">; </span><span class="comment">of this value</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">region_threshold_evaluated</span><span class="plain">; </span><span class="comment">have we evaluated this one yet?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">region_threshold_text</span><span class="plain">; </span><span class="comment">text of threshold value</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">property_schema_written</span><span class="plain">; </span>    <span class="comment">I6 schema for testing written yet?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">property_schema_written</span><span class="plain">; </span><span class="comment">I6 schema for testing written yet?</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">measurement_definition</span><span class="plain">;</span>
 </pre>
@@ -157,25 +156,24 @@ the LHS is the value being tested and the RHS is the constant t. In weak
 comparison, t itself is a member; in strict comparison, it isn't.
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Properties::Measurement::weak_comparison_bp</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">shape</span><span class="plain">) {</span>
-        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">solely to placate gcc</span>
+        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">solely to placate gcc</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEASURE_T_OR_MORE</span><span class="plain">: </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_numerically_greater_than_or_equal_to</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">: </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_equality</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEASURE_T_OR_LESS</span><span class="plain">: </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_numerically_less_than_or_equal_to</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown region for weak comparison"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEASURE_T_OR_MORE:</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_numerically_greater_than_or_equal_to</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEASURE_T_EXACTLY:</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_equality</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEASURE_T_OR_LESS:</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">R_numerically_less_than_or_equal_to</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown region for weak comparison"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">shape</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">solely to placate gcc</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">operator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">solely to placate gcc</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEASURE_T_OR_MORE</span><span class="plain">: </span><span class="identifier">operator</span><span class="plain"> = </span><span class="string">"&gt;"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEASURE_T_OR_LESS</span><span class="plain">: </span><span class="identifier">operator</span><span class="plain"> = </span><span class="string">"&lt;"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown region for strict comparison"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEASURE_T_OR_MORE:</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain"> = </span><span class="string">"&gt;"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEASURE_T_OR_LESS:</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain"> = </span><span class="string">"&lt;"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown region for strict comparison"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">operator</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -189,13 +187,12 @@ comparison, t itself is a member; in strict comparison, it isn't.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="functiontext">Properties::Measurement::retrieve</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">shape</span><span class="plain">) {</span>
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">, </span><span class="reserved">measurement_definition</span><span class="plain">) {</span>
             <span class="functiontext">Properties::Measurement::validate</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> == </span><span class="identifier">prn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain"> == </span><span class="identifier">shape</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain"> == </span><span class="identifier">prn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain"> == </span><span class="identifier">shape</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mdef</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -203,8 +200,8 @@ comparison, t itself is a member; in strict comparison, it isn't.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::read_property_details</span><span class="plain">(</span><span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">,</span>
         <span class="reserved">property</span><span class="plain"> **</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">shape</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">) *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain">) *</span><span class="identifier">shape</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">) *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain">) *</span><span class="identifier">shape</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -221,7 +218,6 @@ definition structure stands incomplete for a while. Filling it in is called
 "validation", as follows.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::validate_definitions</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">;</span>
@@ -236,12 +232,11 @@ definition structure stands incomplete for a while. Filling it in is called
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Where:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::validate</span><span class="plain">(</span><span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">)))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">prop</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">name_of_property_to_compare</span><span class="plain">)))</span>
             &lt;<span class="cwebmacro">Fill in the missing property name, P</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_evaluated</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">region_threshold_evaluated</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Fill in the missing threshold value, t</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -260,13 +255,13 @@ definition structure stands incomplete for a while. Filling it in is called
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">)) </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">name_of_property_to_compare</span><span class="plain">)) </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Validating mdef with headword %W... &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">);</span>
+            <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Validating mdef with headword %W... &lt;%W&gt;\n"</span><span class="plain">,</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">name_of_property_to_compare</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnknownProperty</span><span class="plain">),</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">measurement_node</span><span class="plain">,</span>
                 <span class="string">"that definition involves an unknown property"</span><span class="plain">,</span>
                 <span class="string">"assuming it was meant to be a definition in the form 'Definition: "</span>
                 <span class="string">"a container is large if its carrying capacity is 10 or more.'"</span><span class="plain">);</span>
@@ -289,41 +284,41 @@ and issue a problem.
 
 
 <pre class="displaydefn">
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">))</span>
-            <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain">) {</span>
-            <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_encoded_notation</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)) {</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain">))</span>
+            <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_kind</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_kind</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">region_kind</span><span class="plain">) {</span>
+            <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_encoded_notation</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonarithmeticKOV</span><span class="plain">),</span>
-                    <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
+                    <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">measurement_node</span><span class="plain">,</span>
                     <span class="string">"the property value given here has a kind which can't be "</span>
                     <span class="string">"subject to numerical comparisons"</span><span class="plain">,</span>
                     <span class="string">"so it doesn't make sense to talk about it being 'more' or "</span>
                     <span class="string">"'less'."</span><span class="plain">);</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold</span><span class="plain"> = 0;</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_kind</span><span class="plain">,</span>
-                <span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">)) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_kind</span><span class="plain">,</span>
+                <span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">)) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
                 <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingWrongKOV</span><span class="plain">),</span>
-                    <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
+                    <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">measurement_node</span><span class="plain">,</span>
                     <span class="string">"the property value given here is the wrong kind"</span><span class="plain">,</span>
                     <span class="string">"and does not match the property being looked at."</span><span class="plain">);</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold</span><span class="plain"> = 0;</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Can't get literal from &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Can't get literal from &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingNonLiteral</span><span class="plain">),</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain">,</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">measurement_node</span><span class="plain">,</span>
                 <span class="string">"that definition is wrongly phrased"</span><span class="plain">,</span>
                 <span class="string">"assuming it was meant to be a grading adjective like 'Definition: a "</span>
                 <span class="string">"container is large if its carrying capacity is 10 or more.'"</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_evaluated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_evaluated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -333,10 +328,9 @@ and issue a problem.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>To recover safely from these errors, we would be wise to check:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_evaluated</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">prop</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_evaluated</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -367,7 +361,6 @@ Inform's run. Eventually, though, the text after the possessive is required
 always to match &lt;property-name&gt;, and the text in the range must match
 &lt;s-literal&gt;.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt; ::=</span>
@@ -403,16 +396,15 @@ always to match &lt;property-name&gt;, and the text in the range must match
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="functiontext">Properties::Measurement::ADJ_parse</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">DNW</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CONW</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CALLW</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;(</span><span class="identifier">CONW</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">shape</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PRW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;, 1);</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">THRESW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">range</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PRW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">THRESW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">measurement</span><span class="plain">-</span><span class="identifier">range</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
 
         &lt;<span class="cwebmacro">Reject some overly elaborate attempts to define overly elaborate measurements</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
@@ -422,7 +414,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
         &lt;<span class="cwebmacro">Initialise the measurement definition</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create the superlative form</span> <span class="cwebmacronumber">11.4</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Create the adjectival meaning arising from this measurement</span> <span class="cwebmacronumber">11.5</span>&gt;<span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword_as_adjective</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -436,7 +428,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">) &gt; 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">) &gt; </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MultiwordGrading</span><span class="plain">),</span>
                     <span class="identifier">q</span><span class="plain">, </span><span class="string">"a grading adjective must be a single word"</span><span class="plain">,</span>
@@ -457,7 +449,7 @@ always to match &lt;property-name&gt;, and the text in the range must match
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sense</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_GradingUnless</span><span class="plain">),</span>
                     <span class="identifier">q</span><span class="plain">, </span><span class="string">"'unless' is not allowed when defining grading adjectives"</span><span class="plain">,</span>
@@ -523,23 +515,23 @@ can't normally be unravelled at compile time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;measurement_node</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">);</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">measurement_node</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">);</span>
 
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold</span><span class="plain"> = 0;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain"> = </span><span class="identifier">THRESW</span><span class="plain">;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_evaluated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain"> = </span><span class="identifier">THRESW</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_evaluated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain"> = </span><span class="identifier">prop</span><span class="plain">;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;property_schema_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain"> = </span><span class="identifier">shape</span><span class="plain">;</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain"> = </span><span class="identifier">PRW</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain"> = </span><span class="identifier">prop</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">property_schema_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain"> = </span><span class="identifier">shape</span><span class="plain">;</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">name_of_property_to_compare</span><span class="plain"> = </span><span class="identifier">PRW</span><span class="plain">;</span>
 
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;superlative</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">but it may be set below</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">but it will certainly be set below</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">superlative</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">but it may be set below</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword_as_adjective</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">but it will certainly be set below</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="functiontext">Modules::current</span><span class="plain">(), </span><span class="constant">ADJECTIVE_MEANINGS_HAP</span><span class="plain">);</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">MEASUREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">mdef_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">MEASUREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -552,7 +544,7 @@ can't normally be unravelled at compile time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;superlative</span><span class="plain"> = </span><span class="identifier">Grading::make_superlative</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">);</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">superlative</span><span class="plain"> = </span><span class="identifier">Grading::make_superlative</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Feed the preamble for the superlative phrase into the lexer</span> <span class="cwebmacronumber">11.4.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Feed the body of the superlative phrase into the lexer</span> <span class="cwebmacronumber">11.4.2</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Sentences::RuleSubtrees::register_recently_lexed_phrases</span><span class="plain">();</span>
@@ -570,7 +562,7 @@ can't normally be unravelled at compile time.
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" To decide which object is %N ( S - description of objects ) "</span><span class="plain">,</span>
-            <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;superlative</span><span class="plain">));</span>
+            <span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">superlative</span><span class="plain">));</span>
         <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(),</span>
             <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">),</span>
             <span class="character">':'</span><span class="plain">);</span>
@@ -589,8 +581,8 @@ can't normally be unravelled at compile time.
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" (- {-primitive-definition:extremal%s%W}  -) "</span><span class="plain">,</span>
-            <span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">),</span>
-            <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;name_of_property_to_compare</span><span class="plain">);</span>
+            <span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain">),</span>
+            <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">name_of_property_to_compare</span><span class="plain">);</span>
         <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">), </span><span class="character">'.'</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
 </pre>
@@ -607,8 +599,8 @@ can't normally be unravelled at compile time.
 <pre class="displaydefn">
         <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::new</span><span class="plain">(</span><span class="constant">MEASUREMENT_KADJ</span><span class="plain">,</span>
             <span class="identifier">STORE_POINTER_measurement_definition</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">));</span>
-        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">;</span>
-        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">AW</span><span class="plain">, 3);</span>
+        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword_as_adjective</span><span class="plain"> = </span><span class="identifier">am</span><span class="plain">;</span>
+        <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">AW</span><span class="plain">, </span><span class="constant">3</span><span class="plain">);</span>
         <span class="functiontext">Adjectives::Meanings::pass_task_to_support_routine</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">);</span>
         <span class="functiontext">Adjectives::Meanings::set_domain_text</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">DNW</span><span class="plain">);</span>
 </pre>
@@ -619,16 +611,15 @@ can't normally be unravelled at compile time.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::ADJ_compiling_soon</span><span class="plain">(</span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am</span><span class="plain">,</span>
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_evaluated</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;property_schema_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">prop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_evaluated</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">property_schema_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::set_i6_schema</span><span class="plain">(</span>
-                <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain">, </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"%n(*1)"</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain">);</span>
-            <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;property_schema_written</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword_as_adjective</span><span class="plain">, </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"%n(*1)"</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">mdef_iname</span><span class="plain">);</span>
+            <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">property_schema_written</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -640,11 +631,11 @@ can't normally be unravelled at compile time.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::ADJ_assert</span><span class="plain">(</span><span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_to_assert_on</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val_to_assert_on</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">) {</span>
         <span class="functiontext">Properties::Measurement::validate</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parity</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parity</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">)) </span><span class="identifier">val</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain">)) </span><span class="identifier">val</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"literal unreadable"</span><span class="plain">);</span>
-            <span class="functiontext">World::Inferences::draw_property</span><span class="plain">(</span><span class="identifier">infs_to_assert_on</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
+            <span class="functiontext">World::Inferences::draw_property</span><span class="plain">(</span><span class="identifier">infs_to_assert_on</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -667,30 +658,29 @@ can't normally be unravelled at compile time.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Support routines for measurement. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::compile_MADJ_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">, </span><span class="reserved">measurement_definition</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;property_schema_written</span><span class="plain">) {</span>
-                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;mdef_iname</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="identifier">property_schema_written</span><span class="plain">) {</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">mdef_iname</span><span class="plain">);</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lv</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_call_parameter</span><span class="plain">(</span>
                     <span class="functiontext">Frames::current_stack_frame</span><span class="plain">(),</span>
                     <span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
-                    <span class="functiontext">Adjectives::Meanings::get_domain</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword_as_adjective</span><span class="plain">));</span>
+                    <span class="functiontext">Adjectives::Meanings::get_domain</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword_as_adjective</span><span class="plain">));</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">var</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">lv</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">evaluated_prop</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_PROPERTY_VALUE</span><span class="plain">(</span>
-                    <span class="functiontext">Rvalues::from_property</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">), </span><span class="identifier">var</span><span class="plain">);</span>
+                    <span class="functiontext">Rvalues::from_property</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">), </span><span class="identifier">var</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">)) </span><span class="identifier">val</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain">)) </span><span class="identifier">val</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"literal unreadable"</span><span class="plain">);</span>
                 <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::binary_PREDICATE_new</span><span class="plain">(</span>
-                    <span class="functiontext">Properties::Measurement::weak_comparison_bp</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">),</span>
+                    <span class="functiontext">Properties::Measurement::weak_comparison_bp</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain">),</span>
                     <span class="functiontext">Calculus::Terms::new_constant</span><span class="plain">(</span><span class="identifier">evaluated_prop</span><span class="plain">),</span>
                     <span class="functiontext">Calculus::Terms::new_constant</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">));</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::Checker::type_check</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">,</span>
                     <span class="functiontext">Calculus::Propositions::Checker::tc_problem_reporting</span><span class="plain">(</span>
-                        <span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_threshold_text</span><span class="plain">,</span>
+                        <span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_threshold_text</span><span class="plain">,</span>
                         <span class="string">"be giving the boundary of the definition"</span><span class="plain">)) == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -715,17 +705,16 @@ can't normally be unravelled at compile time.
 adjectives and superlatives are made.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::create_comparatives</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">, </span><span class="reserved">measurement_definition</span><span class="plain">) {</span>
             <span class="functiontext">Properties::Measurement::validate</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)) {</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">H</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;headword</span><span class="plain">; </span>    <span class="comment">word number of, e.g., "tall"</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">comparative_form</span><span class="plain"> = </span><span class="identifier">Grading::make_comparative</span><span class="plain">(</span><span class="identifier">H</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">); </span>    <span class="comment">"taller than"</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::Measurement::is_valid</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain"> != </span><span class="constant">MEASURE_T_EXACTLY</span><span class="plain">)) {</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">H</span><span class="plain"> = </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">headword</span><span class="plain">; </span><span class="comment">word number of, e.g., "tall"</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">comparative_form</span><span class="plain"> = </span><span class="identifier">Grading::make_comparative</span><span class="plain">(</span><span class="identifier">H</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">); </span><span class="comment">"taller than"</span>
                 <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">quiddity</span><span class="plain"> =</span>
-                    <span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">Grading::make_quiddity</span><span class="plain">(</span><span class="identifier">H</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">))); </span>    <span class="comment">"tallness"</span>
+                    <span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">Grading::make_quiddity</span><span class="plain">(</span><span class="identifier">H</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">))); </span><span class="comment">"tallness"</span>
                 <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">schema_to_compare_property_values</span><span class="plain">;</span>
 
                 &lt;<span class="cwebmacro">Work out property comparison schema</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
@@ -749,8 +738,8 @@ adjectives and superlatives are made.
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain"> = </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">);</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">operation</span><span class="plain"> = </span><span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain"> = </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">);</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">operation</span><span class="plain"> = </span><span class="functiontext">Properties::Measurement::strict_comparison</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain">);</span>
         <span class="identifier">schema_to_compare_property_values</span><span class="plain"> =</span>
             <span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"(*1.%n %s *2.%n)"</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">operation</span><span class="plain">, </span><span class="identifier">identifier</span><span class="plain">);</span>
 </pre>
@@ -784,7 +773,7 @@ behaviour despite being of mutually incompatible kinds.)
             <span class="identifier">relname</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
             <span class="identifier">schema_to_compare_property_values</span><span class="plain">, </span><span class="identifier">WordAssemblages::lit_1</span><span class="plain">(</span><span class="identifier">quiddity</span><span class="plain">));</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">relname</span><span class="plain">);</span>
-        <span class="functiontext">BinaryPredicates::set_comparison_details</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;region_shape</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-</span><span class="element">&gt;prop</span><span class="plain">);</span>
+        <span class="functiontext">BinaryPredicates::set_comparison_details</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">region_shape</span><span class="plain">, </span><span class="identifier">mdef</span><span class="plain">-&gt;</span><span class="element">prop</span><span class="plain">);</span>
         <span class="functiontext">Properties::Measurement::register_comparative</span><span class="plain">(</span><span class="identifier">comparative_form</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">);</span>
 </pre>
 
@@ -797,13 +786,12 @@ created, make suitable comparatives ("bigger than", etc.) and
 prepositional usages to test property-equality ("the same height as").
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::Measurement::register_comparative</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">root</span><span class="plain">) {</span>
         <span class="identifier">set_where_created</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="identifier">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain"> = </span><span class="identifier">VerbMeanings::new</span><span class="plain">(</span><span class="identifier">root</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> =</span>
-            <span class="identifier">Prepositions::make</span><span class="plain">(</span><span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, 0,</span>
+            <span class="identifier">Prepositions::make</span><span class="plain">(</span><span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                 <span class="identifier">WordAssemblages::lit_1</span><span class="plain">(</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)))), </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Verbs::add_form</span><span class="plain">(</span><span class="identifier">copular_verb</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">vm</span><span class="plain">, </span><span class="identifier">SVO_FS_BIT</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -824,10 +812,9 @@ prepositional usages to test property-equality ("the same height as").
 <p class="inwebparagraph">Inform also creates a comparative form of the adjective as a preposition:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... </span><span class="identifier">than</span><span class="plain">						</span>    <span class="comment">Peter is taller than Claude</span>
+        <span class="plain">... </span><span class="identifier">than</span><span class="plain">						</span><span class="comment">Peter is taller than Claude</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -835,10 +822,9 @@ prepositional usages to test property-equality ("the same height as").
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>And when Inform creates a value property, that also makes a preposition:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">same</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">the</span><span class="plain"> </span><span class="identifier">same</span><span class="plain"> ... </span><span class="identifier">as</span><span class="plain">					</span>    <span class="comment">if Peter is the same height as Claude</span>
+        <span class="identifier">the</span><span class="plain"> </span><span class="identifier">same</span><span class="plain"> ... </span><span class="identifier">as</span><span class="plain">					</span><span class="comment">if Peter is the same height as Claude</span>
 </pre>
 
 <p class="inwebparagraph"></p>

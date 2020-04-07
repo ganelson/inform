@@ -85,7 +85,7 @@ which use this module:
 
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">vocabulary_entry</span><span class="plain">, 100)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">vocabulary_entry</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">nonterminal</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">production_list</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">production</span><span class="plain">)</span>
@@ -96,7 +96,6 @@ which use this module:
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <code class="display"><span class="extract">start</span></code> and <code class="display"><span class="extract">end</span></code> function:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WordsModule::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

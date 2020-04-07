@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -45,14 +45,13 @@ the Z-machine nor Glulx has such a stack, alas, alas, alas. The following
 is not a very good solution, but it just about works.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MAX_MSTACK_FRAME</span><span class="plain"> = </span><span class="constant">2</span><span class="plain"> + </span><span class="identifier">MAX_FRAME_SIZE_NEEDED</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MSTACK_CAPACITY</span><span class="plain"> = </span><span class="constant">20</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MSTACK_SIZE</span><span class="plain"> = </span><span class="identifier">MSTACK_CAPACITY</span><span class="plain">*</span><span class="identifier">MAX_MSTACK_FRAME</span><span class="plain">;</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">MStack</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">MSTACK_SIZE</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! Topmost word currently used</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">MStack</span><span class="plain"> --&gt; </span><span class="identifier">MSTACK_SIZE</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">Topmost word currently used</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -71,7 +70,6 @@ used, in words. Thus is required to be strictly less than <code class="display">
 minus 1.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">Mstack_Create_Frame</span><span class="plain"> </span><span class="identifier">creator</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">creator</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -86,7 +84,7 @@ minus 1.
         <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
         <span class="identifier">MStack_Top</span><span class="plain">++;</span>
         <span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="identifier">MStack_Top</span><span class="plain"> + </span><span class="identifier">extent</span><span class="plain">;</span>
-        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="constant">-</span><span class="plain">(</span><span class="identifier">extent</span><span class="plain">+2);</span>
+        <span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">MStack_Top</span><span class="plain"> = -(</span><span class="identifier">extent</span><span class="plain">+2);</span>
         <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -112,13 +110,12 @@ destroyed, not wiped by being undercut when an earlier-created frame
 is destroyed.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">Mstack_Destroy_Frame</span><span class="plain"> </span><span class="identifier">creator</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">;</span>
         <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Mstack_Seek_Frame</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">! Not found: do nothing</span>
-        <span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! Clear mstack down to just below this frame</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">creator</span><span class="plain">) </span><span class="identifier">creator</span><span class="plain">.</span><span class="identifier">call</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">; </span><span class="comment">Not found: do nothing</span>
+        <span class="identifier">MStack_Top</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain"> - </span><span class="constant">2</span><span class="plain">; </span><span class="comment">Clear mstack down to just below this frame</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">creator</span><span class="plain">) </span><span class="identifier">creator</span><span class="plain">.</span><span class="identifier">call</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, -1);</span>
         <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -132,7 +129,6 @@ on the stack is used as a sentinel &mdash; all frames are placed above it &mdash
 can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
 </p>
 
-
 <pre class="display">
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">MStack_Frame_Extent</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
@@ -141,11 +137,11 @@ can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">pos</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = </span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">pos</span><span class="plain">;</span>
             <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain"> + </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
-            <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = (-2) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
+            <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = (-2) - </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MStack</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+1) == </span><span class="identifier">id</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">+2;</span>
         <span class="plain">}</span>
         <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! Not found</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; </span><span class="comment">Not found</span>
     <span class="plain">];</span>
 </pre>
 
@@ -155,7 +151,6 @@ can actually begin at word 0 on the stack, so 0 is safe to use as an exception.)
 memory:
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">Mstack_Backtrace</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">"Mstack backtrace: size "</span><span class="plain">, </span><span class="identifier">MStack_Top</span><span class="plain">+1, </span><span class="string">" words^"</span><span class="plain">;</span>
@@ -163,7 +158,7 @@ memory:
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">pos</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = </span><span class="identifier">MStack</span><span class="plain">--&gt;</span><span class="identifier">pos</span><span class="plain">;</span>
             <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain"> + </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
-            <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = (-2) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
+            <span class="identifier">MStack_Frame_Extent</span><span class="plain"> = (-2) - </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">;</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"Block at "</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">+2,</span>
                 <span class="string">" owner ID "</span><span class="plain">, </span><span class="identifier">MStack</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+1), </span><span class="string">" size "</span><span class="plain">, </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain">=0: </span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">MStack_Frame_Extent</span><span class="plain">: </span><span class="identifier">k</span><span class="plain">++) </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">MStack</span><span class="plain">--&gt;(</span><span class="identifier">pos</span><span class="plain">+2+</span><span class="identifier">k</span><span class="plain">), </span><span class="string">" "</span><span class="plain">;</span>
@@ -184,7 +179,6 @@ impossible to produce either error message below: NI will only compile valid
 uses of <code class="display"><span class="extract">MstVO</span></code> ("M-stack variable offset") where the seek succeeds and
 the offset is within range.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MstVO</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">;</span>
@@ -223,12 +217,11 @@ variables such as "room gone to".
 where it is to be written, of course: that would corrupt the sentinel.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MstVON</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">;</span>
         <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Mstack_Seek_Frame</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! word position 0 on the M-stack</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; </span><span class="comment">word position 0 on the M-stack</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">off</span><span class="plain">&lt;0) || (</span><span class="identifier">off</span><span class="plain"> &gt;= </span><span class="identifier">MStack_Frame_Extent</span><span class="plain">)) {</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"Variable stack offset wrong: "</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="string">"/"</span><span class="plain">, </span><span class="identifier">off</span><span class="plain">, </span><span class="string">" at "</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
@@ -247,7 +240,6 @@ usually null, are stored in an array if there is no problem about memory
 usage, but with a switch statement if <code class="display"><span class="extract">MEMORY_ECONOMY</span></code> is in force; this
 costs a very small amount of time, but saves 1K of readable memory.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MStack_CreateRBVars</span><span class="plain"> </span><span class="identifier">rb</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain">;</span>
@@ -276,7 +268,6 @@ is 10000+N, where N is the allocation ID of the activity. (This would
 fail if there were more than 10,000 rulebooks, but this is very difficult
 to see happening.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MStack_CreateAVVars</span><span class="plain"> </span><span class="identifier">av</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain">;</span>

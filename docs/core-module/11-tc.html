@@ -71,7 +71,6 @@ must be done.
 their existence.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::to_make_a_kind</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::ISAKIND_new</span><span class="plain">(</span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0), </span><span class="identifier">K</span><span class="plain">);</span>
@@ -86,7 +85,7 @@ their existence.
     <span class="plain">}</span>
 
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::to_create_something</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::QUANTIFIER_new</span><span class="plain">(</span><span class="identifier">exists_quantifier</span><span class="plain">, 0, 0);</span>
+        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::QUANTIFIER_new</span><span class="plain">(</span><span class="identifier">exists_quantifier</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::concatenate</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">,</span>
                 <span class="functiontext">Calculus::Atoms::KIND_new</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0)));</span>
@@ -109,7 +108,6 @@ their existence.
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>A proposition to assert that an object has a given kind:
 </p>
-
 
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::prop_to_set_kind</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
@@ -140,7 +138,6 @@ their existence.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Now propositions to assert that relations hold:
 </p>
-
 
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::to_set_simple_relation</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -174,7 +171,6 @@ their existence.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Property provision is itself a relation:
 </p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::to_provide_property</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::binary_PREDICATE_new</span><span class="plain">(</span><span class="identifier">R_provision</span><span class="plain">,</span>
@@ -197,7 +193,6 @@ their existence.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>"Everywhere", "nowhere" and "here":
 </p>
-
 
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::to_put_everywhere</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -225,7 +220,6 @@ their existence.
 whose text can be found in a node <code class="display"><span class="extract">py</span></code>...
 </p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::from_property_subtree</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::Abstract::to_set_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="functiontext">Assertions::PropertyKnowledge::property_value_from_property_subtree</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">));</span>
@@ -242,23 +236,22 @@ allowed by the A-parser but not the S-parser, and here is where we deal
 with it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Abstract::from_property_list</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AND_NT</span><span class="plain">:</span>
-                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AND_NT:</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
                         <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::conjoin</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="functiontext">Calculus::Propositions::Abstract::from_property_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_LIST_NT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_LIST_NT:</span>
                     &lt;<span class="cwebmacro">Conjoin atoms to assert from a property list</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">ADJECTIVE_NT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ADJECTIVE_NT:</span>
                     &lt;<span class="cwebmacro">Conjoin atoms to assert from an adjective node</span> <span class="cwebmacronumber">7.2</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error_on_node_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error_on_node_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
@@ -292,7 +285,7 @@ parse the text to find what which property is referred to.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">PW</span><span class="plain">)) &amp;&amp; (&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">PW</span><span class="plain">))) </span><span class="identifier">prn</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a problem message for no-such-property</span> <span class="cwebmacronumber">7.1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">VW</span><span class="plain">)) { </span>    <span class="comment">a value is supplied...</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">VW</span><span class="plain">)) { </span><span class="comment">a value is supplied...</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
@@ -312,7 +305,7 @@ parse the text to find what which property is referred to.
             <span class="functiontext">Assertions::Refiner::refine</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">FORBID_CREATION</span><span class="plain">);</span>
             <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Abstract::from_property_subtree</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::conjoin</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span>    <span class="comment">no value is supplied...</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span><span class="comment">no value is supplied...</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
@@ -365,11 +358,11 @@ that the rest is property name; and otherwise
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">name_length</span><span class="plain"> = </span><span class="functiontext">Properties::match_longest</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">name_length</span><span class="plain"> &lt; 0) {</span>
-            <span class="identifier">name_length</span><span class="plain"> = 1;</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">name_length</span><span class="plain"> = </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) - 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">name_length</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">name_length</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">name_length</span><span class="plain"> = </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">name_length</span><span class="plain"> - 1);</span>
+        <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">name_length</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">VW</span><span class="plain"> = </span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">name_length</span><span class="plain">);</span>
 </pre>
 
@@ -383,7 +376,7 @@ that the rest is property name; and otherwise
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed property list: pname = &lt;%W&gt;; pval = &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed property list: pname = &lt;%W&gt;; pval = &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">, </span><span class="identifier">VW</span><span class="plain">);</span>
         <span class="identifier">Problems::Issue::assertion_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadPropertyList</span><span class="plain">),</span>
             <span class="string">"this looked to me as if it might be trying to create something "</span>
             <span class="string">"which has certain properties"</span><span class="plain">,</span>

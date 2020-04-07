@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -117,7 +117,6 @@ will go on developing, while the past will remain as it was; until things
 calm down again and we come to another chronology point.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ChronologyPoint</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">=0:</span><span class="identifier">pt</span><span class="plain">&lt;</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">:</span><span class="identifier">pt</span><span class="plain">++)</span>
@@ -133,10 +132,9 @@ test updates the state, because it changes the number of times something has
 been found true, and so on.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">UPDATE_CHRONOLOGICAL_RECORDS_R</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">=0: </span><span class="identifier">pt</span><span class="plain">&lt;</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">: </span><span class="identifier">pt</span><span class="plain">++) </span><span class="identifier">TestSinglePastState</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">=0: </span><span class="identifier">pt</span><span class="plain">&lt;</span><span class="identifier">NO_PAST_TENSE_CONDS</span><span class="plain">: </span><span class="identifier">pt</span><span class="plain">++) </span><span class="identifier">TestSinglePastState</span><span class="plain">(</span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, -1);</span>
         <span class="identifier">ChronologyPoint</span><span class="plain">();</span>
         <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -299,12 +297,11 @@ to be set, but it can't cause any other action's flag to be cleared, and nor
 can it zero the turns count for another action.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TrackActions</span><span class="plain"> </span><span class="identifier">readjust</span><span class="plain"> </span><span class="identifier">oow</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0: </span><span class="identifier">PastActionsI6Routines</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">PastActionsI6Routines</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">).</span><span class="identifier">call</span><span class="plain">()) {</span>
-                <span class="comment">! Yes, the current action matches action pattern i:</span>
+                <span class="comment">Yes, the current action matches action pattern i:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">readjust</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">(</span><span class="identifier">TimesActionHasHappened</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> ~= </span><span class="identifier">turns</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">) {</span>
@@ -314,7 +311,7 @@ can it zero the turns count for another action.
                         <span class="plain">(</span><span class="identifier">TurnsActionHasBeenHappening</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">)++;</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="comment">! No, the current action doesn't match action pattern i:</span>
+                <span class="comment">No, the current action doesn't match action pattern i:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oow</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">keep_silent</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) { </span><span class="identifier">TurnsActionHasBeenHappening</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; }</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">LastTurnActionHappenedOn</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> ~= </span><span class="identifier">turns</span><span class="plain"> + </span><span class="constant">5</span><span class="plain">)</span>
@@ -329,7 +326,6 @@ can it zero the turns count for another action.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Storage. </b>The necessary array allocation.
 </p>
-
 
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TimesActionHasHappened</span><span class="plain">--&gt;(</span><span class="identifier">NO_PAST_TENSE_ACTIONS</span><span class="plain">+1);</span>

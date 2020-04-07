@@ -53,10 +53,9 @@ GIF for bitmap graphics, and so on.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Main variables:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain"> = 0; </span>    <span class="comment">ditto, but not counting the <code class="display"><span class="extract">FORM</span></code> header or the <code class="display"><span class="extract">RIdx</span></code> chunk</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_indexed_chunks</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">ditto, but not counting the <code class="display"><span class="extract">FORM</span></code> header or the <code class="display"><span class="extract">RIdx</span></code> chunk</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_indexed_chunks</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -82,14 +81,14 @@ of the file &mdash; the "resource index".)
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chunk_metadata</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">chunk_file</span><span class="plain">; </span>    <span class="comment">if the content is stored on disc</span>
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">data_in_memory</span><span class="plain">[</span><span class="constant">MAX_CHUNK_DATA_STORED_IN_MEMORY</span><span class="plain">]; </span>    <span class="comment">if the content is stored in memory</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">length_of_data_in_memory</span><span class="plain">; </span>    <span class="comment">in bytes; or -1 if the content is stored on disc</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">chunk_type</span><span class="plain">; </span>    <span class="comment">pointer to a 4-character string</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">index_entry</span><span class="plain">; </span>    <span class="comment">ditto</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">resource_id</span><span class="plain">; </span>    <span class="comment">meaningful only if this is a chunk which is indexed</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">byte_offset</span><span class="plain">; </span>    <span class="comment">from the start of the chunks, which is not quite the start of the IFF file</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">; </span>    <span class="comment">in bytes</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">chunk_file</span><span class="plain">; </span><span class="comment">if the content is stored on disc</span>
+        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">data_in_memory</span><span class="plain">[</span><span class="constant">MAX_CHUNK_DATA_STORED_IN_MEMORY</span><span class="plain">]; </span><span class="comment">if the content is stored in memory</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">length_of_data_in_memory</span><span class="plain">; </span><span class="comment">in bytes; or -1 if the content is stored on disc</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">chunk_type</span><span class="plain">; </span><span class="comment">pointer to a 4-character string</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">index_entry</span><span class="plain">; </span><span class="comment">ditto</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">resource_id</span><span class="plain">; </span><span class="comment">meaningful only if this is a chunk which is indexed</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">byte_offset</span><span class="plain">; </span><span class="comment">from the start of the chunks, which is not quite the start of the IFF file</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">; </span><span class="comment">in bytes</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">chunk_metadata</span><span class="plain">;</span>
 </pre>
@@ -103,15 +102,14 @@ same goes for Pict resources.  These two linked lists are used to store all the
 resource numbers encountered.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">resource_number</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">resource_number</span><span class="plain">;</span>
 
-    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sound_resource</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">resource_number</span></code></span>
-    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">pict_resource</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">resource_number</span></code></span>
+    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sound_resource</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">resource_number</span></code></span>
+    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">pict_resource</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">resource_number</span></code></span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -121,7 +119,6 @@ resource numbers encountered.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And this is used to record alt-descriptions of resources, for the benefit
 of partially sighted or deaf users:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rdes_record</span><span class="plain"> {</span>
@@ -141,38 +138,37 @@ of partially sighted or deaf users:
 32, 16 or 8-bit values in explicitly big-endian form:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x1000000</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x10000</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x100</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x1000000</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x10000</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x100</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::two_word</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x100</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x100</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::one_byte</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">fputc</span><span class="plain">((</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x1000000</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
-        <span class="identifier">F</span><span class="plain">[1] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x10000</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
-        <span class="identifier">F</span><span class="plain">[2] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x100</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
-        <span class="identifier">F</span><span class="plain">[3] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x1000000</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[1] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x10000</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[2] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x100</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[3] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::s_two_word</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / 0</span><span class="identifier">x100</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
-        <span class="identifier">F</span><span class="plain">[1] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain"> / </span><span class="constant">0x100</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[1] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::s_one_byte</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%0</span><span class="identifier">x100</span><span class="plain">;</span>
+        <span class="identifier">F</span><span class="plain">[0] = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain">) (</span><span class="identifier">n</span><span class="plain">)%</span><span class="constant">0x100</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -196,7 +192,6 @@ which a single enclosing chunk (<code class="display"><span class="extract">FORM
 with no further chunks inside.
 </p>
 
-
 <pre class="display">
     <span class="reserved">chunk_metadata</span><span class="plain"> *</span><span class="identifier">current_chunk</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -208,7 +203,6 @@ for an existing binary file on disc which will hold the data we want to
 write, or we supply a <code class="display"><span class="extract">NULL</span></code> filename and a <code class="display"><span class="extract">data</span></code> pointer to <code class="display"><span class="extract">length</span></code>
 bytes in memory.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">resource_num</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">supplied_filename</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">index</span><span class="plain">,</span>
@@ -224,18 +218,18 @@ bytes in memory.
 
         &lt;<span class="cwebmacro">Set the filename for the new chunk</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_type</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
-        <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain"> = </span><span class="identifier">index</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain">) </span><span class="identifier">no_indexed_chunks</span><span class="plain">++;</span>
-        <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;byte_offset</span><span class="plain"> = </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain">;</span>
-        <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;resource_id</span><span class="plain"> = </span><span class="identifier">resource_num</span><span class="plain">;</span>
+        <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_type</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
+        <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">index_entry</span><span class="plain"> = </span><span class="identifier">index</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">index_entry</span><span class="plain">) </span><span class="identifier">no_indexed_chunks</span><span class="plain">++;</span>
+        <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">byte_offset</span><span class="plain"> = </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain">;</span>
+        <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">resource_id</span><span class="plain"> = </span><span class="identifier">resource_num</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Compute the size in bytes of the chunk</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Advance the total chunk size</span> <span class="cwebmacronumber">8.3</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">)</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Begun chunk %s: fn is &lt;%f&gt; (innate size %d)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_type</span><span class="plain">, </span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain">, </span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Begun chunk %s: fn is &lt;%f&gt; (innate size %d)\n"</span><span class="plain">,</span>
+                <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_type</span><span class="plain">, </span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain">, </span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -250,13 +244,13 @@ bytes in memory.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">data</span><span class="plain">) {</span>
-            <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;length_of_data_in_memory</span><span class="plain"> = </span><span class="identifier">length</span><span class="plain">;</span>
+            <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">length_of_data_in_memory</span><span class="plain"> = </span><span class="identifier">length</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">length</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;data_in_memory</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">length</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">data_in_memory</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">data</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain"> = </span><span class="identifier">supplied_filename</span><span class="plain">;</span>
-            <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;length_of_data_in_memory</span><span class="plain"> = -1;</span>
+            <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain"> = </span><span class="identifier">supplied_filename</span><span class="plain">;</span>
+            <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">length_of_data_in_memory</span><span class="plain"> = -1;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -276,9 +270,9 @@ bytes in memory.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">size</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="functiontext">BinaryFiles::size</span><span class="plain">(</span><span class="identifier">supplied_filename</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Writer::chunk_type_is_already_an_IFF</span><span class="plain">(</span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;chunk_type</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-            <span class="identifier">size</span><span class="plain"> += 8; </span>    <span class="comment">allow 8 further bytes for the chunk header to be added later</span>
-        <span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Writer::chunk_type_is_already_an_IFF</span><span class="plain">(</span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">chunk_type</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+            <span class="identifier">size</span><span class="plain"> += </span><span class="constant">8</span><span class="plain">; </span><span class="comment">allow 8 further bytes for the chunk header to be added later</span>
+        <span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -298,8 +292,8 @@ or even sixteen-byte boundaries.
 
 
 <pre class="displaydefn">
-        <span class="identifier">total_size_of_Blorb_chunks</span><span class="plain"> += </span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">) % 2 == 1) </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain">++;</span>
+        <span class="identifier">total_size_of_Blorb_chunks</span><span class="plain"> += </span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain">) % </span><span class="constant">2</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">total_size_of_Blorb_chunks</span><span class="plain">++;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -316,14 +310,13 @@ an indexing chunk, <code class="display"><span class="extract">"RIdx"</span></co
 others, and they are labelled with the "index entry" text.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">legal_Blorb_chunk_types</span><span class="plain">[] = {</span>
-        <span class="string">"AUTH"</span><span class="plain">, </span><span class="string">"(c) "</span><span class="plain">, </span><span class="string">"Fspc"</span><span class="plain">, </span><span class="string">"RelN"</span><span class="plain">, </span><span class="string">"IFmd"</span><span class="plain">, </span>    <span class="comment">miscellaneous identifying data</span>
-        <span class="string">"JPEG"</span><span class="plain">, </span><span class="string">"PNG "</span><span class="plain">, </span>    <span class="comment">images in different formats</span>
-        <span class="string">"AIFF"</span><span class="plain">, </span><span class="string">"OGGV"</span><span class="plain">, </span><span class="string">"MIDI"</span><span class="plain">, </span><span class="string">"MOD "</span><span class="plain">, </span>    <span class="comment">sound effects in different formats</span>
-        <span class="string">"ZCOD"</span><span class="plain">, </span><span class="string">"GLUL"</span><span class="plain">, </span>    <span class="comment">story files in different formats</span>
-        <span class="string">"RDes"</span><span class="plain">, </span>    <span class="comment">resource descriptions (added to the standard in March 2014)</span>
+        <span class="string">"AUTH"</span><span class="plain">, </span><span class="string">"(c) "</span><span class="plain">, </span><span class="string">"Fspc"</span><span class="plain">, </span><span class="string">"RelN"</span><span class="plain">, </span><span class="string">"IFmd"</span><span class="plain">, </span><span class="comment">miscellaneous identifying data</span>
+        <span class="string">"JPEG"</span><span class="plain">, </span><span class="string">"PNG "</span><span class="plain">, </span><span class="comment">images in different formats</span>
+        <span class="string">"AIFF"</span><span class="plain">, </span><span class="string">"OGGV"</span><span class="plain">, </span><span class="string">"MIDI"</span><span class="plain">, </span><span class="string">"MOD "</span><span class="plain">, </span><span class="comment">sound effects in different formats</span>
+        <span class="string">"ZCOD"</span><span class="plain">, </span><span class="string">"GLUL"</span><span class="plain">, </span><span class="comment">story files in different formats</span>
+        <span class="string">"RDes"</span><span class="plain">, </span><span class="comment">resource descriptions (added to the standard in March 2014)</span>
         <span class="identifier">NULL</span><span class="plain"> };</span>
 
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">legal_Blorb_index_entries</span><span class="plain">[] = {</span>
@@ -335,13 +328,12 @@ others, and they are labelled with the "index entry" text.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Because we are wisely paranoid:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Writer::chunk_type_is_legal</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">type</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">legal_Blorb_chunk_types</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">legal_Blorb_chunk_types</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">legal_Blorb_chunk_types</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -350,7 +342,7 @@ others, and they are labelled with the "index entry" text.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">legal_Blorb_index_entries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">entry</span><span class="plain">, </span><span class="identifier">legal_Blorb_index_entries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">entry</span><span class="plain">, </span><span class="identifier">legal_Blorb_index_entries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -368,15 +360,14 @@ exit with a fatal error. Otherwise, FALSE is returned, indicating that
 everything is fine.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Writer::resource_seen</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">value</span><span class="plain">) {</span>
         <span class="reserved">resource_number</span><span class="plain"> *</span><span class="identifier">rn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">rn</span><span class="plain">, </span><span class="reserved">resource_number</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rn</span><span class="plain">-</span><span class="element">&gt;num</span><span class="plain"> == </span><span class="identifier">value</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rn</span><span class="plain">-&gt;</span><span class="element">num</span><span class="plain"> == </span><span class="identifier">value</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">rn</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">resource_number</span><span class="plain">);</span>
-        <span class="identifier">rn</span><span class="plain">-</span><span class="element">&gt;num</span><span class="plain"> = </span><span class="identifier">value</span><span class="plain">;</span>
+        <span class="identifier">rn</span><span class="plain">-&gt;</span><span class="element">num</span><span class="plain"> = </span><span class="identifier">value</span><span class="plain">;</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">rn</span><span class="plain">, </span><span class="reserved">resource_number</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -390,7 +381,6 @@ everything is fine.
 we need to know whether the chunk in question is already an IFF in its
 own right. Only one type of chunk is, as it happens:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Writer::chunk_type_is_already_an_IFF</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain">) {</span>
@@ -406,11 +396,10 @@ own right. Only one type of chunk is, as it happens:
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b><code class="display"><span class="extract">"AUTH"</span></code>: author's name, as a null-terminated string.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::author_chunk</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Author: &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"AUTH"</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">t</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Author: &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"AUTH"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">t</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -421,11 +410,10 @@ own right. Only one type of chunk is, as it happens:
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b><code class="display"><span class="extract">"(c) "</span></code>: copyright declaration.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::copyright_chunk</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Copyright declaration: &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"(c) "</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">t</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Copyright declaration: &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"(c) "</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">t</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -437,13 +425,12 @@ own right. Only one type of chunk is, as it happens:
 cover art, in other words.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::frontispiece_chunk</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Frontispiece is image %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Frontispiece is image %d\n"</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">[4];</span>
         <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">data</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">);</span>
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"Fspc"</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">data</span><span class="plain">, 4);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"Fspc"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">data</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -454,13 +441,12 @@ cover art, in other words.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b><code class="display"><span class="extract">"RelN"</span></code>: release number.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::release_chunk</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Release number is %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Release number is %d\n"</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">data</span><span class="plain">[2];</span>
         <span class="functiontext">Writer::s_two_word</span><span class="plain">(</span><span class="identifier">data</span><span class="plain">, </span><span class="identifier">rn</span><span class="plain">);</span>
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"RelN"</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">data</span><span class="plain">, 2);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"RelN"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">data</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -473,7 +459,6 @@ disc, and in a format which Blorb allows: for Inform 7 use, this will always
 be PNG or JPEG. There can be any number of these chunks.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::picture_chunk</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">alt</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain"> = </span><span class="string">"PNG "</span><span class="plain">;</span>
@@ -483,13 +468,13 @@ be PNG or JPEG. There can be any number of these chunks.
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1f</span><span class="plain">(</span><span class="string">"image file has unknown file extension "</span>
             <span class="string">"(expected e.g. '.png' for PNG, '.jpeg' for JPEG)"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; 1) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Picture resource number is less than 1"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Picture resource number is less than 1"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pict_resource</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pict_resource</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">resource_number</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Writer::resource_seen</span><span class="plain">(</span><span class="identifier">pict_resource</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">))</span>
             <span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Duplicate Picture resource number"</span><span class="plain">);</span>
 
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Pict"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">) &gt; 0) {</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Pict"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">)+1;</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">alt_Cs</span><span class="plain"> = </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">);</span>
             <span class="functiontext">Str::copy_to_ISO_string</span><span class="plain">(</span><span class="identifier">alt_Cs</span><span class="plain">, </span><span class="identifier">alt</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
@@ -510,13 +495,12 @@ rather than <code class="display"><span class="extract">PlaySound(5)</span></cod
 must be included again.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::picture_chunk_text</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Null picture ID, using %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">picture_resource_num</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Null picture ID, using %d\n"</span><span class="plain">, </span><span class="identifier">picture_resource_num</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Constant PICTURE_%S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">picture_resource_num</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Constant PICTURE_%S = %d;\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">picture_resource_num</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">picture_resource_num</span><span class="plain">++;</span>
         <span class="functiontext">Writer::picture_chunk</span><span class="plain">(</span><span class="identifier">picture_resource_num</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">);</span>
@@ -536,7 +520,6 @@ adding MOD ("SoundTracker") or MIDI files, so both are supported here.
 <p class="inwebparagraph">There can be any number of these chunks, too.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::sound_chunk</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">alt</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain"> = </span><span class="string">"AIFF"</span><span class="plain">;</span>
@@ -548,12 +531,12 @@ adding MOD ("SoundTracker") or MIDI files, so both are supported here.
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1f</span><span class="plain">(</span><span class="string">"sound file has unknown file extension "</span>
             <span class="string">"(expected e.g. '.ogg', '.midi', '.mod' or '.aiff', as appropriate)"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; 3) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Sound resource number is less than 3"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">3</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Sound resource number is less than 3"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sound_resource</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">sound_resource</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">resource_number</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Writer::resource_seen</span><span class="plain">(</span><span class="identifier">sound_resource</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">)) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Duplicate Sound resource number"</span><span class="plain">);</span>
 
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Snd "</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">) &gt; 0) {</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Snd "</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">)+1;</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">alt_Cs</span><span class="plain"> = </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">);</span>
             <span class="functiontext">Str::copy_to_ISO_string</span><span class="plain">(</span><span class="identifier">alt_Cs</span><span class="plain">, </span><span class="identifier">alt</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
@@ -570,13 +553,12 @@ adding MOD ("SoundTracker") or MIDI files, so both are supported here.
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>And again, by name:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::sound_chunk_text</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Null sound ID, using %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">sound_resource_num</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Null sound ID, using %d\n"</span><span class="plain">, </span><span class="identifier">sound_resource_num</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Constant SOUND_%S = %d;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">sound_resource_num</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Constant SOUND_%S = %d;\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">sound_resource_num</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">sound_resource_num</span><span class="plain">++;</span>
         <span class="functiontext">Writer::sound_chunk</span><span class="plain">(</span><span class="identifier">sound_resource_num</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">);</span>
@@ -591,37 +573,36 @@ adding MOD ("SoundTracker") or MIDI files, so both are supported here.
 images or sounds.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> = 0;</span>
+    <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::add_rdes_record</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">alt</span><span class="plain">) {</span>
         <span class="reserved">rdes_record</span><span class="plain"> *</span><span class="identifier">rr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">rdes_record</span><span class="plain">);</span>
-        <span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;usage</span><span class="plain"> = </span><span class="identifier">usage</span><span class="plain">;</span>
-        <span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;resource_id</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
-        <span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;description</span><span class="plain"> = </span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">);</span>
-        <span class="identifier">size_of_rdes_chunk</span><span class="plain"> += 12 + (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">);</span>
+        <span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">usage</span><span class="plain"> = </span><span class="identifier">usage</span><span class="plain">;</span>
+        <span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">resource_id</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">description</span><span class="plain"> = </span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">);</span>
+        <span class="identifier">size_of_rdes_chunk</span><span class="plain"> += </span><span class="constant">12</span><span class="plain"> + (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::rdes_chunk</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">rdes_data</span><span class="plain"> =</span>
-                <span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> + 9, </span><span class="constant">RDES_MREASON</span><span class="plain">);</span>
+                <span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> + </span><span class="constant">9</span><span class="plain">, </span><span class="constant">RDES_MREASON</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rdes_data</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"Run out of memory"</span><span class="plain">);</span>
-            <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 4;</span>
+            <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
             <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">rdes_record</span><span class="plain">));</span>
             <span class="reserved">rdes_record</span><span class="plain"> *</span><span class="identifier">rr</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rr</span><span class="plain">, </span><span class="reserved">rdes_record</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;usage</span><span class="plain"> == 1) </span><span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">), </span><span class="string">"Pict"</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;usage</span><span class="plain"> == 2) </span><span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">), </span><span class="string">"Snd "</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">, 0);</span>
-                <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + 4, </span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;resource_id</span><span class="plain">);</span>
-                <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + 8, (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;description</span><span class="plain">));</span>
-                <span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + 12), </span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;description</span><span class="plain">);</span>
-                <span class="identifier">pos</span><span class="plain"> += 12 + (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rr</span><span class="plain">-</span><span class="element">&gt;description</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">usage</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">), </span><span class="string">"Pict"</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">usage</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">), </span><span class="string">"Snd "</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + </span><span class="constant">4</span><span class="plain">, </span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">resource_id</span><span class="plain">);</span>
+                <span class="functiontext">Writer::s_four_word</span><span class="plain">(</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + </span><span class="constant">8</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">description</span><span class="plain">));</span>
+                <span class="identifier">strcpy</span><span class="plain">((</span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">rdes_data</span><span class="plain"> + </span><span class="identifier">pos</span><span class="plain"> + </span><span class="constant">12</span><span class="plain">), </span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">description</span><span class="plain">);</span>
+                <span class="identifier">pos</span><span class="plain"> += </span><span class="constant">12</span><span class="plain"> + (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rr</span><span class="plain">-&gt;</span><span class="element">description</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> != </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> + 4) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"misconstructed rdes"</span><span class="plain">);</span>
-            <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"RDes"</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rdes_data</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">pos</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> != </span><span class="identifier">size_of_rdes_chunk</span><span class="plain"> + </span><span class="constant">4</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="string">"misconstructed rdes"</span><span class="plain">);</span>
+            <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"RDes"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">rdes_data</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">pos</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -637,7 +618,6 @@ Glulx story file. It's legal to make a blorb with no story file in, but
 Inform 7 never does this.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::executable_chunk</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain"> = </span><span class="string">"ZCOD"</span><span class="plain">;</span>
@@ -647,7 +627,7 @@ Inform 7 never does this.
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1f</span><span class="plain">(</span><span class="string">"story file has unknown file extension "</span>
             <span class="string">"(expected e.g. '.z5' for Z-code, '.ulx' for Glulx)"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
 
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, 0, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Exec"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="string">"Exec"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -660,10 +640,9 @@ being blorbed up, in the form of an iFiction record. (The format of which
 is set out in the "Treaty of Babel" agreement.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::metadata_chunk</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">) {</span>
-        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"IFmd"</span><span class="plain">, 0, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="functiontext">Writer::add_chunk_to_blorb</span><span class="plain">(</span><span class="string">"IFmd"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -673,11 +652,10 @@ is set out in the "Treaty of Babel" agreement.)
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Main construction. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writer::write_blorb_file</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">out</span><span class="plain">) {</span>
         <span class="functiontext">Writer::rdes_chunk</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">chunk_metadata</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">chunk_metadata</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">IFF</span><span class="plain"> = </span><span class="functiontext">BinaryFiles::open_for_writing</span><span class="plain">(</span><span class="identifier">out</span><span class="plain">);</span>
 
@@ -718,9 +696,9 @@ the chunks we'll copy in, whether they are indexed or not.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">FORM_header_size</span><span class="plain"> = 12;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">RIdx_header_size</span><span class="plain"> = 12;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_entry_size</span><span class="plain"> = 12;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">FORM_header_size</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">RIdx_header_size</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_entry_size</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">;</span>
 
         <span class="identifier">RIdx_size</span><span class="plain"> = </span><span class="identifier">RIdx_header_size</span><span class="plain"> + </span><span class="identifier">index_entry_size</span><span class="plain">*</span><span class="identifier">no_indexed_chunks</span><span class="plain">;</span>
 
@@ -746,19 +724,19 @@ short for "IF Resource".
 
 <pre class="displaydefn">
         <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"FORM"</span><span class="plain">);</span>
-        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">blorb_file_size</span><span class="plain"> - 8); </span>    <span class="comment">offset to end of <code class="display"><span class="extract">FORM</span></code> after the 8 bytes so far</span>
-        <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"IFRS"</span><span class="plain">); </span>    <span class="comment">magic text identifying the IFF as a Blorb</span>
+        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">blorb_file_size</span><span class="plain"> - </span><span class="constant">8</span><span class="plain">); </span><span class="comment">offset to end of <code class="display"><span class="extract">FORM</span></code> after the 8 bytes so far</span>
+        <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"IFRS"</span><span class="plain">); </span><span class="comment">magic text identifying the IFF as a Blorb</span>
 
         <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"RIdx"</span><span class="plain">);</span>
-        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">RIdx_size</span><span class="plain"> - 8); </span>    <span class="comment">offset to end of <code class="display"><span class="extract">RIdx</span></code> after the 8 bytes so far</span>
-        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">no_indexed_chunks</span><span class="plain">); </span>    <span class="comment">i.e., number of entries in the index</span>
+        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">RIdx_size</span><span class="plain"> - </span><span class="constant">8</span><span class="plain">); </span><span class="comment">offset to end of <code class="display"><span class="extract">RIdx</span></code> after the 8 bytes so far</span>
+        <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">no_indexed_chunks</span><span class="plain">); </span><span class="comment">i.e., number of entries in the index</span>
 
         <span class="reserved">chunk_metadata</span><span class="plain"> *</span><span class="identifier">chunk</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">chunk</span><span class="plain">, </span><span class="reserved">chunk_metadata</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain">) {</span>
-                <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain">);</span>
-                <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;resource_id</span><span class="plain">);</span>
-                <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">first_byte_after_index</span><span class="plain"> + </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;byte_offset</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="identifier">index_entry</span><span class="plain">) {</span>
+                <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">index_entry</span><span class="plain">);</span>
+                <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">resource_id</span><span class="plain">);</span>
+                <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">first_byte_after_index</span><span class="plain"> + </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">byte_offset</span><span class="plain">);</span>
             <span class="plain">}</span>
 </pre>
 
@@ -779,21 +757,21 @@ so they come with ready-made headers.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_to_copy</span><span class="plain">;</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;chunk_type</span><span class="plain">;</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">chunk_type</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Writer::chunk_type_is_already_an_IFF</span><span class="plain">(</span><span class="identifier">type</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
             <span class="identifier">fprintf</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">type</span><span class="plain">);</span>
-            <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain"> - 8); </span>    <span class="comment">offset to end of chunk after the 8 bytes so far</span>
-            <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain"> - 8; </span>    <span class="comment">since here the chunk size included 8 extra</span>
+            <span class="functiontext">Writer::four_word</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain"> - </span><span class="constant">8</span><span class="plain">); </span><span class="comment">offset to end of chunk after the 8 bytes so far</span>
+            <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain"> - </span><span class="constant">8</span><span class="plain">; </span><span class="comment">since here the chunk size included 8 extra</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">; </span>    <span class="comment">whereas here the chunk size was genuinely the file size</span>
+            <span class="identifier">bytes_to_copy</span><span class="plain"> = </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain">; </span><span class="comment">whereas here the chunk size was genuinely the file size</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;length_of_data_in_memory</span><span class="plain"> &gt;= 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="identifier">length_of_data_in_memory</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Copy that many bytes from memory</span> <span class="cwebmacronumber">24.3.2</span>&gt;
         <span class="reserved">else</span>
             &lt;<span class="cwebmacro">Copy that many bytes from the chunk file on the disc</span> <span class="cwebmacronumber">24.3.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bytes_to_copy</span><span class="plain"> % 2) == 1) </span><span class="functiontext">Writer::one_byte</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, 0); </span>    <span class="comment">as we allowed for above</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bytes_to_copy</span><span class="plain"> % </span><span class="constant">2</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) </span><span class="functiontext">Writer::one_byte</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">as we allowed for above</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -810,10 +788,10 @@ so they come with ready-made headers.
 
 
 <pre class="displaydefn">
-        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">CHUNKSUB</span><span class="plain"> = </span><span class="functiontext">BinaryFiles::open_for_reading</span><span class="plain">(</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain">);</span>
+        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">CHUNKSUB</span><span class="plain"> = </span><span class="functiontext">BinaryFiles::open_for_reading</span><span class="plain">(</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">bytes_to_copy</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">fgetc</span><span class="plain">(</span><span class="identifier">CHUNKSUB</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal_fs</span><span class="plain">(</span><span class="string">"chunk ran out incomplete"</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="functiontext">BlorbErrors::fatal_fs</span><span class="plain">(</span><span class="string">"chunk ran out incomplete"</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain">);</span>
             <span class="functiontext">Writer::one_byte</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">BinaryFiles::close</span><span class="plain">(</span><span class="identifier">CHUNKSUB</span><span class="plain">);</span>
@@ -835,7 +813,7 @@ so they come with ready-made headers.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">bytes_to_copy</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;data_in_memory</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">data_in_memory</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
             <span class="functiontext">Writer::one_byte</span><span class="plain">(</span><span class="identifier">IFF</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -854,15 +832,15 @@ so they come with ready-made headers.
 
 
 <pre class="displaydefn">
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Chunk table:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Chunk table:\n"</span><span class="plain">);</span>
         <span class="reserved">chunk_metadata</span><span class="plain"> *</span><span class="identifier">chunk</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">chunk</span><span class="plain">, </span><span class="reserved">chunk_metadata</span><span class="plain">)</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Chunk %s %06x %s %d &lt;%f&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;chunk_type</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;size</span><span class="plain">,</span>
-                <span class="plain">(</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain">)?(</span><span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;index_entry</span><span class="plain">):</span><span class="string">"unindexed"</span><span class="plain">,</span>
-                <span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;resource_id</span><span class="plain">,</span>
-                <span class="identifier">chunk</span><span class="plain">-</span><span class="element">&gt;chunk_file</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! End of chunk table\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Chunk %s %06x %s %d &lt;%f&gt;\n"</span><span class="plain">,</span>
+                <span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">chunk_type</span><span class="plain">, </span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">size</span><span class="plain">,</span>
+                <span class="plain">(</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">index_entry</span><span class="plain">)?(</span><span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">index_entry</span><span class="plain">):</span><span class="string">"unindexed"</span><span class="plain">,</span>
+                <span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">resource_id</span><span class="plain">,</span>
+                <span class="identifier">chunk</span><span class="plain">-&gt;</span><span class="element">chunk_file</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! End of chunk table\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

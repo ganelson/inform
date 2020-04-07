@@ -78,21 +78,20 @@
 braces and commas balance; and
 </li><li>(2) there can be at most one LL structure at any word position.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">literal_list</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">unbraced_text</span><span class="plain">; </span>    <span class="comment">position in the source of quoted text, excluding braces</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">list_text</span><span class="plain">; </span>    <span class="comment">used for problem reporting only</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">listed_within_code</span><span class="plain">; </span>    <span class="comment">appears within a phrase, rather than (say) a table entry?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">unbraced_text</span><span class="plain">; </span><span class="comment">position in the source of quoted text, excluding braces</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">list_text</span><span class="plain">; </span><span class="comment">used for problem reporting only</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">listed_within_code</span><span class="plain">; </span><span class="comment">appears within a phrase, rather than (say) a table entry?</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">entry_kind</span><span class="plain">; </span>    <span class="comment">i.e., of the entries, not the list</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kinds_known_to_be_inconsistent</span><span class="plain">; </span>    <span class="comment">problem(s) thrown when parsing these</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">first_llist_entry</span><span class="plain">; </span>    <span class="comment">linked list of contents</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">entry_kind</span><span class="plain">; </span><span class="comment">i.e., of the entries, not the list</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kinds_known_to_be_inconsistent</span><span class="plain">; </span><span class="comment">problem(s) thrown when parsing these</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">first_llist_entry</span><span class="plain">; </span><span class="comment">linked list of contents</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">ll_package</span><span class="plain">; </span>    <span class="comment">which will be the enclosure for...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">ll_package</span><span class="plain">; </span><span class="comment">which will be the enclosure for...</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ll_iname</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_compiled</span><span class="plain">; </span>    <span class="comment">lists are compiled at several different points: has this one been done?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_compiled</span><span class="plain">; </span><span class="comment">lists are compiled at several different points: has this one been done?</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">literal_list</span><span class="plain">;</span>
@@ -104,7 +103,6 @@ braces and commas balance; and
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>I believe "llath" is the Welsh word for "mile": not sure about "llist".
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">llist_entry</span><span class="plain"> {</span>
@@ -129,15 +127,14 @@ mutually consistent kinds, but that checking is done after parsing, so it
 isn't expressed in this grammar.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
         <span class="plain">\{ \} |								==&gt; </span><span class="functiontext">Rvalues::from_wording_of_list</span><span class="plain">(</span><span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="functiontext">Lists::empty_literal_list</span><span class="plain">(</span><span class="identifier">Wordings::last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)), </span><span class="identifier">FALSE</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)</span>
         <span class="plain">\{ &lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">contents</span><span class="plain">&gt; \}		==&gt; </span><span class="functiontext">Rvalues::from_wording_of_list</span><span class="plain">(</span><span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">FALSE</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">)</span>
 
     <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">contents</span><span class="plain">&gt; ::=</span>
-        <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; , &lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">contents</span><span class="plain">&gt; |	==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Lists::add_to_ll</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2], </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">[1])</span>
-        <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;				==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Lists::add_to_ll</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="functiontext">Lists::empty_literal_list</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">[1])</span>
+        <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; , &lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">contents</span><span class="plain">&gt; |	==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Lists::add_to_ll</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2], </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">[1])</span>
+        <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;				==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Lists::add_to_ll</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="functiontext">Lists::empty_literal_list</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">[1])</span>
 
     <span class="plain">&lt;</span><span class="identifier">literal</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt; |				==&gt; </span><span class="identifier">FALSE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -150,21 +147,20 @@ isn't expressed in this grammar.
 with a call to:
 </p>
 
-
 <pre class="display">
     <span class="reserved">literal_list</span><span class="plain"> *</span><span class="functiontext">Lists::empty_literal_list</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain"> = </span><span class="functiontext">Lists::find_list_at</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">ll</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">literal_list</span><span class="plain">);</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;unbraced_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">; </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;entry_kind</span><span class="plain"> = </span><span class="identifier">K_value</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;listed_within_code</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_package</span><span class="plain"> = </span><span class="functiontext">Emit::current_enclosure</span><span class="plain">();</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">unbraced_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">; </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">entry_kind</span><span class="plain"> = </span><span class="identifier">K_value</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">listed_within_code</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_package</span><span class="plain"> = </span><span class="functiontext">Emit::current_enclosure</span><span class="plain">();</span>
         <span class="functiontext">Kinds::RunTime::ensure_basic_heap_present</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -182,12 +178,11 @@ each word in the source text, or for complexity, by constructing some kind
 of binary search tree.
 </p>
 
-
 <pre class="display">
     <span class="reserved">literal_list</span><span class="plain"> *</span><span class="functiontext">Lists::find_list_at</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">incipit</span><span class="plain">) {</span>
         <span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="reserved">literal_list</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;unbraced_text</span><span class="plain">) == </span><span class="identifier">incipit</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">unbraced_text</span><span class="plain">) == </span><span class="identifier">incipit</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -202,17 +197,16 @@ for sure when we add the first entry. Here's how each entry is added,
 recursing right to left (i.e., reversing the direction of reading):
 </p>
 
-
 <pre class="display">
     <span class="reserved">literal_list</span><span class="plain"> *</span><span class="functiontext">Lists::add_to_ll</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bad</span><span class="plain">) {</span>
         <span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">llist_entry</span><span class="plain">);</span>
-        <span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;next_llist_entry</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">;</span>
-        <span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;llist_entry_value</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
+        <span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">next_llist_entry</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">;</span>
+        <span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">llist_entry_value</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
         <span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll2</span><span class="plain"> = </span><span class="functiontext">Lists::find_list_at</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll2</span><span class="plain">) </span><span class="identifier">ll</span><span class="plain"> = </span><span class="identifier">ll2</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;unbraced_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bad</span><span class="plain">) </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">unbraced_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bad</span><span class="plain">) </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -228,19 +222,18 @@ printing out an entire huge table to report a problem in a single entry
 which happens to be a malformed list.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">issue_problems</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cs</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_problems</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain"> = </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;unbraced_text</span><span class="plain">);</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_text</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_text</span><span class="plain"> = </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">unbraced_text</span><span class="plain">);</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_text</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_value</span><span class="plain">;</span>
         <span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">lle</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;next_llist_entry</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;llist_entry_value</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">next_llist_entry</span><span class="plain">) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">llist_entry_value</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">UNKNOWN_NT</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Conditions::is_TEST_ACTION</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))</span>
                     <span class="functiontext">Dash::check_value_silently</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">K_stored_action</span><span class="plain">);</span>
@@ -253,8 +246,8 @@ which happens to be a malformed list.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">)) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Revise K in the light of E</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_value</span><span class="plain">;</span>
-        <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;entry_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_value</span><span class="plain">;</span>
+        <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">entry_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">cs</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">CON_list_of</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -272,18 +265,18 @@ which happens to be a malformed list.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">UNKNOWN_NT</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_problems</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a bad list entry problem</span> <span class="cwebmacronumber">8.1.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">E</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Lvalues::is_constant_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_problems</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a nonconstant list entry problem</span> <span class="cwebmacronumber">8.1.2</span>&gt;<span class="plain">;</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">E</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">E</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_problems</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a bad list entry problem</span> <span class="cwebmacronumber">8.1.1</span>&gt;<span class="plain">;</span>
-                <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -309,7 +302,7 @@ incomparable, and "thing" being the max of "person" and "door").
         <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::Compare::max</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">issue_problems</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a list entry kind mismatch problem</span> <span class="cwebmacronumber">8.2.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">kinds_known_to_be_inconsistent</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -388,7 +381,6 @@ list at a given word position; either to discover the answer, or to force
 problem messages out into the open &mdash;
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Lists::kind_of_list_at</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">incipit</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -413,10 +405,9 @@ problem messages out into the open &mdash;
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>And this checks every list, with problem messages on:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lists::check</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="reserved">literal_list</span><span class="plain">)</span>
                 <span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -432,7 +423,6 @@ problem messages out into the open &mdash;
 complex dance with initialisation code interleaved with heap construction,
 so there was once a two-page explanation here, but it is now blessedly simple.
 </p>
-
 
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Lists::compile_literal_list</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -452,11 +442,11 @@ so there was once a two-page explanation here, but it is now blessedly simple.
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Lists::iname</span><span class="plain">(</span><span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">LITERALS_HAP</span><span class="plain">);</span>
-            <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_LITERAL_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+            <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_LITERAL_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="identifier">ll_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -469,18 +459,17 @@ so there was once a two-page explanation here, but it is now blessedly simple.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Using:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lists::compile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">literal_list</span><span class="plain"> *</span><span class="identifier">ll</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="reserved">literal_list</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">)) {</span>
-                    <span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;list_text</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_iname</span><span class="plain">)) {</span>
+                    <span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">list_text</span><span class="plain">;</span>
                     <span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) </span>&lt;<span class="cwebmacro">Actually compile the list array</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Actually compile the list array</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -507,19 +496,19 @@ the list!);
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;ll_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">ll_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="reserved">llist_entry</span><span class="plain"> *</span><span class="identifier">lle</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;next_llist_entry</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">++;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">next_llist_entry</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">++;</span>
 
         <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="functiontext">Lists::kind_of_ll</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">+2);</span>
 
-        <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;entry_kind</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">entry_kind</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;next_llist_entry</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">first_llist_entry</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain">; </span><span class="identifier">lle</span><span class="plain"> = </span><span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">next_llist_entry</span><span class="plain">)</span>
             <span class="functiontext">Specifications::Compiler::emit_constant_to_kind</span><span class="plain">(</span>
-                <span class="identifier">lle</span><span class="plain">-</span><span class="element">&gt;llist_entry_value</span><span class="plain">, </span><span class="identifier">ll</span><span class="plain">-</span><span class="element">&gt;entry_kind</span><span class="plain">);</span>
+                <span class="identifier">lle</span><span class="plain">-&gt;</span><span class="element">llist_entry_value</span><span class="plain">, </span><span class="identifier">ll</span><span class="plain">-&gt;</span><span class="element">entry_kind</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
@@ -530,11 +519,10 @@ the list!);
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>The default list of any given kind is empty.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lists::compile_default_list</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-        <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, 2);</span>
+        <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>

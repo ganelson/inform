@@ -68,13 +68,12 @@ and in any case we only allow two formats: AIFF (uncompressed) and OGG
 (compressed).
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">blorb_sound</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">text of name</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_sound_file</span><span class="plain">; </span>    <span class="comment">relative to the Resources folder</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sound_number</span><span class="plain">; </span>    <span class="comment">resource number of this picture inside Blorb</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">alt_description</span><span class="plain">; </span>    <span class="comment">word number of double-quoted description</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">text of name</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_sound_file</span><span class="plain">; </span><span class="comment">relative to the Resources folder</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sound_number</span><span class="plain">; </span><span class="comment">resource number of this picture inside Blorb</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">alt_description</span><span class="plain">; </span><span class="comment">word number of double-quoted description</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">blorb_sound</span><span class="plain">;</span>
 </pre>
@@ -89,7 +88,6 @@ a picture) or a sound effect in the eventual blorb, or for use in Glulx
 within the application.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_sound_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -97,7 +95,6 @@ within the application.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -111,7 +108,6 @@ within the application.
 <p class="endnote">The function PL::Sounds::start appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Sounds::sounds_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -156,7 +152,6 @@ within the application.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Sound allocation now follows. This handles the special meaning "X is an sound...".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="identifier">sound</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="identifier">sound</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |		==&gt; </span><span class="identifier">R</span><span class="plain">[2]; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[2]</span>
@@ -170,13 +165,12 @@ within the application.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Sounds::new_sound_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Sound... is the file..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Sound... is the file..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">sound</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">)) &amp;&amp; (&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="identifier">sound</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">))) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
@@ -186,7 +180,7 @@ within the application.
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Sounds plugin inactive"</span><span class="plain">);</span>
                 <span class="functiontext">PL::Sounds::register_sound</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">),</span>
@@ -203,7 +197,6 @@ within the application.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The syntax for sound effects allows for alt-texts, exactly as for figures.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">sound</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
@@ -227,8 +220,8 @@ within the application.
             <span class="string">"a sound effect can only be declared as a quoted file name"</span><span class="plain">,</span>
             <span class="string">"which should be the name of an AIFF or OGG file inside the Sounds "</span>
             <span class="string">"subfolder of the project's .materials folder. For instance, 'Sound "</span>
-            <span class="string">"of Swordplay is the file \</span><span class="plain">"</span><span class="string">Crossed Swords.aiff\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0;</span>
+            <span class="string">"of Swordplay is the file \"Crossed Swords.aiff\".'"</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -237,15 +230,14 @@ within the application.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::register_sound</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">FN</span><span class="plain">) {</span>
         <span class="plain">&lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt; = -1;</span>
         <span class="plain">&lt;</span><span class="identifier">sound</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">FN</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt; 0) </span><span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt; &gt; 0) </span><span class="identifier">Word::dequote</span><span class="plain">(&lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt;);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt; &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Word::dequote</span><span class="plain">(&lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt;);</span>
 
         <span class="identifier">Assertions::Creator::vet_name_for_noun</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
 
@@ -267,16 +259,16 @@ within the application.
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">);</span>
-        <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Task::sounds_path</span><span class="plain">(), </span><span class="identifier">leaf</span><span class="plain">);</span>
+        <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Task::sounds_path</span><span class="plain">(), </span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
 
-        <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain"> = </span><span class="identifier">Task::get_next_free_blorb_resource_ID</span><span class="plain">();</span>
-        <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;alt_description</span><span class="plain"> = &lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt;;</span>
+        <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain"> = </span><span class="identifier">Task::get_next_free_blorb_resource_ID</span><span class="plain">();</span>
+        <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">alt_description</span><span class="plain"> = &lt;&lt;</span><span class="identifier">alttext</span><span class="plain">&gt;&gt;;</span>
 
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">FIGURE_CREATIONS</span><span class="plain">,</span>
-            <span class="string">"Created sound effect &lt;%W&gt; = filename '%N' = resource ID %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">F</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">);</span>
+            <span class="string">"Created sound effect &lt;%W&gt; = filename '%N' = resource ID %d\n"</span><span class="plain">,</span>
+            <span class="identifier">F</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="identifier">sound_number</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -290,22 +282,21 @@ to the <code class="display"><span class="extract">.materials</span></code> fold
 manifest file created from <code class="display"><span class="extract">Figures.w</span></code>.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::write_sounds_manifest</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">blorb_sound</span><span class="plain"> *</span><span class="identifier">bs</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">blorb_sound</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Sounds&lt;/key&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;dict&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">blorb_sound</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;Sounds&lt;/key&gt;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;dict&gt;\n"</span><span class="plain">); </span><span class="identifier">INDENT</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;%d&lt;/key&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;key&gt;%d&lt;/key&gt;\n"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">);</span>
-            <span class="identifier">Filenames::to_text_relative</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="identifier">Inbuild::materials</span><span class="plain">());</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;string&gt;%S&lt;/string&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
+            <span class="identifier">Filenames::to_text_relative</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="identifier">Inbuild::materials</span><span class="plain">());</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;string&gt;%S&lt;/string&gt;\n"</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">OUTDENT</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/dict&gt;\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -316,20 +307,19 @@ manifest file created from <code class="display"><span class="extract">Figures.w
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The following writes Blurb commands for all of the sounds.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::write_blurb_commands</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">blorb_sound</span><span class="plain"> *</span><span class="identifier">bs</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">) {</span>
             <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">desc</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;alt_description</span><span class="plain"> &gt;= 0)</span>
-                <span class="identifier">desc</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;alt_description</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">desc</span><span class="plain">) &gt; 0)</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"sound %d \</span><span class="plain">"</span><span class="string">%f\</span><span class="plain">"</span><span class="string"> \</span><span class="plain">"</span><span class="string">%N\</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                    <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;alt_description</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">alt_description</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="identifier">desc</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">alt_description</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">desc</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"sound %d \"%f\" \"%N\"\n"</span><span class="plain">,</span>
+                    <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">alt_description</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"sound %d \</span><span class="plain">"</span><span class="string">%f\</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"sound %d \"%f\"\n"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -341,14 +331,13 @@ manifest file created from <code class="display"><span class="extract">Figures.w
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>The following is used only with the "separate figures" release option.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::write_copy_commands</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">blorb_sound</span><span class="plain"> *</span><span class="identifier">bs</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">)</span>
             <span class="identifier">PL::Bibliographic::Release::create_aux_file</span><span class="plain">(</span>
-                <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">,</span>
+                <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">,</span>
                 <span class="identifier">Task::released_sounds_path</span><span class="plain">(),</span>
                 <span class="identifier">L</span><span class="string">"--"</span><span class="plain">,</span>
                 <span class="identifier">SEPARATE_SOUNDS_PAYLOAD</span><span class="plain">);</span>
@@ -361,7 +350,6 @@ manifest file created from <code class="display"><span class="extract">Figures.w
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::compile_ResourceIDsOfSounds_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -369,7 +357,7 @@ manifest file created from <code class="display"><span class="extract">Figures.w
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="reserved">blorb_sound</span><span class="plain"> *</span><span class="identifier">bs</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">);</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain">);</span>
         <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -382,37 +370,36 @@ manifest file created from <code class="display"><span class="extract">Figures.w
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sounds Index. </b>The index is only a little helpful for sounds.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Sounds::index_all</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">sounds_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">blorb_sound</span><span class="plain"> *</span><span class="identifier">bs</span><span class="plain">; </span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">SOUND_FILE</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">blorb_sound</span><span class="plain">) == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">blorb_sound</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"There are no sound effects in this project."</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;List of Sounds&lt;/b&gt;"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#ffffff"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, 0, 0, 0, 0, 0);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#ffffff"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">, </span><span class="reserved">blorb_sound</span><span class="plain">) {</span>
             <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">duration</span><span class="plain">, </span><span class="identifier">pBitsPerSecond</span><span class="plain">, </span><span class="identifier">pChannels</span><span class="plain">, </span><span class="identifier">pSampleRate</span><span class="plain">, </span><span class="identifier">fsize</span><span class="plain">,</span>
-                <span class="identifier">midi_version</span><span class="plain"> = 0, </span><span class="identifier">no_tracks</span><span class="plain"> = 0;</span>
+                <span class="identifier">midi_version</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">no_tracks</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">preview</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">waveform_style</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">rv</span><span class="plain"> = 0;</span>
-            <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
+            <span class="identifier">rv</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SOUND_FILE</span><span class="plain">) {</span>
                 <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">real_format</span><span class="plain"> = </span><span class="string">"AIFF"</span><span class="plain">;</span>
                 <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">SoundFiles::get_AIFF_duration</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">, &amp;</span><span class="identifier">duration</span><span class="plain">, &amp;</span><span class="identifier">pBitsPerSecond</span><span class="plain">,</span>
                     <span class="plain">&amp;</span><span class="identifier">pChannels</span><span class="plain">, &amp;</span><span class="identifier">pSampleRate</span><span class="plain">);</span>
-                <span class="identifier">fseek</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">, 0, </span><span class="identifier">SEEK_END</span><span class="plain">);</span>
+                <span class="identifier">fseek</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">SEEK_END</span><span class="plain">);</span>
                 <span class="identifier">fsize</span><span class="plain"> = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">ftell</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">));</span>
                 <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) {</span>
-                    <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SOUND_FILE</span><span class="plain">) {</span>
                         <span class="identifier">real_format</span><span class="plain"> = </span><span class="string">"Ogg Vorbis"</span><span class="plain">;</span>
                         <span class="identifier">preview</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -421,8 +408,8 @@ manifest file created from <code class="display"><span class="extract">Figures.w
                         <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) {</span>
-                    <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="identifier">SOUND_FILE</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SOUND_FILE</span><span class="plain">) {</span>
                         <span class="identifier">waveform_style</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                         <span class="identifier">real_format</span><span class="plain"> = </span><span class="string">"MIDI"</span><span class="plain">;</span>
@@ -432,14 +419,14 @@ manifest file created from <code class="display"><span class="extract">Figures.w
                         <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">SOUND_FILE</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"&lt;i&gt;Unknown sound format&lt;/i&gt;"</span><span class="plain">);</span>
                     <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">waveform_style</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"Type %d %s file with %d track%s"</span><span class="plain">,</span>
                             <span class="identifier">midi_version</span><span class="plain">, </span><span class="identifier">real_format</span><span class="plain">, </span><span class="identifier">no_tracks</span><span class="plain">,</span>
-                            <span class="plain">(</span><span class="identifier">no_tracks</span><span class="plain"> == 1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
+                            <span class="plain">(</span><span class="identifier">no_tracks</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
                         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;Warning: not officially supported in glulx yet&lt;/i&gt;"</span><span class="plain">);</span>
                         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
@@ -448,10 +435,10 @@ manifest file created from <code class="display"><span class="extract">Figures.w
                             <span class="identifier">centisec</span><span class="plain"> = (</span><span class="identifier">duration</span><span class="plain">%100);</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"%d.%01dKB %s file: duration "</span><span class="plain">,</span>
                             <span class="identifier">fsize</span><span class="plain">/1024, (</span><span class="identifier">fsize</span><span class="plain">%1024)/102, </span><span class="identifier">real_format</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min</span><span class="plain"> &gt; 0)</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"%d minutes "</span><span class="plain">, </span><span class="identifier">min</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sec</span><span class="plain"> &gt; 0) || (</span><span class="identifier">centisec</span><span class="plain"> &gt; 0)) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">centisec</span><span class="plain"> == 0)</span>
+                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sec</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">centisec</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">centisec</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"%d seconds"</span><span class="plain">, </span><span class="identifier">sec</span><span class="plain">);</span>
                             <span class="reserved">else</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line2</span><span class="plain">, </span><span class="string">"%d.%02d seconds"</span><span class="plain">, </span><span class="identifier">sec</span><span class="plain">, </span><span class="identifier">centisec</span><span class="plain">);</span>
@@ -469,25 +456,25 @@ manifest file created from <code class="display"><span class="extract">Figures.w
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">THUMBNAIL_WIDTH</span><span class="plain">+10);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) {</span>
-                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> src=\</span><span class="plain">"</span><span class="string">inform:/doc_images/image_problem.png\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\"0\" src=\"inform:/doc_images/image_problem.png\""</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">preview</span><span class="plain">) {</span>
                 <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"embed"</span><span class="plain">,</span>
-                    <span class="string">"src=\</span><span class="plain">"</span><span class="string">file://%f\</span><span class="plain">"</span><span class="string"> width=\</span><span class="plain">"</span><span class="string">%d\</span><span class="plain">"</span><span class="string"> height=\</span><span class="plain">"</span><span class="string">64\</span><span class="plain">"</span><span class="string"> "</span>
-                    <span class="string">"autostart=\</span><span class="plain">"</span><span class="string">false\</span><span class="plain">"</span><span class="string"> volume=\</span><span class="plain">"</span><span class="string">50%%\</span><span class="plain">"</span><span class="string"> mastersound"</span><span class="plain">,</span>
-                    <span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="constant">THUMBNAIL_WIDTH</span><span class="plain">);</span>
+                    <span class="string">"src=\"file:</span><span class="comment">%f\" width=\"%d\" height=\"64\" "</span>
+                    <span class="string">"</span><span class="identifier">autostart</span><span class="plain">=\</span><span class="string">"false\" volume=\"50%%\" mastersound"</span><span class="plain">,</span>
+                    <span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="constant">THUMBNAIL_WIDTH</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"embed"</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> src=\</span><span class="plain">"</span><span class="string">inform:/doc_images/sound_okay.png\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\"0\" src=\"inform:/doc_images/sound_okay.png\""</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">);</span>
-            <span class="identifier">Filenames::to_text_relative</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;filename_of_sound_file</span><span class="plain">, </span><span class="identifier">Inbuild::materials</span><span class="plain">());</span>
+            <span class="identifier">Filenames::to_text_relative</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">filename_of_sound_file</span><span class="plain">, </span><span class="identifier">Inbuild::materials</span><span class="plain">());</span>
             <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SFilename: \</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string"> - resource number %d"</span><span class="plain">, </span><span class="identifier">line2</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-</span><span class="element">&gt;sound_number</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SFilename: \"%S\" - resource number %d"</span><span class="plain">, </span><span class="identifier">line2</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">, </span><span class="identifier">bs</span><span class="plain">-&gt;</span><span class="element">sound_number</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">rel</span><span class="plain">);</span>
             <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>

@@ -104,12 +104,12 @@ we indicate that with an enumeration of constants:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">FUND_SUB</span><span class="plain"> 1 </span>    <span class="comment">one of a few fixed and fundamental subjects (see below)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">KIND_SUB</span><span class="plain"> 2 </span>    <span class="comment">a kind (number, thing, etc.)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INST_SUB</span><span class="plain"> 3 </span>    <span class="comment">an instance (specific objects, scenes, etc.)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VARI_SUB</span><span class="plain"> 4 </span>    <span class="comment">a non-local variable</span>
-    <span class="definitionkeyword">define</span> <span class="constant">RELN_SUB</span><span class="plain"> 5 </span>    <span class="comment">a binary predicate, i.e., a relation</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_SUB</span><span class="plain"> 5 </span>    <span class="comment">must be the largest of the values above</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FUND_SUB</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">one of a few fixed and fundamental subjects (see below)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">KIND_SUB</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">a kind (number, thing, etc.)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INST_SUB</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">an instance (specific objects, scenes, etc.)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VARI_SUB</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">a non-local variable</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RELN_SUB</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">a binary predicate, i.e., a relation</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_SUB</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">must be the largest of the values above</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Technically the hierarchy of inference subjects is a spaghetti stack, not a
 tree: that is, all of the links run upwards to a common root (<code class="display"><span class="extract">model_world</span></code>).
@@ -118,20 +118,19 @@ words, we often want to know what a given subject S inherits from, but we never
 ask what other subjects inherit from S.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_of_infs</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_SUB</span></code> constants above</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">represents</span><span class="plain">; </span>    <span class="comment">the individual instance, kind, etc. in question</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">infs_created_at</span><span class="plain">; </span>    <span class="comment">which sentence created this</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf_list</span><span class="plain">; </span>    <span class="comment">contingently true: inferences drawn about this subject</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">imp_list</span><span class="plain">; </span>    <span class="comment">necessarily true: implications applying to this</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_certainty</span><span class="plain">; </span>    <span class="comment">by default, how certain are inferences about this?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">permissions_list</span><span class="plain">; </span>    <span class="comment">what properties this can have, if any</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">assemblies_data</span><span class="plain"> </span><span class="identifier">assemblies</span><span class="plain">; </span>    <span class="comment">what generalisations have been made about this?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">broader_than</span><span class="plain">; </span>    <span class="comment">see below</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">infs_name_in_log</span><span class="plain">; </span>    <span class="comment">solely to make the debugging log more legible</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">alias_variable</span><span class="plain">; </span>    <span class="comment">alias to this variable, like "yourself" to "player"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_of_infs</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_SUB</span></code> constants above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">represents</span><span class="plain">; </span><span class="comment">the individual instance, kind, etc. in question</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">infs_created_at</span><span class="plain">; </span><span class="comment">which sentence created this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf_list</span><span class="plain">; </span><span class="comment">contingently true: inferences drawn about this subject</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">imp_list</span><span class="plain">; </span><span class="comment">necessarily true: implications applying to this</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_certainty</span><span class="plain">; </span><span class="comment">by default, how certain are inferences about this?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">permissions_list</span><span class="plain">; </span><span class="comment">what properties this can have, if any</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">assemblies_data</span><span class="plain"> </span><span class="identifier">assemblies</span><span class="plain">; </span><span class="comment">what generalisations have been made about this?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">broader_than</span><span class="plain">; </span><span class="comment">see below</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">infs_name_in_log</span><span class="plain">; </span><span class="comment">solely to make the debugging log more legible</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">alias_variable</span><span class="plain">; </span><span class="comment">alias to this variable, like "yourself" to "player"</span>
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">plugin_subj</span><span class="plain">[</span><span class="constant">MAX_PLUGINS</span><span class="plain">];</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inference_subject</span><span class="plain">;</span>
@@ -163,18 +162,17 @@ are instances.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
-        <span class="plain">((</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_data</span><span class="plain"> *) </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
+        <span class="plain">((</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_data</span><span class="plain"> *) </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
     <span class="definitionkeyword">define</span> <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)</span>
-        <span class="plain">((</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_data</span><span class="plain"> *) (</span><span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">))-</span><span class="element">&gt;plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
+        <span class="plain">((</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_data</span><span class="plain"> *) (</span><span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">))-&gt;</span><span class="element">plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">])</span>
     <span class="definitionkeyword">define</span> <span class="identifier">CREATE_PF_DATA</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">creator</span><span class="plain">)</span>
-        <span class="plain">(</span><span class="identifier">S</span><span class="plain">)-</span><span class="element">&gt;plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">] = (</span><span class="reserved">void</span><span class="plain"> *) (</span><span class="identifier">creator</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
+        <span class="plain">(</span><span class="identifier">S</span><span class="plain">)-&gt;</span><span class="element">plugin_subj</span><span class="plain">[</span><span class="identifier">name</span><span class="plain">##</span><span class="identifier">_plugin</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">] = (</span><span class="reserved">void</span><span class="plain"> *) (</span><span class="identifier">creator</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">));</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The top of the inference hierarchy contains a number of "fundamental" subjects.
 Thus we have:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">model_world</span>
@@ -202,7 +200,6 @@ inheritance.
 <p class="inwebparagraph">Inheritance forms a directed acyclic graph with <code class="display"><span class="extract">model_world</span></code> as the root.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">model_world</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">nonlocal_variables</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -215,7 +212,6 @@ inheritance.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The fundamentals. </b>At the start of Inform's run, the subject tree consists only of the
 following.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -241,7 +237,6 @@ following.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Creation. </b>Other inference subjects are added during the run, thus:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::new</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">KOI</span><span class="plain">,</span>
         <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cert</span><span class="plain">) {</span>
@@ -258,29 +253,28 @@ following.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Either means of creation uses the following:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_roots</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_roots</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::infs_initialise</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,</span>
         <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">KOI</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cert</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">lname</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (++</span><span class="identifier">no_roots</span><span class="plain"> &gt; 1)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (++</span><span class="identifier">no_roots</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)) {</span>
             <span class="functiontext">InferenceSubjects::log_infs_hierarchy</span><span class="plain">();</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"subject tree now disconnected"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"made sub-subject of itself"</span><span class="plain">);</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;infs_created_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain"> = </span><span class="identifier">gp</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> = </span><span class="identifier">KOI</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;inf_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;imp_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;default_certainty</span><span class="plain"> = </span><span class="identifier">cert</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;permissions_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;infs_name_in_log</span><span class="plain"> = </span><span class="identifier">lname</span><span class="plain">;</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;alias_variable</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="functiontext">Assertions::Assemblies::initialise_assemblies_data</span><span class="plain">(&amp;(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;assemblies</span><span class="plain">));</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">infs_created_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain"> = </span><span class="identifier">gp</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> = </span><span class="identifier">KOI</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">inf_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">imp_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">default_certainty</span><span class="plain"> = </span><span class="identifier">cert</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">permissions_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">infs_name_in_log</span><span class="plain"> = </span><span class="identifier">lname</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">alias_variable</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="functiontext">Assertions::Assemblies::initialise_assemblies_data</span><span class="plain">(&amp;(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">assemblies</span><span class="plain">));</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PLUGINS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;plugin_subj</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_PLUGINS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">plugin_subj</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">Plugins::Call::new_subject_notify</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -294,7 +288,6 @@ subjects for spatial kinds like "room" are needed before the kinds themselves
 can be made. Abusing this routine could clearly violate the rule that the
 subject tree must remain a connected DAG, so we don't abuse it.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::renew</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,</span>
@@ -311,19 +304,18 @@ subject tree must remain a connected DAG, so we don't abuse it.
 it's needed at present.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::alias_to_nonlocal_variable</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">) {</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;alias_variable</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">alias_variable</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::aliased_but_diverted</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;alias_variable</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="identifier">alias_variable</span><span class="plain">) {</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> =</span>
                 <span class="functiontext">Instances::as_subject</span><span class="plain">(</span>
                     <span class="functiontext">Rvalues::to_object_instance</span><span class="plain">(</span>
                         <span class="functiontext">NonlocalVariables::get_initial_value</span><span class="plain">(</span>
-                            <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;alias_variable</span><span class="plain">)));</span>
+                            <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">alias_variable</span><span class="plain">)));</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vs</span><span class="plain"> != </span><span class="identifier">infs</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -344,19 +336,18 @@ used to specify facts about only a single person or value.
 This makes testing for containment simple:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_within</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">smaller</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">larger</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">smaller</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">smaller</span><span class="plain"> == </span><span class="identifier">larger</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">smaller</span><span class="plain"> = </span><span class="identifier">smaller</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain">;</span>
+            <span class="identifier">smaller</span><span class="plain"> = </span><span class="identifier">smaller</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_strictly_within</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">larger</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">subj</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain">, </span><span class="identifier">larger</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain">, </span><span class="identifier">larger</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -370,11 +361,10 @@ This makes testing for containment simple:
 operations scaling the subject tree, we use the following:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">narrow</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">narrow</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">narrow</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">narrow</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -388,12 +378,11 @@ other subjects, before the change, continues to be valid. If S⊆ T
 before, then this remains true afterwards.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::falls_within</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">narrow</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">broad</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">broad</span><span class="plain">, </span><span class="identifier">narrow</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">broad</span><span class="plain">, </span><span class="identifier">narrow</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"subject breadth change leads to inconsistency"</span><span class="plain">);</span>
-        <span class="identifier">narrow</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain"> = </span><span class="identifier">broad</span><span class="plain">;</span>
+        <span class="identifier">narrow</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain"> = </span><span class="identifier">broad</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -405,41 +394,40 @@ before, then this remains true afterwards.
 read and written from specialist sections of Inform rather than here.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::where_created</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;infs_created_at</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">infs_created_at</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::get_default_certainty</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;default_certainty</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">default_certainty</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to fetch assembly data for null subject"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;assemblies</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">assemblies</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">inference</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::get_inferences</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">)?(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;inf_list</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">)?(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">inf_list</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::set_inferences</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;inf_list</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">inf_list</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">implication</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;imp_list</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">imp_list</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::set_implications</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">imp</span><span class="plain">) {</span>
-        <span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;imp_list</span><span class="plain"> = </span><span class="identifier">imp</span><span class="plain">;</span>
+        <span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">imp_list</span><span class="plain"> = </span><span class="identifier">imp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">property_permission</span><span class="plain"> **</span><span class="functiontext">InferenceSubjects::get_permissions</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;permissions_list</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">permissions_list</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -465,7 +453,6 @@ read and written from specialist sections of Inform rather than here.
 Suppose we have a constant value, or more generally, a specification. Does this
 correspond to a subject, and if so, which one?
 </p>
-
 
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::from_specification</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -498,7 +485,6 @@ specifications, forward conversion returns <code class="display"><span class="ex
 arise.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_constant</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
@@ -521,19 +507,18 @@ arise.
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>More prosaically:
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_instance</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">)) {</span>
-            <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">)) {</span>
+            <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nc</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">)) {</span>
-            <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">)) {</span>
+            <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">nc</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nc</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -541,9 +526,9 @@ arise.
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_nonobject_kind</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::base_construction</span><span class="plain">(</span>
-                <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">));</span>
+                <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -551,29 +536,29 @@ arise.
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::base_construction</span><span class="plain">(</span>
-                    <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">));</span>
+                    <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">));</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_nlv</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">VARI_SUB</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_nonlocal_variable</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">VARI_SUB</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_nonlocal_variable</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_bp</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">RELN_SUB</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">RELN_SUB</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::as_nc</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">INST_SUB</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -597,16 +582,15 @@ arise.
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>...and, because it makes conditions more legible,
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_an_object</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::is_a_kind_of_object</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">infs</span><span class="plain">) &amp;&amp; (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain"> == </span><span class="constant">KIND_SUB</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::base_construction</span><span class="plain">(</span>
-                <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;represents</span><span class="plain">));</span>
+                <span class="identifier">RETRIEVE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">represents</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -624,7 +608,6 @@ also represent collections of values. (At present, though, only the subjects
 from kinds actually do.)
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
@@ -637,11 +620,10 @@ from kinds actually do.)
 
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::log</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null infs&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;infs_name_in_log</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"infs&lt;%s&gt;"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;infs_name_in_log</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="identifier">infs_name_in_log</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"infs&lt;%s&gt;"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">infs_name_in_log</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
 
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_nonobject_kind</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
@@ -657,8 +639,8 @@ from kinds actually do.)
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::log_knowledge_about</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Inferences drawn about $j:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">); </span><span class="identifier">LOG_INDENT</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inf</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_inferences</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="identifier">inf</span><span class="plain">; </span><span class="identifier">inf</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$I\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">inf</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Inferences drawn about $j:\n"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">); </span><span class="identifier">LOG_INDENT</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">inf</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_inferences</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="identifier">inf</span><span class="plain">; </span><span class="identifier">inf</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$I\n"</span><span class="plain">, </span><span class="identifier">inf</span><span class="plain">);</span>
         <span class="identifier">LOG_OUTDENT</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -675,19 +657,18 @@ coded to ensure that it terminates whether or not the subjects form a connected
 DAG.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::log_infs_hierarchy</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Subjects hierarchy:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="functiontext">InferenceSubjects::log_subjects_hierarchically</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Subjects hierarchy:\n"</span><span class="plain">);</span>
+        <span class="functiontext">InferenceSubjects::log_subjects_hierarchically</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::log_subjects_hierarchically</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; 20) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"*** Pruning: too deep ***\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$j\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; </span><span class="constant">20</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"*** Pruning: too deep ***\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$j\n"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">narrower</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">narrower</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">narrower</span><span class="plain">-</span><span class="element">&gt;broader_than</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">narrower</span><span class="plain">-&gt;</span><span class="element">broader_than</span><span class="plain"> == </span><span class="identifier">infs</span><span class="plain">) {</span>
                 <span class="identifier">LOG_INDENT</span><span class="plain">;</span>
                 <span class="functiontext">InferenceSubjects::log_subjects_hierarchically</span><span class="plain">(</span><span class="identifier">narrower</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">+1);</span>
                 <span class="identifier">LOG_OUTDENT</span><span class="plain">;</span>
@@ -705,17 +686,16 @@ DAG.
 word range into the variables pointed to by <code class="display"><span class="extract">w1</span></code> and <code class="display"><span class="extract">w2</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::get_name_text</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_get_name_text</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">STROKE_V</span><span class="plain">) {</span>
@@ -736,16 +716,15 @@ react. It should return a general pointer to any extra data it wants to attach
 to the permission, or <code class="display"><span class="extract">NULL_GENERAL_POINTER</span></code> if it has nothing to add.
 </p>
 
-
 <pre class="display">
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::new_permission_granted</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_new_permission_granted</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -761,17 +740,16 @@ called to tell the subject in question that it needs to become the domain
 of "green" as an adjective.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::make_adj_const_domain</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="functiontext">Kinds::Knowledge::make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="functiontext">Instances::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="functiontext">NonlocalVariables::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="functiontext">BinaryPredicates::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -785,16 +763,15 @@ not spelled out explicitly in assertion sentences &mdash; is to ask each subject
 to fill in anything missing about itself:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::complete_model</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="functiontext">Kinds::Knowledge::complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="functiontext">Instances::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="functiontext">NonlocalVariables::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="functiontext">BinaryPredicates::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_complete_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -807,16 +784,15 @@ to fill in anything missing about itself:
 consistency, and to issue problem messages if something is wrong:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::check_model</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="functiontext">Kinds::Knowledge::check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="functiontext">Instances::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="functiontext">NonlocalVariables::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="functiontext">BinaryPredicates::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_check_model</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -834,21 +810,20 @@ it has the right kind, and so on. If there's nothing to check, we leave the
 condition blank.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::emit_element_of_condition</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t0_s</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null INFS"</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="identifier">written</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">t0_s</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -868,7 +843,6 @@ array, or else have its subjects compiled one at a time in order of their
 creation. <code class="display"><span class="extract">compile_all</span></code> should return <code class="display"><span class="extract">TRUE</span></code> to indicate the former course.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::compile_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">;</span>
@@ -880,22 +854,22 @@ creation. <code class="display"><span class="extract">compile_all</span></code> 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">koi</span><span class="plain">=1; </span><span class="identifier">koi</span><span class="plain">&lt;=</span><span class="constant">MAX_SUB</span><span class="plain">; </span><span class="identifier">koi</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">koi</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::emit_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">Kinds::Knowledge::emit_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">Instances::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="identifier">done</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::SUBJ_compile_all</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">done</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain"> == </span><span class="identifier">koi</span><span class="plain">) {</span>
-                    <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-</span><span class="element">&gt;kind_of_infs</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">FUND_SUB</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_SUB</span><span class="plain">: </span><span class="functiontext">Kinds::Knowledge::emit</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">INST_SUB</span><span class="plain">: </span><span class="functiontext">Instances::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">VARI_SUB</span><span class="plain">: </span><span class="functiontext">NonlocalVariables::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELN_SUB</span><span class="plain">: </span><span class="functiontext">BinaryPredicates::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="identifier">kind_of_infs</span><span class="plain"> == </span><span class="identifier">koi</span><span class="plain">) {</span>
+                    <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain">-&gt;</span><span class="element">kind_of_infs</span><span class="plain">) {</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FUND_SUB:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_SUB:</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::emit</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INST_SUB:</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VARI_SUB:</span><span class="plain"> </span><span class="functiontext">NonlocalVariables::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELN_SUB:</span><span class="plain"> </span><span class="functiontext">BinaryPredicates::SUBJ_compile</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
         <span class="plain">}</span>

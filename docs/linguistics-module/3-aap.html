@@ -66,19 +66,18 @@ can't create new instances of them &mdash; whereas the source text can make new
 adjectives, verbs and nouns, it can't make new pronouns.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">pronoun</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">nominative</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">&gt; |		==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
         <span class="plain">&lt;</span><span class="identifier">accusative</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">&gt;		==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
 
     <span class="plain">&lt;</span><span class="identifier">nominative</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">it</span><span class="plain">/</span><span class="identifier">he</span><span class="plain">/</span><span class="identifier">she</span><span class="plain"> |					==&gt; 1		</span>    <span class="comment">singular</span>
-        <span class="identifier">they</span><span class="plain">						==&gt; 2		</span>    <span class="comment">plural</span>
+        <span class="identifier">it</span><span class="plain">/</span><span class="identifier">he</span><span class="plain">/</span><span class="identifier">she</span><span class="plain"> |					==&gt; </span><span class="constant">1</span><span class="plain">		</span><span class="comment">singular</span>
+        <span class="identifier">they</span><span class="plain">						==&gt; </span><span class="constant">2</span><span class="plain">		</span><span class="comment">plural</span>
 
     <span class="plain">&lt;</span><span class="identifier">accusative</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">it</span><span class="plain">/</span><span class="identifier">him</span><span class="plain">/</span><span class="identifier">her</span><span class="plain"> |				==&gt; 1		</span>    <span class="comment">singular</span>
-        <span class="identifier">them</span><span class="plain">						==&gt; 2		</span>    <span class="comment">plural</span>
+        <span class="identifier">it</span><span class="plain">/</span><span class="identifier">him</span><span class="plain">/</span><span class="identifier">her</span><span class="plain"> |				==&gt; </span><span class="constant">1</span><span class="plain">		</span><span class="comment">singular</span>
+        <span class="identifier">them</span><span class="plain">						==&gt; </span><span class="constant">2</span><span class="plain">		</span><span class="comment">plural</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -90,19 +89,18 @@ one grammar into its corresponding pronoun in another (in this case, first
 person to second person).
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">possessive</span><span class="plain">-</span><span class="identifier">first</span><span class="plain">-</span><span class="identifier">person</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">my</span><span class="plain"> |						==&gt; 1		</span>    <span class="comment">singular</span>
-        <span class="identifier">our</span><span class="plain">							==&gt; 2		</span>    <span class="comment">plural</span>
+        <span class="identifier">my</span><span class="plain"> |						==&gt; </span><span class="constant">1</span><span class="plain">		</span><span class="comment">singular</span>
+        <span class="identifier">our</span><span class="plain">							==&gt; </span><span class="constant">2</span><span class="plain">		</span><span class="comment">plural</span>
 
     <span class="plain">&lt;</span><span class="identifier">possessive</span><span class="plain">-</span><span class="identifier">second</span><span class="plain">-</span><span class="identifier">person</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">your</span><span class="plain"> |						==&gt; 1		</span>    <span class="comment">singular</span>
-        <span class="identifier">your</span><span class="plain">						==&gt; 2		</span>    <span class="comment">plural</span>
+        <span class="identifier">your</span><span class="plain"> |						==&gt; </span><span class="constant">1</span><span class="plain">		</span><span class="comment">singular</span>
+        <span class="identifier">your</span><span class="plain">						==&gt; </span><span class="constant">2</span><span class="plain">		</span><span class="comment">plural</span>
 
     <span class="plain">&lt;</span><span class="identifier">possessive</span><span class="plain">-</span><span class="identifier">third</span><span class="plain">-</span><span class="identifier">person</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">its</span><span class="plain">/</span><span class="identifier">his</span><span class="plain">/</span><span class="identifier">her</span><span class="plain"> |				==&gt; 1		</span>    <span class="comment">singular</span>
-        <span class="identifier">their</span><span class="plain">						==&gt; 2		</span>    <span class="comment">plural</span>
+        <span class="identifier">its</span><span class="plain">/</span><span class="identifier">his</span><span class="plain">/</span><span class="identifier">her</span><span class="plain"> |				==&gt; </span><span class="constant">1</span><span class="plain">		</span><span class="comment">singular</span>
+        <span class="identifier">their</span><span class="plain">						==&gt; </span><span class="constant">2</span><span class="plain">		</span><span class="comment">plural</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -111,10 +109,10 @@ person to second person).
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">DEF_ART</span><span class="plain"> 1 </span>    <span class="comment">the definite article</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INDEF_ART</span><span class="plain"> 2 </span>    <span class="comment">the indefinite article</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NO_ART</span><span class="plain"> 3 </span>    <span class="comment">no article supplied</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IT_ART</span><span class="plain"> 4 </span>    <span class="comment">a special case to handle "it"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DEF_ART</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">the definite article</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INDEF_ART</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">the indefinite article</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_ART</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">no article supplied</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IT_ART</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">a special case to handle "it"</span>
 </pre>
 
 <pre class="display">
@@ -139,7 +137,6 @@ which encode both the implied grammatical number and gender.
 number in any case, so we end up with something quite dull:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; ::=</span>
         <span class="plain">/</span><span class="identifier">a</span><span class="plain">/ </span><span class="identifier">the</span>
@@ -153,7 +150,6 @@ number in any case, so we end up with something quite dull:
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>These are useful for stripping optional articles from text:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; ::=</span>
@@ -172,18 +168,17 @@ number in any case, so we end up with something quite dull:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Articles::remove_the</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 1) &amp;&amp;</span>
-            <span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, 1);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">1</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Articles::remove_article</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="plain">&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, 1);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">optional</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -201,12 +196,11 @@ a conspicuous exception to this; so any word found in &lt;non-participles&gt;
 is never treated as a participle.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">non</span><span class="plain">-</span><span class="identifier">participles</span><span class="plain">&gt; ::=</span>
         <span class="identifier">thing</span><span class="plain">/</span><span class="identifier">something</span>
 
-    <span class="plain">&lt;</span><span class="identifier">probable</span><span class="plain">-</span><span class="identifier">participle</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 1 {</span>
+    <span class="plain">&lt;</span><span class="identifier">probable</span><span class="plain">-</span><span class="identifier">participle</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">ING_MC</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">non</span><span class="plain">-</span><span class="identifier">participles</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -219,7 +213,6 @@ is never treated as a participle.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Negation. </b></p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt; ::=</span>
         <span class="identifier">not</span><span class="plain"> ...</span>
@@ -229,12 +222,11 @@ is never treated as a participle.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Marking for Preform efficiency. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Articles::mark_for_preform</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">article</span><span class="plain">&gt;, 2);</span>
-        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, 2);</span>
-        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, 2);</span>
+        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">article</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
+        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
+        <span class="identifier">Preform::assign_bitmap_bit</span><span class="plain">(&lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

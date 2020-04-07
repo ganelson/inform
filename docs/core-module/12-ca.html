@@ -72,12 +72,11 @@ track of that; and also of whether a condition is being regarded
 negatively.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">annotated_i6_schema</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">schema</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">negate_schema</span><span class="plain">; </span>    <span class="comment">true if atom is to be tested with the opposite parity</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt0</span><span class="plain">; </span>    <span class="comment">terms on which the I6 schema is to be expanded</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">negate_schema</span><span class="plain">; </span><span class="comment">true if atom is to be tested with the opposite parity</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt0</span><span class="plain">; </span><span class="comment">terms on which the I6 schema is to be expanded</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt1</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">involves_action_variables</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">annotated_i6_schema</span><span class="plain">;</span>
@@ -100,15 +99,14 @@ true or false into a single operation.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TEST_ATOM_TASK</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TEST_ATOM_TASK</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For its internal purposes, Inform is sometimes able to compile atoms which
 wouldn't be allowed in a typical use of "now" from the source text; so it
 can suppress the following problem messages:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">suppress_C14CantChangeKind</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -119,7 +117,6 @@ can suppress the following problem messages:
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>So, then:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::Compile::emit</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">with_semicolon</span><span class="plain">) {</span>
@@ -132,10 +129,10 @@ can suppress the following problem messages:
         <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
 
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">: </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling condition: $o\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">: </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling 'now': $o\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">: </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling 'now' false: $o\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown compile task"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling condition: $o\n"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling 'now': $o\n"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Compiling 'now' false: $o\n"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown compile task"</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         &lt;<span class="cwebmacro">Stage 1: make an annotated schema from the atom</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
@@ -159,8 +156,8 @@ can suppress the following problem messages:
 
 <pre class="displaydefn">
         <span class="identifier">asch</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::Compile::i6_schema_of_atom</span><span class="plain">(&amp;</span><span class="identifier">sch</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">task</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a fallback problem message, since the schema-maker evidently didn't</span> <span class="cwebmacronumber">5.1.1</span>&gt;<span class="character">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -177,7 +174,7 @@ can suppress the following problem messages:
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed on task: $o\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed on task: $o\n"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain"> == </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">)</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"this is not a condition I am able to test"</span><span class="plain">,</span>
@@ -203,10 +200,10 @@ can suppress the following problem messages:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">asch</span><span class="element">.involves_action_variables</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">asch</span><span class="plain">.</span><span class="identifier">involves_action_variables</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Frames::used_for_past_tense</span><span class="plain">()) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">suppress_C14ActionVarsPastTense</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ActionVarsPastTense</span><span class="plain">),</span>
                     <span class="string">"it is misleading to talk about the noun, the second noun "</span>
                     <span class="string">"or the person asked to do something in past tenses"</span><span class="plain">,</span>
@@ -238,12 +235,12 @@ so we terminate with that if making true or false.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">negate_schema</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NOT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
-        <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">asch</span><span class="element">.schema</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="element">.pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="element">.pt1</span><span class="plain">), </span><span class="identifier">with_semicolon</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain">) {</span>
+        <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">pt1</span><span class="plain">), </span><span class="identifier">with_semicolon</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asch</span><span class="plain">.</span><span class="element">negate_schema</span><span class="plain">) {</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
@@ -254,31 +251,30 @@ so we terminate with that if making true or false.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Constructing the schema. </b></p>
 
-
 <pre class="display">
     <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::Compile::i6_schema_of_atom</span><span class="plain">(</span><span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain">, </span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">) {</span>
         <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
 
-        <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">" "</span><span class="plain">); </span>    <span class="comment">a non-NULL return in case problems occur</span>
-        <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">sch</span><span class="plain">;</span>
-        <span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">asch</span><span class="element">.pt0</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]; </span><span class="identifier">asch</span><span class="element">.pt1</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1];</span>
-        <span class="identifier">asch</span><span class="element">.involves_action_variables</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::Compile::atom_involves_action_variables</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
+        <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">" "</span><span class="plain">); </span><span class="comment">a non-NULL return in case problems occur</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">sch</span><span class="plain">;</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">negate_schema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">pt0</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0]; </span><span class="identifier">asch</span><span class="plain">.</span><span class="element">pt1</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1];</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">involves_action_variables</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::Compile::atom_involves_action_variables</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
 
-        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CALLED_ATOM</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a CALLED atom</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_ATOM</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a KIND atom</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EVERYWHERE_ATOM</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for an EVERYWHERE atom</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOWHERE_ATOM</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a NOWHERE atom</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HERE_ATOM</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a HERE atom</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREDICATE_ATOM</span><span class="plain">:</span>
-                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;arity</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> 1: </span>&lt;<span class="cwebmacro">Make an annotated schema for a unary predicate</span> <span class="cwebmacronumber">6.6</span>&gt;<span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 2: </span>&lt;<span class="cwebmacro">Make an annotated schema for a binary predicate</span> <span class="cwebmacronumber">6.7</span>&gt;<span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">element</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALLED_ATOM:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make an annotated schema for a CALLED atom</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_ATOM:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make an annotated schema for a KIND atom</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVERYWHERE_ATOM:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make an annotated schema for an EVERYWHERE atom</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOWHERE_ATOM:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make an annotated schema for a NOWHERE atom</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HERE_ATOM:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Make an annotated schema for a HERE atom</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PREDICATE_ATOM:</span>
+                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">arity</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a unary predicate</span> <span class="cwebmacronumber">6.6</span>&gt;<span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span>&lt;<span class="cwebmacro">Make an annotated schema for a binary predicate</span> <span class="cwebmacronumber">6.7</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">signal that the atom cannot be compiled simply</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">signal that the atom cannot be compiled simply</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -309,13 +305,13 @@ to <code class="display"><span class="extract">true</span></code>.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span><span class="plain"> {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::CALLED_get_name</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"(%L=(*1), true)"</span><span class="plain">,</span>
-                    <span class="functiontext">LocalVariables::ensure_called_local</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">));</span>
+                    <span class="functiontext">LocalVariables::ensure_called_local</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">assert_kind</span><span class="plain">));</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -340,14 +336,14 @@ the I6 <code class="display"><span class="extract">ofclass</span></code> operato
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">assert_kind</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))</span>
                     <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"*1 ofclass %n"</span><span class="plain">,</span>
-                        <span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">));</span>
+                        <span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">assert_kind</span><span class="plain">));</span>
                 <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) &amp;&amp; (</span><span class="identifier">problem_count</span><span class="plain"> == 0)) {</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">assert_kind</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) &amp;&amp; (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) {</span>
                         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-                        <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">);</span>
+                        <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">assert_kind</span><span class="plain">);</span>
                         <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCheckListContents</span><span class="plain">));</span>
                         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                             <span class="string">"In %1, you use a list which might or might not match a "</span>
@@ -361,13 +357,13 @@ the I6 <code class="display"><span class="extract">ofclass</span></code> operato
                     <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"true"</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">suppress_C14CantChangeKind</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeKind</span><span class="plain">),</span>
                         <span class="string">"the kind of something is fixed"</span><span class="plain">,</span>
                         <span class="string">"and cannot be changed during play with a 'now'."</span><span class="plain">);</span>
-                    <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                    <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -390,18 +386,18 @@ to all backdrops which are currently everywhere.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"BackdropEverywhere(*1)"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"MoveObject(*1, FoundEverywhere); MoveFloatingObjects();"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantChangeEverywhere</span><span class="plain">),</span>
                     <span class="string">"not being 'everywhere' is not something which can be changed "</span>
                     <span class="string">"during play using 'now'"</span><span class="plain">,</span>
                     <span class="string">"because it's not exact enough about what needs to be done."</span><span class="plain">);</span>
-                <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
+                <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -420,13 +416,13 @@ to all backdrops which are currently everywhere.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"LocationOf(*1) == nothing"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"RemoveFromPlay(*1);"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"MoveObject(*1, real_location, 1, false);"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -448,15 +444,15 @@ propositions to be compiled, so this code is never used.)
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">, </span><span class="string">"LocationOf(*1) == location"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                     <span class="string">"being 'here' is not something which can be changed during play"</span><span class="plain">,</span>
                     <span class="string">"so it cannot be brought about or cancelled out with 'now'."</span><span class="plain">);</span>
-                <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
+                <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -475,23 +471,23 @@ adjective apparatus.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">atask</span><span class="plain"> = 0; </span>    <span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
-        <span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="identifier">tr</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_adjective_usage</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;predicate</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
+        <span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="identifier">tr</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_adjective_usage</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">predicate</span><span class="plain">);</span>
         <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">AdjectiveUsages::get_aph</span><span class="plain">(</span><span class="identifier">tr</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">AdjectiveUsages::get_parity</span><span class="plain">(</span><span class="identifier">tr</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">AdjectiveUsages::get_parity</span><span class="plain">(</span><span class="identifier">tr</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">asch</span><span class="plain">.</span><span class="element">negate_schema</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.constant</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.term_checked_as_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.term_checked_as_kind</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.constant</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">constant</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">term_checked_as_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">term_checked_as_kind</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">constant</span><span class="plain">);</span>
 
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">: </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">: </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">: </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span><span class="plain"> </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span><span class="plain"> </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span><span class="plain"> </span><span class="identifier">atask</span><span class="plain"> = </span><span class="constant">NOW_ADJECTIVE_FALSE_TASK</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Unary predicate: $o, on: $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.term_checked_as_kind</span><span class="plain">);</span>
-        <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::get_i6_schema</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.term_checked_as_kind</span><span class="plain">, </span><span class="identifier">atask</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS_WORKINGS</span><span class="plain">, </span><span class="string">"Unary predicate: $o, on: $u\n"</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">term_checked_as_kind</span><span class="plain">);</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::get_i6_schema</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">term_checked_as_kind</span><span class="plain">, </span><span class="identifier">atask</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
 </pre>
 
@@ -509,11 +505,11 @@ adjective apparatus.
 
 
 <pre class="displaydefn">
-        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;predicate</span><span class="plain">);</span>
+        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">predicate</span><span class="plain">);</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp_to_assert</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Undo any functional simplification of the relation</span> <span class="cwebmacronumber">6.7.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_i6_schema</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">bp_to_assert</span><span class="plain">, &amp;</span><span class="identifier">asch</span><span class="plain">);</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_i6_schema</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">bp_to_assert</span><span class="plain">, &amp;</span><span class="identifier">asch</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
 </pre>
 
@@ -534,12 +530,12 @@ we have to re-establish R(x, y) before we can proceed.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">task</span><span class="plain"> != </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">) &amp;&amp; (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">R_equality</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.function</span><span class="plain">) {</span>
-                <span class="identifier">bp_to_assert</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain">;</span>
-                <span class="identifier">asch</span><span class="element">.pt0</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1]</span><span class="element">.function</span><span class="plain">) {</span>
-                <span class="identifier">bp_to_assert</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1]</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain">;</span>
-                <span class="identifier">asch</span><span class="element">.pt1</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1]</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">function</span><span class="plain">) {</span>
+                <span class="identifier">bp_to_assert</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain">;</span>
+                <span class="identifier">asch</span><span class="plain">.</span><span class="element">pt0</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1].</span><span class="element">function</span><span class="plain">) {</span>
+                <span class="identifier">bp_to_assert</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1].</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain">;</span>
+                <span class="identifier">asch</span><span class="plain">.</span><span class="element">pt1</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1].</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp_to_assert</span><span class="plain"> == </span><span class="identifier">R_equality</span><span class="plain">)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"contraction of predicate applied to equality"</span><span class="plain">);</span>
@@ -553,12 +549,11 @@ we have to re-establish R(x, y) before we can proceed.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::Compile::atom_involves_action_variables</span><span class="plain">(</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">operand</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::constant_underlying</span><span class="plain">(&amp;(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]));</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">operand</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::constant_underlying</span><span class="plain">(&amp;(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::Patterns::is_an_action_variable</span><span class="plain">(</span><span class="identifier">operand</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>
@@ -572,15 +567,14 @@ we have to re-establish R(x, y) before we can proceed.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. An unannotated one. </b></p>
 
-
 <pre class="display">
     <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::Compile::blank_asch</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">annotated_i6_schema</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
-        <span class="identifier">asch</span><span class="element">.schema</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-        <span class="identifier">asch</span><span class="element">.negate_schema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">asch</span><span class="element">.pt0</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0);</span>
-        <span class="identifier">asch</span><span class="element">.pt1</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0);</span>
-        <span class="identifier">asch</span><span class="element">.involves_action_variables</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">schema</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">negate_schema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">pt0</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0);</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">pt1</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0);</span>
+        <span class="identifier">asch</span><span class="plain">.</span><span class="element">involves_action_variables</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asch</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

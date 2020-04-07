@@ -91,17 +91,17 @@ which use this module:
 
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">adjectival_phrase</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">adjective_usage</span><span class="plain">, 1000)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">adjective_usage</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">determiner</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">verb_form</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">verb_meaning</span><span class="plain">, 100)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">verb_meaning</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">verb_sense</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">verb_usage</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">verb_usage_tier</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">preposition_identity</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">time_period</span><span class="plain">, 100)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">time_period</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">excerpt_meaning</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain">)</span>
 </pre>
@@ -110,7 +110,6 @@ which use this module:
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Like all modules, this one must define a <code class="display"><span class="extract">start</span></code> and <code class="display"><span class="extract">end</span></code> function:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">LinguisticsModule::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -209,21 +208,21 @@ syntax tree.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">meaning_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">excerpt_meaning</span></code>: for leaves</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">verbal_certainty_ANNOT</span><span class="plain">		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: certainty level if known</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">sentence_is_existential_ANNOT</span><span class="plain"> </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: such as "there is a man"</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">linguistic_error_here_ANNOT</span><span class="plain">   </span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: one of the errors occurred here</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">inverted_verb_ANNOT</span><span class="plain">   		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: an inversion of subject and object has occurred</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">possessive_verb_ANNOT</span><span class="plain">   		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: this is a non-relative use of "to have"</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">verb_ANNOT</span><span class="plain">   					</span>    <span class="comment"><code class="display"><span class="extract">verb_usage</span></code>: what's being done here</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">preposition_ANNOT</span><span class="plain">   			</span>    <span class="comment"><code class="display"><span class="extract">preposition_identity</span></code>: which preposition, if any, qualifies it</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">second_preposition_ANNOT</span><span class="plain">   	</span>    <span class="comment"><code class="display"><span class="extract">preposition_identity</span></code>: which further preposition, if any, qualifies it</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">verb_meaning_ANNOT</span><span class="plain">   			</span>    <span class="comment"><code class="display"><span class="extract">verb_meaning</span></code>: what it means</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">nounphrase_article_ANNOT</span><span class="plain"> 		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: definite or indefinite article: see below</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">plural_reference_ANNOT</span><span class="plain"> 		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: used by PROPER NOUN nodes for evident plurals</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">gender_reference_ANNOT</span><span class="plain"> 		</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: used by PROPER NOUN nodes for evident genders</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">relationship_node_type_ANNOT</span><span class="plain"> 	</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: what kind of inference this assertion makes</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">implicitly_refers_to_ANNOT</span><span class="plain"> 	</span>    <span class="comment"><code class="display"><span class="extract">int</span></code>: this will implicitly refer to something</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">meaning_ANNOT</span><span class="plain"> </span><span class="comment"><code class="display"><span class="extract">excerpt_meaning</span></code>: for leaves</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">verbal_certainty_ANNOT</span><span class="plain">		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: certainty level if known</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">sentence_is_existential_ANNOT</span><span class="plain"> </span><span class="comment"><code class="display"><span class="extract">int</span></code>: such as "there is a man"</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">linguistic_error_here_ANNOT</span><span class="plain">   </span><span class="comment"><code class="display"><span class="extract">int</span></code>: one of the errors occurred here</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">inverted_verb_ANNOT</span><span class="plain">   		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: an inversion of subject and object has occurred</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">possessive_verb_ANNOT</span><span class="plain">   		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: this is a non-relative use of "to have"</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">verb_ANNOT</span><span class="plain">   					</span><span class="comment"><code class="display"><span class="extract">verb_usage</span></code>: what's being done here</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">preposition_ANNOT</span><span class="plain">   			</span><span class="comment"><code class="display"><span class="extract">preposition_identity</span></code>: which preposition, if any, qualifies it</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">second_preposition_ANNOT</span><span class="plain">   	</span><span class="comment"><code class="display"><span class="extract">preposition_identity</span></code>: which further preposition, if any, qualifies it</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">verb_meaning_ANNOT</span><span class="plain">   			</span><span class="comment"><code class="display"><span class="extract">verb_meaning</span></code>: what it means</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">nounphrase_article_ANNOT</span><span class="plain"> 		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: definite or indefinite article: see below</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">plural_reference_ANNOT</span><span class="plain"> 		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: used by PROPER NOUN nodes for evident plurals</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">gender_reference_ANNOT</span><span class="plain"> 		</span><span class="comment"><code class="display"><span class="extract">int</span></code>: used by PROPER NOUN nodes for evident genders</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">relationship_node_type_ANNOT</span><span class="plain"> 	</span><span class="comment"><code class="display"><span class="extract">int</span></code>: what kind of inference this assertion makes</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">implicitly_refers_to_ANNOT</span><span class="plain"> 	</span><span class="comment"><code class="display"><span class="extract">int</span></code>: this will implicitly refer to something</span>
 </pre>
 
 <pre class="display">
@@ -245,7 +244,6 @@ syntax tree.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>This module requires <code class="display"><span class="extract">words</span></code>, which contains the Preform parser. When that
 initialises, it calls the following routine to improve its performance.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">LinguisticsModule::preform_optimiser</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

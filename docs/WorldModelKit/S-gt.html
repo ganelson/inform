@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -41,7 +41,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Begin Glulx-only matter. </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
 </pre>
@@ -52,7 +51,6 @@
 ways: it isn't documented in the I7 manual, because it is pretty inscrutable
 for "real" users, but it's probably worth keeping just the same.
 </p>
-
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
@@ -99,7 +97,7 @@ for "real" users, but it's probably worth keeping just the same.
     <span class="plain">];</span>
 
     <span class="identifier">Verb</span><span class="plain"> </span><span class="identifier">meta</span><span class="plain"> </span><span class="character">'glklist'</span>
-        <span class="plain">*                                           </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">GlkList</span><span class="plain">;</span>
+        <span class="plain">*                                           -&gt; </span><span class="identifier">GlkList</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
 </pre>
 
@@ -110,7 +108,6 @@ undo opcodes used different result codes while providing essentially the same
 functionality, for reasons which are opaque, but no trouble is caused thereby.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">VM_Undo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
         <span class="plain">@</span><span class="identifier">restoreundo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
@@ -119,7 +116,7 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
     <span class="plain">[ </span><span class="identifier">VM_Save_Undo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
         <span class="plain">@</span><span class="identifier">saveundo</span><span class="plain"> </span><span class="identifier">result_code</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result_code</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) { </span><span class="identifier">GGRecoverObjects</span><span class="plain">(); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result_code</span><span class="plain"> == -1) { </span><span class="identifier">GGRecoverObjects</span><span class="plain">(); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; }</span>
         <span class="reserved">return</span><span class="plain"> (~~</span><span class="identifier">result_code</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
@@ -127,7 +124,6 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Quit The Game Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">QUIT_THE_GAME_R</span><span class="plain">;</span>
@@ -141,7 +137,6 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Restart The Game Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RESTART_THE_GAME_R</span><span class="plain">;</span>
@@ -157,7 +152,6 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Restore The Game Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RESTORE_THE_GAME_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain">;</span>
@@ -179,7 +173,6 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Save The Game Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SAVE_THE_GAME_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -189,16 +182,16 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
         <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_savestr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">SFailed</span><span class="plain">;</span>
         <span class="plain">@</span><span class="reserved">save</span><span class="plain"> </span><span class="identifier">gg_savestr</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) {</span>
-            <span class="comment">! The player actually just typed "restore". We first have to recover</span>
-            <span class="comment">! all the Glk objects; the values in our global variables are all wrong.</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == -1) {</span>
+            <span class="comment">The player actually just typed "restore". We first have to recover</span>
+            <span class="comment">all the Glk objects; the values in our global variables are all wrong.</span>
             <span class="identifier">GGRecoverObjects</span><span class="plain">();</span>
-            <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+            <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">stream_close</span>
             <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">RESTORE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
             <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_savestr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">stream_close</span>
         <span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SAVE_THE_GAME_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
         <span class="plain">.</span><span class="identifier">SFailed</span><span class="plain">;</span>
@@ -221,7 +214,6 @@ could not properly be read. The Z-machine provided this service as an
 opcode, and so Glulx followed suit.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">VERIFY_THE_STORY_FILE_R</span><span class="plain"> </span><span class="identifier">res</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -235,7 +227,6 @@ opcode, and so Glulx followed suit.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Switch Transcript On Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_ON_R</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -244,7 +235,7 @@ opcode, and so Glulx followed suit.
             <span class="identifier">gg_scriptfref</span><span class="plain"> = </span><span class="identifier">glk_fileref_create_by_prompt</span><span class="plain">(</span><span class="constant">$102</span><span class="plain">, </span><span class="constant">$05</span><span class="plain">, </span><span class="identifier">GG_SCRIPTFREF_ROCK</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptfref</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">S1Failed</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="comment">! stream_open_file</span>
+        <span class="comment">stream_open_file</span>
         <span class="identifier">gg_scriptstr</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">gg_scriptfref</span><span class="plain">, </span><span class="constant">$05</span><span class="plain">, </span><span class="identifier">GG_SCRIPTSTR_ROCK</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptstr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">S1Failed</span><span class="plain">;</span>
         <span class="identifier">glk_window_set_echo_stream</span><span class="plain">(</span><span class="identifier">gg_mainwin</span><span class="plain">, </span><span class="identifier">gg_scriptstr</span><span class="plain">);</span>
@@ -260,13 +251,12 @@ opcode, and so Glulx followed suit.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Switch Transcript Off Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_R</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gg_scriptstr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
         <span class="identifier">SWITCH_TRANSCRIPT_OFF_RM</span><span class="plain">(</span><span class="character">'B'</span><span class="plain">); </span><span class="reserved">new_line</span><span class="plain">;</span>
-        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_scriptstr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! stream_close</span>
+        <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">gg_scriptstr</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">stream_close</span>
         <span class="identifier">gg_scriptstr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -274,7 +264,6 @@ opcode, and so Glulx followed suit.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Announce Story File Version Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ANNOUNCE_STORY_FILE_VERSION_R</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain">;</span>
@@ -308,7 +297,6 @@ action machinery at all.
 compared to the Z-machine's: hence the <code class="display"><span class="extract">+1</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">DESCEND_TO_SPECIFIC_ACTION_R</span><span class="plain">;</span>
         <span class="reserved">indirect</span><span class="plain">(#</span><span class="identifier">actions_table</span><span class="plain">--&gt;(</span><span class="identifier">action</span><span class="plain">+1));</span>
@@ -319,7 +307,6 @@ compared to the Z-machine's: hence the <code class="display"><span class="extrac
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. End Glulx-only matter. </b></p>
-
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>

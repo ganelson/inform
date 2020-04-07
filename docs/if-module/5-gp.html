@@ -65,7 +65,6 @@
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_parse_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -85,10 +84,9 @@
 contains a pointer to its own unique copy of the following structure:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">parsing_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">understand_as_this_object</span><span class="plain">; </span>    <span class="comment">grammar for parsing the name at run-time</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">grammar_verb</span><span class="plain"> *</span><span class="identifier">understand_as_this_object</span><span class="plain">; </span><span class="comment">grammar for parsing the name at run-time</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">parsing_data</span><span class="plain">;</span>
 </pre>
@@ -100,12 +98,11 @@ contains a pointer to its own unique copy of the following structure:
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And every property permission likewise:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">parsing_pp_data</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">visibility_level_in_parser</span><span class="plain">; </span>    <span class="comment">if so, does the run-time I6 parser recognise it?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">visibility_condition</span><span class="plain">; </span>    <span class="comment">(at least if...?)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">visibility_sentence</span><span class="plain">; </span>    <span class="comment">where this is specified</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">visibility_level_in_parser</span><span class="plain">; </span><span class="comment">if so, does the run-time I6 parser recognise it?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">visibility_condition</span><span class="plain">; </span><span class="comment">(at least if...?)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">visibility_sentence</span><span class="plain">; </span><span class="comment">where this is specified</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">parsing_pp_data</span><span class="plain">;</span>
 </pre>
@@ -116,19 +113,18 @@ contains a pointer to its own unique copy of the following structure:
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Initialising. </b></p>
 
-
 <pre class="display">
     <span class="reserved">parsing_data</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Visibility::new_data</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="reserved">parsing_data</span><span class="plain"> *</span><span class="identifier">pd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">parsing_data</span><span class="plain">);</span>
-        <span class="identifier">pd</span><span class="plain">-</span><span class="element">&gt;understand_as_this_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pd</span><span class="plain">-&gt;</span><span class="element">understand_as_this_object</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pd</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">parsing_pp_data</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Visibility::new_pp_data</span><span class="plain">(</span><span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
         <span class="reserved">parsing_pp_data</span><span class="plain"> *</span><span class="identifier">pd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">parsing_pp_data</span><span class="plain">);</span>
-        <span class="identifier">pd</span><span class="plain">-</span><span class="element">&gt;visibility_level_in_parser</span><span class="plain"> = 0;</span>
-        <span class="identifier">pd</span><span class="plain">-</span><span class="element">&gt;visibility_condition</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">pd</span><span class="plain">-</span><span class="element">&gt;visibility_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pd</span><span class="plain">-&gt;</span><span class="element">visibility_level_in_parser</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">pd</span><span class="plain">-&gt;</span><span class="element">visibility_condition</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">pd</span><span class="plain">-&gt;</span><span class="element">visibility_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pd</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -140,7 +136,6 @@ contains a pointer to its own unique copy of the following structure:
 <p class="endnote">The function PL::Parsing::Visibility::new_pp_data is used in <a href="#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Plugin startup. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -178,29 +173,27 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">parsing</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt; ::=</span>
-        <span class="plain">&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt; </span><span class="identifier">understood</span><span class="plain"> |			==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">understood</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
-        <span class="identifier">noun</span><span class="plain"> |							==&gt; 1</span>
-        <span class="identifier">location</span><span class="plain"> |						==&gt; 2</span>
-        <span class="identifier">actor</span><span class="plain">-</span><span class="identifier">location</span><span class="plain"> |				==&gt; 3</span>
-        <span class="identifier">second</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> |					==&gt; 4</span>
-        <span class="identifier">person</span><span class="plain"> </span><span class="identifier">asked</span><span class="plain"> |					==&gt; 5</span>
-        <span class="identifier">maximum</span><span class="plain"> </span><span class="identifier">score</span><span class="plain">					==&gt; 6</span>
+        <span class="plain">&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt; </span><span class="identifier">understood</span><span class="plain"> |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:understood</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="identifier">noun</span><span class="plain"> |							==&gt; </span><span class="constant">1</span>
+        <span class="identifier">location</span><span class="plain"> |						==&gt; </span><span class="constant">2</span>
+        <span class="identifier">actor</span><span class="plain">-</span><span class="identifier">location</span><span class="plain"> |				==&gt; </span><span class="constant">3</span>
+        <span class="identifier">second</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> |					==&gt; </span><span class="constant">4</span>
+        <span class="identifier">person</span><span class="plain"> </span><span class="identifier">asked</span><span class="plain"> |					==&gt; </span><span class="constant">5</span>
+        <span class="identifier">maximum</span><span class="plain"> </span><span class="identifier">score</span><span class="plain">					==&gt; </span><span class="constant">6</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::parsing_new_variable_notify</span><span class="plain">(</span><span class="identifier">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">var</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">parsing</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">var</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">parsing</span><span class="plain">-</span><span class="identifier">variables</span><span class="plain">&gt;(</span><span class="identifier">var</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0:</span>
-                    <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">understood</span><span class="plain">&gt;&gt; == </span><span class="identifier">NonlocalVariables::kind</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">)) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
+                    <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">kind:understood</span><span class="plain">&gt;&gt; == </span><span class="identifier">NonlocalVariables::kind</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">)) {</span>
                         <span class="identifier">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">,</span>
                             <span class="identifier">NonlocalVariables::nve_from_iname</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PARSED_NUMBER_HL</span><span class="plain">)));</span>
                         <span class="identifier">NonlocalVariables::set_I6_identifier</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">,</span>
@@ -208,12 +201,12 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
                         <span class="identifier">NonlocalVariables::allow_to_be_zero</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">I6_noun_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">real_location_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">actor_location_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">I6_second_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 5: </span><span class="identifier">I6_actor_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 6: </span><span class="identifier">max_score_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">I6_noun_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">real_location_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">actor_location_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="identifier">I6_second_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">5</span><span class="plain">: </span><span class="identifier">I6_actor_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">6</span><span class="plain">: </span><span class="identifier">max_score_VAR</span><span class="plain"> = </span><span class="identifier">var</span><span class="plain">;</span>
                     <span class="identifier">NonlocalVariables::make_initalisable</span><span class="plain">(</span><span class="identifier">var</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -227,7 +220,6 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>This is for <code class="display"><span class="extract">name</span></code> and <code class="display"><span class="extract">plural</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::parsing_estimate_property_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">words_used</span><span class="plain">) {</span>
@@ -247,10 +239,9 @@ the Standard Rules or, in the case of "the X understood", by Inform itself.
 for parsing:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::parsing_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == 5) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">5</span><span class="plain">) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
             <span class="identifier">P_name</span><span class="plain"> = </span><span class="identifier">Properties::Valued::new_nameless</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"name"</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
             <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="functiontext">PL::Parsing::Visibility::name_name</span><span class="plain">());</span>
@@ -339,7 +330,7 @@ for the kinds we inherit from.
                 <span class="identifier">Emit::array_dword_entry</span><span class="plain">(</span><span class="identifier">content</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">content</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_kind</span><span class="plain">) </span>    <span class="comment">see test case PM_PluralsFromKind</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_kind</span><span class="plain">) </span><span class="comment">see test case PM_PluralsFromKind</span>
                 <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">) {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">additional</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
@@ -353,22 +344,22 @@ for the kinds we inherit from.
                     <span class="plain">}</span>
                 <span class="plain">}</span>
 
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;understand_as_this_object</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">understand_as_this_object</span><span class="plain">)</span>
                 <span class="functiontext">PL::Parsing::Verbs::take_out_one_word_grammar</span><span class="plain">(</span>
-                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;understand_as_this_object</span><span class="plain">);</span>
+                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">understand_as_this_object</span><span class="plain">);</span>
 
             <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
                 <span class="identifier">infs</span><span class="plain">; </span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)-</span><span class="element">&gt;understand_as_this_object</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)-&gt;</span><span class="element">understand_as_this_object</span><span class="plain">)</span>
                         <span class="functiontext">PL::Parsing::Verbs::take_out_one_word_grammar</span><span class="plain">(</span>
-                            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)-</span><span class="element">&gt;understand_as_this_object</span><span class="plain">);</span>
+                            <span class="identifier">PF_S</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">)-&gt;</span><span class="element">understand_as_this_object</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
 
             <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-            <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">name_array</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">name_array</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_name</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
                 <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">name_array</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -438,20 +429,19 @@ combination of property and object (or kind): thus the following test
 depends on a property permission and not a mere property.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::seek</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">pr</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">WHENW</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">, </span><span class="identifier">upto</span><span class="plain"> = 1;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">upto</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parity</span><span class="plain"> = 0; </span><span class="identifier">parity</span><span class="plain"> &lt;= </span><span class="identifier">upto</span><span class="plain">; </span><span class="identifier">parity</span><span class="plain">++) {</span>
-            <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">seek_prn</span><span class="plain"> = (</span><span class="identifier">parity</span><span class="plain"> == 0)?</span><span class="identifier">pr</span><span class="plain">:(</span><span class="identifier">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">, </span><span class="identifier">upto</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">upto</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">parity</span><span class="plain"> &lt;= </span><span class="identifier">upto</span><span class="plain">; </span><span class="identifier">parity</span><span class="plain">++) {</span>
+            <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">seek_prn</span><span class="plain"> = (</span><span class="identifier">parity</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)?</span><span class="identifier">pr:</span><span class="plain">(</span><span class="identifier">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">seek_prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Permissions::find</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">seek_prn</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">World::Permissions::grant</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">seek_prn</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_level_in_parser</span><span class="plain"> = </span><span class="identifier">level</span><span class="plain">;</span>
-            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_sentence</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain"> = </span><span class="identifier">WHENW</span><span class="plain">;</span>
+            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_level_in_parser</span><span class="plain"> = </span><span class="identifier">level</span><span class="plain">;</span>
+            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_sentence</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain"> = </span><span class="identifier">WHENW</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -462,43 +452,43 @@ depends on a property permission and not a mere property.
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">, </span><span class="identifier">property</span><span class="plain">) {</span>
             <span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> =</span>
                 <span class="identifier">World::Permissions::find</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="identifier">allow_inheritance</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pp</span><span class="plain">) &amp;&amp; (</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_level_in_parser</span><span class="plain"> &gt; 0))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pp</span><span class="plain">) &amp;&amp; (</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_level_in_parser</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::get_level</span><span class="plain">(</span><span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_level_in_parser</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_level_in_parser</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">PL::Parsing::Visibility::get_condition</span><span class="plain">(</span><span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Dash::validate_conditional_clause</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_sentence</span><span class="plain">;</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_sentence</span><span class="plain">;</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadVisibilityWhen</span><span class="plain">),</span>
                 <span class="string">"the condition after 'when' makes no sense to me"</span><span class="plain">,</span>
                 <span class="string">"although otherwise this worked - it is only the part after 'when' "</span>
                 <span class="string">"which I can't follow."</span><span class="plain">);</span>
-            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+            <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::Visibility::log_parsing_visibility</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Permissions for $j:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Permissions for $j:\n"</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="identifier">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_INFS</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$Y: visibility %d, condition %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$Y: visibility %d, condition %W\n"</span><span class="plain">,</span>
                 <span class="identifier">World::Permissions::get_property</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">),</span>
-                <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_level_in_parser</span><span class="plain">,</span>
-                <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-</span><span class="element">&gt;visibility_condition</span><span class="plain">);</span>
+                <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_level_in_parser</span><span class="plain">,</span>
+                <span class="identifier">PLUGIN_PP</span><span class="plain">(</span><span class="identifier">parsing</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain">)-&gt;</span><span class="element">visibility_condition</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">))</span>
             <span class="functiontext">PL::Parsing::Visibility::log_parsing_visibility</span><span class="plain">(</span><span class="identifier">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">));</span>

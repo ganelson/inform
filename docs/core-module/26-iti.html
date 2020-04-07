@@ -128,16 +128,15 @@ In kind or indexing mode, there is in fact no output, and the interpreter
 is run only to call other functions.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::interpreter_shared</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_mode</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">segment_name</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N_escape</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">index_structure</span><span class="plain">) {</span>
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> = 1, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">sfp</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">sfp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">heading_name</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">comment</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">int_mode</span><span class="plain"> == </span><span class="constant">I6TCODE_MODE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; 0)) </span><span class="identifier">comment</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">int_mode</span><span class="plain"> == </span><span class="constant">I6TCODE_MODE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">comment</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Open a file for input, if necessary</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
 
@@ -147,13 +146,13 @@ is run only to call other functions.
             <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
             <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Read next character from I6T stream</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
-            <span class="identifier">NewCharacter</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">NewCharacter:</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">comment</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">int_mode</span><span class="plain"> == </span><span class="constant">KINDT_MODE</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == 10) || (</span><span class="identifier">cr</span><span class="plain"> == 13)) </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">skip blank lines here</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">) || (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">13</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">skip blank lines here</span>
                     &lt;<span class="cwebmacro">Read rest of line as argument</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">) ||</span>
-                        <span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">) == 0)) </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">skip blanks and comments</span>
+                        <span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">skip blanks and comments</span>
                     <span class="identifier">Kinds::Interpreter::despatch_kind_command</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
                     <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -164,7 +163,7 @@ is run only to call other functions.
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                         &lt;<span class="cwebmacro">Act on I6T command and argument</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
                         <span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'N'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">N_escape</span><span class="plain"> &gt;= 0)) {</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'N'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">N_escape</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
                         &lt;<span class="cwebmacro">Read next character from I6T stream</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'}'</span><span class="plain">) {</span>
                             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">N_escape</span><span class="plain">);</span>
@@ -172,7 +171,7 @@ is run only to call other functions.
                         <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OUT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"{N"</span><span class="plain">);</span>
                         <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">NewCharacter</span><span class="plain">;</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span>    <span class="comment">otherwise the open brace was a literal</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span><span class="comment">otherwise the open brace was a literal</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OUT</span><span class="plain">) </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="character">'{'</span><span class="plain">);</span>
                         <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">NewCharacter</span><span class="plain">;</span>
                     <span class="plain">}</span>
@@ -182,7 +181,7 @@ is run only to call other functions.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'+'</span><span class="plain">) {</span>
                         &lt;<span class="cwebmacro">Read up to the next plus close-bracket as an I7 expression</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
                         <span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span>    <span class="comment">otherwise the open bracket was a literal</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span><span class="comment">otherwise the open bracket was a literal</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">OUT</span><span class="plain">) </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="character">'('</span><span class="plain">);</span>
                         <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">NewCharacter</span><span class="plain">;</span>
                     <span class="plain">}</span>
@@ -213,17 +212,17 @@ file.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">segment_name</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"inform: Unable to open segment &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">);</span>
-            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"inform: Unable to open segment &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">segment_name</span><span class="plain">);</span>
+            <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span><span class="comment">or anyway not usefully testable</span>
                 <span class="string">"I couldn't open a requested I6T segment: see the console "</span>
                 <span class="string">"output for details."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">index_structure</span><span class="plain">) {</span>
             <span class="identifier">Input_File</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">index_structure</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename was %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">index_structure</span><span class="plain">);</span>
-                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">or anyway not usefully testable</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename was %f\n"</span><span class="plain">, </span><span class="identifier">index_structure</span><span class="plain">);</span>
+                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span><span class="comment">or anyway not usefully testable</span>
                     <span class="string">"I couldn't open the template file for the index."</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -250,9 +249,9 @@ terminated <code class="display"><span class="extract">0x0a</span></code> in Uni
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Input_File</span><span class="plain">) </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">fgetc</span><span class="plain">(</span><span class="identifier">Input_File</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain">) {</span>
-            <span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">sf</span><span class="plain">[</span><span class="identifier">sfp</span><span class="plain">]; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == 0) </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfp</span><span class="plain">++;</span>
+            <span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">sf</span><span class="plain">[</span><span class="identifier">sfp</span><span class="plain">]; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfp</span><span class="plain">++;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">;</span>
-        <span class="identifier">col</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == 10) || (</span><span class="identifier">cr</span><span class="plain"> == 13)) </span><span class="identifier">col</span><span class="plain"> = 0;</span>
+        <span class="identifier">col</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">) || (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">13</span><span class="plain">)) </span><span class="identifier">col</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -276,7 +275,7 @@ out I6T template files tidily.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">at_start</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Read next character from I6T stream</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == 10) || (</span><span class="identifier">cr</span><span class="plain"> == 13)) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">) || (</span><span class="identifier">cr</span><span class="plain"> == </span><span class="constant">13</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">at_start</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">))) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">); </span><span class="identifier">at_start</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -322,7 +321,6 @@ definitions: thus
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Constant FROG_CLASS = (+ pond-dwelling amphibian +);</span>
 </pre>
@@ -333,7 +331,6 @@ I6 code like so:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">if (++counter_of_some_kind &gt; 0) ...</span>
@@ -377,7 +374,7 @@ I6 code like so:
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">int_mode</span><span class="plain"> == </span><span class="constant">INDEXT_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Act on an I6T indexing command</span> <span class="cwebmacronumber">2.6.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"command: &lt;%S&gt; argument: &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"command: &lt;%S&gt; argument: &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">command</span><span class="plain">);</span>
         <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TemplateError</span><span class="plain">),</span>
             <span class="string">"In an explicit Inform 6 code insertion, I recognise a few special "</span>
@@ -460,7 +457,6 @@ reported this as a bug (0001596). It was never intended that I6T coding
 be part of the outside-facing language, but for a handful of people
 using template-hacking there are a handful of cases that can't be avoided, so...
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">I6T::error</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>

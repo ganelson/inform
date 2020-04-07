@@ -87,23 +87,22 @@ which may be <code class="display"><span class="extract">NULL</span></code>, rep
 carries, wears, supports or incorporates it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">spatial_data</span><span class="plain"> {</span>
         <span class="comment">fundamental spatial information about an object's location</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">progenitor</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">progenitor_set_at</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">part_flag</span><span class="plain">; </span>    <span class="comment">is this a component part of something else?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">here_flag</span><span class="plain">; </span>    <span class="comment">was this declared simply as being "here"?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">part_flag</span><span class="plain">; </span><span class="comment">is this a component part of something else?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">here_flag</span><span class="plain">; </span><span class="comment">was this declared simply as being "here"?</span>
 
         <span class="comment">temporary storage needed when compiling spatial data to I6 code</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">object_tree_parent</span><span class="plain">; </span>    <span class="comment">in/on/worn by/carried by tree structure</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">object_tree_parent</span><span class="plain">; </span><span class="comment">in/on/worn by/carried by tree structure</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">object_tree_child</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">object_tree_sibling</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">incorp_tree_parent</span><span class="plain">; </span>    <span class="comment">part-of tree structure</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">incorp_tree_parent</span><span class="plain">; </span><span class="comment">part-of tree structure</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">incorp_tree_child</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">incorp_tree_sibling</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">I6_definition_depth</span><span class="plain">; </span>    <span class="comment">i.e., how many arrows <code class="display"><span class="extract">-&gt;</span></code> appear in its I6 header</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">I6_definition_depth</span><span class="plain">; </span><span class="comment">i.e., how many arrows <code class="display"><span class="extract">-&gt;</span></code> appear in its I6 header</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">spatial_data</span><span class="plain">;</span>
@@ -119,17 +118,16 @@ indications of spatial structure:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">IS_ROOM_INF</span><span class="plain"> 50 </span>    <span class="comment">is O a room?</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONTAINS_THINGS_INF</span><span class="plain"> 51 </span>    <span class="comment">does O contain things?</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_INF</span><span class="plain"> 52 </span>    <span class="comment">where is O located?</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_HERE_INF</span><span class="plain"> 53 </span>    <span class="comment">located vaguely as "here"?</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_NOWHERE_INF</span><span class="plain"> 54 </span>    <span class="comment">located vaguely as "nowhere"?</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PART_OF_INF</span><span class="plain"> 55 </span>    <span class="comment">is O a part of another object?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IS_ROOM_INF</span><span class="plain"> </span><span class="constant">50</span><span class="plain"> </span><span class="comment">is O a room?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONTAINS_THINGS_INF</span><span class="plain"> </span><span class="constant">51</span><span class="plain"> </span><span class="comment">does O contain things?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_INF</span><span class="plain"> </span><span class="constant">52</span><span class="plain"> </span><span class="comment">where is O located?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_HERE_INF</span><span class="plain"> </span><span class="constant">53</span><span class="plain"> </span><span class="comment">located vaguely as "here"?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARENTAGE_NOWHERE_INF</span><span class="plain"> </span><span class="constant">54</span><span class="plain"> </span><span class="comment">located vaguely as "nowhere"?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PART_OF_INF</span><span class="plain"> </span><span class="constant">55</span><span class="plain"> </span><span class="comment">is O a part of another object?</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The Spatial plugin also needs to know about a considerable number of special
 kinds and properties:
 </p>
-
 
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -161,7 +159,6 @@ since you can get the subject as a function of the kind, but there's a tricky
 timing issue to get around (see below).
 </p>
 
-
 <pre class="display">
     <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_thing</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -172,7 +169,6 @@ timing issue to get around (see below).
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Initialisation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -248,16 +244,15 @@ one instead. (The INFS structure is rewritten, but the important thing is that
 pointers to it remain consistent and valid.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_name_to_early_infs</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> **</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_room</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_room</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_thing</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_thing</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_room</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_room</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_thing</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_thing</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="comment">container isn't an early case, surprisingly</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_supporter</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_supporter</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 4: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_person</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_person</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_supporter</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_supporter</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_person</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">infs_person</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -271,15 +266,14 @@ pointers to it remain consistent and valid.)
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Here we initialise the data used by Spatial for each object:
 </p>
 
-
 <pre class="display">
     <span class="reserved">spatial_data</span><span class="plain"> *</span><span class="functiontext">PL::Spatial::new_data</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="reserved">spatial_data</span><span class="plain"> *</span><span class="identifier">sd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">spatial_data</span><span class="plain">);</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;progenitor</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;progenitor_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;part_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;object_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;object_tree_child</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;object_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;incorp_tree_child</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;incorp_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;I6_definition_depth</span><span class="plain"> = 0;</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;here_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">progenitor</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">progenitor_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">part_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">object_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">object_tree_child</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">object_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">incorp_tree_child</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">incorp_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">incorp_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">I6_definition_depth</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">here_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -293,16 +287,15 @@ object to which a spatial relationship is being inferred; and this means that
 multiple <code class="display"><span class="extract">PARENTAGE_INF</span></code>s can contradict each other.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_log_inference_type</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">it</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">it</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONTAINS_THINGS_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"CONTAINS_THINGS_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">IS_ROOM_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"IS_ROOM_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PARENTAGE_HERE_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_HERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PARENTAGE_NOWHERE_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_NOWHERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PARENTAGE_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PART_OF_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PART_OF_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONTAINS_THINGS_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"CONTAINS_THINGS_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IS_ROOM_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"IS_ROOM_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PARENTAGE_HERE_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_HERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PARENTAGE_NOWHERE_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_NOWHERE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PARENTAGE_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PARENTAGE_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PART_OF_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"PART_OF_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -354,7 +347,6 @@ support for; it recognises the Englishs name when defined by the Standard
 Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt; ::=</span>
         <span class="identifier">room</span><span class="plain"> |</span>
@@ -369,17 +361,16 @@ Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">K_room</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">K_thing</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">K_container</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">K_supporter</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">K_person</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 5: </span><span class="identifier">K_players_holdall</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">K_room</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">K_thing</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">K_container</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">K_supporter</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="identifier">K_person</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">5</span><span class="plain">: </span><span class="identifier">K_players_holdall</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -402,7 +393,6 @@ an explicit sentence like "The Hall of Mirrors is a room.", we take notice;
 if it turns out to be news, we infer <code class="display"><span class="extract">IS_ROOM_INF</span></code> with certainty.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_set_kind_notify</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kw</span><span class="plain"> = </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
@@ -422,11 +412,10 @@ if it turns out to be news, we infer <code class="display"><span class="extract"
 of vehicle, and so on, but this would cause mayhem in the model world. So:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_thing</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ThingAdrift</span><span class="plain">),</span>
                     <span class="string">"'thing' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
@@ -435,7 +424,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_RoomAdrift</span><span class="plain">),</span>
                     <span class="string">"'room' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
@@ -445,7 +434,7 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_container</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_supporter</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_supporter</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_container</span><span class="plain">))) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ContainerAdrift</span><span class="plain">),</span>
                     <span class="string">"'container' and 'supporter' are not allowed to be kinds "</span>
                     <span class="string">"of each other"</span><span class="plain">,</span>
@@ -465,7 +454,6 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>This tests whether an object is an instance of "room":
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">K_room</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I</span><span class="plain">) &amp;&amp;</span>
@@ -483,11 +471,10 @@ of vehicle, and so on, but this would cause mayhem in the model world. So:
 with 5 rooms and 27 things"-style text in a successful report on its run.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::get_world_size</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">rooms</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">things</span><span class="plain">) {</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">rooms</span><span class="plain"> = 0; *</span><span class="identifier">things</span><span class="plain"> = 0;</span>
+        <span class="plain">*</span><span class="identifier">rooms</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">things</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">) (*</span><span class="identifier">rooms</span><span class="plain">)++;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_thing</span><span class="plain">) (*</span><span class="identifier">things</span><span class="plain">)++;</span>
     <span class="plain">}</span>
@@ -508,7 +495,6 @@ called <code class="display"><span class="extract">with_key</span></code> in the
 special with it at all.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">initial</span><span class="plain"> </span><span class="identifier">appearance</span><span class="plain"> |</span>
@@ -521,15 +507,14 @@ special with it at all.
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_new_property_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">P_initial_appearance</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">P_wearable</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">P_fixed_in_place</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">P_matching_key</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">P_initial_appearance</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">P_wearable</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">P_fixed_in_place</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">P_matching_key</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="identifier">Properties::set_translation</span><span class="plain">(</span><span class="identifier">P_matching_key</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"with_key"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -548,7 +533,6 @@ produced on examining), for any other thing it will be the "initial
 appearance".
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_default_appearance</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">txt</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">))) {</span>
@@ -559,7 +543,7 @@ appearance".
                     <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
                     <span class="identifier">KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">PROPERTY_INF</span><span class="plain">) {</span>
                         <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">World::Inferences::get_property</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">prn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) &gt; 0)) &amp;&amp;</span>
+                        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">prn</span><span class="plain">) &amp;&amp; (</span><span class="identifier">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)) &amp;&amp;</span>
                             <span class="plain">(</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">P_description</span><span class="plain">)) {</span>
                             &lt;<span class="cwebmacro">Produce a problem for doubly described scenery</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
                             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -610,18 +594,17 @@ special treatment elsewhere since it can also double as a value (the "not
 an object" pseudo-value).
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">specifying</span><span class="plain">-</span><span class="identifier">nouns</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">_something</span><span class="plain">/</span><span class="identifier">anything</span><span class="plain"> *** | 	==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_thing</span>
-        <span class="identifier">_somewhere</span><span class="plain">/</span><span class="identifier">anywhere</span><span class="plain"> *** | 	==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span>
-        <span class="identifier">_someone</span><span class="plain">/</span><span class="identifier">anyone</span><span class="plain">/</span><span class="identifier">somebody</span><span class="plain">/</span><span class="identifier">anybody</span><span class="plain"> *** | 	==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span>
-        <span class="identifier">_everything</span><span class="plain"> *** |			==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_thing</span><span class="plain">;  &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
-        <span class="identifier">_everywhere</span><span class="plain"> *** |			==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span><span class="plain">;   &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
-        <span class="identifier">_everyone</span><span class="plain">/</span><span class="identifier">everybody</span><span class="plain"> *** |	==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
-        <span class="identifier">_nowhere</span><span class="plain"> *** |				==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span><span class="plain">;   &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
-        <span class="identifier">_nobody</span><span class="plain">/</span><span class="identifier">no</span><span class="plain">-</span><span class="identifier">one</span><span class="plain"> *** |			==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
-        <span class="identifier">_no</span><span class="plain"> </span><span class="identifier">_one</span><span class="plain"> ***					==&gt; 0; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
+        <span class="identifier">_something</span><span class="plain">/</span><span class="identifier">anything</span><span class="plain"> *** | 	==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_thing</span>
+        <span class="identifier">_somewhere</span><span class="plain">/</span><span class="identifier">anywhere</span><span class="plain"> *** | 	==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span>
+        <span class="identifier">_someone</span><span class="plain">/</span><span class="identifier">anyone</span><span class="plain">/</span><span class="identifier">somebody</span><span class="plain">/</span><span class="identifier">anybody</span><span class="plain"> *** | 	==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span>
+        <span class="identifier">_everything</span><span class="plain"> *** |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_thing</span><span class="plain">;  &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
+        <span class="identifier">_everywhere</span><span class="plain"> *** |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span><span class="plain">;   &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
+        <span class="identifier">_everyone</span><span class="plain">/</span><span class="identifier">everybody</span><span class="plain"> *** |	==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">for_all_quantifier</span>
+        <span class="identifier">_nowhere</span><span class="plain"> *** |				==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_room</span><span class="plain">;   &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
+        <span class="identifier">_nobody</span><span class="plain">/</span><span class="identifier">no</span><span class="plain">-</span><span class="identifier">one</span><span class="plain"> *** |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
+        <span class="identifier">_no</span><span class="plain"> </span><span class="identifier">_one</span><span class="plain"> ***					==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">K_person</span><span class="plain">; &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">not_exists_quantifier</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -642,15 +625,14 @@ unquantified descriptions anyway &mdash; "a door is in the Great Hall" means
 that such a door exists &mdash; we needn't set the variable.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_parse_composite_NQs</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">DW</span><span class="plain">,</span>
         <span class="identifier">quantifier</span><span class="plain"> **</span><span class="identifier">quant</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">some_kind</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_thing</span><span class="plain">) {</span>
-            <span class="plain">&lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt; = </span><span class="identifier">NULL</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt; = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="plain">&lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt; = </span><span class="identifier">NULL</span><span class="plain">; &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt; = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">specifying</span><span class="plain">-</span><span class="identifier">nouns</span><span class="plain">&gt;(*</span><span class="identifier">W</span><span class="plain">)) {</span>
-                <span class="plain">*</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::from</span><span class="plain">(*</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">specifying</span><span class="plain">-</span><span class="identifier">nouns</span><span class="plain">&gt;, 1)));</span>
-                <span class="plain">*</span><span class="identifier">quant</span><span class="plain"> = &lt;&lt;</span><span class="identifier">quantifier</span><span class="plain">:</span><span class="identifier">q</span><span class="plain">&gt;&gt;; *</span><span class="identifier">some_kind</span><span class="plain"> = &lt;&lt;</span><span class="identifier">kind</span><span class="plain">:</span><span class="identifier">k</span><span class="plain">&gt;&gt;;</span>
+                <span class="plain">*</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::from</span><span class="plain">(*</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">specifying</span><span class="plain">-</span><span class="identifier">nouns</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">)));</span>
+                <span class="plain">*</span><span class="identifier">quant</span><span class="plain"> = &lt;&lt;</span><span class="identifier">quantifier:q</span><span class="plain">&gt;&gt;; *</span><span class="identifier">some_kind</span><span class="plain"> = &lt;&lt;</span><span class="identifier">kind:k</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -666,7 +648,6 @@ that such a door exists &mdash; we needn't set the variable.
 node using this wording in order to produce better problem messages if need be.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">spatial</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="identifier">phrases</span><span class="plain">&gt; ::=</span>
         <span class="identifier">nowhere</span>
@@ -675,7 +656,6 @@ node using this wording in order to produce better problem messages if need be.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_act_on_special_NPs</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -696,7 +676,6 @@ node using this wording in order to produce better problem messages if need be.
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>Now in fact this often does get picked up:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_intervene_in_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
@@ -745,7 +724,6 @@ with certainty read
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::infer_presence_here</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain"> = </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
@@ -773,7 +751,6 @@ with certainty read
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>Similarly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::infer_presence_nowhere</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">World::Inferences::draw</span><span class="plain">(</span><span class="constant">PARENTAGE_NOWHERE_INF</span><span class="plain">,</span>
@@ -791,14 +768,13 @@ with certainty read
 to the model world.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::IF_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">stage</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">PL::Spatial::spatial_stage_I</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">PL::Spatial::spatial_stage_II</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="functiontext">PL::Spatial::spatial_stage_III</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">PL::Spatial::spatial_stage_IV</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="functiontext">PL::Spatial::spatial_stage_I</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="functiontext">PL::Spatial::spatial_stage_II</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="functiontext">PL::Spatial::spatial_stage_III</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="functiontext">PL::Spatial::spatial_stage_IV</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -816,7 +792,6 @@ to take note. If X is in Y, then Y might be a room, or a region, or a
 container, and we might need to look at other sentences &mdash; say, establishing
 that Y is the destination of a map connection &mdash; to see which.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_I</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -998,7 +973,7 @@ when it's legitimately a door.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHANGES</span><span class="plain">, </span><span class="string">"Accepting geography choice of kind of $O as $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHANGES</span><span class="plain">, </span><span class="string">"Accepting geography choice of kind of $O as $u\n"</span><span class="plain">,</span>
             <span class="identifier">I</span><span class="plain">, </span><span class="identifier">geography_choice</span><span class="plain">);</span>
         <span class="identifier">Calculus::Propositions::Abstract::assert_kind_of_object</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">geography_choice</span><span class="plain">);</span>
 </pre>
@@ -1013,7 +988,7 @@ when it's legitimately a door.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Choices: designer $u, geography $u.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">designers_choice</span><span class="plain">, </span><span class="identifier">geography_choice</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Choices: designer $u, geography $u.\n"</span><span class="plain">, </span><span class="identifier">designers_choice</span><span class="plain">, </span><span class="identifier">geography_choice</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">decider</span><span class="plain"> = </span><span class="identifier">Instances::get_creating_sentence</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sentence_setting_kind</span><span class="plain">) </span><span class="identifier">decider</span><span class="plain"> = </span><span class="identifier">sentence_setting_kind</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">designers_choice</span><span class="plain">, </span><span class="identifier">K_person</span><span class="plain">))</span>
@@ -1103,20 +1078,19 @@ since other plugins can decide on this, not just Spatial, we had better
 provide access routines to read and write:
 </p>
 
-
 <pre class="display">
     <span class="identifier">instance</span><span class="plain"> *</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;progenitor</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">progenitor</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::set_progenitor</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">of</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">reason</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"spatial plugin inactive"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"set progenitor of nothing"</span><span class="plain">);</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-</span><span class="element">&gt;progenitor</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-</span><span class="element">&gt;progenitor_set_at</span><span class="plain"> =</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-&gt;</span><span class="element">progenitor</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-&gt;</span><span class="element">progenitor_set_at</span><span class="plain"> =</span>
             <span class="plain">(</span><span class="identifier">reason</span><span class="plain">)?</span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">reason</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1130,13 +1104,12 @@ provide access routines to read and write:
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31.  </b>This is used for error recovery only.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::void_progenitor</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">of</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"spatial plugin inactive"</span><span class="plain">);</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-</span><span class="element">&gt;progenitor</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-</span><span class="element">&gt;progenitor_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-&gt;</span><span class="element">progenitor</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">of</span><span class="plain">)-&gt;</span><span class="element">progenitor_set_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1150,16 +1123,15 @@ and we solve this problem by determining the kind of non-here objects before
 the kind of here-objects.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_II</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Set the here flag for all those objects whose parentage is only thus known</span> <span class="cwebmacronumber">32.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;here_flag</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">here_flag</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Position this object spatially</span> <span class="cwebmacronumber">32.3</span>&gt;<span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;here_flag</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">here_flag</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Position this object spatially</span> <span class="cwebmacronumber">32.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Issue problem messages if non-physical objects are spatially enclosed</span> <span class="cwebmacronumber">32.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1178,10 +1150,10 @@ the kind of here-objects.
 <pre class="displaydefn">
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;here_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">here_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
             <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">PARENTAGE_HERE_INF</span><span class="plain">)</span>
-                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;here_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">here_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1238,10 +1210,10 @@ object under investigation.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parent_setting_inference</span><span class="plain">) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">whereabouts</span><span class="plain"> =</span>
                 <span class="identifier">World::Inferences::get_reference_as_object</span><span class="plain">(</span><span class="identifier">parent_setting_inference</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;here_flag</span><span class="plain">) </span>&lt;<span class="cwebmacro">Find the whereabouts of something here</span> <span class="cwebmacronumber">32.3.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">here_flag</span><span class="plain">) </span>&lt;<span class="cwebmacro">Find the whereabouts of something here</span> <span class="cwebmacronumber">32.3.2</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">whereabouts</span><span class="plain">) {</span>
                 <span class="functiontext">PL::Spatial::set_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">whereabouts</span><span class="plain">, </span><span class="identifier">parent_setting_inference</span><span class="plain">);</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Progenitor of $O is $O\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">whereabouts</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Progenitor of $O is $O\n"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">whereabouts</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Determine whether the object in question is a component part</span> <span class="cwebmacronumber">32.3.3</span>&gt;<span class="plain">;</span>
@@ -1357,7 +1329,7 @@ when it finishes this will be set to the most recently mentioned.
                     <span class="string">"the hatchway on a tank - it's probably best to make it an enterable "</span>
                     <span class="string">"container.)"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1366,7 +1338,6 @@ when it finishes this will be set to the most recently mentioned.
 <p class="endnote">This code is used in <a href="#SP32_3">&#167;32.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP33"></a><b>&#167;33.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::seek_room</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sent</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> **</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -1400,23 +1371,22 @@ If it has a parent in either one, then that parent is required to be its progeni
 <p class="inwebparagraph"><a id="SP35"></a><b>&#167;35.  </b>The following logs the more interesting tree:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::log_object_tree</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, 0);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">depth</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;0) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  "</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">--; }</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$O\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">)</span>
-            <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">)</span>
-            <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$O\n"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">)</span>
+            <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">)</span>
+            <span class="functiontext">PL::Spatial::log_object_tree_recursively</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1435,14 +1405,13 @@ X to Y", and moves X and its children to become the youngest child of Y.
 The tree is grown entirely from its root by repeated use of this one operation.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::adopt_object</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">orphan</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">foster</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Grafting $O to be child of $O\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Grafting $O to be child of $O\n"</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">orphan</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"orphan is null in adoption"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">foster</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"foster is null in adoption"</span><span class="plain">);</span>
 
-        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">former_parent</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain">;</span>
+        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">former_parent</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_parent</span><span class="plain">) </span>&lt;<span class="cwebmacro">Remove the object from the main object tree</span> <span class="cwebmacronumber">36.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Adopt the object into the main object tree</span> <span class="cwebmacronumber">36.3</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -1456,13 +1425,12 @@ The tree is grown entirely from its root by repeated use of this one operation.
 in the incorporation tree instead, but with the same parent.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::part_object</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">orphan</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Parting $O\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_TREE</span><span class="plain">, </span><span class="string">"Parting $O\n"</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">orphan</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"new part is null in parting"</span><span class="plain">);</span>
 
-        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">former_parent</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain">;</span>
+        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">former_parent</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">former_parent</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"new part is without parent"</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Remove the object from the main object tree</span> <span class="cwebmacronumber">36.2</span>&gt;<span class="plain">;</span>
@@ -1480,20 +1448,20 @@ in the incorporation tree instead, but with the same parent.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain"> == </span><span class="identifier">orphan</span><span class="plain">) {</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain"> =</span>
-                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain"> == </span><span class="identifier">orphan</span><span class="plain">) {</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain"> =</span>
+                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">elder</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain"> == </span><span class="identifier">orphan</span><span class="plain">)</span>
-                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain"> =</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">;</span>
-                <span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain"> == </span><span class="identifier">orphan</span><span class="plain">)</span>
+                    <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain"> =</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">;</span>
+                <span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1506,15 +1474,15 @@ in the incorporation tree instead, but with the same parent.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">)</span>
-                <span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">;</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">foster</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">)</span>
+                <span class="identifier">elder</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">;</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">elder</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain"> = </span><span class="identifier">foster</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain"> = </span><span class="identifier">foster</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1527,15 +1495,15 @@ in the incorporation tree instead, but with the same parent.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_child</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_child</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">existing_part</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain">)</span>
-                <span class="identifier">existing_part</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain">;</span>
-            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">existing_part</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">former_parent</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_child</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_sibling</span><span class="plain">)</span>
+                <span class="identifier">existing_part</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_sibling</span><span class="plain">;</span>
+            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">existing_part</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_sibling</span><span class="plain"> = </span><span class="identifier">orphan</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_parent</span><span class="plain"> = </span><span class="identifier">former_parent</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">orphan</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_parent</span><span class="plain"> = </span><span class="identifier">former_parent</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1545,7 +1513,6 @@ in the incorporation tree instead, but with the same parent.
 <p class="inwebparagraph"><a id="SP37"></a><b>&#167;37.  </b>What will we use the trees for? Well, one use is to tell other plugins
 which depend on Spatial whether or not one object spatially contains another:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::encloses</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">) {</span>
@@ -1565,7 +1532,6 @@ which depend on Spatial whether or not one object spatially contains another:
 intermediate state between the mass of progenitor data and the messy Inform 6
 code it turns into. Here goes:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_III</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1625,7 +1591,7 @@ changed progenitors at Stage II.)
 
 <pre class="displaydefn">
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_loop</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain">) + 1;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_loop</span><span class="plain"> = </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">;</span>
@@ -1633,7 +1599,7 @@ changed progenitors at Stage II.)
                 <span class="identifier">I2</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I2</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">++) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I2</span><span class="plain"> == </span><span class="identifier">I</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Diagnose the ill-foundedness with a problem message</span> <span class="cwebmacronumber">38.2.1</span>&gt;<span class="plain">;</span>
-                    <span class="functiontext">PL::Spatial::void_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span>    <span class="comment">thus cutting the cycle</span>
+                    <span class="functiontext">PL::Spatial::void_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span><span class="comment">thus cutting the cycle</span>
                     <span class="identifier">well_founded</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -1664,7 +1630,7 @@ changed progenitors at Stage II.)
             <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">I3</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">creator</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"%2 (created by %3) "</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I3</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain">) </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"part of "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I3</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain">) </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"part of "</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"in "</span><span class="plain">);</span>
             <span class="identifier">I3</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I3</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I3</span><span class="plain"> == </span><span class="identifier">I</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
@@ -1707,7 +1673,7 @@ to the trees in creation order achieves this nicely:
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">))</span>
                 <span class="functiontext">PL::Spatial::adopt_object</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain">)</span>
                 <span class="functiontext">PL::Spatial::part_object</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -1733,9 +1699,9 @@ the absence of other information.)
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">portable</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">J</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">J</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span><span class="identifier">J</span><span class="plain">; </span><span class="identifier">J</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">J</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">J</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">J</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">J</span><span class="plain">, </span><span class="identifier">K_person</span><span class="plain">)) {</span>
                         <span class="identifier">portable</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
@@ -1789,7 +1755,7 @@ as a value for <code class="display"><span class="extract">description</span></c
                     <span class="identifier">desc_seen</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">desc_seen</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="string">"\</span><span class="plain">"</span><span class="string">\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="string">"\"\""</span><span class="plain">);</span>
                 <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_description</span><span class="plain">, </span><span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_room</span><span class="plain">),</span>
                     <span class="identifier">Rvalues::from_unescaped_wording</span><span class="plain">(</span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">)), </span><span class="identifier">LIKELY_CE</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">);</span>
@@ -1889,13 +1855,13 @@ a triplet of I6-only properties:
 
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_parent</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="identifier">incorp_tree_parent</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain">) </span><span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_component_parent</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
                 <span class="identifier">Rvalues::from_instance</span><span class="plain">(</span><span class="identifier">cp</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cc</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cc</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="identifier">incorp_tree_child</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cc</span><span class="plain">) </span><span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_component_child</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
                 <span class="identifier">Rvalues::from_instance</span><span class="plain">(</span><span class="identifier">cc</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cs</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain">;</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">cs</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="identifier">incorp_tree_sibling</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain">) </span><span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_component_sibling</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
                 <span class="identifier">Rvalues::from_instance</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -1921,8 +1887,8 @@ for objects:
         <span class="identifier">Instances::begin_sequencing_objects</span><span class="plain">();</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_parent</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, 0);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_parent</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1931,16 +1897,15 @@ for objects:
 
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">) {</span>
         <span class="identifier">Instances::place_this_object_next</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;I6_definition_depth</span><span class="plain"> = </span><span class="identifier">depth</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">I6_definition_depth</span><span class="plain"> = </span><span class="identifier">depth</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">)</span>
-            <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">)</span>
-            <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">)</span>
+            <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">)</span>
+            <span class="functiontext">PL::Spatial::add_to_object_sequence</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1952,12 +1917,11 @@ for objects:
 0 for a room, 1 for a player standing in that room, 2 for his hat, and so on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::get_definition_depth</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">spatial_plugin</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;I6_definition_depth</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">I6_definition_depth</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1970,7 +1934,6 @@ degenerate case where Inform is just binding up an existing story file, so
 that there's really no spatial model at all &mdash; the world is, or should be,
 empty.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_stage_IV</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1998,7 +1961,6 @@ empty.
 
 <p class="inwebparagraph"><a id="SP42"></a><b>&#167;42.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::index_spatial_relationship</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -2007,7 +1969,7 @@ empty.
             <span class="comment">we could set <code class="display"><span class="extract">rel</span></code> to "in" here, but the index omits that for clarity</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">K_supporter</span><span class="plain">)) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"on"</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">K_person</span><span class="plain">)) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"carried"</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain">) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"part"</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain">) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"part"</span><span class="plain">;</span>
             <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
             <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">PROPERTY_INF</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_property</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) == </span><span class="identifier">P_worn</span><span class="plain">)</span>
@@ -2025,10 +1987,9 @@ empty.
 it already turns up under its owner.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::no_detail_index</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_parent</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_parent</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -2040,19 +2001,18 @@ it already turns up under its owner.
 <p class="inwebparagraph"><a id="SP44"></a><b>&#167;44.  </b>In the World index, we recurse to show the contents and parts:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Spatial::index_object_further</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">details</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain">) + 1) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">to recover from errors</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_child</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">to recover from errors</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_child</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="identifier">incorp_tree_child</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">I2</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="identifier">details</span><span class="plain">);</span>
-                <span class="identifier">I2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">)-</span><span class="element">&gt;incorp_tree_sibling</span><span class="plain">;</span>
+                <span class="identifier">I2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">)-&gt;</span><span class="element">incorp_tree_sibling</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">)</span>
-            <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_child</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="identifier">details</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">)</span>
+            <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_child</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="identifier">details</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">PL::Spatial::object_is_a_room</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I2</span><span class="plain">;</span>
@@ -2066,10 +2026,10 @@ it already turns up under its owner.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="functiontext">PL::Player::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">details</span><span class="plain">);</span>
-        <span class="functiontext">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">details</span><span class="plain">, 0);</span>
+        <span class="functiontext">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">details</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">)</span>
-            <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;object_tree_sibling</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">details</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">)</span>
+            <span class="identifier">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">object_tree_sibling</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">details</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -2080,25 +2040,24 @@ it already turns up under its owner.
 <p class="inwebparagraph"><a id="SP45"></a><b>&#167;45.  </b>And also:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Spatial::spatial_add_to_World_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">O</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">K_thing</span><span class="plain">))) {</span>
-            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"tight"</span><span class="plain">);</span>
+            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;initial location:&lt;/i&gt; "</span><span class="plain">);</span>
                 <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"in"</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">K_supporter</span><span class="plain">)) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"on"</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Instances::of_kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">K_person</span><span class="plain">)) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"carried by"</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-</span><span class="element">&gt;part_flag</span><span class="plain">) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"part of"</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-&gt;</span><span class="element">part_flag</span><span class="plain">) </span><span class="identifier">rel</span><span class="plain"> = </span><span class="string">"part of"</span><span class="plain">;</span>
                 <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
                 <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">), </span><span class="identifier">PROPERTY_INF</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_property</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) == </span><span class="identifier">P_worn</span><span class="plain">)</span>
                         <span class="identifier">rel</span><span class="plain"> = </span><span class="string">"worn by"</span><span class="plain">;</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s "</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
                 <span class="identifier">Instances::index_name</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-</span><span class="element">&gt;progenitor_set_at</span><span class="plain">;</span>
+                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">spatial</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">)-&gt;</span><span class="element">progenitor_set_at</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">) </span><span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)));</span>
 
             <span class="plain">}</span>

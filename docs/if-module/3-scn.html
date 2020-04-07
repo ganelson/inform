@@ -74,30 +74,30 @@ scenes &mdash; to express which, the <code class="display"><span class="extract"
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_SCENE_ENDS</span><span class="plain"> 32 </span>    <span class="comment">this must exceed 31</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_SCENE_ENDS</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="comment">this must exceed 31</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene_connector</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">connect_to</span><span class="plain">; </span>    <span class="comment">scene connected to</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">; </span>    <span class="comment">end number: see above</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span>    <span class="comment">next in list of connectors for a scene end</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_said</span><span class="plain">; </span>    <span class="comment">where this linkage was specified in source</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">connect_to</span><span class="plain">; </span><span class="comment">scene connected to</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">; </span><span class="comment">end number: see above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span><span class="comment">next in list of connectors for a scene end</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_said</span><span class="plain">; </span><span class="comment">where this linkage was specified in source</span>
     <span class="plain">} </span><span class="reserved">scene_connector</span><span class="plain">;</span>
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">as_instance</span><span class="plain">; </span>    <span class="comment">the constant for the name of the scene</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">once_only</span><span class="plain">; </span>    <span class="comment">cannot repeat during play</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">start_of_play</span><span class="plain">; </span>    <span class="comment">if begins when play begins</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">; </span>    <span class="comment">used to detect potentially infinite recursion when scene changes occur</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_ends</span><span class="plain">; </span>    <span class="comment">how many ends the scene has</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">end_names</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span>    <span class="comment">for ends 2, 3, ...: e.g. "badly"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">rulebook</span><span class="plain"> *</span><span class="identifier">end_rulebook</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span>    <span class="comment">rules to apply then</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">as_instance</span><span class="plain">; </span><span class="comment">the constant for the name of the scene</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">once_only</span><span class="plain">; </span><span class="comment">cannot repeat during play</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">start_of_play</span><span class="plain">; </span><span class="comment">if begins when play begins</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">; </span><span class="comment">used to detect potentially infinite recursion when scene changes occur</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_ends</span><span class="plain">; </span><span class="comment">how many ends the scene has</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">end_names</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span><span class="comment">for ends 2, 3, ...: e.g. "badly"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">rulebook</span><span class="plain"> *</span><span class="identifier">end_rulebook</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span><span class="comment">rules to apply then</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">anchor_condition</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">];</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">anchor_scene</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span>    <span class="comment">linked list</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indexed</span><span class="plain">; </span>    <span class="comment">temporary storage during Scenes index creation</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">scene_declared_at</span><span class="plain">; </span>    <span class="comment">where defined</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">anchor_condition_set</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span>    <span class="comment">where set</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">anchor_scene</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span><span class="comment">linked list</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indexed</span><span class="plain">; </span><span class="comment">temporary storage during Scenes index creation</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">scene_declared_at</span><span class="plain">; </span><span class="comment">where defined</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">anchor_condition_set</span><span class="plain">[</span><span class="constant">MAX_SCENE_ENDS</span><span class="plain">]; </span><span class="comment">where set</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">scene</span><span class="plain">;</span>
 </pre>
@@ -111,7 +111,6 @@ scenes &mdash; to express which, the <code class="display"><span class="extract"
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following either/or property needs some compiler support:
 </p>
 
-
 <pre class="display">
     <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_recurring</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -120,7 +119,6 @@ scenes &mdash; to express which, the <code class="display"><span class="extract"
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And so does the one special scene:
 </p>
-
 
 <pre class="display">
     <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">SC_entire_game</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -131,7 +129,6 @@ scenes &mdash; to express which, the <code class="display"><span class="extract"
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Scenes are similarly numbered and stored in their own kind:
 actually, they are for practical purposes a built-in enumeration kind.
 </p>
-
 
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_scene</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -173,7 +170,6 @@ including bit 1 which records whether the scene has started.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Plugin calls. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">PLUGIN_REGISTER</span><span class="plain">(</span><span class="identifier">PLUGIN_NEW_PROPERTY_NOTIFY</span><span class="plain">, </span><span class="functiontext">PL::Scenes::scenes_new_property_notify</span><span class="plain">);</span>
@@ -188,7 +184,6 @@ including bit 1 which records whether the scene has started.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>To detect "scene" and "recurring":
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::scenes_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -208,7 +203,6 @@ support for; it recognises the English name when it is defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">recurring</span>
@@ -218,12 +212,11 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::scenes_new_property_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">P_recurring</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">P_recurring</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -237,7 +230,6 @@ Standard Rules. (So there is no need to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Scene structures are automatically created whenever a new instance of the
 kind "scene" is created, and this is where that happens.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::scenes_new_named_instance_notify</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -256,7 +248,6 @@ kind "scene" is created, and this is where that happens.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Scene structures. </b>As we've seen, the following is called whenever a new instance of "scene"
 is created:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::new_scene</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -280,15 +271,15 @@ is created:
 
 
 <pre class="displaydefn">
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;once_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;indexed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain"> = 2;</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;start_of_play</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scene_declared_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">once_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">indexed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">start_of_play</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scene_declared_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain">=0; </span><span class="identifier">end</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">; </span><span class="identifier">end</span><span class="plain">++) {</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain">=0; </span><span class="identifier">end</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">; </span><span class="identifier">end</span><span class="plain">++) {</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="functiontext">PL::Scenes::new_scene_rulebook</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">end</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -301,7 +292,6 @@ is created:
 the English name when it is defined by the Standard Rules. (So there is no need
 to translate this to other languages.)
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">scenes</span><span class="plain">&gt; ::=</span>
@@ -316,7 +306,7 @@ to translate this to other languages.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">Instances::set_connection</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">STORE_POINTER_scene</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">));</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">scenes</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">SC_entire_game</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">;</span>
@@ -329,7 +319,6 @@ to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>So we sometimes want to be able to get from an instance to its scene structure.
 </p>
 
-
 <pre class="display">
     <span class="reserved">scene</span><span class="plain"> *</span><span class="functiontext">PL::Scenes::from_named_constant</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_scene</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -340,7 +329,7 @@ to translate this to other languages.)
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">PL::Scenes::get_name</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -352,20 +341,19 @@ to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Creating and parsing ends. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::parse_scene_end_name</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EW</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">create</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=2; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">EW</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=2; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">EW</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">create</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">++;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = 31;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">max</span><span class="plain"> = 15;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">++;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = </span><span class="constant">31</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">max</span><span class="plain"> = </span><span class="constant">15</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="identifier">max</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a too-many-ends problem message</span> <span class="cwebmacronumber">14.1</span>&gt;
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">EW</span><span class="plain">;</span>
+                <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">EW</span><span class="plain">;</span>
                 <span class="functiontext">PL::Scenes::new_scene_rulebook</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">end</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -399,7 +387,6 @@ to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Scene end rulebooks. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::new_scene_rulebook</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
@@ -408,9 +395,9 @@ to translate this to other languages.)
         <span class="identifier">rulebook</span><span class="plain"> *</span><span class="identifier">rb</span><span class="plain"> = </span><span class="identifier">Rulebooks::new_automatic</span><span class="plain">(</span><span class="identifier">RW</span><span class="plain">, </span><span class="identifier">K_action_name</span><span class="plain">,</span>
                 <span class="identifier">NO_OUTCOME</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">RULEBOOKS_HAP</span><span class="plain">));</span>
         <span class="identifier">Rulebooks::set_alt_name</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">AW</span><span class="plain">);</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_rulebook</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">rb</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_rulebook</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">rb</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) </span>&lt;<span class="cwebmacro">Define phrases detecting whether or not the scene has ended this way</span> <span class="cwebmacronumber">15.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Define phrases detecting whether or not the scene has ended this way</span> <span class="cwebmacronumber">15.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -430,21 +417,21 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"when"</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">((</span><span class="identifier">end</span><span class="plain">==0)?</span><span class="identifier">L</span><span class="string">"begins"</span><span class="plain">:</span><span class="identifier">L</span><span class="string">"ends"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
         <span class="identifier">RW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
 
         <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"when the"</span><span class="plain">);</span>
-        <span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">((</span><span class="identifier">end</span><span class="plain">==0)?</span><span class="identifier">L</span><span class="string">"begins"</span><span class="plain">:</span><span class="identifier">L</span><span class="string">"ends"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
         <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
 </pre>
 
@@ -458,14 +445,14 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">i6_code</span><span class="plain">);</span>
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"To decide if (S - "</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">") ended "</span><span class="plain">);</span>
-        <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+        <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
         <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">), </span><span class="character">':'</span><span class="plain">);</span>
 
         <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
@@ -479,7 +466,7 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"To decide if (S - "</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_text_expanding_strings</span><span class="plain">(</span><span class="identifier">L</span><span class="string">") did not end "</span><span class="plain">);</span>
-        <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+        <span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
         <span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">), </span><span class="character">':'</span><span class="plain">);</span>
 
         <span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
@@ -501,25 +488,24 @@ assertion sentences to create them. This handles the special meaning "X
 begins when...".
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::begins_when_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"The Ballroom Scene begins when..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"The Ballroom Scene begins when..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT</span><span class="plain">:</span>
-                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, 1, 0);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
+                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT</span><span class="plain">:</span>
-                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, 2, 0);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
+                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -534,32 +520,31 @@ begins when...".
 two noun phrases and sometimes three.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Scenes::ends_when_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"The Ballroom Scene ends when..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"The Ballroom Scene ends when..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">O2W</span><span class="plain">)) {</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT</span><span class="plain">:</span>
-                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, 1, 1);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
+                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT</span><span class="plain">:</span>
-                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, 2, 1);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
+                <span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -571,7 +556,6 @@ two noun phrases and sometimes three.
 <p class="endnote">The function PL::Scenes::ends_when_SMF appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">scene_end_of_which_parsed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -602,7 +586,6 @@ have to be worded as one.
 <p class="inwebparagraph">The subject is simple: it has to be a scene name.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">ends</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |					==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -632,7 +615,6 @@ have to be worded as one.
 if it doesn't already exist:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">ends</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">adverb</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">end</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">creating</span><span class="plain">&gt;				==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
@@ -645,17 +627,16 @@ there are possible ambiguities: the condition might contain the word "ends"
 in a different context, for instance, and could still be valid in that case.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">ends</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">text</span><span class="plain">-</span><span class="identifier">including</span><span class="plain">-</span><span class="identifier">a</span><span class="plain">-</span><span class="identifier">calling</span><span class="plain">&gt; |			==&gt; </span>&lt;<span class="cwebmacro">Issue PM_ScenesDisallowCalled problem</span> <span class="cwebmacronumber">21.1</span>&gt;
         <span class="identifier">play</span><span class="plain"> </span><span class="identifier">begins</span><span class="plain"> |							==&gt; -1</span>
         <span class="identifier">play</span><span class="plain"> </span><span class="identifier">ends</span><span class="plain"> |								==&gt; </span>&lt;<span class="cwebmacro">Issue PM_ScenesNotPlay problem</span> <span class="cwebmacronumber">21.2</span>&gt;
-        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">begins</span><span class="plain"> |					==&gt; 0; &lt;&lt;</span><span class="reserved">scene</span><span class="plain">:</span><span class="identifier">named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">ends</span><span class="plain"> |						==&gt; 1; &lt;&lt;</span><span class="reserved">scene</span><span class="plain">:</span><span class="identifier">named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">ends</span><span class="plain"> &lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">end</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]; &lt;&lt;</span><span class="reserved">scene</span><span class="plain">:</span><span class="identifier">named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">begins</span><span class="plain"> |					==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">scene:named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">ends</span><span class="plain"> |						==&gt; </span><span class="constant">1</span><span class="plain">; &lt;&lt;</span><span class="identifier">scene:named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">ends</span><span class="plain"> &lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">end</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]; &lt;&lt;</span><span class="identifier">scene:named</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">ends</span><span class="plain"> ... |					==&gt; </span>&lt;<span class="cwebmacro">Issue PM_ScenesUnknownEnd problem</span> <span class="cwebmacronumber">21.3</span>&gt;
-        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;						==&gt; -2; &lt;&lt;</span><span class="identifier">parse_node</span><span class="plain">:</span><span class="identifier">cond</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;						==&gt; -2; &lt;&lt;</span><span class="identifier">parse_node:cond</span><span class="plain">&gt;&gt; = </span><span class="identifier">RP</span><span class="plain">[1]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -718,7 +699,6 @@ in a different context, for instance, and could still be valid in that case.
 and also internally converts the result:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[2]; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[2]</span>
@@ -751,11 +731,10 @@ except that the creating case will create a new end if need be so that it
 never fails.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">end</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="functiontext">PL::Scenes::parse_scene_end_name</span><span class="plain">(</span><span class="identifier">scene_end_of_which_parsed</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -779,31 +758,30 @@ never fails.
 ends" the other end.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::new_scene_anchor</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">phase</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">given_end</span><span class="plain">) {</span>
-        <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">this_scene</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">scene whose end is being caused: must be set</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = -1; </span>    <span class="comment">end which is being anchored: must be set</span>
+        <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">this_scene</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">scene whose end is being caused: must be set</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = -1; </span><span class="comment">end which is being anchored: must be set</span>
 
-        <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">other_scene</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">Either: another scene whose end it connects to</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">other_end</span><span class="plain"> = -1; </span>    <span class="comment">and which end it is...</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">external_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">Or: an absolute condition...</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">when_play_begins</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Or: anchor to the start of play</span>
+        <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">other_scene</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Either: another scene whose end it connects to</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">other_end</span><span class="plain"> = -1; </span><span class="comment">and which end it is...</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">external_condition</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Or: an absolute condition...</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">when_play_begins</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">Or: anchor to the start of play</span>
 
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">); </span>    <span class="comment">scene name</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">end name, if any</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">condition for end to occur</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-            <span class="identifier">EW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-            <span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">); </span><span class="comment">scene name</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">end name, if any</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">condition for end to occur</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+            <span class="identifier">EW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+            <span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         &lt;<span class="cwebmacro">Parse the scene and end to be anchored</span> <span class="cwebmacronumber">24.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_scene</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">end</span><span class="plain"> &lt; 0)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"scene misparsed"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_scene</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">end</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"scene misparsed"</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phase</span><span class="plain"> == 2) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phase</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Parse which form of anchor we have</span> <span class="cwebmacronumber">24.5</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_scene</span><span class="plain"> == </span><span class="identifier">SC_entire_game</span><span class="plain">) &amp;&amp; (</span><span class="identifier">external_condition</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_EntireGameHardwired</span><span class="plain">),</span>
@@ -831,7 +809,7 @@ ends" the other end.
 
 
 <pre class="displaydefn">
-        <span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;start_of_play</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">start_of_play</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -844,7 +822,7 @@ ends" the other end.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">])</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">])</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ScenesOversetEnd</span><span class="plain">),</span>
                 <span class="string">"you have already told me a condition for when that happens"</span><span class="plain">,</span>
                 <span class="string">"and although a scene can be linked to the beginning or ending "</span>
@@ -852,8 +830,8 @@ ends" the other end.
                 <span class="string">"condition such as 'when the player is in the Dining Car' "</span>
                 <span class="string">"to trigger it from outside the scene machinery."</span><span class="plain">);</span>
 
-        <span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">external_condition</span><span class="plain">;</span>
-        <span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">external_condition</span><span class="plain">;</span>
+        <span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -867,11 +845,11 @@ ends" the other end.
 
 <pre class="displaydefn">
         <span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">scon</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">scene_connector</span><span class="plain">);</span>
-        <span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;connect_to</span><span class="plain"> = </span><span class="identifier">other_scene</span><span class="plain">;</span>
-        <span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;end</span><span class="plain"> = </span><span class="identifier">other_end</span><span class="plain">;</span>
-        <span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;where_said</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
-        <span class="identifier">this_scene</span><span class="plain">-</span><span class="element">&gt;anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">scon</span><span class="plain">;</span>
+        <span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">connect_to</span><span class="plain"> = </span><span class="identifier">other_scene</span><span class="plain">;</span>
+        <span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">end</span><span class="plain"> = </span><span class="identifier">other_end</span><span class="plain">;</span>
+        <span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">where_said</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
+        <span class="identifier">this_scene</span><span class="plain">-&gt;</span><span class="element">anchor_scene</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">scon</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -893,7 +871,7 @@ ends" the other end.
             <span class="plain">&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">ends</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">adverb</span><span class="plain">&gt;(</span><span class="identifier">EW</span><span class="plain">);</span>
             <span class="identifier">end</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">given_end</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">to recover from any parsing Problems</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">to recover from any parsing Problems</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -909,9 +887,9 @@ ends" the other end.
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">ends</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">CW</span><span class="plain">)) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> -2: </span><span class="identifier">external_condition</span><span class="plain"> = &lt;&lt;</span><span class="identifier">parse_node</span><span class="plain">:</span><span class="identifier">cond</span><span class="plain">&gt;&gt;; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> -2: </span><span class="identifier">external_condition</span><span class="plain"> = &lt;&lt;</span><span class="identifier">parse_node:cond</span><span class="plain">&gt;&gt;; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> -1: </span><span class="identifier">when_play_begins</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">other_end</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">other_scene</span><span class="plain"> = &lt;&lt;</span><span class="reserved">scene</span><span class="plain">:</span><span class="identifier">named</span><span class="plain">&gt;&gt;; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">other_end</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">other_scene</span><span class="plain"> = &lt;&lt;</span><span class="identifier">scene:named</span><span class="plain">&gt;&gt;; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">external_condition</span><span class="plain"> = </span><span class="identifier">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">CW</span><span class="plain">);</span>
 </pre>
@@ -939,7 +917,7 @@ whether any change in status has or has not occurred.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_SCENE_CHANGE_ITERATION</span><span class="plain"> 20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_SCENE_CHANGE_ITERATION</span><span class="plain"> </span><span class="constant">20</span>
 </pre>
 
 <pre class="display">
@@ -982,7 +960,7 @@ whether any change in status has or has not occurred.
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; The scene change machinery is stuck.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                    <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; The scene change machinery is stuck.\n"</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -993,7 +971,7 @@ whether any change in status has or has not occurred.
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ch_s</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1036,11 +1014,11 @@ numbers so that more abstruse ways to end take precedence over less.
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">=</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">-1; </span><span class="identifier">end</span><span class="plain">&gt;=1; </span><span class="identifier">end</span><span class="plain">--)</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">=</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">-1; </span><span class="identifier">end</span><span class="plain">&gt;=1; </span><span class="identifier">end</span><span class="plain">--)</span>
                     <span class="functiontext">PL::Scenes::test_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">end</span><span class="plain">, </span><span class="identifier">ch_s</span><span class="plain">, </span><span class="identifier">CScene_l</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1054,11 +1032,11 @@ numbers so that more abstruse ways to end take precedence over less.
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="functiontext">PL::Scenes::test_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, 0, </span><span class="identifier">ch_s</span><span class="plain">, </span><span class="identifier">CScene_l</span><span class="plain">);</span>
+                <span class="functiontext">PL::Scenes::test_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">ch_s</span><span class="plain">, </span><span class="identifier">CScene_l</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 </pre>
@@ -1074,10 +1052,9 @@ two, because the third way will be taken care of by the consequences code
 below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::test_scene_end</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ch_s</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">CScene_l</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">end</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;start_of_play</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">start_of_play</span><span class="plain">)) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -1089,17 +1066,17 @@ below.
                             <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_ENDINGS_HL</span><span class="plain">));</span>
                             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="functiontext">PL::Scenes::compile_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, 0);</span>
+                    <span class="functiontext">PL::Scenes::compile_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Reparse the scene end condition in this new context</span> <span class="cwebmacronumber">26.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to test the scene end condition</span> <span class="cwebmacronumber">26.2</span>&gt;<span class="plain">;</span>
@@ -1117,13 +1094,13 @@ below.
 
 
 <pre class="displaydefn">
-        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
+        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">UNKNOWN_NT</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">))) </span><span class="identifier">S</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">S</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_condition</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">] = </span><span class="identifier">S</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">UNKNOWN_NT</span><span class="plain">)) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Condition: $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Condition: $P\n"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ScenesBadCondition</span><span class="plain">),</span>
                 <span class="string">"'begins when' and 'ends when' must be followed by a condition"</span><span class="plain">,</span>
                 <span class="string">"which this does not seem to be, or else 'when play begins', "</span>
@@ -1153,14 +1130,14 @@ instruction because we're not compiling a loop.)
 <pre class="displaydefn">
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">anchor_condition_set</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">];</span>
             <span class="identifier">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ch_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">PL::Scenes::compile_scene_end</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">end</span><span class="plain">);</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">JUMP_BIP</span><span class="plain">);</span>
@@ -1186,11 +1163,10 @@ are used to mark which scenes have already been ended in code generated
 for this purpose.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::compile_scene_end</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">) {</span>
         <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc2</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">sc2</span><span class="plain">, </span><span class="reserved">scene</span><span class="plain">) </span><span class="identifier">sc2</span><span class="plain">-</span><span class="element">&gt;marker</span><span class="plain"> = 0;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">sc2</span><span class="plain">, </span><span class="reserved">scene</span><span class="plain">) </span><span class="identifier">sc2</span><span class="plain">-&gt;</span><span class="element">marker</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">PL::Scenes::compile_scene_end_dash</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">end</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -1208,13 +1184,12 @@ those for end 1, because they're more specialised, so they have a right to
 take effect first.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::compile_scene_end_dash</span><span class="plain">(</span><span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;marker</span><span class="plain">++;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">end</span><span class="plain"> = 1;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">marker</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">end</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to print text in response to the SCENES command</span> <span class="cwebmacronumber">28.4</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to update the scene status</span> <span class="cwebmacronumber">28.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to update the arrays recording most recent scene ending</span> <span class="cwebmacronumber">28.3</span>&gt;<span class="plain">;</span>
@@ -1226,8 +1201,8 @@ take effect first.
         &lt;<span class="cwebmacro">Compile code to update the arrays recording most recent scene ending</span> <span class="cwebmacronumber">28.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Compile code to cause consequent scene ends</span> <span class="cwebmacronumber">28.5</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">end</span><span class="plain"> = 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain"> = </span><span class="identifier">end</span><span class="plain">; </span><span class="identifier">end</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to run the scene end rulebooks</span> <span class="cwebmacronumber">28.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to cause consequent scene ends</span> <span class="cwebmacronumber">28.5</span>&gt;<span class="plain">;</span>
             <span class="identifier">end</span><span class="plain"> = </span><span class="identifier">e</span><span class="plain">;</span>
@@ -1251,7 +1226,7 @@ end actually occurred.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">);</span>
@@ -1259,7 +1234,7 @@ end actually occurred.)
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
@@ -1280,7 +1255,7 @@ end actually occurred.)
                             <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1292,7 +1267,7 @@ end actually occurred.)
                             <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1309,22 +1284,22 @@ end actually occurred.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">FOLLOWRULEBOOK_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WHEN_SCENE_BEGINS_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1));</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">));</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">FOLLOWRULEBOOK_HL</span><span class="plain">));</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_rulebook</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_rulebook</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]-&gt;</span><span class="identifier">allocation_id</span><span class="plain">));</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">FOLLOWRULEBOOK_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">WHEN_SCENE_ENDS_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1));</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">));</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>
@@ -1340,7 +1315,7 @@ end actually occurred.)
 
 <pre class="displaydefn">
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">sarr</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_ENDED_HL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == 0) </span><span class="identifier">sarr</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STARTED_HL</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">sarr</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STARTED_HL</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">);</span>
@@ -1397,11 +1372,11 @@ end actually occurred.)
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"[Scene '"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">));</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"' "</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"begins"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ends"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= 2) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %+W"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"begins"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ends"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" %+W"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"]\n"</span><span class="plain">);</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -1440,14 +1415,14 @@ type:
 <pre class="displaydefn">
         <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">other_scene</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">other_scene</span><span class="plain">, </span><span class="reserved">scene</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tolerance</span><span class="plain"> = 1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain"> == </span><span class="identifier">other_scene</span><span class="plain">) </span><span class="identifier">tolerance</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">other_scene</span><span class="plain">-</span><span class="element">&gt;marker</span><span class="plain"> &lt; </span><span class="identifier">tolerance</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tolerance</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain"> == </span><span class="identifier">other_scene</span><span class="plain">) </span><span class="identifier">tolerance</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">other_scene</span><span class="plain">-&gt;</span><span class="element">marker</span><span class="plain"> &lt; </span><span class="identifier">tolerance</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">other_end</span><span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">other_end</span><span class="plain"> = 0; </span><span class="identifier">other_end</span><span class="plain"> &lt; </span><span class="identifier">other_scene</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">; </span><span class="identifier">other_end</span><span class="plain">++) {</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">other_end</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">other_end</span><span class="plain"> &lt; </span><span class="identifier">other_scene</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">; </span><span class="identifier">other_end</span><span class="plain">++) {</span>
                     <span class="reserved">scene_connector</span><span class="plain"> *</span><span class="identifier">scon</span><span class="plain">;</span>
-                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">scon</span><span class="plain"> = </span><span class="identifier">other_scene</span><span class="plain">-</span><span class="element">&gt;anchor_scene</span><span class="plain">[</span><span class="identifier">other_end</span><span class="plain">]; </span><span class="identifier">scon</span><span class="plain">; </span><span class="identifier">scon</span><span class="plain"> = </span><span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;connect_to</span><span class="plain"> == </span><span class="identifier">sc</span><span class="plain">) &amp;&amp; (</span><span class="identifier">scon</span><span class="plain">-</span><span class="element">&gt;end</span><span class="plain"> == </span><span class="identifier">end</span><span class="plain">)) {</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">scon</span><span class="plain"> = </span><span class="identifier">other_scene</span><span class="plain">-&gt;</span><span class="element">anchor_scene</span><span class="plain">[</span><span class="identifier">other_end</span><span class="plain">]; </span><span class="identifier">scon</span><span class="plain">; </span><span class="identifier">scon</span><span class="plain"> = </span><span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">scon</span><span class="plain">-&gt;</span><span class="identifier">connect_to</span><span class="plain"> == </span><span class="identifier">sc</span><span class="plain">) &amp;&amp; (</span><span class="identifier">scon</span><span class="plain">-&gt;</span><span class="element">end</span><span class="plain"> == </span><span class="identifier">end</span><span class="plain">)) {</span>
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -1457,10 +1432,10 @@ type:
                                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                                         <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">other_scene</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">other_end</span><span class="plain"> &gt;= 1)</span>
-                                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">other_end</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">)</span>
+                                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                                     <span class="reserved">else</span>
-                                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1484,7 +1459,6 @@ scene status at the moment the command is typed, and the following code is
 what handles this.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::ShowSceneStatus_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SHOWSCENESTATUS_HL</span><span class="plain">);</span>
@@ -1495,7 +1469,7 @@ what handles this.
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">scene</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">scene</span><span class="plain">) {</span>
-                    <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                    <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">Instances::get_name</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">as_instance</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1506,7 +1480,7 @@ what handles this.
                                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1558,7 +1532,7 @@ what handles this.
 
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">" mins now)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">" mins now)\n"</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 </pre>
 
@@ -1581,7 +1555,7 @@ what handles this.
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_LATEST_ENDING_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1608,7 +1582,7 @@ what handles this.
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain"> &gt; 2) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain"> &gt; </span><span class="constant">2</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">SWITCH_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUP_BIP</span><span class="plain">);</span>
@@ -1618,14 +1592,14 @@ what handles this.
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">=2; </span><span class="identifier">end</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;no_ends</span><span class="plain">; </span><span class="identifier">end</span><span class="plain">++) {</span>
+                    <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">=2; </span><span class="identifier">end</span><span class="plain">&lt;</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">no_ends</span><span class="plain">; </span><span class="identifier">end</span><span class="plain">++) {</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">end</span><span class="plain">);</span>
                             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" %+W"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
+                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">" %+W"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">end_names</span><span class="plain">[</span><span class="identifier">end</span><span class="plain">]);</span>
                                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                     <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">T</span><span class="plain">);</span>
@@ -1640,7 +1614,7 @@ what handles this.
 
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 </pre>
 
@@ -1656,7 +1630,6 @@ playing or not, using a "during" clause.
 <p class="inwebparagraph">We allow these either to name a specific scene, or to describe a collection
 of them:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">scene</span><span class="plain">-</span><span class="identifier">description</span><span class="plain">&gt; ::=</span>
@@ -1689,11 +1662,10 @@ of them:
 actually running:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Scenes::emit_during_clause</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stuck</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_scene</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_scene</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTreeUsage::is_rvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
             <span class="identifier">Dash::check_value</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">K_scene</span><span class="plain">);</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="identifier">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
@@ -1706,7 +1678,7 @@ actually running:
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">SCENE_STATUS_HL</span><span class="plain">));</span>
                         <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">stuck</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -1723,7 +1695,7 @@ actually running:
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stuck</span><span class="plain">) {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ScenesBadDuring</span><span class="plain">),</span>
                 <span class="string">"'during' must be followed by the name of a scene or of a "</span>
                 <span class="string">"description which applies to a single scene"</span><span class="plain">,</span>

@@ -168,7 +168,6 @@ consider a value and not a type at all:
 type representing only its own value.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |		==&gt; </span><span class="identifier">RP</span><span class="plain">[2]</span>
@@ -205,7 +204,6 @@ adjectives. For instance, this:
 <p class="inwebparagraph">To allow this, we have a minor variation:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |		==&gt; </span><span class="identifier">RP</span><span class="plain">[2]</span>
@@ -235,7 +233,6 @@ such as "15 that varies" or "number that varies that varies that varies",
 but we want to allow the parse here so that a problem message can be issued
 higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">-</span><span class="identifier">scope</span><span class="plain">&gt; ::=</span>
@@ -297,7 +294,6 @@ higher up in Inform. Ultimately, the text must match &lt;k-kind&gt; in each case
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Two pieces of context:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">let_equation_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">probable_noun_phrase_context</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -323,9 +319,8 @@ for example,
 <p class="inwebparagraph">As mentioned earlier, this changes our conventions on word-breaking.
 </p>
 
-
 <pre class="display">
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">let</span><span class="plain">-</span><span class="reserved">equation</span><span class="plain">-</span><span class="identifier">mode</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">let</span><span class="plain">-</span><span class="reserved">equation</span><span class="plain">-</span><span class="identifier">mode</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">let_equation_mode</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -338,9 +333,8 @@ can be referred to by a pronoun like "it"; if so, we will enable the use
 of possessives like "its" to refer to properties.
 </p>
 
-
 <pre class="display">
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">-</span><span class="identifier">present</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">pronoun</span><span class="plain">-</span><span class="identifier">present</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LocalVariables::is_possessive_form_of_it_enabled</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -353,15 +347,14 @@ a property name. This enables us to resolve ambiguities in a helpful way,
 but otherwise changes little.
 </p>
 
-
 <pre class="display">
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">expected</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">expected</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">probable_noun_phrase_context</span><span class="plain">) == </span><span class="identifier">CON_table_column</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">expected</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">expected</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">probable_noun_phrase_context</span><span class="plain">) == </span><span class="identifier">CON_property</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -434,7 +427,6 @@ write "members of D" instead of just "D", making the wording of some
 phrases much more natural. It's the difference between a set and its
 membership, which is to say, really just a syntactic difference.
 </li></ul>
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt; ::=</span>
         <span class="plain">( &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt; ) |											==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -463,7 +455,6 @@ membership, which is to say, really just a syntactic difference.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::val</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -476,7 +467,6 @@ membership, which is to say, really just a syntactic difference.
 <p class="endnote">The function ExParser::val is used in <a href="#SP10">&#167;10</a>, <a href="#SP12_1">&#167;12.1</a>, <a href="#SP12_2">&#167;12.2</a>, <a href="#SP12_3">&#167;12.3</a>, <a href="#SP10_1">&#167;10.1</a>, <a href="#SP10_2">&#167;10.2</a>, <a href="#SP10_3">&#167;10.3</a>, <a href="#SP14">&#167;14</a>, 10/varc (<a href="10-varc.html#SP7">&#167;7</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">equation</span><span class="plain">-</span><span class="identifier">usage</span><span class="plain">&gt; ::=</span>
@@ -589,7 +579,6 @@ membership, which is to say, really just a syntactic difference.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::p_o_val</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pts</span><span class="plain"> =</span>
@@ -624,7 +613,6 @@ if there are both local and global variables called "grand total", then
 the text "grand total" is parsed as the local.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">&gt; |				==&gt; </span><span class="identifier">RP</span><span class="plain">[2]</span>
@@ -646,7 +634,6 @@ the text "grand total" is parsed as the local.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>This requires three internals:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">local</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::parse</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">(), </span><span class="identifier">W</span><span class="plain">);</span>
@@ -662,7 +649,6 @@ the text "grand total" is parsed as the local.
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>And similarly:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">stacked</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -684,7 +670,6 @@ the text "grand total" is parsed as the local.
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>And:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">global</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">VARIABLE_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -700,7 +685,6 @@ cases where the excerpt being parsed looks as if it might be a property
 rather than use of a phrase. Here's how we tell whether it looks that way:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">shape</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">of</span><span class="plain"> ...</span>
@@ -712,7 +696,6 @@ rather than use of a phrase. Here's how we tell whether it looks that way:
 anything including the word "of":
 </p>
 
-
 <pre class="display">
     <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">property_word_to_suppress</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -722,14 +705,13 @@ anything including the word "of":
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>And here are the relevant internals:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">non</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">suppression</span><span class="plain"> = </span><span class="identifier">word_to_suppress_in_phrases</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">shape</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">property_word_to_suppress</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                <span class="identifier">property_word_to_suppress</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::word</span><span class="plain">(&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">shape</span><span class="plain">&gt;, 0);</span>
+                <span class="identifier">property_word_to_suppress</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::word</span><span class="plain">(&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">shape</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">word_to_suppress_in_phrases</span><span class="plain"> = </span><span class="identifier">property_word_to_suppress</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">VALUE_PHRASE_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -773,7 +755,6 @@ the Table of Elements".
 sentence "if there is an atomic weight of 20 in the Table of Elements".
 Again, this is part of a condition, and can't evaluate.
 </li></ul>
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">reference</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">entry</span><span class="plain"> |																				==&gt; </span>&lt;<span class="cwebmacro">Make table entry value</span> <span class="cwebmacronumber">21.1</span>&gt;
@@ -792,9 +773,9 @@ Again, this is part of a condition, and can't evaluate.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">LocalVariables::are_we_using_table_lookup</span><span class="plain">() == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">problem_count</span><span class="plain"> == 0)) {</span>
+            <span class="plain">(</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NoRowSelected</span><span class="plain">),</span>
                 <span class="string">"no row seems to have been chosen at this point"</span><span class="plain">,</span>
                 <span class="string">"so it doesn't make sense to talk about the entries "</span>
@@ -803,7 +784,7 @@ Again, this is part of a condition, and can't evaluate.
                 <span class="string">"might be at another time altogether if we are "</span>
                 <span class="string">"storing away instructions for later in a text "</span>
                 <span class="string">"substitution, e.g., writing 'now the description "</span>
-                <span class="string">"of the player is \</span><span class="plain">"</span><span class="string">Thoroughly [vanity entry].\</span><span class="plain">"</span><span class="string">;' "</span>
+                <span class="string">"of the player is \"Thoroughly [vanity entry].\";' "</span>
                 <span class="string">"- remember that the substitution is acted on "</span>
                 <span class="string">"when the text is printed, which could be at any "</span>
                 <span class="string">"time, and no row will be chosen then.)"</span><span class="plain">);</span>
@@ -822,9 +803,9 @@ Again, this is part of a condition, and can't evaluate.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
 </pre>
 
@@ -839,8 +820,8 @@ Again, this is part of a condition, and can't evaluate.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
 </pre>
 
@@ -855,10 +836,10 @@ Again, this is part of a condition, and can't evaluate.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[4]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[4]);</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
 </pre>
 
@@ -873,10 +854,10 @@ Again, this is part of a condition, and can't evaluate.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[3]);</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
 </pre>
 
@@ -885,7 +866,6 @@ Again, this is part of a condition, and can't evaluate.
 <p class="endnote">This code is used in <a href="#SP21">&#167;21</a>.</p>
 
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b></p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::arg</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">) {</span>
@@ -902,7 +882,6 @@ Again, this is part of a condition, and can't evaluate.
 are parsed by code in the chapter on Actions; all we do here is to wrap the
 result.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">pattern</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>

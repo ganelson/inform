@@ -95,13 +95,12 @@ which case <code class="display"><span class="extract">px</span></code> and <cod
 generalisations which apply to it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalisation</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">look_for</span><span class="plain">; </span>    <span class="comment">prototype situation to look for</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">what_to_make</span><span class="plain">; </span>    <span class="comment">subtree for what to assemble</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">substitute_at</span><span class="plain">; </span>    <span class="comment">position under <code class="display"><span class="extract">look_for</span></code> of the EVERY node</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span>    <span class="comment">next in list of generalisations about kind</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">look_for</span><span class="plain">; </span><span class="comment">prototype situation to look for</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">what_to_make</span><span class="plain">; </span><span class="comment">subtree for what to assemble</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">substitute_at</span><span class="plain">; </span><span class="comment">position under <code class="display"><span class="extract">look_for</span></code> of the EVERY node</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span><span class="comment">next in list of generalisations about kind</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">generalisation</span><span class="plain">;</span>
 </pre>
@@ -115,7 +114,6 @@ generalisations have and have not yet applied to it. In practice, this is
 a list of pairs (K, g) where K is a kind and g is the most recent one
 applied from K's list.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">application</span><span class="plain"> {</span>
@@ -133,13 +131,12 @@ applied from K's list.
 each inference subject:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">assemblies_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">generalisation_list</span><span class="plain">; </span>    <span class="comment">kinds only: assembly instructions, if any</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">application</span><span class="plain"> *</span><span class="identifier">applications_so_far</span><span class="plain">; </span>    <span class="comment">instances only: progress</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">named_after</span><span class="plain">; </span>    <span class="comment">name derived from another: e.g. "Jane's nose"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">named_after_text</span><span class="plain">; </span>    <span class="comment">text of the derived part, e.g. "nose"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">generalisation_list</span><span class="plain">; </span><span class="comment">kinds only: assembly instructions, if any</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">application</span><span class="plain"> *</span><span class="identifier">applications_so_far</span><span class="plain">; </span><span class="comment">instances only: progress</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">named_after</span><span class="plain">; </span><span class="comment">name derived from another: e.g. "Jane's nose"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">named_after_text</span><span class="plain">; </span><span class="comment">text of the derived part, e.g. "nose"</span>
     <span class="plain">} </span><span class="reserved">assemblies_data</span><span class="plain">;</span>
 </pre>
 
@@ -149,13 +146,12 @@ each inference subject:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Initialisation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::initialise_assemblies_data</span><span class="plain">(</span><span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="identifier">ad</span><span class="plain">) {</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;generalisation_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;applications_so_far</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">generalisation_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">applications_so_far</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">named_after</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">named_after_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -166,12 +162,11 @@ each inference subject:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Setting the naming-after information.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::name_object_after</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">after</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="identifier">ad</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after</span><span class="plain"> = </span><span class="identifier">after</span><span class="plain">;</span>
-        <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">named_after</span><span class="plain"> = </span><span class="identifier">after</span><span class="plain">;</span>
+        <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">named_after_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -182,16 +177,15 @@ each inference subject:
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And reading it again.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Assertions::Assemblies::what_this_is_named_after</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="identifier">ad</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ad</span><span class="plain">-&gt;</span><span class="identifier">named_after</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::get_named_after_text</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="identifier">ad</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;named_after_text</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ad</span><span class="plain">-&gt;</span><span class="identifier">named_after_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -222,13 +216,12 @@ each inference subject:
 first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span></code> subtree.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::make_generalisation</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">look_for</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">what_to_make</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">EVERY_node</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">look_for</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">) </span><span class="identifier">EVERY_node</span><span class="plain"> = </span><span class="identifier">look_for</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">look_for</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">look_for</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">))</span>
-            <span class="identifier">EVERY_node</span><span class="plain"> = </span><span class="identifier">look_for</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">look_for</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">look_for</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">))</span>
+            <span class="identifier">EVERY_node</span><span class="plain"> = </span><span class="identifier">look_for</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Generalisation without EVERY node"</span><span class="plain">);</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">EVERY_node</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Malformed EVERY node"</span><span class="plain">);</span>
@@ -244,16 +237,16 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">EVERY_node</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
 
         <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">generalisation</span><span class="plain">);</span>
-        <span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;look_for</span><span class="plain"> = </span><span class="identifier">look_for</span><span class="plain">;</span>
-        <span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;what_to_make</span><span class="plain"> = </span><span class="identifier">what_to_make</span><span class="plain">;</span>
-        <span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;substitute_at</span><span class="plain"> = </span><span class="identifier">EVERY_node</span><span class="plain">;</span>
+        <span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">look_for</span><span class="plain"> = </span><span class="identifier">look_for</span><span class="plain">;</span>
+        <span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">what_to_make</span><span class="plain"> = </span><span class="identifier">what_to_make</span><span class="plain">;</span>
+        <span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">substitute_at</span><span class="plain"> = </span><span class="identifier">EVERY_node</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Add this new generalisation to the list for the kind it applies to</span> <span class="cwebmacronumber">9.4</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">you_can_ignore_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ASSEMBLIES</span><span class="plain">, </span><span class="string">"New generalisation made concerning $j:\</span><span class="plain">n</span><span class="string">Look for: $T\</span><span class="plain">n</span><span class="string">Make: $T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">k</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;look_for</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;what_to_make</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ASSEMBLIES</span><span class="plain">, </span><span class="string">"New generalisation made concerning $j:\nLook for: $T\nMake: $T\n"</span><span class="plain">,</span>
+            <span class="identifier">k</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">look_for</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">what_to_make</span><span class="plain">);</span>
 
         <span class="functiontext">Assertions::Assemblies::ensure_all_generalisations_made</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -294,7 +287,7 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">what_to_make</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">what_to_make</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">what_to_make</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">what_to_make</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="constant">EVERY_NT</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">look_for</span><span class="plain">);</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">what_to_make</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyOnBothSides</span><span class="plain">),</span>
@@ -332,14 +325,14 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
 
 <pre class="displaydefn">
         <span class="reserved">assemblies_data</span><span class="plain"> *</span><span class="identifier">ad</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;generalisation_list</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;generalisation_list</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">generalisation_list</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">generalisation_list</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">g2</span><span class="plain"> = </span><span class="identifier">ad</span><span class="plain">-</span><span class="element">&gt;generalisation_list</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">g2</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">g2</span><span class="plain"> = </span><span class="identifier">g2</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-            <span class="identifier">g2</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
+            <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">g2</span><span class="plain"> = </span><span class="identifier">ad</span><span class="plain">-&gt;</span><span class="element">generalisation_list</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">g2</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">) </span><span class="identifier">g2</span><span class="plain"> = </span><span class="identifier">g2</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+            <span class="identifier">g2</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -352,7 +345,7 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Generalisation:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Generalisation:\n"</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">look_for</span><span class="plain">);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T"</span><span class="plain">, </span><span class="identifier">what_to_make</span><span class="plain">);</span>
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AssemblyRegress</span><span class="plain">),</span>
@@ -370,14 +363,13 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>This is used only in checking for infinite regress:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::subtree_mentions_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">subtree</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">) == </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">) == </span><span class="identifier">k</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Assertions::Assemblies::subtree_mentions_kind</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">level</span><span class="plain">+1)))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">subtree</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Assertions::Assemblies::subtree_mentions_kind</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">level</span><span class="plain">+1)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">level</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">subtree</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Assertions::Assemblies::subtree_mentions_kind</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">level</span><span class="plain">)))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">level</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">subtree</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Assertions::Assemblies::subtree_mentions_kind</span><span class="plain">(</span><span class="identifier">subtree</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">level</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -391,7 +383,6 @@ first it's a <code class="display"><span class="extract">RELATIONSHIP_NT</span><
 application of generalisations. When this routine completes, every object
 of a given kind has undergone every generalisation applicable to it exactly once.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::ensure_all_generalisations_made</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
@@ -413,15 +404,14 @@ refresh when we know the only object which can be affected, so in that
 situation we call just <code class="display"><span class="extract">Assertions::Assemblies::satisfies_generalisations</span></code> on the object in question.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::satisfies_generalisations</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">); </span><span class="identifier">k</span><span class="plain">; </span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">)) {</span>
             <span class="reserved">application</span><span class="plain"> *</span><span class="identifier">app</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">app</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-</span><span class="element">&gt;applications_so_far</span><span class="plain">; </span><span class="identifier">app</span><span class="plain">; </span><span class="identifier">app</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;generalisation_owner</span><span class="plain"> == </span><span class="identifier">k</span><span class="plain">)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">app</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-&gt;</span><span class="element">applications_so_far</span><span class="plain">; </span><span class="identifier">app</span><span class="plain">; </span><span class="identifier">app</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">generalisation_owner</span><span class="plain"> == </span><span class="identifier">k</span><span class="plain">)</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Apply generalisations about K which have not yet been applied</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -444,15 +434,15 @@ generalisation has ever been applied to it.
 
 
 <pre class="displaydefn">
-        <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">ignore_up_to</span><span class="plain"> = (</span><span class="identifier">app</span><span class="plain">)?(</span><span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;latest_applied</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">ignore_up_to</span><span class="plain"> = (</span><span class="identifier">app</span><span class="plain">)?(</span><span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">latest_applied</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">g</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">)-</span><span class="element">&gt;generalisation_list</span><span class="plain">; </span><span class="identifier">g</span><span class="plain">; </span><span class="identifier">g</span><span class="plain">=</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">)-&gt;</span><span class="element">generalisation_list</span><span class="plain">; </span><span class="identifier">g</span><span class="plain">; </span><span class="identifier">g</span><span class="plain">=</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ignore_up_to</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> == </span><span class="identifier">ignore_up_to</span><span class="plain">) </span><span class="identifier">ignore_up_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">app</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create a new record for this previously unapplied kind</span> <span class="cwebmacronumber">12.1.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;latest_applied</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
+            <span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">latest_applied</span><span class="plain"> = </span><span class="identifier">g</span><span class="plain">;</span>
             <span class="functiontext">Assertions::Assemblies::satisfies_generalisation</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -468,9 +458,9 @@ generalisation has ever been applied to it.
 
 <pre class="displaydefn">
         <span class="identifier">app</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">application</span><span class="plain">);</span>
-        <span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;generalisation_owner</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">;</span>
-        <span class="identifier">app</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-</span><span class="element">&gt;applications_so_far</span><span class="plain">;</span>
-        <span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-</span><span class="element">&gt;applications_so_far</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
+        <span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">generalisation_owner</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">;</span>
+        <span class="identifier">app</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-&gt;</span><span class="element">applications_so_far</span><span class="plain">;</span>
+        <span class="functiontext">InferenceSubjects::get_assemblies_data</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)-&gt;</span><span class="element">applications_so_far</span><span class="plain"> = </span><span class="identifier">app</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -511,17 +501,16 @@ O(G^2N).
 we actually do is to insert new sentences after the current one.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implicit_recursion_exception</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">thrown when we've gone into infinite regress</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implicit_recursion_exception</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">thrown when we've gone into infinite regress</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Assemblies::satisfies_generalisation</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">generalisation</span><span class="plain"> *</span><span class="identifier">g</span><span class="plain">) {</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">counterpart</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">snatcher</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Call::detect_bodysnatching</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, &amp;</span><span class="identifier">snatcher</span><span class="plain">, &amp;</span><span class="identifier">counterpart</span><span class="plain">)) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ASSEMBLIES</span><span class="plain">, </span><span class="string">"Body-snatcher found! Subj $j, snatcher %d, counterpart $j\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ASSEMBLIES</span><span class="plain">, </span><span class="string">"Body-snatcher found! Subj $j, snatcher %d, counterpart $j\n"</span><span class="plain">,</span>
                 <span class="identifier">infs</span><span class="plain">, </span><span class="identifier">snatcher</span><span class="plain">, </span><span class="identifier">counterpart</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">snatcher</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_k</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;substitute_at</span><span class="plain">);</span>
+        <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_k</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">substitute_at</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Throw the infinite regress exception if the current sentence makes too many things</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">new_sentence</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">SENTENCE_NT</span><span class="plain">);</span>
@@ -529,32 +518,32 @@ we actually do is to insert new sentences after the current one.
         <span class="comment">mark this sentence as implicit, and increase its generation count:</span>
         <span class="identifier">ParseTree::set_implicit_in_creation_of</span><span class="plain">(</span><span class="identifier">new_sentence</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new_sentence</span><span class="plain">, </span><span class="constant">implicitness_count_ANNOT</span><span class="plain">,</span>
-            <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">implicitness_count_ANNOT</span><span class="plain">) + 1);</span>
+            <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="constant">implicitness_count_ANNOT</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new_sentence</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">));</span>
 
         <span class="comment">temporarily make the <code class="display"><span class="extract">EVERY_NT</span></code> node refer to the specific new <code class="display"><span class="extract">infs</span></code>:</span>
-        <span class="functiontext">Assertions::Refiner::noun_from_infs</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;substitute_at</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
+        <span class="functiontext">Assertions::Refiner::noun_from_infs</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">substitute_at</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">);</span>
 
         <span class="comment">make the new sentence an assertion:</span>
-        <span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">);</span>
-        <span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">CREATED_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::copy_subtree</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;look_for</span><span class="plain">, </span><span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, 0);</span>
-        <span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">CREATED_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::copy_subtree</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;what_to_make</span><span class="plain">, </span><span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, 0);</span>
-        <span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">);</span>
+        <span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">CREATED_NT</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::copy_subtree</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">look_for</span><span class="plain">, </span><span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">CREATED_NT</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::copy_subtree</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">what_to_make</span><span class="plain">, </span><span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="comment">restore the <code class="display"><span class="extract">EVERY_NT</span></code> node, now that the tree containing it has been copied:</span>
-        <span class="identifier">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;substitute_at</span><span class="plain">, </span><span class="constant">EVERY_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::set_subject</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-</span><span class="element">&gt;substitute_at</span><span class="plain">, </span><span class="identifier">infs_k</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">substitute_at</span><span class="plain">, </span><span class="constant">EVERY_NT</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_subject</span><span class="plain">(</span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="element">substitute_at</span><span class="plain">, </span><span class="identifier">infs_k</span><span class="plain">);</span>
 
         <span class="comment">insert this sentence after the current assembly position:</span>
-        <span class="identifier">new_sentence</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">assembly_position</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="identifier">assembly_position</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">new_sentence</span><span class="plain">;</span>
+        <span class="identifier">new_sentence</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">assembly_position</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+        <span class="identifier">assembly_position</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">new_sentence</span><span class="plain">;</span>
         <span class="identifier">assembly_position</span><span class="plain"> = </span><span class="identifier">new_sentence</span><span class="plain">;</span>
 
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">ASSEMBLIES</span><span class="plain">,</span>
-            <span class="string">"Subject $j satisfies generalisation %d (from $j), making sentence:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">,</span>
+            <span class="string">"Subject $j satisfies generalisation %d (from $j), making sentence:\n$T"</span><span class="plain">,</span>
             <span class="identifier">infs</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">infs_k</span><span class="plain">, </span><span class="identifier">new_sentence</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -573,7 +562,7 @@ L but each L must contain a K.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_ASSEMBLY_SIZE</span><span class="plain"> 500</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_ASSEMBLY_SIZE</span><span class="plain"> </span><span class="constant">500</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">

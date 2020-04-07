@@ -65,7 +65,6 @@
 and which therefore exists only once.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::PropertyKnowledge::initialise_global_variable</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="functiontext">Assertions::PropertyKnowledge::igv_dash</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -84,7 +83,6 @@ and which therefore exists only once.
 <p class="endnote">The function Assertions::PropertyKnowledge::verify_global_variable is used in 5/nv (<a href="5-nv.html#SP16">&#167;16</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::PropertyKnowledge::igv_dash</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">verification_stage</span><span class="plain">) {</span>
@@ -149,9 +147,9 @@ equal. So the proposition has to pass typechecking.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Variable: $u; constant: $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kind_as_declared</span><span class="plain">, </span><span class="identifier">constant_kind</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Variable: $u; constant: $u\n"</span><span class="plain">, </span><span class="identifier">kind_as_declared</span><span class="plain">, </span><span class="identifier">constant_kind</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">kind_as_declared</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">constant_kind</span><span class="plain">);</span>
@@ -195,7 +193,6 @@ either as an object, a value or a subtree &mdash; should have
 </li><li>(b) a given single property equal to an explicit value, or
 </li><li>(c) a whole list of properties and their values.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val_subtree</span><span class="plain">) {</span>
@@ -269,7 +266,7 @@ are typechecked at run-time rather than compile-time in that domain.)
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner_spec</span><span class="plain"> = </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">owner_subtree</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Calculus::Propositions::contains_binary_predicate</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">))) ||</span>
-                <span class="plain">(</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">) &gt; 0) ||</span>
+                <span class="plain">(</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="functiontext">Calculus::Propositions::contains_adjective</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">owner_spec</span><span class="plain">)))) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_spec</span><span class="plain">(2, </span><span class="identifier">owner_spec</span><span class="plain">);</span>
@@ -318,7 +315,6 @@ calculus engine.
 <p class="inwebparagraph">Here there's no need to perform any typechecking; all of that is done by
 the proposition machinery.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Assertions::PropertyKnowledge::property_value_from_property_subtree</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
@@ -394,7 +390,7 @@ the proposition machinery.
 <pre class="displaydefn">
         <span class="functiontext">Assertions::Refiner::coerce_adjectival_usage_to_noun</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPER_NOUN_NT:</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
                     <span class="plain">(</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">), </span><span class="constant">UNKNOWN_NT</span><span class="plain">))) {</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
@@ -407,8 +403,8 @@ the proposition machinery.
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">break</span><span class="plain">; </span>    <span class="comment">(this is fine &mdash; there's a well-expressed value)</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMON_NOUN_NT</span><span class="plain">:</span>
+                <span class="reserved">break</span><span class="plain">; </span><span class="comment">(this is fine &mdash; there's a well-expressed value)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMON_NOUN_NT:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_PropertyInstance</span><span class="plain">),</span>
                     <span class="string">"this property value makes no sense to me"</span><span class="plain">,</span>
                     <span class="string">"since it looks as if it contains a relative clause. Sometimes this "</span>
@@ -418,19 +414,19 @@ the proposition machinery.
                     <span class="string">"the value of the 'matching key' property, not with 'in the Ballroom' "</span>
                     <span class="string">"applying to the door."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">X_OF_Y_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">X_OF_Y_NT:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                     <span class="string">"something grammatically odd has happened here"</span><span class="plain">,</span>
                     <span class="string">"possibly to do with the unexpected 'of' in what seems to be a list of "</span>
                     <span class="string">"property values?"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WITH_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WITH_NT:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedFrom</span><span class="plain">),</span>
                     <span class="string">"something grammatically odd has happened here"</span><span class="plain">,</span>
                     <span class="string">"possibly to do with the unexpected 'with' in what seems "</span>
                     <span class="string">"to be a list of property values? Maybe there is some punctuation missing."</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">));</span>
                 <span class="functiontext">Problems::quote_property</span><span class="plain">(3, </span><span class="identifier">prn</span><span class="plain">);</span>

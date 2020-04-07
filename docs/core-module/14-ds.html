@@ -65,16 +65,15 @@
 node beneath it of kind "description of K":
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Descriptions::from_proposition</span><span class="plain">(</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">TEST_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Rvalues::constant_description</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Rvalues::constant_description</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to extract proposition from non-description"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">CON_description</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
@@ -91,10 +90,9 @@ node beneath it of kind "description of K":
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We are going to need to edit the proposition, using the following:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Descriptions::set_proposition</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to set proposition for non-description"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">CON_description</span><span class="plain">))</span>
             <span class="functiontext">Rvalues::set_constant_description_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
@@ -110,11 +108,10 @@ node beneath it of kind "description of K":
 which implies a quantifier as well as a kind.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Descriptions::from_kind</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">composited</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Descriptions::from_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) { </span>    <span class="comment">a test made only for error recovery</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) { </span><span class="comment">a test made only for error recovery</span>
             <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">composited</span><span class="plain">)</span>
                 <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::KIND_new_composited</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(0));</span>
@@ -143,7 +140,6 @@ which implies a quantifier as well as a kind.
 a kind but do so only implicitly ("scenery").
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::makes_kind_explicit</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) &amp;&amp;</span>
@@ -166,7 +162,6 @@ a kind but do so only implicitly ("scenery").
 adjectives are applied to a literal. But one is allowed to do so with
 a named object or similar, so:
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Descriptions::from_instance</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -202,7 +197,6 @@ a universal quantifier: this is so that "even numbers", if read as "all
 even numbers", becomes rather "is an even number".
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Descriptions::to_rvalue</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a description"</span><span class="plain">);</span>
@@ -211,8 +205,8 @@ even numbers", becomes rather "is an even number".
             <span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prop</span><span class="plain">) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::trim_universal_quantifier</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Variables::number_free</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">) != 1)</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">Specifications::new_UNKNOWN(ParseTree::get_text(spec));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Variables::number_free</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Specifications::new_UNKNOWN(ParseTree::get_text(spec));</span>
         <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">CONSTANT_NT</span><span class="plain">);</span>
@@ -236,19 +230,18 @@ the same value might satisfy the description at some times but not others
 during play.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::is_qualified</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">((</span><span class="functiontext">Descriptions::is_complex</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) &gt; 0)))</span>
+                <span class="plain">(</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::is_kind_like</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Calculus::Propositions::length</span><span class="plain">(</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) == 1) &amp;&amp;</span>
+            <span class="plain">(</span><span class="functiontext">Calculus::Propositions::length</span><span class="plain">(</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) == </span><span class="constant">1</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Descriptions::explicit_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -263,7 +256,7 @@ during play.
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::is_adjectives_plus_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Descriptions::explicit_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -347,13 +340,12 @@ a list. It's sometimes convenient to loop through this list:
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Quantification. </b>For example, the "all" in "all of the open doors".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Descriptions::quantify</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">quantifier</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">par</span><span class="plain">) {</span>
         <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain"> != </span><span class="identifier">exists_quantifier</span><span class="plain">)</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::concatenate</span><span class="plain">(</span><span class="functiontext">Calculus::Atoms::new</span><span class="plain">(</span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">), </span><span class="identifier">prop</span><span class="plain">);</span>
-        <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::concatenate</span><span class="plain">(</span><span class="functiontext">Calculus::Atoms::QUANTIFIER_new</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, 0, </span><span class="identifier">par</span><span class="plain">), </span><span class="identifier">prop</span><span class="plain">);</span>
+        <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::concatenate</span><span class="plain">(</span><span class="functiontext">Calculus::Atoms::QUANTIFIER_new</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">par</span><span class="plain">), </span><span class="identifier">prop</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain"> != </span><span class="identifier">exists_quantifier</span><span class="plain">)</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::concatenate</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="functiontext">Calculus::Atoms::new</span><span class="plain">(</span><span class="constant">DOMAIN_CLOSE_ATOM</span><span class="plain">));</span>
         <span class="functiontext">Descriptions::set_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
@@ -365,7 +357,7 @@ a list. It's sometimes convenient to loop through this list:
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prop</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Calculus::Atoms::get_quantifier</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">))) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::copy</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::ungroup_after</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::from_spec</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -373,10 +365,10 @@ a list. It's sometimes convenient to loop through this list:
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Descriptions::get_quantified_prop</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prop</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Calculus::Atoms::get_quantifier</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Calculus::Atoms::get_quantification_parameter</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">) &gt; 0)) {</span>
+            <span class="plain">(</span><span class="functiontext">Calculus::Atoms::get_quantification_parameter</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::copy</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">);</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::ungroup_after</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::from_spec</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -390,7 +382,7 @@ a list. It's sometimes convenient to loop through this list:
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::get_quantification_parameter</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::get_quantification_parameter</span><span class="plain">(</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -410,7 +402,6 @@ a list. It's sometimes convenient to loop through this list:
 (called the neighbour)".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Descriptions::attach_calling</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Descriptions::explicit_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
@@ -424,8 +415,8 @@ a list. It's sometimes convenient to loop through this list:
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Descriptions::get_calling</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Atoms::CALLED_get_name</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -433,8 +424,8 @@ a list. It's sometimes convenient to loop through this list:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Descriptions::clear_calling</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">, *</span><span class="identifier">prev_pp</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">prev_pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain"> = </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">); </span><span class="identifier">pp</span><span class="plain">; </span><span class="identifier">prev_pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">pp</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">) {</span>
                 <span class="functiontext">Descriptions::set_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">,</span>
                     <span class="functiontext">Calculus::Propositions::delete_atom</span><span class="plain">(</span>
                         <span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">prev_pp</span><span class="plain">));</span>
@@ -466,7 +457,6 @@ a list. It's sometimes convenient to loop through this list:
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Pretty-printing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Descriptions::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
@@ -487,14 +477,13 @@ in order of narrowness, which means we need a way to tell which is narrower of
 two descriptions.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Descriptions::compare_specificity</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">If either of these two descriptions has a complex proposition, then propositional size decides it</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">If the typechecker recognises one as properly within the other, then that's the more specific</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">If either of these two descriptions have adjectives, adjective count decides it</span> <span class="cwebmacronumber">12.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">If both descriptions specify a kind, kind inheritance decides it</span> <span class="cwebmacronumber">12.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -527,16 +516,16 @@ the number of atoms in the proposition. So we simply use it as a sorting key.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">comp1</span><span class="plain"> = </span><span class="functiontext">Descriptions::is_complex</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">comp2</span><span class="plain"> = </span><span class="functiontext">Descriptions::is_complex</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">comp1</span><span class="plain">) || (</span><span class="identifier">comp2</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">comp2</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">comp2</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">comp1</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">len1</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::length</span><span class="plain">(</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">));</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">len2</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::length</span><span class="plain">(</span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">len1</span><span class="plain"> &gt; 0) || (</span><span class="identifier">len2</span><span class="plain"> &gt; 0)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">len1</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">len2</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
                 <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SPECIFICITIES</span><span class="plain">,</span>
-                    <span class="string">"Test %d: Comparing specificity of props:\</span><span class="plain">n</span><span class="string">(%d) $D\</span><span class="plain">n</span><span class="string">(%d) $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+                    <span class="string">"Test %d: Comparing specificity of props:\n(%d) $D\n(%d) $D\n"</span><span class="plain">,</span>
                     <span class="identifier">cco</span><span class="plain">, </span><span class="identifier">len1</span><span class="plain">, </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">), </span><span class="identifier">len2</span><span class="plain">, </span><span class="functiontext">Descriptions::to_proposition</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len1</span><span class="plain"> &gt; </span><span class="identifier">len2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len1</span><span class="plain"> &gt; </span><span class="identifier">len2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len1</span><span class="plain"> &lt; </span><span class="identifier">len2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
 </pre>
@@ -552,7 +541,7 @@ the number of atoms in the proposition. So we simply use it as a sorting key.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">spec2</span><span class="plain">) == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">) != </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">) == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
@@ -570,7 +559,7 @@ the number of atoms in the proposition. So we simply use it as a sorting key.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count1</span><span class="plain"> = </span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count2</span><span class="plain"> = </span><span class="functiontext">Descriptions::number_of_adjectives_applied_to</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &gt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &gt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &lt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
 </pre>
 
@@ -587,7 +576,7 @@ the number of atoms in the proposition. So we simply use it as a sorting key.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k1</span><span class="plain"> = </span><span class="functiontext">Descriptions::explicit_kind</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k2</span><span class="plain"> = </span><span class="functiontext">Descriptions::explicit_kind</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">k1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">k2</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">k1</span><span class="plain">, </span><span class="identifier">k2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">k1</span><span class="plain">, </span><span class="identifier">k2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">k2</span><span class="plain">, </span><span class="identifier">k1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
 

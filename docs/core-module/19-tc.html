@@ -81,13 +81,12 @@ listed-in-C(A, T), and to do this we need to have a binary
 predicate associated with each possible table column C.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table_column</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">name of column (without "entry" suffix)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_stored_in_column</span><span class="plain">; </span>    <span class="comment">what kind of value is stored in this column</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">table_from_which_kind_inferred</span><span class="plain">; </span>    <span class="comment">usually the earliest use</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">listed_in_predicate</span><span class="plain">; </span>    <span class="comment">see above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">; </span><span class="comment">name of column (without "entry" suffix)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_stored_in_column</span><span class="plain">; </span><span class="comment">what kind of value is stored in this column</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">table_from_which_kind_inferred</span><span class="plain">; </span><span class="comment">usually the earliest use</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">listed_in_predicate</span><span class="plain">; </span><span class="comment">see above</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">table_column</span><span class="plain">;</span>
 </pre>
@@ -111,17 +110,16 @@ the explicit kind declaration. (This may or may not be consistent with other
 uses of the same TC, so that's something we'll have to check on.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table_column_usage</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">column_identity</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">entries</span><span class="plain">; </span>    <span class="comment">initial contents of this column in the table</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">kind_declaration_text</span><span class="plain">; </span>    <span class="comment">if specified</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">actual_constant_entries</span><span class="plain">; </span>    <span class="comment">how many entries have explicitly been given</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_constant_cell</span><span class="plain">; </span>    <span class="comment">first one spotted</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_name_entries</span><span class="plain">; </span>    <span class="comment">how many entries read, say, "a rulebook"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_kind_cell</span><span class="plain">; </span>    <span class="comment">first one spotted</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">tcu_iname</span><span class="plain">; </span>    <span class="comment">for the array holding this at run-time</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">entries</span><span class="plain">; </span><span class="comment">initial contents of this column in the table</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">kind_declaration_text</span><span class="plain">; </span><span class="comment">if specified</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">actual_constant_entries</span><span class="plain">; </span><span class="comment">how many entries have explicitly been given</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_constant_cell</span><span class="plain">; </span><span class="comment">first one spotted</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_name_entries</span><span class="plain">; </span><span class="comment">how many entries read, say, "a rulebook"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">observed_kind_cell</span><span class="plain">; </span><span class="comment">first one spotted</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">tcu_iname</span><span class="plain">; </span><span class="comment">for the array holding this at run-time</span>
     <span class="plain">} </span><span class="reserved">table_column_usage</span><span class="plain">;</span>
 </pre>
 
@@ -133,20 +131,19 @@ uses of the same TC, so that's something we'll have to check on.)
 of any existing column.
 </p>
 
-
 <pre class="display">
     <span class="reserved">table_column</span><span class="plain"> *</span><span class="functiontext">Tables::Columns::new_table_column</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain">);</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;listed_in_predicate</span><span class="plain"> = </span><span class="functiontext">Tables::Relations::make_listed_in_predicate</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span>    <span class="comment">as always happens except when recovering from a problem</span>
-            <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">listed_in_predicate</span><span class="plain"> = </span><span class="functiontext">Tables::Relations::make_listed_in_predicate</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span><span class="comment">as always happens except when recovering from a problem</span>
+            <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
                 <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
                 <span class="constant">TABLE_COLUMN_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_table_column</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
             <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> =</span>
-                <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, 0,</span>
+                <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                     <span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">WordAssemblages::to_wording</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">);</span>
             <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
@@ -163,12 +160,11 @@ of any existing column.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::log</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"'%W'/"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"unknown"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"'%W'/"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"unknown"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -189,26 +185,25 @@ because the kind of term A in listed-in-C(A, T) must match the kind
 of entry in the column.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">kind_stored_in_column</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Tables::Columns::to_kind</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">CON_table_column</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">CON_table_column</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_description</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem message for a description heading</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Table column $C contains kind $u, according to $B\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">tc</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;kind_stored_in_column</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Table column $C contains kind $u, according to $B\n"</span><span class="plain">,</span>
+            <span class="identifier">tc</span><span class="plain">, </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">kind_stored_in_column</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_understanding</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_understanding</span><span class="plain">)))</span>
-            <span class="functiontext">Tables::Relations::supply_kind_for_listed_in_tc</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;listed_in_predicate</span><span class="plain">, </span><span class="identifier">K_snippet</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Tables::Relations::supply_kind_for_listed_in_tc</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;listed_in_predicate</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="functiontext">Tables::Relations::supply_kind_for_listed_in_tc</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">listed_in_predicate</span><span class="plain">, </span><span class="identifier">K_snippet</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Tables::Relations::supply_kind_for_listed_in_tc</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">listed_in_predicate</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -243,10 +238,9 @@ of entry in the column.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>And here's the predicate:
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Tables::Columns::get_listed_in_predicate</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;listed_in_predicate</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">listed_in_predicate</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -261,10 +255,9 @@ these can't simply be addresses of the data because two uses of columns called
 by index within the current table.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Columns::get_id</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> 100 + </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> + </span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::compile_run_time_support</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -314,14 +307,13 @@ by looking through the column-heading lines of tables. Each piece of heading
 text is passed to the following routine in turn:
 </p>
 
-
 <pre class="display">
     <span class="reserved">table_column_usage</span><span class="plain"> </span><span class="functiontext">Tables::Columns::add_to_table</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EXPW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="reserved">table_column_usage</span><span class="plain"> </span><span class="identifier">tcu</span><span class="plain">;</span>
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::find_table_column</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, &amp;</span><span class="identifier">EXPW</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain"> == </span><span class="identifier">tc</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">no_columns</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">column_identity</span><span class="plain"> == </span><span class="identifier">tc</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(4, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DuplicateColumnName</span><span class="plain">),</span>
                     <span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
@@ -329,16 +321,16 @@ text is passed to the following routine in turn:
                     <span class="string">"a column of the same name. (You can't have two columns with the "</span>
                     <span class="string">"same name in the same table.)"</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="identifier">tcu</span><span class="element">.column_identity</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
-        <span class="identifier">tcu</span><span class="element">.entries</span><span class="plain"> = </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">tcu</span><span class="element">.kind_declaration_text</span><span class="plain"> = </span><span class="identifier">EXPW</span><span class="plain">;</span>
-        <span class="identifier">tcu</span><span class="element">.actual_constant_entries</span><span class="plain"> = 0;</span>
-        <span class="identifier">tcu</span><span class="element">.observed_constant_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tcu</span><span class="element">.kind_name_entries</span><span class="plain"> = 0;</span>
-        <span class="identifier">tcu</span><span class="element">.observed_kind_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">column_identity</span><span class="plain"> = </span><span class="identifier">tc</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">entries</span><span class="plain"> = </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">kind_declaration_text</span><span class="plain"> = </span><span class="identifier">EXPW</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">actual_constant_entries</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">observed_constant_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">kind_name_entries</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">observed_kind_cell</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;table_package</span><span class="plain">);</span>
-        <span class="identifier">tcu</span><span class="element">.tcu_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COLUMN_DATA_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">TABLE_COLUMNS_HAP</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">table_package</span><span class="plain">);</span>
+        <span class="identifier">tcu</span><span class="plain">.</span><span class="element">tcu_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">COLUMN_DATA_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tcu</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -353,11 +345,11 @@ text is passed to the following routine in turn:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">EXISTING_TC</span><span class="plain"> 1			</span>    <span class="comment">one seen before in another table</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_WITH_KIND</span><span class="plain"> 2		</span>    <span class="comment">never seen before, with a kind explicitly given</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_WITHOUT_KIND</span><span class="plain"> 3	</span>    <span class="comment">never seen before, with no specified kind</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_TOPIC</span><span class="plain"> 4			</span>    <span class="comment">a topic column, a specialised form of text</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_PROBLEM</span><span class="plain"> 5			</span>    <span class="comment">(something went wrong, so Inform can ignore this)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXISTING_TC</span><span class="plain"> </span><span class="constant">1</span><span class="plain">			</span><span class="comment">one seen before in another table</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_WITH_KIND</span><span class="plain"> </span><span class="constant">2</span><span class="plain">		</span><span class="comment">never seen before, with a kind explicitly given</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_WITHOUT_KIND</span><span class="plain"> </span><span class="constant">3</span><span class="plain">	</span><span class="comment">never seen before, with no specified kind</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_TOPIC</span><span class="plain"> </span><span class="constant">4</span><span class="plain">			</span><span class="comment">a topic column, a specialised form of text</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NEW_TC_PROBLEM</span><span class="plain"> </span><span class="constant">5</span><span class="plain">			</span><span class="comment">(something went wrong, so Inform can ignore this)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The heading of a table column is the text in its entry in the first
 (titling-only) row of the table. Usually that consists only of the column's
@@ -368,7 +360,6 @@ so the grammar below allows any text in the brackets. A "topic" column
 needs special handling since it also overrides kind inference, making
 what looks like text into grammar for parsing.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">heading</span><span class="plain">&gt; ::=</span>
@@ -447,7 +438,6 @@ what looks like text into grammar for parsing.
 column; thus, "merit points column".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="identifier">column</span>
@@ -460,7 +450,6 @@ return the TC it refers to, creating it if necessary; and we also return the
 text of any explicit kind declaration used within it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">table_column</span><span class="plain"> *</span><span class="functiontext">Tables::Columns::find_table_column</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">EXPW</span><span class="plain">) {</span>
         <span class="identifier">table_cell_node</span><span class="plain"> = </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -472,14 +461,14 @@ text of any explicit kind declaration used within it.
         <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXISTING_TC</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXISTING_TC:</span>
                 <span class="plain">*</span><span class="identifier">EXPW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(&lt;&lt;</span><span class="identifier">k1</span><span class="plain">&gt;&gt;, &lt;&lt;</span><span class="identifier">k2</span><span class="plain">&gt;&gt;);</span>
                 <span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_table_column</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEW_TC_TOPIC</span><span class="plain">: </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_understanding</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEW_TC_WITH_KIND</span><span class="plain">: *</span><span class="identifier">EXPW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(&lt;&lt;</span><span class="identifier">k1</span><span class="plain">&gt;&gt;, &lt;&lt;</span><span class="identifier">k2</span><span class="plain">&gt;&gt;); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEW_TC_WITHOUT_KIND</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEW_TC_PROBLEM</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEW_TC_TOPIC:</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_understanding</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEW_TC_WITH_KIND:</span><span class="plain"> *</span><span class="identifier">EXPW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(&lt;&lt;</span><span class="identifier">k1</span><span class="plain">&gt;&gt;, &lt;&lt;</span><span class="identifier">k2</span><span class="plain">&gt;&gt;); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEW_TC_WITHOUT_KIND:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEW_TC_PROBLEM:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Make a try at identifying the any named kind, even though it probably won't work</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="character">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create a new table column with this name</span> <span class="cwebmacronumber">13.2</span>&gt;<span class="plain">;</span>
@@ -520,7 +509,7 @@ hasn't been created yet; but we'll catch it later.
 
 
 <pre class="displaydefn">
-        <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">heading</span><span class="plain">-</span><span class="identifier">unbracketed</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">heading</span><span class="plain">-</span><span class="identifier">unbracketed</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Assertions::Creator::vet_name</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::new_table_column</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -533,22 +522,21 @@ hasn't been created yet; but we'll catch it later.
 column in turn:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::check_explicit_headings</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">table_column_usage</span><span class="plain"> *</span><span class="identifier">tcu</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_declaration_text</span><span class="plain">)) {</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_declaration_text</span><span class="plain">)) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">EK</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_declaration_text</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_declaration_text</span><span class="plain">)) {</span>
                 <span class="identifier">EK</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"$B col %d '%W' claims $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_declaration_text</span><span class="plain">, </span><span class="identifier">EK</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"$B col %d '%W' claims $u\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_declaration_text</span><span class="plain">, </span><span class="identifier">EK</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">EK</span><span class="plain">);</span>
+                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">EK</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">EK</span><span class="plain">)))</span>
                     &lt;<span class="cwebmacro">Issue a problem message for a heading inconsistency</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem message for an incomprehensible column heading</span> <span class="cwebmacronumber">14.2</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Column %d has no explicit kind named in $B\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Column %d has no explicit kind named in $B\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -565,9 +553,9 @@ column in turn:
 <pre class="displaydefn">
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">EK</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain">);</span>
+        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableColumnInconsistent</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;entries</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">entries</span><span class="plain">,</span>
             <span class="string">"In %1, you've written the heading of the column %3 to say that each entry "</span>
             <span class="string">"should be %4. But a column with the same name also appears in %6, and each "</span>
             <span class="string">"entry there is %5. Inform doesn't allow this - the same column name always "</span>
@@ -585,7 +573,7 @@ column in turn:
 
 <pre class="displaydefn">
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableColumnBrackets</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;entries</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">entries</span><span class="plain">,</span>
             <span class="string">"In %1, I can't use the column heading %3. Brackets are only allowed in "</span>
             <span class="string">"table column names when giving the kind of value which will be stored in "</span>
             <span class="string">"the column. So 'poems (text)' is legal, but not 'poems (chiefly lyrical)'."</span><span class="plain">);</span>
@@ -601,54 +589,53 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 <code class="display"><span class="extract">K_text</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::note_kind</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">table_column_usage</span><span class="plain"> *</span><span class="identifier">tcu</span><span class="plain">,</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cell</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">generic</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">generic</span><span class="plain">) {</span>
-            <span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_name_entries</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_kind_cell</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_kind_cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_name_entries</span><span class="plain"> == 2)</span>
+            <span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_name_entries</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_kind_cell</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_kind_cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_name_entries</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem for a second kind name in the column</span> <span class="cwebmacronumber">15.2</span>&gt;
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;actual_constant_entries</span><span class="plain"> &gt; 0)</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">actual_constant_entries</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem for a kind name lower in the column than a value</span> <span class="cwebmacronumber">15.1</span>&gt;
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">);</span>
+                <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CK</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     &lt;<span class="cwebmacro">Issue a problem for an inconsistent kind for this column</span> <span class="cwebmacronumber">15.6</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;actual_constant_entries</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_constant_cell</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_constant_cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;kind_name_entries</span><span class="plain"> &gt; 0)</span>
+            <span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">actual_constant_entries</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_constant_cell</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_constant_cell</span><span class="plain"> = </span><span class="identifier">cell</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">kind_name_entries</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem for a value lower in the column than a kind name</span> <span class="cwebmacronumber">15.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="identifier">Kinds::weaken</span><span class="plain">(</span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">));</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="identifier">Kinds::weaken</span><span class="plain">(</span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">));</span>
         <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::weaken</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CK</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_refinement</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_understanding</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">CK</span><span class="plain">, </span><span class="identifier">K_understanding</span><span class="plain">))) {</span>
-                <span class="identifier">CK</span><span class="plain"> = </span><span class="identifier">K_text</span><span class="plain">; </span>    <span class="comment">make sure the entries are texts...</span>
-                <span class="identifier">allow_refinement</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">...and don't allow any change to the kind</span>
+                <span class="identifier">CK</span><span class="plain"> = </span><span class="identifier">K_text</span><span class="plain">; </span><span class="comment">make sure the entries are texts...</span>
+                <span class="identifier">allow_refinement</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">...and don't allow any change to the kind</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">max_K</span><span class="plain"> = </span><span class="identifier">Kinds::Compare::accumulative_max</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">max_K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">CK</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain">)</span>
                         &lt;<span class="cwebmacro">Issue a problem for kind mismatch within column</span> <span class="cwebmacronumber">15.4</span>&gt;
                     <span class="reserved">else</span>
                         &lt;<span class="cwebmacro">Issue a problem for kind mismatch between columns of the same name</span> <span class="cwebmacronumber">15.5</span>&gt;<span class="plain">;</span>
                     <span class="identifier">allow_refinement</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">allow_refinement</span><span class="plain">)</span>
-                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">max_K</span><span class="plain">);</span>
+                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">max_K</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -664,12 +651,12 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">table_cell_row</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_constant_cell</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_constant_cell</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableKindBelowValue</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, column %4 (%2), the entry %3 (row %5) is the name of a kind. "</span>
             <span class="string">"This isn't a specific value. You're allowed to write in the name "</span>
             <span class="string">"of a kind like this if the column otherwise has blank entries - to "</span>
@@ -690,12 +677,12 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">table_cell_row</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_kind_cell</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_kind_cell</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableKindTwice</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, column %4 (%2), the entry %3 (row %5) is the name of a kind. "</span>
             <span class="string">"This isn't a specific value. You're allowed to write in the name "</span>
             <span class="string">"of a kind like this if the column starts out with blank entries - to "</span>
@@ -713,12 +700,12 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">table_cell_row</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;observed_kind_cell</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_source</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">observed_kind_cell</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableValueBelowKind</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, column %4 (%2), the entry %3 (row %5) is a genuine, non-blank "</span>
             <span class="string">"entry: it's a specific value. That's fine, of course - the whole "</span>
             <span class="string">"idea of a table is to contain values - but this is a column which "</span>
@@ -740,11 +727,11 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(6, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(7, &amp;</span><span class="identifier">table_cell_row</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableIncompatibleEntry</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, column %6 (%2), the entry %3 (row %7) doesn't fit what I know "</span>
             <span class="string">"about '%2' - it's %4, whereas I think every entry ought to be %5."</span><span class="plain">);</span>
 </pre>
@@ -759,13 +746,13 @@ their kind is ostensibly <code class="display"><span class="extract">K_understan
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
-        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_wording</span><span class="plain">(7, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
+        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_wording</span><span class="plain">(7, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(8, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(9, &amp;</span><span class="identifier">table_cell_row</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableIncompatibleEntry2</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, column %8 (%2), the entry %3 (row %9) has the wrong kind to be in "</span>
             <span class="string">"the '%2' column - it's %4, whereas I think every entry ought to be %5. %P"</span>
             <span class="string">"The entries under a given column name must be blanks or values of the same "</span>
@@ -789,12 +776,12 @@ happens:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;table_from_which_kind_inferred</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_wording</span><span class="plain">(7, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+        <span class="functiontext">Problems::quote_table</span><span class="plain">(6, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">table_from_which_kind_inferred</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_wording</span><span class="plain">(7, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">CK</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableColumnIncompatible</span><span class="plain">),</span>
-            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
+            <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">cell</span><span class="plain">,</span>
             <span class="string">"In %1, the column '%2' is declared as holding %4, but when the same "</span>
             <span class="string">"column appeared in table %6, the contents were said there to be %5. %P"</span>
             <span class="string">"The entries under a given column name must be values of the same "</span>
@@ -809,16 +796,15 @@ happens:
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>Thirdly and lastly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Columns::approve_kind</span><span class="plain">(</span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">table_column_usage</span><span class="plain"> *</span><span class="identifier">tcu</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Column %d '%W' has kind $u with data:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">,</span>
-            <span class="identifier">i</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">), </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;entries</span><span class="plain">);</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Column %d '%W' has kind $u with data:\n$T"</span><span class="plain">,</span>
+            <span class="identifier">i</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">), </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">entries</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">K_value</span><span class="plain">))) {</span>
             <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableColumnEmptyLists</span><span class="plain">),</span>
-                <span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;entries</span><span class="plain">,</span>
+                <span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">entries</span><span class="plain">,</span>
                 <span class="string">"In %1, the column %3 seems to consist only of empty lists. "</span>
                 <span class="string">"This means that I can't tell what kind of value it should hold - "</span>
                 <span class="string">"are they to be lists of numbers, for instance, or lists of texts, "</span>
@@ -829,16 +815,16 @@ happens:
                 <span class="string">"the name."</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + 1; </span>    <span class="comment">i.e., counting from 1</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quoted_col</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">i.e., counting from 1</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">quoted_col</span><span class="plain">);</span>
             <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableKindlessColumn</span><span class="plain">),</span>
-                <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
+                <span class="identifier">t</span><span class="plain">, </span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
                 <span class="string">"Column %4 (%2) of %1 contains no values and doesn't tell me "</span>
                 <span class="string">"anything about its kind%|, "</span>
                 <span class="string">"which means that I don't know how to deal with it. You should "</span>
                 <span class="string">"either put a value into the column somewhere, or else write "</span>
                 <span class="string">"the kind in as part of the heading: '%2 (a number)', say."</span><span class="plain">);</span>
-            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-</span><span class="element">&gt;column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
+            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">tcu</span><span class="plain">-&gt;</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

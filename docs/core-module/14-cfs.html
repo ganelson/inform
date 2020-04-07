@@ -100,22 +100,22 @@ enter or exit macros to switch a particular mode on or off.
         <span class="identifier">compilation_mode</span><span class="plain"> = </span><span class="identifier">status_quo_ante</span><span class="plain">;</span>
     <span class="definitionkeyword">define</span> <span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="identifier">mode</span><span class="plain">)</span>
         <span class="plain">(</span><span class="identifier">compilation_mode</span><span class="plain"> &amp; </span><span class="identifier">mode</span><span class="plain">)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">     0</span><span class="identifier">x00000001</span><span class="plain"> </span>    <span class="comment">make an independent copy of the result if on the heap</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">    0</span><span class="identifier">x00000010</span><span class="plain"> </span>    <span class="comment">at the end, that is</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">    0</span><span class="identifier">x00000020</span><span class="plain"> </span>    <span class="comment">unless casting to text</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_QUOT_CMODE</span><span class="plain">     0</span><span class="identifier">x00000080</span><span class="plain"> </span>    <span class="comment">for the idiosyncratic I6 <code class="display"><span class="extract">box</span></code> statement</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_XML_CMODE</span><span class="plain">      0</span><span class="identifier">x00000100</span><span class="plain"> </span>    <span class="comment">use XML escapes and UTF-8 encoding</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRUNCATE_TEXT_CMODE</span><span class="plain">            0</span><span class="identifier">x00000200</span><span class="plain"> </span>    <span class="comment">into a plausible filename length</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_I6_CMODE</span><span class="plain">       0</span><span class="identifier">x00001000</span><span class="plain"> </span>    <span class="comment">for bibliographic text to I6 constants</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONSTANT_CMODE</span><span class="plain"> 			      0</span><span class="identifier">x00002000</span><span class="plain"> </span>    <span class="comment">compiling values in a constant context</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SPECIFICATIONS_CMODE</span><span class="plain"> 		  0</span><span class="identifier">x00004000</span><span class="plain"> </span>    <span class="comment">compiling specifications at all</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLANK_OUT_CMODE</span><span class="plain">		 		  0</span><span class="identifier">x00008000</span><span class="plain"> </span>    <span class="comment">blank out table references</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">		  0</span><span class="identifier">x00010000</span><span class="plain"> </span>    <span class="comment">similarly affects table references</span>
-    <span class="definitionkeyword">define</span> <span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">			  0</span><span class="identifier">x00020000</span><span class="plain"> </span>    <span class="comment">similarly affects table references</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">     </span><span class="constant">0x00000001</span><span class="plain"> </span><span class="comment">make an independent copy of the result if on the heap</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">    </span><span class="constant">0x00000010</span><span class="plain"> </span><span class="comment">at the end, that is</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">    </span><span class="constant">0x00000020</span><span class="plain"> </span><span class="comment">unless casting to text</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_QUOT_CMODE</span><span class="plain">     </span><span class="constant">0x00000080</span><span class="plain"> </span><span class="comment">for the idiosyncratic I6 <code class="display"><span class="extract">box</span></code> statement</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_XML_CMODE</span><span class="plain">      </span><span class="constant">0x00000100</span><span class="plain"> </span><span class="comment">use XML escapes and UTF-8 encoding</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRUNCATE_TEXT_CMODE</span><span class="plain">            </span><span class="constant">0x00000200</span><span class="plain"> </span><span class="comment">into a plausible filename length</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMPILE_TEXT_TO_I6_CMODE</span><span class="plain">       </span><span class="constant">0x00001000</span><span class="plain"> </span><span class="comment">for bibliographic text to I6 constants</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONSTANT_CMODE</span><span class="plain"> 			      </span><span class="constant">0x00002000</span><span class="plain"> </span><span class="comment">compiling values in a constant context</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SPECIFICATIONS_CMODE</span><span class="plain"> 		  </span><span class="constant">0x00004000</span><span class="plain"> </span><span class="comment">compiling specifications at all</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLANK_OUT_CMODE</span><span class="plain">		 		  </span><span class="constant">0x00008000</span><span class="plain"> </span><span class="comment">blank out table references</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">		  </span><span class="constant">0x00010000</span><span class="plain"> </span><span class="comment">similarly affects table references</span>
+    <span class="definitionkeyword">define</span> <span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">			  </span><span class="constant">0x00020000</span><span class="plain"> </span><span class="comment">similarly affects table references</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compilation_mode</span><span class="plain"> = </span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain"> + </span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">; </span>    <span class="comment">default</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compilation_mode</span><span class="plain"> = </span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain"> + </span><span class="constant">IMPLY_NEWLINES_IN_SAY_CMODE</span><span class="plain">; </span><span class="comment">default</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -150,10 +150,9 @@ we exit unexpectedly, for instance due to a problem.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Specifications::Compiler::compile_inner</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"Compiling: $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"Compiling: $P\n"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::substitute_constants</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
 
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
@@ -172,7 +171,6 @@ we exit unexpectedly, for instance due to a problem.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>So this is where the compilation is done, or rather, delegated:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Specifications::Compiler::spec_compile_primitive</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -213,7 +211,6 @@ we exit unexpectedly, for instance due to a problem.
 a value in a context where a particular kind of value is expected:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Specifications::Compiler::emit_to_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_wanted</span><span class="plain">) {</span>
         <span class="functiontext">Kinds::RunTime::notify_of_use</span><span class="plain">(</span><span class="identifier">K_wanted</span><span class="plain">);</span>
@@ -241,7 +238,6 @@ a value in a context where a particular kind of value is expected:
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And the same in a constant context:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Specifications::Compiler::compile_constant_to_kind_vh</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_wanted</span><span class="plain">) {</span>
@@ -282,7 +278,7 @@ a value in a context where a particular kind of value is expected:
         <span class="functiontext">Specifications::Compiler::compile_inner</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
 
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">Holsters::unholster_pair</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_generic_entry</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
     <span class="plain">}</span>

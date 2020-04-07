@@ -64,13 +64,12 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Settings variables. </b>The following will be set at the command line.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inter</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">kit_to_assimilate</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">inter_file_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">filename</span></code></span>
+    <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">inter_file_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">filename</span></code></span>
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">output_textually</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">output_binarily</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -104,7 +103,6 @@ though, that's really only two different things, because assimilation is
 also done with a pipeline.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Start up the modules</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
@@ -116,8 +114,8 @@ also done with a pipeline.
         <span class="reserved">else</span>
             &lt;<span class="cwebmacro">Read the list of inter files, and perhaps transcode them</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Shut down the modules</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Errors::have_occurred</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Errors::have_occurred</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -131,7 +129,7 @@ also done with a pipeline.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Foundation::start</span><span class="plain">(); </span>    <span class="comment">must be started first</span>
+        <span class="functiontext">Foundation::start</span><span class="plain">(); </span><span class="comment">must be started first</span>
         <span class="functiontext">ArchModule::start</span><span class="plain">();</span>
         <span class="functiontext">InterModule::start</span><span class="plain">();</span>
         <span class="functiontext">BuildingModule::start</span><span class="plain">();</span>
@@ -194,7 +192,7 @@ form, which would be written to <code class="display"><span class="extract">*out
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LinkedLists::len</span><span class="plain">(</span><span class="identifier">inter_file_list</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LinkedLists::len</span><span class="plain">(</span><span class="identifier">inter_file_list</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"-pipeline-text and -pipeline-file cannot be combined with inter files"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pipeline_as_file</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pipeline_as_text</span><span class="plain">))</span>
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"-pipeline-text and -pipeline-file are mutually exclusive"</span><span class="plain">);</span>
@@ -233,7 +231,7 @@ form, which would be written to <code class="display"><span class="extract">*out
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">output_textually</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
                 <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to open textual inter file for output: %f"</span><span class="plain">,</span>
                     <span class="identifier">output_textually</span><span class="plain">);</span>
-            <span class="functiontext">Inter::Textual::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 1);</span>
+            <span class="functiontext">Inter::Textual::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">output_binarily</span><span class="plain">) </span><span class="functiontext">Inter::Binary::write</span><span class="plain">(</span><span class="identifier">output_binarily</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
@@ -253,7 +251,7 @@ form, which would be written to <code class="display"><span class="extract">*out
         <span class="functiontext">BuildingModule::end</span><span class="plain">();</span>
         <span class="functiontext">CodegenModule::end</span><span class="plain">();</span>
         <span class="functiontext">ArchModule::end</span><span class="plain">();</span>
-        <span class="functiontext">Foundation::end</span><span class="plain">(); </span>    <span class="comment">must be ended last</span>
+        <span class="functiontext">Foundation::end</span><span class="plain">(); </span><span class="comment">must be ended last</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -282,24 +280,24 @@ form, which would be written to <code class="display"><span class="extract">*out
 
 <pre class="displaydefn">
         <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span>
-            <span class="identifier">L</span><span class="string">"[[Purpose]]\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"usage: inter file1 file2 ... [options]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">L</span><span class="string">"[[Purpose]]\n\n"</span>
+            <span class="identifier">L</span><span class="string">"usage: inter file1 file2 ... [options]\n"</span><span class="plain">);</span>
 
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEXTUAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"textual"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEXTUAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"textual"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"write to file X in textual format"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">BINARY_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"binary"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">BINARY_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"binary"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"write to file X in binary format"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-text"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-text"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify pipeline textually, with X being a comma-separated list of stages"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-file"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-file"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify pipeline as file X"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"variable"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"variable"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"set pipeline variable X (in form name=value)"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">DOMAIN_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"domain"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">DOMAIN_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"domain"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify folder to read/write inter files from/to"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"architecture"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"architecture"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"generate Inter with architecture X"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"assimilate"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"assimilate"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"assimilate (i.e., build) Inter kit X for the current architecture"</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::respond</span><span class="plain">, &amp;</span><span class="functiontext">Main::add_file</span><span class="plain">);</span>
@@ -313,18 +311,17 @@ form, which would be written to <code class="display"><span class="extract">*out
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::respond</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEXTUAL_CLSW</span><span class="plain">: </span><span class="identifier">output_textually</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BINARY_CLSW</span><span class="plain">: </span><span class="identifier">output_binarily</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_CLSW</span><span class="plain">: </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">: </span><span class="identifier">pipeline_as_file</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">: </span>&lt;<span class="cwebmacro">Add a pipeline variable to the dictionary</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_CLSW</span><span class="plain">: </span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ASSIMILATE_CLSW</span><span class="plain">: </span><span class="identifier">kit_to_assimilate</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARCHITECTURE_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEXTUAL_CLSW:</span><span class="plain"> </span><span class="identifier">output_textually</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BINARY_CLSW:</span><span class="plain"> </span><span class="identifier">output_binarily</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_CLSW:</span><span class="plain"> </span><span class="identifier">pipeline_as_text</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_FILE_CLSW:</span><span class="plain"> </span><span class="identifier">pipeline_as_file</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_VARIABLE_CLSW:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Add a pipeline variable to the dictionary</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOMAIN_CLSW:</span><span class="plain"> </span><span class="identifier">domain_path</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASSIMILATE_CLSW:</span><span class="plain"> </span><span class="identifier">kit_to_assimilate</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ARCHITECTURE_CLSW:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CodeGen::Architecture::set</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
                     <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no such -architecture"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -347,7 +344,7 @@ form, which would be written to <code class="display"><span class="extract">*out
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) != </span><span class="character">'*'</span><span class="plain">) {</span>
                 <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"-variable names must begin with '*'"</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Main::add_pipeline_variable</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+                <span class="functiontext">Main::add_pipeline_variable</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"-variable should take the form 'name=value'"</span><span class="plain">);</span>
@@ -360,7 +357,6 @@ form, which would be written to <code class="display"><span class="extract">*out
 <p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::add_file</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -379,7 +375,6 @@ We are required to create a <code class="display"><span class="extract">kind</sp
 but no instances of this kind will ever in fact exist. <code class="display"><span class="extract">K_value</span></code> is a
 global constant meaning "any kind at all", and that also must exist.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>

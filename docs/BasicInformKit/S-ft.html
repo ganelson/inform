@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -43,7 +43,6 @@
 element is part of Inform's current definition, so:
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">PLUGIN_FILES</span><span class="plain">;</span>
 </pre>
@@ -60,20 +59,19 @@ his school, and so had to be filled in on all of the many papers he sat
 during his formative years.)
 </p>
 
-
 <pre class="display">
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">! First word holds a safety constant</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain"> = </span><span class="constant">16339</span><span class="plain">; </span><span class="comment">! Should be first word of any valid file structure</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! One of the following:</span>
-        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! Currently closed, or perhaps doesn't exist</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">First word holds a safety constant</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_MAGIC_VALUE</span><span class="plain"> = </span><span class="constant">16339</span><span class="plain">; </span><span class="comment">Should be first word of any valid file structure</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">One of the following:</span>
+        <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">Currently closed, or perhaps doesn't exist</span>
         <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">;</span>
         <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_BINARY</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! False for text files (I7 default), true for binary</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STREAM</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Stream for an open file (meaningless otherwise)</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_FILENAME</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">! Packed address of constant string</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_IFID_OF_OWNER</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">! UUID_ARRAY if owned by this project, or</span>
-        <span class="comment">! string array of IFID of owner wrapped in //...//, or NULL to leave open</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_BINARY</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">False for text files (I7 default), true for binary</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_STREAM</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">Stream for an open file (meaningless otherwise)</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_FILENAME</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">Packed address of constant string</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">AUXF_IFID_OF_OWNER</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">UUID_ARRAY if owned by this project, or</span>
+        <span class="comment">string array of IFID of owner wrapped in //...//, or NULL to leave open</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -87,7 +85,6 @@ generates them.
 code because one of the errors is to try to use these routines on the
 Z-machine.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_Error</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">err_text</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
@@ -108,7 +105,6 @@ Z-machine.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Glulx Material. </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
 </pre>
@@ -124,7 +120,6 @@ the Inform user interface, they are either (for preference) stored in a
 <code class="display"><span class="extract">Files</span></code> subfolder of the <code class="display"><span class="extract">Materials</span></code> folder for a project, or else stored
 alongside the Inform project file.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_Exists</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain">;</span>
@@ -167,7 +162,6 @@ in having this marker asterisk.
 asterisk or hyphen into the initial character as needed.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_Ready</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">fref</span><span class="plain"> </span><span class="identifier">usage</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -207,9 +201,9 @@ asterisk or hyphen into the initial character as needed.
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"only closed files can be marked"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">str</span><span class="plain"> = </span><span class="identifier">glk_stream_open_file</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">, </span><span class="identifier">filemode_ReadWrite</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
-        <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! seek start</span>
+        <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">seek start</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">readiness</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="character">'*'</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> = </span><span class="character">'-'</span><span class="plain">;</span>
-        <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">); </span><span class="comment">! mark as complete</span>
+        <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">); </span><span class="comment">mark as complete</span>
         <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">glk_fileref_destroy</span><span class="plain">(</span><span class="identifier">fref</span><span class="plain">);</span>
     <span class="plain">];</span>
@@ -218,7 +212,6 @@ asterisk or hyphen into the initial character as needed.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Open File. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_Open</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">write_flag</span><span class="plain"> </span><span class="identifier">append_flag</span>
@@ -280,7 +273,7 @@ asterisk or hyphen into the initial character as needed.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="reserved">for</span><span class="plain"> (: </span><span class="identifier">ix</span><span class="plain"> &lt;= </span><span class="identifier">owner</span><span class="plain">-&gt;0: </span><span class="identifier">ix</span><span class="plain">++) {</span>
                     <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == -1) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="identifier">owner</span><span class="plain">-&gt;</span><span class="identifier">ix</span><span class="plain">) </span><span class="identifier">not_this_ifid</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -289,7 +282,7 @@ asterisk or hyphen into the initial character as needed.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">' '</span><span class="plain">) { </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">BadFile</span><span class="plain">; }</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain">) {</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= -1) {</span>
                 <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -315,7 +308,6 @@ asterisk or hyphen into the initial character as needed.
 Glk errors.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_Close</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
@@ -329,8 +321,8 @@ Glk errors.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ==</span>
             <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_WRITE</span><span class="plain"> </span><span class="reserved">or</span>
             <span class="identifier">AUXF_STATUS_IS_OPEN_FOR_APPEND</span><span class="plain">) {</span>
-            <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">! seek start</span>
-            <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="character">'*'</span><span class="plain">); </span><span class="comment">! mark as complete</span>
+            <span class="identifier">glk_stream_set_position</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">seek start</span>
+            <span class="identifier">glk_put_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="character">'*'</span><span class="plain">); </span><span class="comment">mark as complete</span>
         <span class="plain">}</span>
         <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> = </span><span class="identifier">AUXF_STATUS_IS_CLOSED</span><span class="plain">;</span>
@@ -341,12 +333,11 @@ Glk errors.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Get Character. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~= </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~= </span><span class="identifier">AUXF_STATUS_IS_OPEN_FOR_READ</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">glk_get_char_stream</span><span class="plain">(</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STREAM</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
@@ -355,10 +346,9 @@ Glk errors.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Put Character. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_PutC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">char</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"tried to write to a non-file"</span><span class="plain">);</span>
         <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">struc</span><span class="plain">--&gt;</span><span class="identifier">AUXF_STATUS</span><span class="plain"> ~=</span>
@@ -377,7 +367,6 @@ character. (We allow for that to be encoded as either a single <code class="disp
 single <code class="display"><span class="extract">0d</span></code>.) Each character is printed, and at the end we print a newline.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_PrintLine</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">extf</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">extf</span><span class="plain"> &gt; </span><span class="identifier">NO_EXTERNAL_FILES</span><span class="plain">))</span>
@@ -385,7 +374,7 @@ single <code class="display"><span class="extract">0d</span></code>.) Each chara
         <span class="identifier">struc</span><span class="plain"> = </span><span class="identifier">TableOfExternalFiles</span><span class="plain">--&gt;</span><span class="identifier">extf</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (::) {</span>
             <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == -1) </span><span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; }</span>
             <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -399,7 +388,6 @@ single <code class="display"><span class="extract">0d</span></code>.) Each chara
 output stream. (This might well be another file, just as with <code class="display"><span class="extract">cat</span></code>, in
 which case we have a copy utility.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_PrintContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain">;</span>
@@ -421,7 +409,6 @@ which case we have a copy utility.)
 either as the whole file (if <code class="display"><span class="extract">append_flag</span></code> is false) or adding only to the
 end (if true).
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_PutContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">text</span><span class="plain"> </span><span class="identifier">append_flag</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">str</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">oldstream</span><span class="plain">;</span>
@@ -450,7 +437,6 @@ from their binary representations in memory into text representations in an
 external file &mdash; are Tables. Here we only carry out the file-handling; the
 actual translations are in "Tables.i6t".
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FileIO_PutTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">  </span><span class="identifier">struc</span><span class="plain"> </span><span class="identifier">oldstream</span><span class="plain">;</span>
@@ -487,12 +473,11 @@ actual translations are in "Tables.i6t".
 run-time problem when there is no alternative.
 </p>
 
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">TARGET_GLULX</span>
     <span class="plain">[ </span><span class="identifier">FileIO_Exists</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; ];</span>
     <span class="plain">[ </span><span class="identifier">FileIO_Ready</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; ];</span>
-    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">; ];</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> -1; ];</span>
     <span class="plain">[ </span><span class="identifier">FileIO_PutTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FileIO_Error</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">, </span><span class="string">"external files can only be used under Glulx"</span><span class="plain">);</span>
     <span class="plain">];</span>
@@ -500,18 +485,17 @@ run-time problem when there is no alternative.
     <span class="plain">[ </span><span class="identifier">FileIO_GetTable</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
     <span class="plain">[ </span><span class="identifier">FileIO_PrintContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
     <span class="plain">[ </span><span class="identifier">FileIO_PutContents</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="identifier">FileIO_PutTable</span><span class="plain">(</span><span class="identifier">extf</span><span class="plain">); ];</span>
-    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">TARGET_GLULX</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. Back To Core. </b></p>
 
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">! PLUGIN_FILES</span>
-    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">; ];</span>
-    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">! PLUGIN_FILES</span>
+    <span class="plain">#</span><span class="identifier">IFNOT</span><span class="plain">; </span><span class="comment">PLUGIN_FILES</span>
+    <span class="plain">[ </span><span class="identifier">FileIO_GetC</span><span class="plain"> </span><span class="identifier">extf</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> -1; ];</span>
+    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">PLUGIN_FILES</span>
 </pre>
 
 <p class="inwebparagraph"></p>

@@ -69,19 +69,19 @@ project, by an unspecified other project, or by a project named by IFID.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_THIS_PROJECT</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_ANOTHER_PROJECT</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_THIS_PROJECT</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_ANOTHER_PROJECT</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">external_file</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">text of name</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unextended_filename</span><span class="plain">; </span>    <span class="comment">word number of text like <code class="display"><span class="extract">"bones"</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">exf_I6_identifier</span><span class="plain">; </span>    <span class="comment">an I6 identifier</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">file_is_binary</span><span class="plain">; </span>    <span class="comment">true or false</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">file_ownership</span><span class="plain">; </span>    <span class="comment">one of the above</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">IFID_of_owner</span><span class="plain">; </span>    <span class="comment">an I6 identifier</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">text of name</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unextended_filename</span><span class="plain">; </span><span class="comment">word number of text like <code class="display"><span class="extract">"bones"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">exf_I6_identifier</span><span class="plain">; </span><span class="comment">an I6 identifier</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">file_is_binary</span><span class="plain">; </span><span class="comment">true or false</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">file_ownership</span><span class="plain">; </span><span class="comment">one of the above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">IFID_of_owner</span><span class="plain">; </span><span class="comment">an I6 identifier</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">exf_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">IFID_array_iname</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -96,7 +96,6 @@ project, by an unspecified other project, or by a project named by IFID.
 with an external file, read or written by the story file during play.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_external_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -104,7 +103,6 @@ with an external file, read or written by the story file during play.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Files::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -118,7 +116,6 @@ with an external file, read or written by the story file during play.
 <p class="endnote">The function PL::Files::start appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Files::files_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -154,7 +151,6 @@ with an external file, read or written by the story file during play.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">external_file</span><span class="plain"> *</span><span class="functiontext">PL::Files::new_external_file</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain">) {</span>
         <span class="reserved">external_file</span><span class="plain"> *</span><span class="identifier">exf</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">external_file</span><span class="plain">);</span>
@@ -176,7 +172,6 @@ with an external file, read or written by the story file during play.
 
 <p class="inwebparagraph">Here is the subject:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
@@ -210,11 +205,11 @@ with an external file, read or written by the story file during play.
             <span class="string">"(1) Specify nothing: making the file belong to this "</span>
             <span class="string">"project. (2) Specify only that it belongs to someone, "</span>
             <span class="string">"without saying whom: 'The File of Wisdom (owned by "</span>
-            <span class="string">"another project) is called \</span><span class="plain">"</span><span class="string">wisdom\</span><span class="plain">"</span><span class="string">.' (3) Specify "</span>
+            <span class="string">"another project) is called \"wisdom\".' (3) Specify "</span>
             <span class="string">"that it belongs to a project with a given double-quoted "</span>
             <span class="string">"IFID: 'The File of Wisdom (owned by project "</span>
-            <span class="string">"\</span><span class="plain">"</span><span class="string">4122DDA8-A153-46BC-8F57-42220F9D8795\</span><span class="plain">"</span><span class="string">) "</span>
-            <span class="string">"is called \</span><span class="plain">"</span><span class="string">wisdom\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
+            <span class="string">"\"4122DDA8-A153-46BC-8F57-42220F9D8795\") "</span>
+            <span class="string">"is called \"wisdom\".'"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -225,7 +220,6 @@ with an external file, read or written by the story file during play.
 go into this level of detail, it's actually required to have 3 to 23 English
 letters or digits, with the first being a letter.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
@@ -244,7 +238,7 @@ letters or digits, with the first being a letter.
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = -1;</span>
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameNotTextual</span><span class="plain">),</span>
             <span class="string">"a file can only be called with a single quoted piece of text"</span><span class="plain">,</span>
-            <span class="string">"as in: 'The File of Wisdom is called \</span><span class="plain">"</span><span class="string">wisdom\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
+            <span class="string">"as in: 'The File of Wisdom is called \"wisdom\".'"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -253,7 +247,6 @@ letters or digits, with the first being a letter.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>This handles the special meaning "File... is the file...".
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
@@ -268,13 +261,12 @@ letters or digits, with the first being a letter.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Files::new_file_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"File... is the file..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"File... is the file..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">)) &amp;&amp; (&lt;</span><span class="identifier">new</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">))) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
@@ -284,7 +276,7 @@ letters or digits, with the first being a letter.
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Files plugin inactive"</span><span class="plain">);</span>
                 <span class="functiontext">PL::Files::register_file</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">),</span>
@@ -300,19 +292,19 @@ letters or digits, with the first being a letter.
         <span class="identifier">FN</span><span class="plain"> = </span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">, &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &lt; 5) </span><span class="identifier">bad_filename</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &lt; </span><span class="constant">5</span><span class="plain">) </span><span class="identifier">bad_filename</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[1]) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">bad_filename</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'"'</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">==0) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1] == 0)) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">==0) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1] == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;24) </span><span class="identifier">bad_filename</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) || (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]))) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Objected to character %c\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Objected to character %c\n"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
             <span class="identifier">bad_filename</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bad_filename</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Filename: %s\n"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_FilenameUnsafe</span><span class="plain">),</span>
                 <span class="string">"filenames must be very conservatively chosen"</span><span class="plain">,</span>
                 <span class="string">"in order to be viable on a wide range of computers. They must "</span>
@@ -327,27 +319,27 @@ letters or digits, with the first being a letter.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ifid_of_file</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">F</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad ef grammar"</span><span class="plain">);</span>
-        <span class="identifier">F</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">F</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">binary</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">ownership</span><span class="plain">&gt;&gt; == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">owner</span><span class="plain">&gt;, 1);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">external</span><span class="plain">-</span><span class="identifier">file</span><span class="plain">-</span><span class="identifier">owner</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">invalid</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">));</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=1; (</span><span class="identifier">j</span><span class="plain">&lt;47) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]); </span><span class="identifier">j</span><span class="plain">++) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] == </span><span class="character">'"'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">+1] == 0)) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] == </span><span class="character">'"'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">+1] == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">ifid_of_file</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">])) || (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]))) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] == </span><span class="character">'-'</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">invalid</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Objected to character %c\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Objected to character %c\n"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">invalid</span><span class="plain">) || (</span><span class="identifier">j</span><span class="plain">==47)) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadFileIFID</span><span class="plain">),</span>
                     <span class="string">"the owner of the file should be specified "</span>
                     <span class="string">"using a valid double-quoted IFID"</span><span class="plain">,</span>
                     <span class="string">"as in: 'The File of Wisdom (owned by project "</span>
-                    <span class="string">"\</span><span class="plain">"</span><span class="string">4122DDA8-A153-46BC-8F57-42220F9D8795\</span><span class="plain">"</span><span class="string">) "</span>
-                    <span class="string">"is called \</span><span class="plain">"</span><span class="string">wisdom\</span><span class="plain">"</span><span class="string">.'"</span><span class="plain">);</span>
+                    <span class="string">"\"4122DDA8-A153-46BC-8F57-42220F9D8795\") "</span>
+                    <span class="string">"is called \"wisdom\".'"</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span>
                 <span class="identifier">ownership</span><span class="plain"> = </span><span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -372,18 +364,18 @@ letters or digits, with the first being a letter.
         <span class="identifier">allow_exf_creations</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">external_file</span><span class="plain"> *</span><span class="identifier">exf</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_external_file</span><span class="plain">(</span>
             <span class="identifier">Instances::get_connection</span><span class="plain">(</span><span class="identifier">latest_instance</span><span class="plain">));</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;unextended_filename</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_is_binary</span><span class="plain"> = </span><span class="identifier">binary</span><span class="plain">;</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_ownership</span><span class="plain"> = </span><span class="identifier">ownership</span><span class="plain">;</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_of_owner</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">ifid_of_file</span><span class="plain">);</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">unextended_filename</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_is_binary</span><span class="plain"> = </span><span class="identifier">binary</span><span class="plain">;</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_ownership</span><span class="plain"> = </span><span class="identifier">ownership</span><span class="plain">;</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">IFID_of_owner</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">ifid_of_file</span><span class="plain">);</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Hierarchy::local_package</span><span class="plain">(</span><span class="identifier">EXTERNAL_FILES_HAP</span><span class="plain">);</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;exf_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="identifier">FILE_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_array_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="identifier">IFID_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">exf_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="identifier">FILE_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">IFID_array_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="identifier">IFID_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">FIGURE_CREATIONS</span><span class="plain">, </span><span class="string">"Created external file &lt;%W&gt; = filename '%N'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">F</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;unextended_filename</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">FIGURE_CREATIONS</span><span class="plain">, </span><span class="string">"Created external file &lt;%W&gt; = filename '%N'\n"</span><span class="plain">,</span>
+            <span class="identifier">F</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">unextended_filename</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ifid_of_file</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -397,7 +389,6 @@ letters or digits, with the first being a letter.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. I6 arrays of file structures. </b>External files are written in I6 as their array names:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Files::arrays</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -408,45 +399,45 @@ letters or digits, with the first being a letter.
 
         <span class="reserved">external_file</span><span class="plain"> *</span><span class="identifier">exf</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">, </span><span class="reserved">external_file</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_ownership</span><span class="plain"> == </span><span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain">) {</span>
-                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_string_array_begin</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_ownership</span><span class="plain"> == </span><span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain">) {</span>
+                <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_string_array_begin</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">IFID_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">II</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">II</span><span class="plain">, </span><span class="string">"//%S//"</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_of_owner</span><span class="plain">);</span>
-                <span class="identifier">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">II</span><span class="plain">);</span>
-                <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">II</span><span class="plain">);</span>
-                <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">II</span><span class="plain">, </span><span class="string">"//%S</span><span class="comment">", exf-&gt;IFID_of_owner);</span>
+                <span class="string">Emit::array_text_entry(II);</span>
+                <span class="string">DISCARD_TEXT(II);</span>
+                <span class="string">Emit::array_end(save);</span>
+            <span class="string">}</span>
+        <span class="string">}</span>
 
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">, </span><span class="reserved">external_file</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;exf_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-            <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">AUXF_MAGIC_VALUE_HL</span><span class="plain">));</span>
-            <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">AUXF_STATUS_IS_CLOSED_HL</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_is_binary</span><span class="plain">) </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(1);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-            <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;unextended_filename</span><span class="plain">));</span>
-            <span class="identifier">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">);</span>
-            <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">);</span>
-            <span class="identifier">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">WW</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_ownership</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_THIS_PROJECT</span><span class="plain">: </span><span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">PL::Bibliographic::IFID::UUID</span><span class="plain">()); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_ANOTHER_PROJECT</span><span class="plain">: </span><span class="identifier">Emit::array_null_entry</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain">: </span><span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_array_iname</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="plain">}</span>
+        <span class="string">LOOP_OVER(exf, external_file) {</span>
+            <span class="string">packaging_state save = Emit::named_array_begin(exf-&gt;exf_iname, K_value);</span>
+            <span class="string">Emit::array_iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));</span>
+            <span class="string">Emit::array_iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));</span>
+            <span class="string">if (exf-&gt;file_is_binary) Emit::array_numeric_entry(1);</span>
+            <span class="string">else Emit::array_numeric_entry(0);</span>
+            <span class="string">Emit::array_numeric_entry(0);</span>
+            <span class="string">TEMPORARY_TEXT(WW);</span>
+            <span class="string">WRITE_TO(WW, "</span><span class="plain">%</span><span class="identifier">w</span><span class="string">", Lexer::word_raw_text(exf-&gt;unextended_filename));</span>
+            <span class="string">Str::delete_first_character(WW);</span>
+            <span class="string">Str::delete_last_character(WW);</span>
+            <span class="string">Emit::array_text_entry(WW);</span>
+            <span class="string">DISCARD_TEXT(WW);</span>
+            <span class="string">switch (exf-&gt;file_ownership) {</span>
+                <span class="string">case OWNED_BY_THIS_PROJECT: Emit::array_iname_entry(PL::Bibliographic::IFID::UUID()); break;</span>
+                <span class="string">case OWNED_BY_ANOTHER_PROJECT: Emit::array_null_entry(); break;</span>
+                <span class="string">case OWNED_BY_SPECIFIC_PROJECT: Emit::array_iname_entry(exf-&gt;IFID_array_iname); break;</span>
+            <span class="string">}</span>
+            <span class="string">Emit::array_end(save);</span>
+        <span class="string">}</span>
 
-        <span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">TABLEOFEXTERNALFILES_HL</span><span class="plain">);</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-        <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">, </span><span class="reserved">external_file</span><span class="plain">) </span><span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;exf_iname</span><span class="plain">);</span>
-        <span class="identifier">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
-    <span class="plain">}</span>
+        <span class="string">iname = Hierarchy::find(TABLEOFEXTERNALFILES_HL);</span>
+        <span class="string">packaging_state save = Emit::named_array_begin(iname, K_value);</span>
+        <span class="string">Emit::array_numeric_entry(0);</span>
+        <span class="string">LOOP_OVER(exf, external_file) Emit::array_iname_entry(exf-&gt;exf_iname);</span>
+        <span class="string">Emit::array_numeric_entry(0);</span>
+        <span class="string">Emit::array_end(save);</span>
+        <span class="string">Hierarchy::make_available(Emit::tree(), iname);</span>
+    <span class="string">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -456,12 +447,11 @@ letters or digits, with the first being a letter.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. External Files Index. </b>More or less perfunctory, but still of some use, if only as a list.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Files::index_all</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">files_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">external_file</span><span class="plain"> *</span><span class="identifier">exf</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">external_file</span><span class="plain">) == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">external_file</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"This project doesn't read or write external files."</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
@@ -470,28 +460,28 @@ letters or digits, with the first being a letter.
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;List of External Files&lt;/b&gt;"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#ffffff"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, 0, 0, 0, 0, 0);</span>
+        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#ffffff"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">, </span><span class="reserved">external_file</span><span class="plain">) {</span>
             <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">THUMBNAIL_WIDTH</span><span class="plain">+10);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_is_binary</span><span class="plain">) {</span>
-                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> src=\</span><span class="plain">"</span><span class="string">inform:/doc_images/exf_binary.png\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_is_binary</span><span class="plain">) {</span>
+                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\"0\" src=\"inform:/doc_images/exf_binary.png\""</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> src=\</span><span class="plain">"</span><span class="string">inform:/doc_images/exf_text.png\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\"0\" src=\"inform:/doc_images/exf_text.png\""</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
             <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Filename: %s %N- owned by "</span><span class="plain">,</span>
-                <span class="plain">(</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_is_binary</span><span class="plain">)?</span><span class="string">"- binary "</span><span class="plain">:</span><span class="string">""</span><span class="plain">,</span>
-                <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;unextended_filename</span><span class="plain">);</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;file_ownership</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_THIS_PROJECT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"this project"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_ANOTHER_PROJECT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"another project"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OWNED_BY_SPECIFIC_PROJECT</span><span class="plain">:</span>
+                <span class="plain">(</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_is_binary</span><span class="plain">)?</span><span class="string">"- binary "</span><span class="plain">:</span><span class="string">""</span><span class="plain">,</span>
+                <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">unextended_filename</span><span class="plain">);</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">file_ownership</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OWNED_BY_THIS_PROJECT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"this project"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OWNED_BY_ANOTHER_PROJECT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"another project"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OWNED_BY_SPECIFIC_PROJECT:</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"project with IFID number &lt;b&gt;%S&lt;/b&gt;"</span><span class="plain">,</span>
-                        <span class="identifier">exf</span><span class="plain">-</span><span class="element">&gt;IFID_of_owner</span><span class="plain">);</span>
+                        <span class="identifier">exf</span><span class="plain">-&gt;</span><span class="element">IFID_of_owner</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>

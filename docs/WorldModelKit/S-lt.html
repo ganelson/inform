@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -44,7 +44,6 @@ the location-name on the status line can be "Darkness". In I7 we use it as
 little as possible: note that it has no properties.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Object</span><span class="plain"> </span><span class="identifier">thedark</span><span class="plain"> </span><span class="string">"(darkness object)"</span><span class="plain">;</span>
 </pre>
@@ -57,7 +56,6 @@ for a commentary. In terms of how they are used in I7, <code class="display"><sp
 only by the two rules below; <code class="display"><span class="extract">HasLightSource</span></code> is called also in determining
 the scope, that is, what is visible to the player.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">OffersLight</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
@@ -138,7 +136,6 @@ equals <code class="display"><span class="extract">thedark</span></code> and <co
 has nothing to do with light.
 </p>
 
-
 <pre class="display">
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">lightflag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 </pre>
@@ -150,7 +147,6 @@ location, since that's likely to invalidate any previous assumptions. It
 compares the state of light now with the last time it ran, and gives
 instructions on what to do in each of the four possibilities.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ADJUST_LIGHT_R</span><span class="plain"> </span><span class="identifier">previous_light_condition</span><span class="plain">;</span>
@@ -210,7 +206,6 @@ new location anyway, so it would be redundant to have the adjust light
 rule print out details as well.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SilentlyConsiderLight</span><span class="plain">;</span>
         <span class="identifier">lightflag</span><span class="plain"> = </span><span class="identifier">OffersLight</span><span class="plain">(</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">));</span>
@@ -225,7 +220,6 @@ rule print out details as well.
 whether <code class="display"><span class="extract">obj</span></code> being in scope means that the object-tree contents of <code class="display"><span class="extract">obj</span></code>
 are in scope.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">IsSeeThrough</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
@@ -251,7 +245,6 @@ closed container;
 surface of a container, so that if <code class="display"><span class="extract">o</span></code> is part of a closed opaque container
 then the visibility parent of <code class="display"><span class="extract">o</span></code> is its actual parent.
 </li></ul>
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">VisibilityParent</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">container</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">open</span><span class="plain">) &amp;&amp; (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">transparent</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
@@ -268,7 +261,6 @@ if the player cannot see at all &mdash; and <code class="display"><span class="e
 steps of <code class="display"><span class="extract">VisibilityParent</span></code> needed to reach this ceiling; or 0 if the
 player cannot see at all.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FindVisibilityLevels</span><span class="plain"> </span><span class="identifier">lc</span><span class="plain"> </span><span class="identifier">up</span><span class="plain">;</span>
@@ -292,7 +284,6 @@ player cannot see at all.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Touchability Ceiling. </b>Analogously:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TouchabilityCeiling</span><span class="plain"> </span><span class="identifier">original</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
@@ -318,7 +309,6 @@ not the core of the <code class="display"><span class="extract">parent</span></c
 difference if <code class="display"><span class="extract">pos</span></code> is inside a container which is itself part of something
 else.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ScopeCeiling</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
@@ -346,7 +336,6 @@ assume that the author knows what he is doing, and in the second case, the
 circumstances in which saying yes would be a wrong call are highly
 improbable.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ObjectIsUntouchable</span><span class="plain"> </span><span class="identifier">item</span><span class="plain"> </span><span class="identifier">silent_flag</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">save_sp</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain"> </span><span class="identifier">moving</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
@@ -379,7 +368,6 @@ improbable.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Access Through Barriers Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ACCESS_THROUGH_BARRIERS_R</span><span class="plain"> </span><span class="identifier">ancestor</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">external</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">p</span><span class="plain"> = </span><span class="identifier">touch_persona</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">actor</span><span class="plain">;</span>
@@ -397,7 +385,7 @@ improbable.
             <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="comment">! First, a barrier between the player and the ancestor.</span>
+        <span class="comment">First, a barrier between the player and the ancestor.</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) ~= </span><span class="identifier">ancestor</span><span class="plain">) {</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)); </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">); </span><span class="identifier">external</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
@@ -405,7 +393,7 @@ improbable.
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">~=</span><span class="identifier">ancestor</span><span class="plain"> &amp;&amp; </span><span class="identifier">i</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">external</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)</span>
                     <span class="plain">&amp;&amp; (</span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">REACHING_OUTSIDE_RB</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">))</span>
-                    <span class="plain">&amp;&amp; (</span><span class="identifier">RulebookFailed</span><span class="plain">())) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="comment">! Barrier</span>
+                    <span class="plain">&amp;&amp; (</span><span class="identifier">RulebookFailed</span><span class="plain">())) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="comment">Barrier</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">)); </span><span class="identifier">external</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K5_container</span><span class="plain">)) {</span>
                     <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
@@ -414,18 +402,18 @@ improbable.
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="comment">! Second, a barrier between the item and the ancestor.</span>
+        <span class="comment">Second, a barrier between the item and the ancestor.</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">untouchable_object</span><span class="plain">) ~= </span><span class="identifier">ancestor</span><span class="plain">) {</span>
-            <span class="comment">! We can always get to the core of the item.</span>
+            <span class="comment">We can always get to the core of the item.</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">untouchable_object</span><span class="plain">);</span>
-            <span class="comment">! This will be on the inside of its parent, if its parent is a</span>
-            <span class="comment">! container, so there should be no exemption.</span>
+            <span class="comment">This will be on the inside of its parent, if its parent is a</span>
+            <span class="comment">container, so there should be no exemption.</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">); </span><span class="identifier">external</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">~=</span><span class="identifier">ancestor</span><span class="plain"> &amp;&amp; </span><span class="identifier">i</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">external</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="identifier">FollowRulebook</span><span class="plain">(</span><span class="identifier">REACHING_INSIDE_RB</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">RulebookFailed</span><span class="plain">())) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="comment">! Barrier</span>
+                    <span class="plain">(</span><span class="identifier">RulebookFailed</span><span class="plain">())) </span><span class="reserved">rtrue</span><span class="plain">; </span><span class="comment">Barrier</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">ancestor</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">); </span><span class="identifier">external</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
@@ -436,7 +424,7 @@ improbable.
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="identifier">RulebookSucceeds</span><span class="plain">(); </span><span class="comment">! No barrier</span>
+        <span class="identifier">RulebookSucceeds</span><span class="plain">(); </span><span class="comment">No barrier</span>
         <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -444,7 +432,6 @@ improbable.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Can't Reach Inside Closed Containers Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CANT_REACH_INSIDE_CLOSED_R</span><span class="plain">;</span>
@@ -465,7 +452,6 @@ improbable.
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Can't Reach Outside Closed Containers Rule. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CANT_REACH_OUTSIDE_CLOSED_R</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter_value</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">container</span><span class="plain"> &amp;&amp; </span><span class="identifier">parameter_value</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">open</span><span class="plain">) {</span>
@@ -484,7 +470,6 @@ improbable.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Can't Reach Inside Rooms Rule. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CANT_REACH_INSIDE_ROOMS_R</span><span class="plain">;</span>

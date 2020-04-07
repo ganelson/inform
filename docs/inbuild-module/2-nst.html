@@ -66,19 +66,18 @@ example by making a directory: nests here are merely notes in memory of
 positions in the file system hierarchy which may or may not exist.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_nest</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">location</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">read_only</span><span class="plain">; </span>    <span class="comment">files cannot be written into this nest</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tag_value</span><span class="plain">; </span>    <span class="comment">used to indicate whether internal, external, and such</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">read_only</span><span class="plain">; </span><span class="comment">files cannot be written into this nest</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tag_value</span><span class="plain">; </span><span class="comment">used to indicate whether internal, external, and such</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inbuild_nest</span><span class="plain">;</span>
     <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="functiontext">Nests::new</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain">);</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;read_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;tag_value</span><span class="plain"> = -1;</span>
+        <span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">read_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">tag_value</span><span class="plain"> = -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -109,12 +108,12 @@ see below for why. Lower-tag-numbered origins are better than later ones.
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;tag_value</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">-&gt;</span><span class="identifier">tag_value</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::set_tag</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no nest"</span><span class="plain">);</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;tag_value</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">tag_value</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -126,10 +125,9 @@ see below for why. Lower-tag-numbered origins are better than later ones.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::protect</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
-        <span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;read_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">read_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -146,16 +144,15 @@ it will do. In any case, having duplicates would not actually matter: it
 would just produce search results which were more copious than needed.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::add_to_search_sequence</span><span class="plain">(</span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">search_list</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">already_here</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain">, </span><span class="identifier">search_list</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">NS</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">)) </span><span class="identifier">already_here</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -173,11 +170,10 @@ would just produce search results which were more copious than needed.)
 we create one of these for each hit:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_search_result</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">copy</span><span class="plain">; </span>    <span class="comment">what was found</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">nest</span><span class="plain">; </span>    <span class="comment">from whence it came</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">copy</span><span class="plain">; </span><span class="comment">what was found</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">nest</span><span class="plain">; </span><span class="comment">from whence it came</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inbuild_search_result</span><span class="plain">;</span>
 </pre>
@@ -189,14 +185,13 @@ we create one of these for each hit:
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>These can be created only as entries in a list:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::add_search_result</span><span class="plain">(</span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">results</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">,</span>
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_search_result</span><span class="plain">);</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;found_by</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">nest</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">copy</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
+        <span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">found_by</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad search result"</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">inbuild_search_result</span><span class="plain">, </span><span class="identifier">results</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -209,7 +204,6 @@ we create one of these for each hit:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>And here is our search engine, such as it is. For each nest, we ask each
 genre's manager to look for copies of that genre:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nests::search_for</span><span class="plain">(</span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">,</span>
@@ -230,7 +224,6 @@ genre's manager to look for copies of that genre:
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Oftentimes, we want only the single best result, and won't even look at the
 others:
 </p>
-
 
 <pre class="display">
     <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="functiontext">Nests::search_for_best</span><span class="plain">(</span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">,</span>
@@ -257,7 +250,6 @@ it chooses the earliest hit among those which have the highest-precedence
 semantic version numbers.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nests::better_result</span><span class="plain">(</span><span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain">, </span><span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain">) {</span>
         <span class="comment">Something is better than nothing</span>
@@ -265,13 +257,13 @@ semantic version numbers.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="comment">Otherwise, a more important nest beats a less important nest</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o1</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o2</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;nest</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o1</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">nest</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">o2</span><span class="plain"> = </span><span class="functiontext">Nests::get_tag</span><span class="plain">(</span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">nest</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> &lt; </span><span class="identifier">o2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain"> &gt; </span><span class="identifier">o2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="comment">Otherwise, a higher semantic version number beats a lower</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::gt</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::gt</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">-&gt;</span><span class="element">copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">-&gt;</span><span class="element">copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="comment">Otherwise, better the devil we know</span>

@@ -77,7 +77,6 @@ upshot is that <code class="display"><span class="extract">CoreMain::main</span>
 equivalent of unlocking the doors and turning the lights on in the morning.
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inform7</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -94,8 +93,8 @@ equivalent of unlocking the doors and turning the lights on in the morning.
 
         &lt;<span class="cwebmacro">Post mortem logging</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">proceed</span><span class="plain">) </span>&lt;<span class="cwebmacro">Shutdown and rennab</span> <span class="cwebmacronumber">1.6</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="identifier">Problems::Fatal::exit</span><span class="plain">(1);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Problems::Fatal::exit</span><span class="plain">(1);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -117,7 +116,7 @@ plain text error written to <code class="display"><span class="extract">stderr</
 
 <pre class="displaydefn">
         <span class="identifier">Errors::set_internal_handler</span><span class="plain">(&amp;</span><span class="identifier">Problems::Issue::internal_error_fn</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Inform 7 v[[Version Number]] has started.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Inform 7 v[[Version Number]] has started.\n"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="functiontext">Plugins::Manage::start</span><span class="plain">();</span>
 </pre>
 
@@ -140,7 +139,7 @@ but we won't assume that. Remember, <code class="display"><span class="extract">
 
 <pre class="displaydefn">
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">build_folder</span><span class="plain"> = </span><span class="identifier">Projects::build_pathname</span><span class="plain">(</span><span class="identifier">Inbuild::project</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">build_folder</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">build_folder</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">Problems::Fatal::issue</span><span class="plain">(</span>
                 <span class="string">"Unable to create Build folder for project: is it read-only?"</span><span class="plain">);</span>
 
@@ -149,7 +148,7 @@ but we won't assume that. Remember, <code class="display"><span class="extract">
         <span class="identifier">Log::open</span><span class="plain">();</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"inform7 was called as:"</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">argc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">" %s"</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::play_back_log</span><span class="plain">();</span>
 
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">PF</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">build_folder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Problems.html"</span><span class="plain">);</span>
@@ -177,9 +176,9 @@ with a use option, so by default this file will never be written.
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">Inbuild::transient</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"Telemetry"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname_of_telemetry</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_month</span><span class="plain"> = </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + 1;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_month</span><span class="plain"> = </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_day</span><span class="plain"> = </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_year</span><span class="plain"> = </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain"> + 1900;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_year</span><span class="plain"> = </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain"> + </span><span class="constant">1900</span><span class="plain">;</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname_of_telemetry</span><span class="plain">,</span>
                 <span class="string">"Telemetry %04d-%02d-%02d.txt"</span><span class="plain">, </span><span class="identifier">this_year</span><span class="plain">, </span><span class="identifier">this_month</span><span class="plain">, </span><span class="identifier">this_day</span><span class="plain">);</span>
             <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">leafname_of_telemetry</span><span class="plain">);</span>
@@ -233,7 +232,7 @@ gargantuan debugging logs if enabled.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TemplateReader::report_unacted_upon_interventions</span><span class="plain">();</span>
             <span class="comment">Memory::log_statistics();</span>
             <span class="comment">Preform::log_language();</span>
@@ -253,9 +252,9 @@ gargantuan debugging logs if enabled.
 
 <pre class="displaydefn">
         <span class="identifier">Problems::write_reports</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Total of %d files written as streams.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">total_file_writes</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Total of %d files written as streams.\n"</span><span class="plain">, </span><span class="identifier">total_file_writes</span><span class="plain">);</span>
         <span class="identifier">Writers::log_escape_usage</span><span class="plain">();</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"Inform 7 has finished.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"Inform 7 has finished.\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -267,12 +266,11 @@ gargantuan debugging logs if enabled.
 Inform UI apps is really a command to <code class="display"><span class="extract">inbuild</span></code> not to <code class="display"><span class="extract">inform7</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CoreMain::read_command_line</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[]) {</span>
         <span class="identifier">CommandLine::declare_heading</span><span class="plain">(</span>
-            <span class="identifier">L</span><span class="string">"inform7: a compiler from source text to Inter code\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"Usage: inform7 [OPTIONS]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">L</span><span class="string">"inform7: a compiler from source text to Inter code\n\n"</span>
+            <span class="identifier">L</span><span class="string">"Usage: inform7 [OPTIONS]\n"</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Register command-line arguments</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
         <span class="identifier">Inbuild::declare_options</span><span class="plain">();</span>
@@ -309,15 +307,15 @@ compiler via Delia scripts in <code class="display"><span class="extract">intest
 
 <pre class="displaydefn">
         <span class="identifier">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">INFORM_TESTING_CLSG</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for testing and debugging inform7"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CRASHALL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash-all"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CRASHALL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash-all"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"intentionally crash on Problem messages, for backtracing"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">INDEX_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"index"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">INDEX_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"index"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"produce an Index"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">PROGRESS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"progress"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">PROGRESS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"progress"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"display progress percentages"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">SIGILS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"sigils"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">SIGILS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"sigils"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print Problem message sigils"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">REQUIRE_PROBLEM_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"require-problem"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">REQUIRE_PROBLEM_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"require-problem"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"return 0 unless exactly this Problem message is generated"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::end_group</span><span class="plain">();</span>
 </pre>
@@ -330,18 +328,17 @@ compiler via Delia scripts in <code class="display"><span class="extract">intest
 rather than <code class="display"><span class="extract">core</span></code>.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">show_progress_indicator</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">Produce percentage of progress messages</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_generate_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Set by the <code class="display"><span class="extract">-noindex</span></code> command line option</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">show_progress_indicator</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">Produce percentage of progress messages</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_generate_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">Set by the <code class="display"><span class="extract">-noindex</span></code> command line option</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CoreMain::switch</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CRASHALL_CLSW</span><span class="plain">: </span><span class="identifier">debugger_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="identifier">crash_on_all_errors</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDEX_CLSW</span><span class="plain">: </span><span class="identifier">do_not_generate_index</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROGRESS_CLSW</span><span class="plain">: </span><span class="identifier">show_progress_indicator</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SIGILS_CLSW</span><span class="plain">: </span><span class="identifier">echo_problem_message_sigils</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">REQUIRE_PROBLEM_CLSW</span><span class="plain">: </span><span class="identifier">Problems::Fatal::require</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CRASHALL_CLSW:</span><span class="plain"> </span><span class="identifier">debugger_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="identifier">crash_on_all_errors</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INDEX_CLSW:</span><span class="plain"> </span><span class="identifier">do_not_generate_index</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">?</span><span class="identifier">FALSE:TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROGRESS_CLSW:</span><span class="plain"> </span><span class="identifier">show_progress_indicator</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SIGILS_CLSW:</span><span class="plain"> </span><span class="identifier">echo_problem_message_sigils</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REQUIRE_PROBLEM_CLSW:</span><span class="plain"> </span><span class="identifier">Problems::Fatal::require</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">Inbuild::option</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">);</span>
     <span class="plain">}</span>

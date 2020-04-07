@@ -63,11 +63,10 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The Kinds page. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Data::Objects::page_Kinds</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Assign each kind of object a corresponding documentation symbol</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">Kinds::Index::index_kinds</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1);</span>
+        <span class="functiontext">Kinds::Index::index_kinds</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -111,13 +110,12 @@ are present, but the World index will look pretty sketchy without (for
 instance) Spatial.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">suppress_panel_changes</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Data::Objects::page_World</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">in this case there is no model world</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">map_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">in this case there is no model world</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">in this case there is no model world</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">map_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">in this case there is no model world</span>
 
         <span class="identifier">PL::SpatialMap::establish_benchmark_room</span><span class="plain">();</span>
         <span class="identifier">PL::EPSMap::traverse_for_map_parameters</span><span class="plain">(1);</span>
@@ -126,7 +124,7 @@ instance) Spatial.
         <span class="identifier">PL::HTMLMap::add_region_key</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">PL::EPSMap::render_map_as_EPS</span><span class="plain">();</span>
 
-        <span class="identifier">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0, </span><span class="identifier">FALSE</span><span class="plain">, 1);</span>
+        <span class="identifier">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
 
         <span class="identifier">Index::anchor</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"MDETAILS"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unruly</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -177,7 +175,7 @@ instance) Spatial.
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">subheaded</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                             &lt;<span class="cwebmacro">Start a new details panel on the World index</span> <span class="cwebmacronumber">2.2.2</span>&gt;<span class="plain">;</span>
                             &lt;<span class="cwebmacro">Index the name and super-region of the region</span> <span class="cwebmacronumber">2.2.1</span>&gt;<span class="plain">;</span>
-                            <span class="identifier">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">reg</span><span class="plain">, 0, </span><span class="identifier">FALSE</span><span class="plain">, 2);</span>
+                            <span class="identifier">PL::Backdrops::index_object_further</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">reg</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
                             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                             <span class="identifier">subheaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                         <span class="plain">}</span>
@@ -239,18 +237,18 @@ will be things which are offstage (and their contents and any parts thereof):
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">out_of_play_count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">out_of_play_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Instances::indexed_yet</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                 &lt;<span class="cwebmacro">Start a new details panel on the World index</span> <span class="cwebmacronumber">2.2.2</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">out_of_play_count</span><span class="plain"> == 1) {</span>
+                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">out_of_play_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                     <span class="identifier">suppress_panel_changes</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;Nowhere (that is, initially not in any room):&lt;/b&gt;"</span><span class="plain">);</span>
                     <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
                 <span class="plain">}</span>
-                <span class="functiontext">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 2, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="functiontext">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="identifier">suppress_panel_changes</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -283,19 +281,19 @@ table of Kinds.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_OBJECT_INDEX_DEPTH</span><span class="plain"> 10000</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_OBJECT_INDEX_DEPTH</span><span class="plain"> </span><span class="constant">10000</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tabulating_kinds_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">indexing_room</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">xtras_count</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">xtras_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">details</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> == </span><span class="constant">MAX_OBJECT_INDEX_DEPTH</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"MAX_OBJECT_INDEX_DEPTH exceeded"</span><span class="plain">);</span>
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain">) + 1) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">to recover from errors</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">to recover from errors</span>
             <span class="functiontext">Instances::increment_indexing_count</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Instances::of_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">)) </span><span class="identifier">indexing_room</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
@@ -308,13 +306,13 @@ table of Kinds.
         &lt;<span class="cwebmacro">Begin the object citation line</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">xtra</span><span class="plain"> = -1;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="identifier">xtra</span><span class="plain"> = </span><span class="identifier">xtras_count</span><span class="plain">++;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xtra</span><span class="plain"> &gt;= 0) </span><span class="identifier">Index::extra_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">xtra</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xtra</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Index::extra_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">xtra</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Index the name part of the object citation</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span>&lt;<span class="cwebmacro">Index the kind attribution part of the object citation</span> <span class="cwebmacronumber">3.4</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Index the link icons part of the object citation</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">End the object citation line</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">details</span><span class="plain">) </span>&lt;<span class="cwebmacro">Add a subsidiary paragraph of details about this object</span> <span class="cwebmacronumber">3.7</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xtra</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xtra</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Index::extra_div_open</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">xtra</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="string">"e0e0e0"</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Add the chain of kinds</span> <span class="cwebmacronumber">3.8</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Add the catalogue of specific properties</span> <span class="cwebmacronumber">3.9</span>&gt;<span class="plain">;</span>
@@ -376,11 +374,11 @@ table of Kinds.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tabulating_kinds_index</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">details</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">shaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">details</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">shaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Quote the name of the object being indexed</span> <span class="cwebmacronumber">3.3.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">details</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &gt; 0)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">details</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             &lt;<span class="cwebmacro">Quote the name of the object being indexed</span> <span class="cwebmacronumber">3.3.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -539,9 +537,9 @@ table of Kinds.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"tight"</span><span class="plain">);</span>
+        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">IK</span><span class="plain"> = </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">IK</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">) &amp;&amp; (</span><span class="identifier">IK</span><span class="plain">)) {</span>
             <span class="identifier">i</span><span class="plain">++;</span>
             <span class="identifier">IK</span><span class="plain"> = </span><span class="identifier">Kinds::Compare::super</span><span class="plain">(</span><span class="identifier">IK</span><span class="plain">);</span>
@@ -581,14 +579,13 @@ table of Kinds.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Data::Objects::index_instances</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">) {</span>
         <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">++;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt;= 10) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="constant">10</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">xtra</span><span class="plain"> = </span><span class="identifier">xtras_count</span><span class="plain">++;</span>
             <span class="identifier">Index::extra_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">xtra</span><span class="plain">);</span>
             <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
@@ -599,9 +596,9 @@ table of Kinds.
             <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">Index::extra_div_open</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">xtra</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">+1, </span><span class="string">"e0e0e0"</span><span class="plain">);</span>
-            <span class="identifier">c</span><span class="plain"> = 0;</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++;</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
                 <span class="functiontext">Instances::index_name</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
                 <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -610,9 +607,9 @@ table of Kinds.
             <span class="plain">}</span>
             <span class="identifier">Index::extra_div_close</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"e0e0e0"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">c</span><span class="plain"> = 0;</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++;</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
                 <span class="functiontext">Instances::index_name</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">);</span>
                 <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>

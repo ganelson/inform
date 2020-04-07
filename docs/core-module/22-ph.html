@@ -79,10 +79,10 @@ at run-time.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TO_PHRASE_EFF</span><span class="plain"> 1 				</span>    <span class="comment">"To award (some - number) points: ..."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">RULE_IN_RULEBOOK_EFF</span><span class="plain"> 2 		</span>    <span class="comment">"Before taking a container, ..."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain"> 3 	</span>    <span class="comment">"At 9 PM: ...", "This is the zap rule: ..."</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain"> 4 	</span>    <span class="comment">"Definition: a container is roomy if: ..."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TO_PHRASE_EFF</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> 				</span><span class="comment">"To award (some - number) points: ..."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RULE_IN_RULEBOOK_EFF</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> 		</span><span class="comment">"Before taking a container, ..."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> 	</span><span class="comment">"At 9 PM: ...", "This is the zap rule: ..."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> 	</span><span class="comment">"Definition: a container is roomy if: ..."</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The second new abbreviation is MOR, the "manner of return", which is only
 of interest for "To..." phrases. Some of these decide a value, some decide a
@@ -96,27 +96,26 @@ Standard Rules will ever make phrases like it.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">DONT_KNOW_MOR</span><span class="plain"> 1						</span>    <span class="comment">but ask me later</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_NOTHING_MOR</span><span class="plain"> 2				</span>    <span class="comment">e.g., "award 4 points"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_VALUE_MOR</span><span class="plain"> 3					</span>    <span class="comment">e.g., "square root of 16"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_CONDITION_MOR</span><span class="plain"> 4				</span>    <span class="comment">e.g., "a random chance of 1 in 3 succeeds"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain"> 5	</span>    <span class="comment">e.g., "continue the action"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DONT_KNOW_MOR</span><span class="plain"> </span><span class="constant">1</span><span class="plain">						</span><span class="comment">but ask me later</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_NOTHING_MOR</span><span class="plain"> </span><span class="constant">2</span><span class="plain">				</span><span class="comment">e.g., "award 4 points"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_VALUE_MOR</span><span class="plain"> </span><span class="constant">3</span><span class="plain">					</span><span class="comment">e.g., "square root of 16"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_CONDITION_MOR</span><span class="plain"> </span><span class="constant">4</span><span class="plain">				</span><span class="comment">e.g., "a random chance of 1 in 3 succeeds"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain"> </span><span class="constant">5</span><span class="plain">	</span><span class="comment">e.g., "continue the action"</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And here is the structure. Note that the MOR and EFF are stored inside
 the sub-structures, and aren't visible here; but they're relevant to the
 code below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">declaration_node</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">ROUTINE_NT</span></code> node where declared</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_wn</span><span class="plain">; </span>    <span class="comment">word number of inline I6 definition, or <code class="display"><span class="extract">-1</span></code> if not inline</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">inter_head_defn</span><span class="plain">; </span>    <span class="comment">inline definition translated to inter, if possible</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">inter_tail_defn</span><span class="plain">; </span>    <span class="comment">inline definition translated to inter, if possible</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inter_defn_converted</span><span class="plain">; </span>    <span class="comment">has this been tried yet?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_mor</span><span class="plain">; </span>    <span class="comment">manner of return for inline I6 definition, or <code class="display"><span class="extract">UNKNOWN_NT</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">ph_documentation_symbol</span><span class="plain">; </span>    <span class="comment">cross-reference with documentation</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">declaration_node</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">ROUTINE_NT</span></code> node where declared</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_wn</span><span class="plain">; </span><span class="comment">word number of inline I6 definition, or <code class="display"><span class="extract">-1</span></code> if not inline</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">inter_head_defn</span><span class="plain">; </span><span class="comment">inline definition translated to inter, if possible</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">inter_tail_defn</span><span class="plain">; </span><span class="comment">inline definition translated to inter, if possible</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inter_defn_converted</span><span class="plain">; </span><span class="comment">has this been tried yet?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_mor</span><span class="plain">; </span><span class="comment">manner of return for inline I6 definition, or <code class="display"><span class="extract">UNKNOWN_NT</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">ph_documentation_symbol</span><span class="plain">; </span><span class="comment">cross-reference with documentation</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">owning_module</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">requests_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">rule_package</span><span class="plain">;</span>
@@ -127,14 +126,14 @@ code below.
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame</span><span class="plain"> </span><span class="identifier">stack_frame</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_options_data</span><span class="plain"> </span><span class="identifier">options_data</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">at_least_one_compiled_form_needed</span><span class="plain">; </span>    <span class="comment">do we still need to compile this?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compile_with_run_time_debugging</span><span class="plain">; </span>    <span class="comment">in the RULES command</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ph_iname</span><span class="plain">; </span>    <span class="comment">or NULL for inline phrases</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_begin</span><span class="plain">; </span>    <span class="comment">for Basic mode only: this is the main routine</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">at_least_one_compiled_form_needed</span><span class="plain">; </span><span class="comment">do we still need to compile this?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compile_with_run_time_debugging</span><span class="plain">; </span><span class="comment">in the RULES command</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ph_iname</span><span class="plain">; </span><span class="comment">or NULL for inline phrases</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_begin</span><span class="plain">; </span><span class="comment">for Basic mode only: this is the main routine</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">imported</span><span class="plain">;</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">next_in_logical_order</span><span class="plain">; </span>    <span class="comment">for "to..." phrases only</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sequence_count</span><span class="plain">; </span>    <span class="comment">within the logical order list, from 0</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">next_in_logical_order</span><span class="plain">; </span><span class="comment">for "to..." phrases only</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sequence_count</span><span class="plain">; </span><span class="comment">within the logical order list, from 0</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">phrase</span><span class="plain">;</span>
@@ -146,7 +145,6 @@ code below.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>"To..." phrases, though no others, are listed in logical precedence order:
 </p>
-
 
 <pre class="display">
     <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">first_in_logical_order</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -162,15 +160,14 @@ representation of its declaration in the source text.
 invocation which is given as verbatim I6.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::create_from_preamble</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"a phrase preamble should be at a ROUTINE_NT node"</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_wn</span><span class="plain"> = -1; 		</span>    <span class="comment">the word number of an inline I6 definition if any</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain"> = </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">;	</span>    <span class="comment">and its manner of return</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;	</span>    <span class="comment">the text of the phrase options, if any</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">documentation_W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">the documentation reference, if any</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inline_wn</span><span class="plain"> = -1; 		</span><span class="comment">the word number of an inline I6 definition if any</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain"> = </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">;	</span><span class="comment">and its manner of return</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;	</span><span class="comment">the text of the phrase options, if any</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">documentation_W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">the documentation reference, if any</span>
 
         &lt;<span class="cwebmacro">Look for an inline definition</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
 
@@ -183,9 +180,9 @@ invocation which is given as verbatim I6.
         &lt;<span class="cwebmacro">Parse for the PHUD in fine mode</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">effect</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;</span><span class="identifier">phud</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= 0) &amp;&amp; (</span><span class="identifier">effect</span><span class="plain"> != </span><span class="constant">TO_PHRASE_EFF</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Inline is for To... phrases only</span> <span class="cwebmacronumber">6.10</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">effect</span><span class="plain"> != </span><span class="constant">TO_PHRASE_EFF</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Inline is for To... phrases only</span> <span class="cwebmacronumber">6.10</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">effect</span><span class="plain"> != </span><span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">effect</span><span class="plain"> != </span><span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">There seems to be no definition</span> <span class="cwebmacronumber">6.9</span>&gt;<span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Construct the PHTD, find the phrase options, find the documentation reference</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
@@ -209,10 +206,10 @@ invocation which is given as verbatim I6.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="functiontext">Phrases::parse_possible_inline_defn</span><span class="plain">(</span>
-                <span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">), &amp;</span><span class="identifier">inline_wn</span><span class="plain">, &amp;</span><span class="identifier">mor</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= 0) {</span>
+                <span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">), &amp;</span><span class="identifier">inline_wn</span><span class="plain">, &amp;</span><span class="identifier">mor</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">inline_defn</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">inline_wn</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">inline_defn</span><span class="plain">) &gt;= </span><span class="constant">MAX_INLINE_DEFN_LENGTH</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Forbid overly long inline definitions</span> <span class="cwebmacronumber">6.1.1</span>&gt;<span class="plain">;</span>
@@ -244,16 +241,16 @@ invocation which is given as verbatim I6.
 <pre class="displaydefn">
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_preamble_text</span><span class="plain">(&amp;</span><span class="identifier">phud</span><span class="plain">);</span>
         <span class="identifier">phtd</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= 0) </span><span class="functiontext">Phrases::TypeData::make_inline</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Phrases::TypeData::make_inline</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">effect</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TO_PHRASE_EFF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TO_PHRASE_EFF:</span>
                 <span class="identifier">documentation_W</span><span class="plain"> = </span><span class="identifier">Index::DocReferences::position_of_symbol</span><span class="plain">(&amp;</span><span class="identifier">XW</span><span class="plain">);</span>
                 <span class="functiontext">Phrases::TypeData::Textual::parse</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">, </span><span class="identifier">XW</span><span class="plain">, &amp;</span><span class="identifier">OW</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEFINITIONAL_PHRASE_EFF:</span>
                 <span class="functiontext">Phrases::TypeData::set_mor</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">, </span><span class="constant">DECIDES_CONDITION_MOR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="functiontext">Phrases::TypeData::set_mor</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">, </span><span class="constant">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -280,7 +277,6 @@ invocation which is given as verbatim I6.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">phrase number -&gt; text</span>
@@ -330,21 +326,21 @@ inline definitions.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">effect</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TO_PHRASE_EFF</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phud</span><span class="element">.to_begin</span><span class="plain">) </span><span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TO_PHRASE_EFF:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phud</span><span class="plain">.</span><span class="element">to_begin</span><span class="plain">) </span><span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">to_begin</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="functiontext">Routines::ToPhrases::new</span><span class="plain">(</span><span class="identifier">new_ph</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEFINITIONAL_PHRASE_EFF:</span>
                 &lt;<span class="cwebmacro">Give this phrase a local variable for the subject of the definition</span> <span class="cwebmacronumber">6.7.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RULE_IN_RULEBOOK_EFF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RULE_IN_RULEBOOK_EFF:</span>
                 <span class="functiontext">Rules::request_automatic_placement</span><span class="plain">(</span>
-                    <span class="functiontext">Phrases::Usage::to_rule</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">), </span><span class="identifier">new_ph</span><span class="plain">));</span>
-                <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="functiontext">Phrases::Usage::to_rule</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">), </span><span class="identifier">new_ph</span><span class="plain">));</span>
+                <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain">:</span>
-                <span class="functiontext">Phrases::Usage::to_rule</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">), </span><span class="identifier">new_ph</span><span class="plain">);</span>
-                <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RULE_NOT_IN_RULEBOOK_EFF:</span>
+                <span class="functiontext">Phrases::Usage::to_rule</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">), </span><span class="identifier">new_ph</span><span class="plain">);</span>
+                <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -384,7 +380,7 @@ of it:
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="functiontext">Phrases::Phrasal::define_adjective_by_phrase</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">new_ph</span><span class="plain">, &amp;</span><span class="identifier">CW</span><span class="plain">, &amp;</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="functiontext">LocalVariables::add_pronoun</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">), </span><span class="identifier">CW</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">LocalVariables::add_pronoun</span><span class="plain">(&amp;(</span><span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">), </span><span class="identifier">CW</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -398,38 +394,38 @@ of it:
 
 <pre class="displaydefn">
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_preamble_text</span><span class="plain">(&amp;</span><span class="identifier">phud</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_CREATIONS</span><span class="plain">, </span><span class="string">"Creating phrase: &lt;%W&gt;\</span><span class="plain">n</span><span class="string">$U"</span><span class="plain">, </span><span class="identifier">XW</span><span class="plain">, &amp;</span><span class="identifier">phud</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_CREATIONS</span><span class="plain">, </span><span class="string">"Creating phrase: &lt;%W&gt;\n$U"</span><span class="plain">, </span><span class="identifier">XW</span><span class="plain">, &amp;</span><span class="identifier">phud</span><span class="plain">);</span>
 
         <span class="identifier">new_ph</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain">);</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
 
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;options_data</span><span class="plain"> = </span><span class="identifier">phod</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain"> = </span><span class="identifier">phrcd</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain"> = </span><span class="identifier">phud</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">options_data</span><span class="plain"> = </span><span class="identifier">phod</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain"> = </span><span class="identifier">phrcd</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain"> = </span><span class="identifier">phud</span><span class="plain">;</span>
 
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain"> = </span><span class="identifier">inline_wn</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;inter_head_defn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;inter_tail_defn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;inter_defn_converted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;inline_mor</span><span class="plain"> = </span><span class="identifier">mor</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= 0) {</span>
-            <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain"> = </span><span class="identifier">inline_wn</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">inter_head_defn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">inter_tail_defn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">inter_defn_converted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">inline_mor</span><span class="plain"> = </span><span class="identifier">mor</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">ph_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">to_begin</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">imported</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">owning_module</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">requests_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">compile_with_run_time_debugging</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;sequence_count</span><span class="plain"> = -1;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">next_in_logical_order</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">sequence_count</span><span class="plain"> = -1;</span>
 
-        <span class="identifier">new_ph</span><span class="plain">-</span><span class="element">&gt;ph_documentation_symbol</span><span class="plain"> = </span><span class="identifier">documentation_W</span><span class="plain">;</span>
+        <span class="identifier">new_ph</span><span class="plain">-&gt;</span><span class="element">ph_documentation_symbol</span><span class="plain"> = </span><span class="identifier">documentation_W</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -461,13 +457,13 @@ of it:
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Inline definition: &lt;%s&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">inline_defn</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Inline definition: &lt;%s&gt;\n"</span><span class="plain">, </span><span class="identifier">inline_defn</span><span class="plain">);</span>
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_InlineTooLong</span><span class="plain">),</span>
             <span class="string">"the inline definition of this 'to...' phrase is too long"</span><span class="plain">,</span>
             <span class="string">"using a quantity of Inform 6 code which exceeds the fairly small limit "</span>
             <span class="string">"allowed. You will need either to write the phrase definition in Inform 7, "</span>
             <span class="string">"or to call an I6 routine which you define elsewhere with an 'Include ...'."</span><span class="plain">);</span>
-        <span class="identifier">inline_defn</span><span class="plain">[</span><span class="constant">MAX_INLINE_DEFN_LENGTH</span><span class="plain">-1] = 0;</span>
+        <span class="identifier">inline_defn</span><span class="plain">[</span><span class="constant">MAX_INLINE_DEFN_LENGTH</span><span class="plain">-1] = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -498,7 +494,6 @@ text of the inclusion treated as a single "word".
 of the right sort: it makes no sense to respond "yes" to a phrase "To decide
 what number is...", for instance.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">inline</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt; ::=</span>
@@ -531,10 +526,9 @@ what number is...", for instance.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And this is used when the preamble is first looked at:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::parse_possible_inline_defn</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">wn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">mor</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"form of inline: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"form of inline: %W\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">*</span><span class="identifier">wn</span><span class="plain"> = -1;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">inline</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) { *</span><span class="identifier">wn</span><span class="plain"> = &lt;&lt;</span><span class="identifier">inlinecode</span><span class="plain">&gt;&gt;; *</span><span class="identifier">mor</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;; }</span>
     <span class="plain">}</span>
@@ -547,16 +541,15 @@ what number is...", for instance.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Miscellaneous. </b>That completes the process of creation. Here's how we log them:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::log</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"RULE:NULL"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">));</span>
-        <span class="functiontext">Phrases::Usage::log_rule_name</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+        <span class="functiontext">Phrases::Usage::log_rule_name</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::log_briefly</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="functiontext">Phrases::TypeData::Textual::log_briefly</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">));</span>
+        <span class="functiontext">Phrases::TypeData::Textual::log_briefly</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -569,10 +562,9 @@ what number is...", for instance.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Relatedly, for indexing purposes:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::write_HTML_representation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">format</span><span class="plain">) {</span>
-        <span class="functiontext">Phrases::TypeData::Textual::write_HTML_representation</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">), </span><span class="identifier">format</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Phrases::TypeData::Textual::write_HTML_representation</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">), </span><span class="identifier">format</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -583,49 +575,48 @@ what number is...", for instance.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Some access functions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::compiled_inline</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain"> &lt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to access inline definition of non-inline phrase"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_schema</span><span class="plain"> *</span><span class="functiontext">Phrases::get_inter_head</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_defn_converted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain"> &gt;= 0) {</span>
-                <span class="identifier">InterSchemas::from_inline_phrase_definition</span><span class="plain">(</span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_head_defn</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_tail_defn</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_defn_converted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">InterSchemas::from_inline_phrase_definition</span><span class="plain">(</span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_head_defn</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_tail_defn</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_defn_converted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_defn_converted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_head_defn</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">inter_head_defn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_schema</span><span class="plain"> *</span><span class="functiontext">Phrases::get_inter_tail</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_defn_converted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inline_wn</span><span class="plain"> &gt;= 0) {</span>
-                <span class="identifier">InterSchemas::from_inline_phrase_definition</span><span class="plain">(</span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_head_defn</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_tail_defn</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_defn_converted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inline_wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">InterSchemas::from_inline_phrase_definition</span><span class="plain">(</span><span class="functiontext">Phrases::get_inline_definition</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_head_defn</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_tail_defn</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_defn_converted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">inter_defn_converted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;inter_tail_defn</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">inter_tail_defn</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">, </span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">);</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFINITION_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">ph_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">owning_module</span><span class="plain">, </span><span class="constant">ADJECTIVE_PHRASES_HAP</span><span class="plain">);</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">ph_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFINITION_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;ph_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">ph_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">declaration_node</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -649,22 +640,21 @@ compiled multiple times, for different kinds of tokens, and are compiled in
 response to "requests". All other phrases are compiled just once.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::import</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">imported</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_i</span><span class="plain">,</span>
         <span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">legible</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">acl</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;imported</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">effect</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">imported</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">effect</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">effect</span><span class="plain"> == </span><span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain">) </span><span class="identifier">effect</span><span class="plain"> = </span><span class="constant">RULE_IN_RULEBOOK_EFF</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">effect</span><span class="plain"> == </span><span class="constant">TO_PHRASE_EFF</span><span class="plain">) {</span>
             <span class="functiontext">Routines::Compile::routine</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">legible</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">acl</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Move along the progress bar if it's this phrase's first compilation</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain">) {</span>
                 <span class="functiontext">Routines::Compile::routine</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">legible</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">acl</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Move along the progress bar if it's this phrase's first compilation</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -684,8 +674,8 @@ response to "requests". All other phrases are compiled just once.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain">) {</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain">) {</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">(*</span><span class="identifier">i</span><span class="plain">)++;</span>
             <span class="functiontext">ProgressBar::update</span><span class="plain">(4, ((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">i</span><span class="plain">))/((</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">max_i</span><span class="plain">));</span>
         <span class="plain">}</span>
@@ -697,18 +687,17 @@ response to "requests". All other phrases are compiled just once.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Basic mode main. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::invoke_to_begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::begin_execution_at_to_begin</span><span class="plain">()) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SUBMAIN_HL</span><span class="plain">);</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;to_begin</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">to_begin</span><span class="plain">) {</span>
                     <span class="identifier">n</span><span class="plain">++;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; 1) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
                         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...),</span>
                             <span class="string">"there seem to be multiple 'to begin' phrases"</span><span class="plain">,</span>
                             <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>
@@ -729,7 +718,7 @@ response to "requests". All other phrases are compiled just once.
                         <span class="plain">}</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...),</span>
                     <span class="string">"there seems not to be a 'to begin' phrase"</span><span class="plain">,</span>
                     <span class="string">"but in Basic mode, Inform expects to see exactly one of "</span>

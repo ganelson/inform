@@ -77,7 +77,6 @@ of objects then it would be worth economising here, but profiling suggests
 that it really isn't.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">map_data</span><span class="plain"> {</span>
         <span class="comment">these are meaningful for doors only</span>
@@ -87,9 +86,9 @@ that it really isn't.
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">map_direction_b</span><span class="plain">;</span>
 
         <span class="comment">these are meaningful for directions only</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">direction_index</span><span class="plain">; </span>    <span class="comment">counts 0, 1, 2, ..., in order of creation</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">direction_iname</span><span class="plain">; </span>    <span class="comment">for the constant instance ref</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">binary_predicate</span><span class="plain"> *</span><span class="identifier">direction_relation</span><span class="plain">; </span>    <span class="comment">the corresponding "mapped D of" relation</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">direction_index</span><span class="plain">; </span><span class="comment">counts 0, 1, 2, ..., in order of creation</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">direction_iname</span><span class="plain">; </span><span class="comment">for the constant instance ref</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">binary_predicate</span><span class="plain"> *</span><span class="identifier">direction_relation</span><span class="plain">; </span><span class="comment">the corresponding "mapped D of" relation</span>
 
         <span class="comment">these are meaningful for rooms only, and are used in making the World index</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">exits</span><span class="plain">[</span><span class="identifier">MAX_DIRECTIONS</span><span class="plain">];</span>
@@ -102,9 +101,9 @@ that it really isn't.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cooled</span><span class="plain">, </span><span class="identifier">shifted</span><span class="plain">, </span><span class="identifier">zone</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">connected_submap</span><span class="plain"> *</span><span class="identifier">submap</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">next_room_in_submap</span><span class="plain">;</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">world_index_colour</span><span class="plain">; </span>    <span class="comment">an HTML colour for the room square (rooms only)</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">world_index_text_colour</span><span class="plain">; </span>    <span class="comment">an HTML colour for the room text (rooms only)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">map_parameter_scope</span><span class="plain"> </span><span class="identifier">local_map_parameters</span><span class="plain">; </span>    <span class="comment">temporary: used in EPS mapping</span>
+        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">world_index_colour</span><span class="plain">; </span><span class="comment">an HTML colour for the room square (rooms only)</span>
+        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">world_index_text_colour</span><span class="plain">; </span><span class="comment">an HTML colour for the room text (rooms only)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">map_parameter_scope</span><span class="plain"> </span><span class="identifier">local_map_parameters</span><span class="plain">; </span><span class="comment">temporary: used in EPS mapping</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">eps_x</span><span class="plain">, </span><span class="identifier">eps_y</span><span class="plain">;</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -122,7 +121,6 @@ garden is the treehouse", for instance, does not directly refer to either
 direction, but implies both.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_direction</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_door</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -139,15 +137,14 @@ program all of that automatically, which is why these awkward multi-purpose
 I6 properties (<code class="display"><span class="extract">door_to</span></code>, <code class="display"><span class="extract">found_in</span></code>, etc.) have no direct I7 equivalents.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_dir</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_other_side</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a value property for the other side of a door</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_opposite</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a value property for the reverse of a direction</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_room_index</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only: workspace for path-finding through the map</span>
-    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_found_in</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">I6 only: needed for multiply-present objects</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">I6 only</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_dir</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">I6 only</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_door_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">I6 only</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_other_side</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a value property for the other side of a door</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_opposite</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a value property for the reverse of a direction</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_room_index</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">I6 only: workspace for path-finding through the map</span>
+    <span class="identifier">property</span><span class="plain"> *</span><span class="identifier">P_found_in</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">I6 only: needed for multiply-present objects</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -159,18 +156,17 @@ makes for more legible code if we use a special inference type of our own:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">DIRECTION_INF</span><span class="plain"> 100 </span>    <span class="comment">where do map connections from O lead?</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DIRECTION_INF</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="comment">where do map connections from O lead?</span>
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>One useful constant:
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_IN_DIRECTION</span><span class="plain"> (</span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain"> - 4)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_IN_DIRECTION</span><span class="plain"> (</span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain"> - </span><span class="constant">4</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>These little structures are needed to remember routines to compile later:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">door_dir_notice</span><span class="plain"> {</span>
@@ -199,7 +195,6 @@ makes for more legible code if we use a special inference type of our own:
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Initialisation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">PLUGIN_REGISTER</span><span class="plain">(</span><span class="identifier">PLUGIN_NEW_BASE_KIND_NOTIFY</span><span class="plain">, </span><span class="functiontext">PL::Map::map_new_base_kind_notify</span><span class="plain">);</span>
@@ -227,20 +222,19 @@ makes for more legible code if we use a special inference type of our own:
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">map_data</span><span class="plain"> *</span><span class="functiontext">PL::Map::new_data</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="reserved">map_data</span><span class="plain"> *</span><span class="identifier">md</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">map_data</span><span class="plain">);</span>
-        <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;direction_index</span><span class="plain"> = -1;</span>
-        <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;direction_relation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">direction_index</span><span class="plain"> = -1;</span>
+        <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">direction_relation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">MAX_DIRECTIONS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;exits_set_at</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;exits</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">exits_set_at</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">exits</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;map_connection_a</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;map_connection_b</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;map_direction_a</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">md</span><span class="plain">-</span><span class="element">&gt;map_direction_b</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">map_connection_a</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="identifier">map_connection_b</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">map_direction_a</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="element">map_direction_b</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="functiontext">PL::SpatialMap::initialise_mapping_data</span><span class="plain">(</span><span class="identifier">md</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">md</span><span class="plain">;</span>
@@ -253,11 +247,10 @@ makes for more legible code if we use a special inference type of our own:
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Inferences. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_log_inference_type</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">it</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">it</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIRECTION_INF</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"DIRECTION_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTION_INF:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"DIRECTION_INF"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -273,11 +266,10 @@ different direction inferences disagree about the destination for a given
 direction &mdash; this of course is a contradiction.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_inferences_contradict</span><span class="plain">(</span><span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">similarity</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_inference_type</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIRECTION_INF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIRECTION_INF:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">similarity</span><span class="plain"> == </span><span class="identifier">CI_DIFFER_IN_INFS1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -294,7 +286,6 @@ support for; it recognises the English name when defined by the Standard
 Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt; ::=</span>
         <span class="identifier">direction</span><span class="plain"> |</span>
@@ -305,13 +296,12 @@ Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_new_base_kind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new_base</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">K_direction</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">K_door</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">K_direction</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">K_door</span><span class="plain"> = </span><span class="identifier">new_base</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -325,11 +315,10 @@ Rules. (So there is no need to translate this to other languages.)
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Direction needs to be an abstract object, not a thing or a room, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_set_subkind_notify</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sub</span><span class="plain"> == </span><span class="identifier">K_direction</span><span class="plain">) &amp;&amp; (</span><span class="identifier">super</span><span class="plain"> != </span><span class="identifier">K_object</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionAdrift</span><span class="plain">),</span>
                     <span class="string">"'direction' is not allowed to be a kind of anything (other than "</span>
                     <span class="string">"'object')"</span><span class="plain">,</span>
@@ -338,7 +327,7 @@ Rules. (So there is no need to translate this to other languages.)
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">super</span><span class="plain"> == </span><span class="identifier">K_direction</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="identifier">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DirectionSubkinded</span><span class="plain">),</span>
                     <span class="string">"'direction' is not allowed to have more specific kinds"</span><span class="plain">,</span>
                     <span class="string">"because it's too fundamental to the way Inform maps out the "</span>
@@ -369,7 +358,6 @@ Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_new_subject_notify</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">) {</span>
         <span class="identifier">CREATE_PF_DATA</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">, </span><span class="functiontext">PL::Map::new_data</span><span class="plain">);</span>
@@ -382,7 +370,6 @@ Rules. (So there is no need to translate this to other languages.)
 <p class="endnote">The function PL::Map::map_new_subject_notify is used in <a href="#SP8">&#167;8</a>.</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::object_is_a_direction</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -398,7 +385,6 @@ Rules. (So there is no need to translate this to other languages.)
 <p class="endnote">The function PL::Map::object_is_a_direction appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -427,10 +413,9 @@ amounts to the ternary map relation, though we actually implement it as a
 sheaf of binary relations, one for each direction. Anyway:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::is_a_direction</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_direction</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">in particular, if we aren't using the IF model</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_direction</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">in particular, if we aren't using the IF model</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">InferenceSubjects::is_within</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_direction</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
@@ -444,9 +429,8 @@ object <code class="display"><span class="extract">I</span></code> is created, b
 we need to assign it a number:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">registered_directions</span><span class="plain"> = 0; </span>    <span class="comment">next direction number to be free</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">registered_directions</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">next direction number to be free</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -455,7 +439,6 @@ we need to assign it a number:
 recognises the English names when defined by the Standard Rules. (So there is
 no need to translate this to other languages.)
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">directions</span><span class="plain">&gt; ::=</span>
@@ -467,7 +450,6 @@ no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_set_kind_notify</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kw</span><span class="plain"> = </span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
@@ -477,8 +459,8 @@ no need to translate this to other languages.)
             &lt;<span class="cwebmacro">Vet the direction name for acceptability</span> <span class="cwebmacronumber">21.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">directions</span><span class="plain">&gt;(</span><span class="identifier">IW</span><span class="plain">)) {</span>
                 <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                    <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">I_up</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">I_down</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">I_up</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">I_down</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="functiontext">PL::Naming::object_takes_definite_article</span><span class="plain">(</span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
@@ -525,7 +507,7 @@ no need to translate this to other languages.)
         <span class="identifier">registered_directions</span><span class="plain">++;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Hierarchy::synoptic_package</span><span class="plain">(</span><span class="identifier">DIRECTIONS_HAP</span><span class="plain">);</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">dname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">DIRECTION_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;direction_iname</span><span class="plain"> = </span><span class="identifier">dname</span><span class="plain">;</span>
+        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">direction_iname</span><span class="plain"> = </span><span class="identifier">dname</span><span class="plain">;</span>
         <span class="functiontext">PL::MapDirections::make_mapped_predicate</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">dname</span><span class="plain">);</span>
 </pre>
 
@@ -547,16 +529,16 @@ quite crunchy algorithms, has the fastest possible access to the layout.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">MAP_EXIT</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">)-</span><span class="element">&gt;exits</span><span class="plain">[</span><span class="identifier">Y</span><span class="plain">]</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">MAP_EXIT</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">)-&gt;</span><span class="element">exits</span><span class="plain">[</span><span class="identifier">Y</span><span class="plain">]</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::build_exits_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">K_direction</span><span class="plain">)) {</span>
-                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;direction_index</span><span class="plain"> = </span><span class="identifier">d</span><span class="plain">++;</span>
+                <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">direction_index</span><span class="plain"> = </span><span class="identifier">d</span><span class="plain">++;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -568,10 +550,10 @@ quite crunchy algorithms, has the fastest possible access to the layout.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs1</span><span class="plain">) </span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs1</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">infs2</span><span class="plain">) </span><span class="identifier">dir</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs2</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">to</span><span class="plain">) &amp;&amp; (</span><span class="identifier">dir</span><span class="plain">)) {</span>
-                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dn</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">)-</span><span class="element">&gt;direction_index</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dn</span><span class="plain"> &gt;= 0) &amp;&amp; (</span><span class="identifier">dn</span><span class="plain"> &lt; </span><span class="identifier">MAX_DIRECTIONS</span><span class="plain">)) {</span>
+                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dn</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">dir</span><span class="plain">)-&gt;</span><span class="element">direction_index</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">dn</span><span class="plain"> &lt; </span><span class="identifier">MAX_DIRECTIONS</span><span class="plain">)) {</span>
                         <span class="identifier">MAP_EXIT</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">dn</span><span class="plain">) = </span><span class="identifier">to</span><span class="plain">;</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;exits_set_at</span><span class="plain">[</span><span class="identifier">dn</span><span class="plain">] = </span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">exits_set_at</span><span class="plain">[</span><span class="identifier">dn</span><span class="plain">] = </span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -586,7 +568,6 @@ quite crunchy algorithms, has the fastest possible access to the layout.
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>This is easy to translate into I6 (though that's partly because I7 doesn't
 follow the traditional I6 library way to represent the map):
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_compile_model_tables</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -612,7 +593,7 @@ follow the traditional I6 library way to represent the map):
 
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K_direction</span><span class="plain">) {</span>
-            <span class="identifier">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;direction_iname</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+            <span class="identifier">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">direction_iname</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>
 
@@ -639,14 +620,14 @@ at run-time, so we can't know now how many we will need.
             <span class="identifier">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">MAP_STORAGE_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_used</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_used</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Task::wraps_existing_storyfile</span><span class="plain">()) {</span>
             <span class="identifier">Emit::array_divider</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"minimal, as there are no rooms"</span><span class="plain">);</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">words_used</span><span class="plain"> = 4;</span>
+            <span class="identifier">words_used</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Emit::array_divider</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"one row per room"</span><span class="plain">);</span>
             <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
@@ -683,11 +664,10 @@ the other side of the door. This will eventually be compiled into the
 object has four pieces of data attached:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::get_door_data</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">door</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> **</span><span class="identifier">c1</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> **</span><span class="identifier">c2</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c1</span><span class="plain">) *</span><span class="identifier">c1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">door</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c2</span><span class="plain">) *</span><span class="identifier">c2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">door</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c1</span><span class="plain">) *</span><span class="identifier">c1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">door</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c2</span><span class="plain">) *</span><span class="identifier">c2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">door</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -700,7 +680,6 @@ support for; it recognises the English names when they are defined by the
 Standard Rules. (So there is no need to translate this to other languages.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">opposite</span><span class="plain"> |</span>
@@ -711,13 +690,12 @@ Standard Rules. (So there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_new_property_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">P_opposite</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">P_other_side</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">P_opposite</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">P_other_side</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -740,7 +718,6 @@ Standard Rules. (So there is no need to translate this to other languages.)
 connections, Inform may well think it's just an object. This is where that
 deduction is made:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_property_value_notify</span><span class="plain">(</span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">) {</span>
@@ -766,7 +743,6 @@ and two-sided doors. Two different plugins therefore need access to it (this
 one and Backdrops), and this is where they set it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::set_found_in</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P_found_in</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
@@ -790,7 +766,6 @@ property in the linked list of inferences belonging to an object.
 and there seems little point in writing this any better.
 </p>
 
-
 <pre class="display">
     <span class="identifier">instance</span><span class="plain"> *</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">World::Inferences::get_prop_state</span><span class="plain">(</span>
@@ -807,11 +782,10 @@ and there seems little point in writing this any better.
 <p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b>This really is very approximate, but:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_estimate_property_usage</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">words_used</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_door</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += 14;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += 2;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_door</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += </span><span class="constant">14</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">K_room</span><span class="plain">)) *</span><span class="identifier">words_used</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -823,7 +797,6 @@ and there seems little point in writing this any better.
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31. Linguistic extras. </b>These NPs allow us to refer to the special directions "up" and "down":
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="identifier">phrases</span><span class="plain">&gt; ::=</span>
         <span class="identifier">below</span><span class="plain"> |</span>
@@ -834,18 +807,17 @@ and there seems little point in writing this any better.
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_act_on_special_NPs</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="identifier">phrases</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I_down</span><span class="plain">) {</span>
                         <span class="identifier">Assertions::Refiner::noun_from_infs</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I_down</span><span class="plain">));</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I_up</span><span class="plain">) {</span>
                         <span class="identifier">Assertions::Refiner::noun_from_infs</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I_up</span><span class="plain">));</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -863,7 +835,6 @@ and there seems little point in writing this any better.
 
 <p class="inwebparagraph"><a id="SP33"></a><b>&#167;33.  </b>We also add some optional clauses to the "going" action:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_check_going</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">,</span>
@@ -914,7 +885,6 @@ exists to the east of the Pitch; in effect, we read it as:
 because, of course, that does set its kind.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_intervene_in_assertion</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">) == </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) &amp;&amp;</span>
@@ -951,7 +921,6 @@ is only a guess, it drops from <code class="display"><span class="extract">CERTA
 make this guess; so we begin with switching in and out.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">oneway_map_connections_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::enter_one_way_mode</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) { </span><span class="identifier">oneway_map_connections_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; }</span>
@@ -970,7 +939,6 @@ directions having their opposites defined before any map is built, and is the
 reason for Inform's insistence that directions are always created in matched
 pairs.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::connect</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">i_from</span><span class="plain">, </span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">i_to</span><span class="plain">,</span>
@@ -1033,26 +1001,25 @@ pairs.
 the map as might be thought.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_complete_model</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 2:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
                 &lt;<span class="cwebmacro">Give each room a room-index property as workspace for route finding</span> <span class="cwebmacronumber">37.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Ensure that map connections are room-to-room, room-to-door or door-to-room</span> <span class="cwebmacronumber">37.2</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Ensure that every door has either one or two connections from it</span> <span class="cwebmacronumber">37.3</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Ensure that no door has spurious other connections to it</span> <span class="cwebmacronumber">37.4</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Ensure that no door uses both map connections and other side</span> <span class="cwebmacronumber">37.5</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Ensure that no door is present in a room to which it does not connect</span> <span class="cwebmacronumber">37.6</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Place any one-sided door inside the room which connects to it</span> <span class="cwebmacronumber">37.7</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Assert found-in, door-to and door-dir properties for doors</span> <span class="cwebmacronumber">37.8</span>&gt;<span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 4: </span><span class="functiontext">PL::Map::build_exits_array</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="functiontext">PL::Map::build_exits_array</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1141,10 +1108,10 @@ checks that various mapping impossibilities do not occur.
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">connections_in</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">connections_in</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where</span><span class="plain">[3];</span>
-                <span class="identifier">where</span><span class="plain">[0] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">where</span><span class="plain">[1] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">where</span><span class="plain">[2] = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">to placate <code class="display"><span class="extract">gcc</span></code></span>
+                <span class="identifier">where</span><span class="plain">[0] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">where</span><span class="plain">[1] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">where</span><span class="plain">[2] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">to placate <code class="display"><span class="extract">gcc</span></code></span>
                 <span class="identifier">inference</span><span class="plain"> *</span><span class="identifier">front_side_inf</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">back_side_inf</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="constant">DIRECTION_INF</span><span class="plain">) {</span>
                     <span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs1</span><span class="plain">, *</span><span class="identifier">infs2</span><span class="plain">;</span>
@@ -1152,19 +1119,19 @@ checks that various mapping impossibilities do not occur.
                     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs1</span><span class="plain">);</span>
                     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">dir</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs2</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == 0) {</span>
-                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
-                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_a</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
+                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_a</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain">;</span>
                             <span class="identifier">where</span><span class="plain">[0] = </span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
                             <span class="identifier">front_side_inf</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">;</span>
                         <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == 1) {</span>
-                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
-                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_b</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">;</span>
+                            <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_b</span><span class="plain"> = </span><span class="identifier">dir</span><span class="plain">;</span>
                             <span class="identifier">where</span><span class="plain">[1] = </span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
                             <span class="identifier">back_side_inf</span><span class="plain"> = </span><span class="identifier">inf</span><span class="plain">;</span>
                         <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == 2) {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
                             <span class="identifier">where</span><span class="plain">[2] = </span><span class="identifier">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
                         <span class="plain">}</span>
                         <span class="identifier">connections_in</span><span class="plain">++;</span>
@@ -1173,17 +1140,17 @@ checks that various mapping impossibilities do not occur.
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">front_side_inf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">back_side_inf</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">World::Inferences::get_timestamp</span><span class="plain">(</span><span class="identifier">front_side_inf</span><span class="plain">) &gt;</span>
                         <span class="identifier">World::Inferences::get_timestamp</span><span class="plain">(</span><span class="identifier">back_side_inf</span><span class="plain">)) {</span>
-                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">;</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">;</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain"> = </span><span class="identifier">X</span><span class="plain">;</span>
-                        <span class="identifier">X</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_a</span><span class="plain">;</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_a</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_b</span><span class="plain">;</span>
-                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_b</span><span class="plain"> = </span><span class="identifier">X</span><span class="plain">;</span>
+                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">;</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain">;</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain"> = </span><span class="identifier">X</span><span class="plain">;</span>
+                        <span class="identifier">X</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_a</span><span class="plain">;</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_a</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_b</span><span class="plain">;</span>
+                        <span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_b</span><span class="plain"> = </span><span class="identifier">X</span><span class="plain">;</span>
                         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PX</span><span class="plain"> = </span><span class="identifier">where</span><span class="plain">[0]; </span><span class="identifier">where</span><span class="plain">[0] = </span><span class="identifier">where</span><span class="plain">[1]; </span><span class="identifier">where</span><span class="plain">[1] = </span><span class="identifier">PX</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == 0) </span>&lt;<span class="cwebmacro">Issue a problem message for a stranded door</span> <span class="cwebmacronumber">37.3.1</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> &gt; 2) </span>&lt;<span class="cwebmacro">Issue a problem message for an overactive door</span> <span class="cwebmacronumber">37.3.2</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a problem message for a stranded door</span> <span class="cwebmacronumber">37.3.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">connections_in</span><span class="plain"> &gt; </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a problem message for an overactive door</span> <span class="cwebmacronumber">37.3.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
 </pre>
 
@@ -1256,8 +1223,8 @@ from which there's no way back.)
                     <span class="identifier">World::Inferences::get_references</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, &amp;</span><span class="identifier">infs1</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                     <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs1</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) {</span>
-                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">exit1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">;</span>
-                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">exit2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">;</span>
+                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">exit1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)-&gt;</span><span class="identifier">map_connection_a</span><span class="plain">;</span>
+                        <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">exit2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)-&gt;</span><span class="identifier">map_connection_b</span><span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> != </span><span class="identifier">exit1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">exit2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(1, </span><span class="identifier">I</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_object</span><span class="plain">(2, </span><span class="identifier">to</span><span class="plain">);</span>
@@ -1300,8 +1267,8 @@ from which there's no way back.)
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">World::Inferences::get_prop_state</span><span class="plain">(</span>
                     <span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">P_other_side</span><span class="plain">)))</span>
                     <span class="identifier">Problems::Issue::object_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BothWaysDoor</span><span class="plain">),</span>
@@ -1336,8 +1303,8 @@ model at run-time.) This is where we apply the kill-joy rule in question:
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) != </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) != </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">))</span>
+                <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) != </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) != </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain">))</span>
                 <span class="identifier">Problems::Issue::object_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DoorInThirdRoom</span><span class="plain">),</span>
                     <span class="identifier">I</span><span class="plain">, </span><span class="string">"seems to be a door which is present in a room to which it is not connected"</span><span class="plain">,</span>
                     <span class="string">"but this is not allowed. A door must be in one or both of the rooms it is "</span>
@@ -1363,9 +1330,9 @@ to them.
         <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">PL::Spatial::progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">))</span>
-                <span class="functiontext">PL::Spatial::set_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="functiontext">PL::Spatial::set_progenitor</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1395,10 +1362,10 @@ trust that there is nothing surprising here.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PL::Map::object_is_a_door</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) {</span>
                 <span class="identifier">Properties::EitherOr::assert</span><span class="plain">(</span>
                     <span class="identifier">P_door</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
-                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_a</span><span class="plain">;</span>
-                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_connection_b</span><span class="plain">;</span>
-                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">D1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_a</span><span class="plain">;</span>
-                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">D2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-</span><span class="element">&gt;map_direction_b</span><span class="plain">;</span>
+                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_a</span><span class="plain">;</span>
+                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_connection_b</span><span class="plain">;</span>
+                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">D1</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_a</span><span class="plain">;</span>
+                <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">D2</span><span class="plain"> = </span><span class="identifier">PF_I</span><span class="plain">(</span><span class="identifier">map</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)-&gt;</span><span class="element">map_direction_b</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R1</span><span class="plain"> &amp;&amp; </span><span class="identifier">R2</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Assert found-in for a two-sided door</span> <span class="cwebmacronumber">37.8.1</span>&gt;<span class="plain">;</span>
                     &lt;<span class="cwebmacro">Assert door-dir for a two-sided door</span> <span class="cwebmacronumber">37.8.2</span>&gt;<span class="plain">;</span>
@@ -1429,7 +1396,7 @@ trust that there is nothing surprising here.
         <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">R1</span><span class="plain">));</span>
         <span class="identifier">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">R2</span><span class="plain">));</span>
         <span class="identifier">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
-        <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, 1);</span>
+        <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">INLINE_ARRAY_IANN</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="functiontext">PL::Map::set_found_in</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
 </pre>
 
@@ -1449,13 +1416,13 @@ always the way to the other room &mdash; the one we are not in.
 
 <pre class="displaydefn">
         <span class="reserved">door_dir_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">door_dir_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">TSD_DOOR_DIR_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D1</span><span class="plain"> = </span><span class="identifier">D1</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D2</span><span class="plain"> = </span><span class="identifier">D2</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">ddn_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">TSD_DOOR_DIR_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">D1</span><span class="plain"> = </span><span class="identifier">D1</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">D2</span><span class="plain"> = </span><span class="identifier">D2</span><span class="plain">;</span>
         <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_door_dir</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
-            <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
+            <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">ddn_iname</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1474,12 +1441,12 @@ always the other room &mdash; the one we are not in.
 
 <pre class="displaydefn">
         <span class="reserved">door_to_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">door_to_notice</span><span class="plain">);</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">TSD_DOOR_TO_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
-        <span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R2</span><span class="plain"> = </span><span class="identifier">R2</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">dtn_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">TSD_DOOR_TO_FN_HL</span><span class="plain">, </span><span class="identifier">Instances::package</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">door</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R1</span><span class="plain"> = </span><span class="identifier">R1</span><span class="plain">;</span>
+        <span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R2</span><span class="plain"> = </span><span class="identifier">R2</span><span class="plain">;</span>
         <span class="identifier">Properties::Valued::assert</span><span class="plain">(</span><span class="identifier">P_door_to</span><span class="plain">, </span><span class="identifier">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">),</span>
-            <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
+            <span class="identifier">Rvalues::from_iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">dtn_iname</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1518,14 +1485,13 @@ why we don't need to compile <code class="display"><span class="extract">door_to
 
 <p class="inwebparagraph"><a id="SP38"></a><b>&#167;38. Redeeming those notices. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::write_door_dir_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">door_dir_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">door_dir_notice</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;ddn_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">ddn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
@@ -1554,14 +1520,14 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R1</span><span class="plain">));</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">,</span>
-                            <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D1</span><span class="plain">)));</span>
+                            <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">D1</span><span class="plain">)));</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1569,7 +1535,7 @@ why we don't need to compile <code class="display"><span class="extract">door_to
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">,</span>
-                    <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;D2</span><span class="plain">)));</span>
+                    <span class="identifier">Instances::iname</span><span class="plain">(</span><span class="functiontext">PL::Map::get_value_of_opposite_property</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">D2</span><span class="plain">)));</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
             <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -1579,9 +1545,9 @@ why we don't need to compile <code class="display"><span class="extract">door_to
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Map::write_door_to_routines</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">door_to_notice</span><span class="plain"> *</span><span class="identifier">notice</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">, </span><span class="reserved">door_to_notice</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;dtn_iname</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="identifier">Routines::begin</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">dtn_iname</span><span class="plain">);</span>
             <span class="identifier">local_variable</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"loc"</span><span class="plain">, </span><span class="string">"room of actor"</span><span class="plain">);</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">loc_s</span><span class="plain"> = </span><span class="identifier">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
@@ -1610,20 +1576,20 @@ why we don't need to compile <code class="display"><span class="extract">door_to
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">loc_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
+                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R1</span><span class="plain">));</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R2</span><span class="plain">));</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R2</span><span class="plain">));</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-</span><span class="element">&gt;R1</span><span class="plain">));</span>
+                <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">Instances::iname</span><span class="plain">(</span><span class="identifier">notice</span><span class="plain">-&gt;</span><span class="element">R1</span><span class="plain">));</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
             <span class="identifier">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -1638,7 +1604,6 @@ why we don't need to compile <code class="display"><span class="extract">door_to
 <p class="endnote">The function PL::Map::write_door_to_routines appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39. Indexing. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Map::map_add_to_World_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain">) {</span>

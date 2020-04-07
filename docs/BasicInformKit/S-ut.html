@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -41,7 +41,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Miscellany. </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain"> = </span><span class="constant">224</span><span class="plain">;</span>
@@ -49,51 +48,51 @@
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain"> = </span><span class="identifier">DynamicMemoryAllocation</span><span class="plain">/4;</span>
     <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">blockv_stack</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">blockv_stack</span><span class="plain"> --&gt; </span><span class="identifier">BLOCKV_STACK_SIZE</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">I7SFRAME</span><span class="plain">;</span>
 
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">TEXT_TY_RE_Err</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_noun</span><span class="plain">; </span><span class="comment">! for adaptive text generation</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list</span><span class="plain">; </span><span class="comment">! ditto: length of list of items</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list_gender</span><span class="plain">; </span><span class="comment">! ditto: common gender of list of items, or -1</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_tense</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! ditto: present tense</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_viewpoint</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! ditto: second person singular</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_noun</span><span class="plain">; </span><span class="comment">for adaptive text generation</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list</span><span class="plain">; </span><span class="comment">ditto: length of list of items</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">prior_named_list_gender</span><span class="plain">; </span><span class="comment">ditto: common gender of list of items, or -1</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_tense</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">ditto: present tense</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">story_viewpoint</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">ditto: second person singular</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__pc_save</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__n</span><span class="plain">; </span><span class="identifier">Global</span><span class="plain"> </span><span class="identifier">say__comp</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">los_rv</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_object</span><span class="plain">; </span><span class="comment">! = I7 "parameter-object" = I7 "container in question"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_value</span><span class="plain">; </span><span class="comment">! not typesafe in I7</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">deferred_calling_list</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">27</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_to_be_totalled</span><span class="plain">; </span><span class="comment">! used to implement "total P of..."</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_loop_sign</span><span class="plain">; </span><span class="comment">! $+1$ for increasing order, $-1$ for decreasing</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_object</span><span class="plain">; </span><span class="comment">= I7 "parameter-object" = I7 "container in question"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">parameter_value</span><span class="plain">; </span><span class="comment">not typesafe in I7</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">deferred_calling_list</span><span class="plain"> --&gt; </span><span class="constant">27</span><span class="plain">;</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_to_be_totalled</span><span class="plain">; </span><span class="comment">used to implement "total P of..."</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">property_loop_sign</span><span class="plain">; </span><span class="comment">+1 for increasing order, -1 for decreasing</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">suppress_scope_loops</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">temporary_value</span><span class="plain">; </span><span class="comment">! can be used anywhere side-effects can't occur</span>
-    <span class="comment">! [13]</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! foreground colour</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! background colour</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! foreground colour of statusline</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! background colour of statusline</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_on</span><span class="plain">; </span><span class="comment">! has colour been enabled by the player?</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_current</span><span class="plain">; </span><span class="comment">! if writing to top window</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">temporary_value</span><span class="plain">; </span><span class="comment">can be used anywhere side-effects can't occur</span>
+    <span class="comment">[13]</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">foreground colour</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bg</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">background colour</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_fgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">foreground colour of statusline</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_bgstatus</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">background colour of statusline</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">clr_on</span><span class="plain">; </span><span class="comment">has colour been enabled by the player?</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_current</span><span class="plain">; </span><span class="comment">if writing to top window</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">suppress_text_substitution</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">deadflag</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-    <span class="comment">! [14]</span>
+    <span class="comment">[14]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_cursize</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">statuswin_size</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
-    <span class="comment">! [16]</span>
-    <span class="comment">! Global debug_flag = 0;</span>
+    <span class="comment">[16]</span>
+    <span class="comment">Global debug_flag = 0;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debug_rules</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">debug_rule_nesting</span><span class="plain">;</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">reason_the_action_failed</span><span class="plain">; </span><span class="comment">! = I7 "reason the action failed"</span>
-    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">indef_mode</span><span class="plain">;                  </span><span class="comment">! "Indefinite" mode - ie, "take a brick"</span>
-                                        <span class="comment">! is in this mode</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">reason_the_action_failed</span><span class="plain">; </span><span class="comment">= I7 "reason the action failed"</span>
+    <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">indef_mode</span><span class="plain">;                  </span><span class="comment">"Indefinite" mode - ie, "take a brick"</span>
+                                        <span class="comment">is in this mode</span>
 
-    <span class="comment">! [3]</span>
+    <span class="comment">[3]</span>
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">standard_interpreter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LocalParking</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">64</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LocalParking</span><span class="plain"> --&gt; </span><span class="constant">64</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -102,7 +101,6 @@
 that a translation should have an inclusion to replace the "Language.i6t"
 segment, which contains the English definition.
 </p>
-
 
 <pre class="display">
 
@@ -118,7 +116,6 @@ virtual machine &mdash; saving the game, performing UNDO, parsing typed text int
 dictionary word addresses and so on.
 </p>
 
-
 <pre class="display">
 </pre>
 
@@ -126,10 +123,9 @@ dictionary word addresses and so on.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. More. </b></p>
 
-
 <pre class="display">
 
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Protect_I7_Arrays</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="constant">16339</span><span class="plain"> </span><span class="constant">12345</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Protect_I7_Arrays</span><span class="plain"> --&gt; </span><span class="constant">16339</span><span class="plain"> </span><span class="constant">12345</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -141,7 +137,6 @@ where it was intended as a stub to pass to the Glulx <code class="display"><span
 printing routine for new kinds of value.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">DecimalNumber</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">; ];</span>
 </pre>
@@ -152,7 +147,6 @@ printing routine for new kinds of value.
 without substitutions.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PrintI6Text</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">String</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">x</span><span class="plain">;</span>
@@ -160,7 +154,7 @@ without substitutions.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">EMPTY_TEXT_PACKED</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>
-    <span class="plain">[ </span><span class="identifier">I7_String</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">); ]; </span><span class="comment">! An alternative name now used only by extensions</span>
+    <span class="plain">[ </span><span class="identifier">I7_String</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">; </span><span class="identifier">TEXT_TY_Say</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">); ]; </span><span class="comment">An alternative name now used only by extensions</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -179,12 +173,11 @@ it as efficient as possible, we calculate offsets into the metadata: this
 has to be done (once) at run-time, with the routine compiled.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">attributed_property_offsets_SIZE</span><span class="plain"> </span><span class="constant">48</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">attributed_property_offsets</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">attributed_property_offsets_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">attributed_property_offsets</span><span class="plain"> --&gt; </span><span class="identifier">attributed_property_offsets_SIZE</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">valued_property_offsets_SIZE</span><span class="plain"> (100 + </span><span class="identifier">CCOUNT_PROPERTY</span><span class="plain"> + </span><span class="identifier">INDIV_PROP_START</span><span class="plain">-48);</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">valued_property_offsets</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; </span><span class="identifier">valued_property_offsets_SIZE</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">valued_property_offsets</span><span class="plain"> --&gt; </span><span class="identifier">valued_property_offsets_SIZE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -203,7 +196,6 @@ the routine called is given the chance to decide whether to print or not.
 It should return <code class="display"><span class="extract">true</span></code> or <code class="display"><span class="extract">false</span></code> according to whether it did so; this
 allows us to divide the paragraph or not accordingly.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PrintOrRun</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">prop</span><span class="plain"> </span><span class="identifier">no_break</span><span class="plain">  </span><span class="identifier">pv</span><span class="plain"> </span><span class="identifier">st</span><span class="plain"> </span><span class="identifier">routine_return_value</span><span class="plain">;</span>
@@ -233,7 +225,6 @@ allows us to divide the paragraph or not accordingly.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Saying Phrases. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SayPhraseName</span><span class="plain"> </span><span class="identifier">closure</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">closure</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nothing"</span><span class="plain">;</span>
@@ -244,7 +235,6 @@ allows us to divide the paragraph or not accordingly.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Kinds. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">KindAtomic</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>
@@ -273,7 +263,6 @@ between 4 and 17, and there is therefore no pair of n and m corresponding
 to an empty range of values.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GenerateRandomNumber</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">==</span><span class="identifier">m</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
@@ -290,12 +279,11 @@ to an empty range of values.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. PrintSpaces. </b>Which prints a row of n spaces, for n&gt;= 0.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PrintSpaces</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
-            <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -306,7 +294,6 @@ to an empty range of values.
 <code class="display"><span class="extract">workflag</span></code> and <code class="display"><span class="extract">workflag2</span></code>. The following swaps their values over for every
 object at once.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SwapWorkflags</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">lst</span><span class="plain">;</span>
@@ -334,7 +321,6 @@ name. In I6 code, it can be implemented simply using <code class="display"><span
 following shows. (The name is from "region of the Z-machine".)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ZRegion</span><span class="plain"> </span><span class="identifier">addr</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="reserved">metaclass</span><span class="plain">(</span><span class="identifier">addr</span><span class="plain">)) {</span>
@@ -351,15 +337,14 @@ following shows. (The name is from "region of the Z-machine".)
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Memcpy. </b>This is equivalent to C's memcpy function, in good ways and bad.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">Memcpy</span><span class="plain"> </span><span class="identifier">to_addr</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">  </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">/</span><span class="identifier">WORDSIZE</span><span class="plain">: (</span><span class="identifier">n</span><span class="plain">--) &gt; </span><span class="constant">0</span><span class="plain">: ) </span><span class="identifier">to_addr</span><span class="plain">--&gt;</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">--&gt;</span><span class="identifier">n</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">: ((</span><span class="identifier">n</span><span class="plain">--) % </span><span class="identifier">WORDSIZE</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">): ) </span><span class="identifier">to_addr</span><span class="plain">-&gt;</span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">from_addr</span><span class="plain">-&gt;</span><span class="identifier">n</span><span class="plain">;</span>
-    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">TARGET_GLULX</span>
         <span class="plain">@</span><span class="identifier">mcopy</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">from_addr</span><span class="plain"> </span><span class="identifier">to_addr</span><span class="plain">;</span>
-    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">! TARGET_</span>
+    <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">TARGET_</span>
     <span class="plain">];</span>
 </pre>
 
@@ -367,7 +352,6 @@ following shows. (The name is from "region of the Z-machine".)
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. Arrcpy. </b>This is not quite so efficient, but not terrible.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">Arrcpy</span><span class="plain"> </span><span class="identifier">to_array</span><span class="plain"> </span><span class="identifier">to_entry_size</span><span class="plain"> </span><span class="identifier">from_array</span><span class="plain"> </span><span class="identifier">from_entry_size</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain">  </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">;</span>
@@ -386,7 +370,6 @@ following shows. (The name is from "region of the Z-machine".)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Verbs as Values. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PrintVerbAsValue</span><span class="plain"> </span><span class="identifier">vb</span><span class="plain">;</span>
@@ -421,7 +404,6 @@ that cannot really help much if the VM interpreter's RNG is badly written.
 of course, in a state of sin" (von Neumann).
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SEED_RANDOM_NUMBER_GENERATOR_R</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RNG_SEED_AT_START_OF_PLAY</span><span class="plain">) </span><span class="identifier">VM_Seed_RNG</span><span class="plain">(</span><span class="identifier">RNG_SEED_AT_START_OF_PLAY</span><span class="plain">);</span>
@@ -448,15 +430,14 @@ the I6 library. This was only put right in March 2009, and the following
 routine was added to concentrate lookups of this field in one place.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">DictionaryWordToVerbNum</span><span class="plain"> </span><span class="identifier">dword</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
-        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ff-</span><span class="plain">(</span><span class="identifier">dword</span><span class="plain">-&gt;#</span><span class="identifier">dict_par2</span><span class="plain">);</span>
-    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">! GLULX</span>
-        <span class="identifier">dword</span><span class="plain"> = </span><span class="identifier">dword</span><span class="plain"> + #</span><span class="identifier">dict_par2</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ff</span><span class="plain">-(</span><span class="identifier">dword</span><span class="plain">-&gt;#</span><span class="identifier">dict_par2</span><span class="plain">);</span>
+    <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">GLULX</span>
+        <span class="identifier">dword</span><span class="plain"> = </span><span class="identifier">dword</span><span class="plain"> + #</span><span class="identifier">dict_par2</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">@</span><span class="identifier">aloads</span><span class="plain"> </span><span class="identifier">dword</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
-        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ffff-</span><span class="identifier">verbnum</span><span class="plain">;</span>
+        <span class="identifier">verbnum</span><span class="plain"> = </span><span class="constant">$ffff</span><span class="plain">-</span><span class="identifier">verbnum</span><span class="plain">;</span>
     <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">verbnum</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -464,13 +445,13 @@ routine was added to concentrate lookups of this field in one place.
 
     <span class="plain">[ </span><span class="identifier">RegardingSingleObject</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
         <span class="identifier">prior_named_list</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="identifier">prior_named_list_gender</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">prior_named_list_gender</span><span class="plain"> = -1;</span>
         <span class="identifier">prior_named_noun</span><span class="plain"> = </span><span class="identifier">obj</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">RegardingNumber</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="identifier">prior_named_list</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
-        <span class="identifier">prior_named_list_gender</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">prior_named_list_gender</span><span class="plain"> = -1;</span>
         <span class="identifier">prior_named_noun</span><span class="plain"> = </span><span class="reserved">nothing</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -481,7 +462,6 @@ routine was added to concentrate lookups of this field in one place.
 documentation.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">I7_SOO_PAR</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">count</span><span class="plain">); ];</span>
     <span class="plain">[ </span><span class="identifier">I7_SOO_RAN</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">;</span>
@@ -490,7 +470,7 @@ documentation.
     <span class="plain">[ </span><span class="identifier">I7_SOO_CYC</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="identifier">oldval</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldval</span><span class="plain"> &gt; </span><span class="identifier">count</span><span class="plain">) </span><span class="identifier">oldval</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain">; ];</span>
     <span class="plain">[ </span><span class="identifier">I7_SOO_STOP</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="identifier">oldval</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldval</span><span class="plain"> &gt; </span><span class="identifier">count</span><span class="plain">) </span><span class="identifier">oldval</span><span class="plain"> = </span><span class="identifier">count</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain">; ];</span>
     <span class="plain">[ </span><span class="identifier">I7_SOO_TAP</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> </span><span class="identifier">tn</span><span class="plain"> </span><span class="identifier">rn</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">count</span><span class="plain">*(</span><span class="identifier">count</span><span class="plain">+1)/2;</span>
-        <span class="identifier">rn</span><span class="plain"> = </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">tn</span><span class="plain">); </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">=1:</span><span class="identifier">c</span><span class="plain">&lt;=</span><span class="identifier">count</span><span class="plain">:</span><span class="identifier">c</span><span class="plain">++) { </span><span class="identifier">rn</span><span class="plain"> = </span><span class="identifier">rn</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rn</span><span class="plain">&lt;=0) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">-</span><span class="identifier">c</span><span class="plain">+1); } ];</span>
+        <span class="identifier">rn</span><span class="plain"> = </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">tn</span><span class="plain">); </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">=1:</span><span class="identifier">c</span><span class="plain">&lt;=</span><span class="identifier">count</span><span class="plain">:</span><span class="identifier">c</span><span class="plain">++) { </span><span class="identifier">rn</span><span class="plain"> = </span><span class="identifier">rn</span><span class="plain"> - </span><span class="identifier">c</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rn</span><span class="plain">&lt;=0) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain">-</span><span class="identifier">c</span><span class="plain">+1); } ];</span>
     <span class="plain">[ </span><span class="identifier">I7_SOO_TRAN</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldval</span><span class="plain">&lt;</span><span class="identifier">count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain">+1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> + </span><span class="constant">1</span><span class="plain"> + </span><span class="identifier">I7_SOO_RAN</span><span class="plain">(</span><span class="identifier">oldval</span><span class="plain">%(</span><span class="identifier">count</span><span class="plain">+1), </span><span class="identifier">count</span><span class="plain">); ];</span>
     <span class="plain">[ </span><span class="identifier">I7_SOO_TPAR</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldval</span><span class="plain">&lt;</span><span class="identifier">count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">oldval</span><span class="plain">+1;</span>
@@ -504,10 +484,10 @@ documentation.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; </span><span class="constant">32</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I7_SOO_PAR</span><span class="plain">(</span><span class="identifier">oldval</span><span class="plain">, </span><span class="identifier">count</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">v</span><span class="plain"> = </span><span class="identifier">count</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="comment">!print "^In v=", v, " ct=", ct, " sd=", sd, "^";</span>
+            <span class="comment">rint "^In v=", v, " ct=", ct, " sd=", sd, "^";</span>
             <span class="identifier">cc</span><span class="plain"> = </span><span class="identifier">base</span><span class="plain">*</span><span class="identifier">base</span><span class="plain">;</span>
             <span class="identifier">scope</span><span class="plain"> = (</span><span class="identifier">MAX_POSITIVE_NUMBER</span><span class="plain">-1)/</span><span class="identifier">cc</span><span class="plain">;</span>
-            <span class="comment">!print "Scope = ", scope, "^";</span>
+            <span class="comment">rint "Scope = ", scope, "^";</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">sd</span><span class="plain"> = </span><span class="reserved">random</span><span class="plain">(</span><span class="identifier">scope</span><span class="plain">); </span><span class="identifier">ct</span><span class="plain">=0; }</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">count</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">;</span>
             <span class="identifier">ssd</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">;</span>
@@ -515,12 +495,12 @@ documentation.
                 <span class="identifier">j</span><span class="plain"> = (</span><span class="identifier">sd</span><span class="plain">)%(</span><span class="identifier">count</span><span class="plain">-</span><span class="identifier">i</span><span class="plain">)+</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">sd</span><span class="plain"> = (</span><span class="identifier">sd</span><span class="plain">*31973)+17; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">&lt;0) </span><span class="identifier">sd</span><span class="plain">=-</span><span class="identifier">sd</span><span class="plain">;</span>
                 <span class="identifier">s</span><span class="plain"> = </span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain">; </span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="comment">!for (i=0:i&lt;count:i++) print I7_SOO_SHUF-&gt;i, " "; print "^";</span>
+            <span class="comment">or (i=0:i&lt;count:i++) print I7_SOO_SHUF-&gt;i, " "; print "^";</span>
             <span class="identifier">v</span><span class="plain"> = (</span><span class="identifier">I7_SOO_SHUF</span><span class="plain">-&gt;</span><span class="identifier">ct</span><span class="plain">)+1;</span>
             <span class="identifier">ct</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ct</span><span class="plain"> &gt;= </span><span class="identifier">count</span><span class="plain">) { </span><span class="identifier">ct</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">ssd</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; }</span>
         <span class="plain">}</span>
-        <span class="comment">!print "Out v=", v, " ct=", ct, " ssd=", sd, "^";</span>
-        <span class="comment">!print "Return ", v + ct*base + ssd*base*base, "^";</span>
+        <span class="comment">rint "Out v=", v, " ct=", ct, " ssd=", sd, "^";</span>
+        <span class="comment">rint "Return ", v + ct*base + ssd*base*base, "^";</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> + </span><span class="identifier">ct</span><span class="plain">*</span><span class="identifier">base</span><span class="plain"> + </span><span class="identifier">ssd</span><span class="plain">*</span><span class="identifier">base</span><span class="plain">*</span><span class="identifier">base</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -532,11 +512,10 @@ for instance, if <code class="display"><span class="extract">t2</span></code> is
 anachronism, as it's used for all kinds of value.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">RoundOffValue</span><span class="plain"> </span><span class="identifier">t1</span><span class="plain"> </span><span class="identifier">t2</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t1</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain">+</span><span class="identifier">t2</span><span class="plain">/2)/</span><span class="identifier">t2</span><span class="plain">)*</span><span class="identifier">t2</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">-</span><span class="plain">((-</span><span class="identifier">t1</span><span class="plain">+</span><span class="identifier">t2</span><span class="plain">/2)/</span><span class="identifier">t2</span><span class="plain">)*</span><span class="identifier">t2</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> -((-</span><span class="identifier">t1</span><span class="plain">+</span><span class="identifier">t2</span><span class="plain">/2)/</span><span class="identifier">t2</span><span class="plain">)*</span><span class="identifier">t2</span><span class="plain">;</span>
     <span class="plain">];</span>
 
 

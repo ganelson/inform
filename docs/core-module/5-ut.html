@@ -64,14 +64,13 @@ excerpt meanings, so we read a "translates into Unicode as" sentence as
 a new name and its meaning to be.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UnicodeTranslations::unicode_translates</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cc</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">UnicodeTranslations::char_in_range</span><span class="plain">(</span><span class="identifier">cc</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
+        <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> ((&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; != -1) &amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; != </span><span class="identifier">cc</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeAlready</span><span class="plain">),</span>
                 <span class="string">"this Unicode character name has already been translated"</span><span class="plain">,</span>
@@ -79,10 +78,10 @@ a new name and its meaning to be.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">), </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+        <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">), </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="identifier">MISCELLANEOUS_MC</span><span class="plain">,</span>
-            <span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)));</span>
+            <span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -104,7 +103,6 @@ doesn't disagree with an existing one (that is, doesn't translate to a
 different code number).
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">character</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; |			==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
@@ -118,7 +116,6 @@ number. I was tempted to allow hexadecimal here, but life's too short.
 Unicode translation sentences are really only technicalities needed by
 the built-in extensions anyway; Inform authors never type them.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
@@ -163,7 +160,6 @@ the player types either of these:
 <p class="inwebparagraph">...then the text after the word "unicode" is parsed by &lt;s-unicode-character&gt;.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">-</span><span class="identifier">character</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">-</span><span class="identifier">unlimited</span><span class="plain">&gt; |	==&gt; </span><span class="functiontext">Rvalues::from_Unicode_point</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (!(</span><span class="functiontext">UnicodeTranslations::char_in_range</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">[1]))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -184,10 +180,9 @@ the player types either of these:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And here is the range check:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UnicodeTranslations::char_in_range</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cc</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cc</span><span class="plain"> &lt; 0) || (</span><span class="identifier">cc</span><span class="plain"> &gt;= 0</span><span class="identifier">x10000</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cc</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">cc</span><span class="plain"> &gt;= </span><span class="constant">0x10000</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnicodeOutOfRange</span><span class="plain">),</span>
                 <span class="string">"Inform can only handle Unicode characters in the 16-bit range"</span><span class="plain">,</span>
                 <span class="string">"from 0 to 65535."</span><span class="plain">);</span>

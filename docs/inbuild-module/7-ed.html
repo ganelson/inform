@@ -75,15 +75,14 @@ cache. In this way, changes in what an extension defines are reflected
 in the dictionary after each successful use of that extension.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">ede_work</span><span class="plain">; </span>    <span class="comment">author name and title, with hash code</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">entry_text</span><span class="plain">; </span>    <span class="comment">text of the dictionary entry</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">sorting</span><span class="plain">; </span>    <span class="comment">text reprocessed for sorting purposes</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain">; </span>    <span class="comment">grammatical category, such as "kind"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">erased</span><span class="plain">; </span>    <span class="comment">marked to be erased</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">next_in_sorted_dictionary</span><span class="plain">; </span>    <span class="comment">link in linked list</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">ede_work</span><span class="plain">; </span><span class="comment">author name and title, with hash code</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">entry_text</span><span class="plain">; </span><span class="comment">text of the dictionary entry</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">sorting</span><span class="plain">; </span><span class="comment">text reprocessed for sorting purposes</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">type</span><span class="plain">; </span><span class="comment">grammatical category, such as "kind"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">erased</span><span class="plain">; </span><span class="comment">marked to be erased</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">next_in_sorted_dictionary</span><span class="plain">; </span><span class="comment">link in linked list</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">extension_dictionary_entry</span><span class="plain">;</span>
 
@@ -105,14 +104,13 @@ first term (the left one) is from an extension lexicographically earlier
 than the second (the right one): see below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">known_extension_clash</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_known</span><span class="plain">; </span>    <span class="comment">heads a linked list of clashes with a given <code class="display"><span class="extract">ede1</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span>    <span class="comment">next in linked list of clashes</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">leftx</span><span class="plain">; </span>    <span class="comment">clash is between this entry...</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">rightx</span><span class="plain">; </span>    <span class="comment">...and this one</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number_clashes</span><span class="plain">; </span>    <span class="comment">number of entries clashing between <code class="display"><span class="extract">ede1</span></code> and <code class="display"><span class="extract">ede2</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_known</span><span class="plain">; </span><span class="comment">heads a linked list of clashes with a given <code class="display"><span class="extract">ede1</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">; </span><span class="comment">next in linked list of clashes</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">leftx</span><span class="plain">; </span><span class="comment">clash is between this entry...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">rightx</span><span class="plain">; </span><span class="comment">...and this one</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number_clashes</span><span class="plain">; </span><span class="comment">number of entries clashing between <code class="display"><span class="extract">ede1</span></code> and <code class="display"><span class="extract">ede2</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">known_extension_clash</span><span class="plain">;</span>
 </pre>
@@ -150,7 +148,6 @@ which formed a line 95 characters long: the most prolific extension made 380
 definitions. The total file size was about 130K. Some typical entries:
 </p>
 
-
 <pre class="display">
     <span class="plain">...</span>
     <span class="plain">|Emily Short|Plurality|20110130181823:Sun 30 January 2011 18:18|indexing|</span>
@@ -172,28 +169,27 @@ following number of characters minus 1:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_ED_LINE_LENGTH</span><span class="plain"> 512</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_ED_LINE_LENGTH</span><span class="plain"> </span><span class="constant">512</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The following logs the dictionary as it stands in memory, in a similar
 format but also recorded the erasure flag.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::log_entry</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"ede: %4d %d |%S|%S|%S|%S|\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">,</span>
-            <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">-</span><span class="element">&gt;author_name</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">,</span>
-            <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"ede: %4d %d |%S|%S|%S|%S|\n"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">,</span>
+            <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">,</span>
+            <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::log_extension_dictionary</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">=0;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension dictionary:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension dictionary:\n"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">) {</span>
             <span class="identifier">n</span><span class="plain">++; </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"$d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">==0) </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"no entries\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">==0) </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"no entries\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -215,15 +211,14 @@ if the user has uninstalled an extension since the last time Inform successfully
 ran.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::erase_entries_of_uninstalled_extensions</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erasure of dictionary entries for uninstalled extensions\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erasure of dictionary entries for uninstalled extensions\n"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Works::no_times_used_in_context</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="constant">INSTALLED_WDBC</span><span class="plain">) == 0)) {</span>
-                <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">Works::no_times_used_in_context</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="constant">INSTALLED_WDBC</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)) {</span>
+                <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erased $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
@@ -241,15 +236,14 @@ for the same extension which are left in the dictionary from some previous
 run of Inform, as those are now out of date.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::erase_entries</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erasure of dictionary entries for %X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erasure of dictionary entries for %X\n"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">))) {</span>
-                <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">))) {</span>
+                <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Erased $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
@@ -262,58 +256,57 @@ run of Inform, as those are now out of date.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Making new entries. </b>We provide two ways to add a new entry: from a C string or from a word range.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::new_entry</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">category</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span>    <span class="comment">a safety precaution: never index the empty text</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span><span class="comment">a safety precaution: never index the empty text</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;raw_author_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;raw_title</span><span class="plain">, </span><span class="identifier">headword</span><span class="plain">);</span>
+            <span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">raw_author_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">raw_title</span><span class="plain">, </span><span class="identifier">headword</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::new_entry_from_stream</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">category</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">headword</span><span class="plain">) {</span>
-        <span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;author_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">, </span><span class="identifier">headword</span><span class="plain">);</span>
+        <span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">, </span><span class="identifier">headword</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">category</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">author</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">headword</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain">);</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain"> = </span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">author</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"NDER %X\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">);</span>
-        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="constant">DICTIONARY_REFERRED_WDBC</span><span class="plain">);</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">);</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">);</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain"> = </span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">author</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"NDER %X\n"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">);</span>
+        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="constant">DICTIONARY_REFERRED_WDBC</span><span class="plain">);</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">);</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">);</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"indexing"</span><span class="plain">)) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">sdate</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">udate</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mode</span><span class="plain"> = 0, </span><span class="identifier">wc</span><span class="plain"> = 0;</span>
-            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'/'</span><span class="plain">) { </span><span class="identifier">mode</span><span class="plain"> = 1; </span><span class="reserved">continue</span><span class="plain">; }</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">':'</span><span class="plain">) { </span><span class="identifier">mode</span><span class="plain"> = 2; </span><span class="reserved">continue</span><span class="plain">; }</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mode</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">wc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'/'</span><span class="plain">) { </span><span class="identifier">mode</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">':'</span><span class="plain">) { </span><span class="identifier">mode</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; }</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">digital</span><span class="plain"> = </span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">mode</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> 0:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digital</span><span class="plain">) </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">sdate</span><span class="plain">, </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 1:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digital</span><span class="plain">) </span><span class="identifier">wc</span><span class="plain"> = 10*</span><span class="identifier">wc</span><span class="plain"> + ((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) - ((</span><span class="reserved">int</span><span class="plain">) </span><span class="character">'0'</span><span class="plain">);</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digital</span><span class="plain">) </span><span class="identifier">wc</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">*</span><span class="identifier">wc</span><span class="plain"> + ((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) - ((</span><span class="reserved">int</span><span class="plain">) </span><span class="character">'0'</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 2:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
                         <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">udate</span><span class="plain">, </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sdate</span><span class="plain">) &gt; 0) </span><span class="functiontext">Works::set_sort_date</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">sdate</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wc</span><span class="plain"> &gt; 0) </span><span class="functiontext">Works::set_word_count</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">wc</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">udate</span><span class="plain">) &gt; 0) </span><span class="functiontext">Works::set_usage_date</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">udate</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sdate</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Works::set_sort_date</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">sdate</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Works::set_word_count</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">wc</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">udate</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Works::set_usage_date</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">udate</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">sdate</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">udate</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Created $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -330,7 +323,6 @@ run of Inform, as those are now out of date.
 entries, close.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Extensions::Dictionary::filename</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inbuild::transient</span><span class="plain">();</span>
@@ -346,10 +338,10 @@ entries, close.
 
         &lt;<span class="cwebmacro">Ensure the serialised extensions dictionary file exists</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Reading dictionary file %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Reading dictionary file %f\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Extensions::Dictionary::load_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Finished reading dictionary file\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Finished reading dictionary file\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -377,7 +369,7 @@ some kind, which is bad enough news to bother the user with.
 <pre class="displaydefn">
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">DICTF</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DICTF</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Creating new empty dictionary file\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Creating new empty dictionary file\n"</span><span class="plain">);</span>
             <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">EMPTY_DICTF</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="string">"w"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EMPTY_DICTF</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">EMPTY_DICTF</span><span class="plain">);</span>
@@ -396,7 +388,6 @@ stroke is also ignored, and any line not containing five vertical strokes
 any truncated, overlong lines are ineffectual but safe.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::load_helper</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">line_entry</span><span class="plain">,</span>
         <span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -404,19 +395,19 @@ any truncated, overlong lines are ineffectual but safe.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">strokes</span><span class="plain"> = 0, </span><span class="identifier">pos</span><span class="plain"> = 0; </span><span class="identifier">strokes</span><span class="plain"> &lt;= 4; </span><span class="identifier">pos</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">strokes</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">strokes</span><span class="plain"> &lt;= </span><span class="constant">4</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">line_entry</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'|'</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">strokes</span><span class="plain"> == 5)</span>
+                <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">strokes</span><span class="plain"> == </span><span class="constant">5</span><span class="plain">)</span>
                     <span class="functiontext">Extensions::Dictionary::new_dictionary_entry_raw</span><span class="plain">(</span>
                         <span class="identifier">category</span><span class="plain">, </span><span class="identifier">author</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">headword</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">strokes</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">author</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 4: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">author</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">headword</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -433,7 +424,6 @@ any truncated, overlong lines are ineffectual but safe.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Time stamping. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::time_stamp</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">dbuff</span><span class="plain">);</span>
@@ -441,9 +431,9 @@ any truncated, overlong lines are ineffectual but safe.
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">ascmon</span><span class="plain">[] = { </span><span class="string">"January"</span><span class="plain">, </span><span class="string">"February"</span><span class="plain">, </span><span class="string">"March"</span><span class="plain">, </span><span class="string">"April"</span><span class="plain">, </span><span class="string">"May"</span><span class="plain">, </span><span class="string">"June"</span><span class="plain">,</span>
             <span class="string">"July"</span><span class="plain">, </span><span class="string">"August"</span><span class="plain">, </span><span class="string">"September"</span><span class="plain">, </span><span class="string">"October"</span><span class="plain">, </span><span class="string">"November"</span><span class="plain">, </span><span class="string">"December"</span><span class="plain"> };</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dbuff</span><span class="plain">, </span><span class="string">"%04d%02d%02d%02d%02d%02d/%d:%s %d %s %d %02d:%02d"</span><span class="plain">,</span>
-            <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">+1900, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + 1, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">,</span>
+            <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">+1900, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">,</span>
             <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_hour</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_min</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_sec</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">)?(</span><span class="identifier">TextFromFiles::total_word_count</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">)):0,</span>
+            <span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain">)?(</span><span class="identifier">TextFromFiles::total_word_count</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain">)):0,</span>
             <span class="identifier">ascday</span><span class="plain">[</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_wday</span><span class="plain">], </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">,</span>
             <span class="identifier">ascmon</span><span class="plain">[</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain">], </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">+1900,</span>
             <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_hour</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_min</span><span class="plain">);</span>
@@ -459,7 +449,6 @@ any truncated, overlong lines are ineffectual but safe.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Saving to disc. </b>And inversely...
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::write_back</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
@@ -470,15 +459,15 @@ any truncated, overlong lines are ineffectual but safe.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">DICTF</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">UTF8_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Writing dictionary file\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Writing dictionary file\n"</span><span class="plain">);</span>
 
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Writing $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Write line to the dictionary file from single entry</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Suppressing $d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Suppressing $d\n"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Finished writing dictionary file\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Finished writing dictionary file\n"</span><span class="plain">);</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">DICTF</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -493,7 +482,6 @@ only occur if it were true that
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">4 + MAX_ED_CATEGORY_LENGTH + MAX_ED_HEADWORD_LENGTH +</span>
@@ -512,9 +500,9 @@ for any future increase of the above maxima without fuss.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DICTF</span><span class="plain">, </span><span class="string">"|%S|%S|%S|%S|\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">-</span><span class="element">&gt;author_name</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">,</span>
-            <span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">DICTF</span><span class="plain">, </span><span class="string">"|%S|%S|%S|%S|\n"</span><span class="plain">,</span>
+            <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">ede_work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">,</span>
+            <span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -535,20 +523,19 @@ If two entries have identical headwords, the earliest created is the
 one which appears earlier in the sorted dictionary.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::sort_extension_dictionary</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> **</span><span class="identifier">sorted_extension_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Beginning dictionary sort\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Beginning dictionary sort\n"</span><span class="plain">);</span>
         <span class="identifier">sorted_extension_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Count headwords and reprocess their texts for dictionary sorting</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">first_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> 0;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         &lt;<span class="cwebmacro">Allocate memory for, and fill, an array of pointers to the EDEs</span> <span class="cwebmacronumber">15.2</span>&gt;<span class="plain">;</span>
@@ -559,7 +546,7 @@ one which appears earlier in the sorted dictionary.
         &lt;<span class="cwebmacro">String the sorted array together into a sorted linked list of EDEs</span> <span class="cwebmacronumber">15.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Deallocate memory for the array again</span> <span class="cwebmacronumber">15.4</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Sorted dictionary: %d entries\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">no_entries</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Sorted dictionary: %d entries\n"</span><span class="plain">, </span><span class="identifier">no_entries</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -598,15 +585,15 @@ for better testing.
 <pre class="displaydefn">
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">no_entries</span><span class="plain">++;</span>
-                <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">);</span>
-                <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">)</span>
+                <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">);</span>
+                <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">' '</span><span class="plain">)</span>
-                        <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">,</span>
+                        <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">,</span>
                             <span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)));</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">, </span><span class="string">"-%09d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Sorted under '%S': $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">, </span><span class="string">"-%09d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Sorted under '%S': $d"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">);</span>
             <span class="plain">}</span>
 </pre>
 
@@ -626,11 +613,11 @@ temporarily allocated in memory:
 
 <pre class="displaydefn">
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">sorted_extension_dictionary</span><span class="plain"> = </span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">no_entries</span><span class="plain">,</span>
             <span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *), </span><span class="constant">EXTENSION_DICTIONARY_MREASON</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">erased</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">++] = </span><span class="identifier">ede</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -652,10 +639,10 @@ temporarily allocated in memory:
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="identifier">first_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">sorted_extension_dictionary</span><span class="plain">[0];</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">no_entries</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain"> =</span>
+            <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain"> =</span>
                 <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1];</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries</span><span class="plain"> &gt; 0)</span>
-            <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">no_entries</span><span class="plain">-1]-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_entries</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">sorted_extension_dictionary</span><span class="plain">[</span><span class="identifier">no_entries</span><span class="plain">-1]-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -686,14 +673,13 @@ comparison of two EDEs is in fact delegated to a <code class="display"><span cla
 of their sorting texts:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::compare_ed_entries</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">elem1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">elem2</span><span class="plain">) {</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> **</span><span class="identifier">e1</span><span class="plain"> = (</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> **) </span><span class="identifier">elem1</span><span class="plain">;</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> **</span><span class="identifier">e2</span><span class="plain"> = (</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> **) </span><span class="identifier">elem2</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">e1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (*</span><span class="identifier">e2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Disaster while sorting extension dictionary"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Str::cmp</span><span class="plain">((*</span><span class="identifier">e1</span><span class="plain">)-</span><span class="element">&gt;sorting</span><span class="plain">, (*</span><span class="identifier">e2</span><span class="plain">)-</span><span class="element">&gt;sorting</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Str::cmp</span><span class="plain">((*</span><span class="identifier">e1</span><span class="plain">)-&gt;</span><span class="element">sorting</span><span class="plain">, (*</span><span class="identifier">e2</span><span class="plain">)-&gt;</span><span class="element">sorting</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -708,16 +694,15 @@ try to detect these clashes, we automatically scan the dictionary for them,
 and provide warnings on the dynamic extension index.
 </p>
 
-
 <pre class="display">
     <span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="functiontext">Extensions::Dictionary::kec_new</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_known_flag</span><span class="plain">) {</span>
         <span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">kec</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">known_extension_clash</span><span class="plain">);</span>
-        <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;leftx</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
-        <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;rightx</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;number_clashes</span><span class="plain"> = 1;</span>
-        <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;first_known</span><span class="plain"> = </span><span class="identifier">first_known_flag</span><span class="plain">;</span>
-        <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">leftx</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">rightx</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
+        <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">number_clashes</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">first_known</span><span class="plain"> = </span><span class="identifier">first_known_flag</span><span class="plain">;</span>
+        <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">kec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -785,7 +770,6 @@ not seem to have arisen from homonyms like "lead" (the substance) versus
 "lead" (the attachment to a collar).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::extension_clash</span><span class="plain">(</span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede1</span><span class="plain">, </span><span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede2</span><span class="plain">) {</span>
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -793,16 +777,16 @@ not seem to have arisen from homonyms like "lead" (the substance) versus
         <span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">kec</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ede1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">ede2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad extension clash"</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = </span><span class="functiontext">Works::compare</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">ede2</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">); </span>    <span class="comment">compare source extensions</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain"> = </span><span class="functiontext">Works::compare</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">ede2</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">); </span><span class="comment">compare source extensions</span>
 
         &lt;<span class="cwebmacro">Ignore apparent clashes which are in fact not troublesome</span> <span class="cwebmacronumber">18.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &lt; 0) { </span><span class="identifier">left</span><span class="plain"> = </span><span class="identifier">ede1</span><span class="plain">; </span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">ede2</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &gt; 0) { </span><span class="identifier">left</span><span class="plain"> = </span><span class="identifier">ede2</span><span class="plain">; </span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">ede1</span><span class="plain">; }</span>
-        <span class="identifier">leftx</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">; </span><span class="identifier">rightx</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">left</span><span class="plain"> = </span><span class="identifier">ede1</span><span class="plain">; </span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">ede2</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">left</span><span class="plain"> = </span><span class="identifier">ede2</span><span class="plain">; </span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">ede1</span><span class="plain">; }</span>
+        <span class="identifier">leftx</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">; </span><span class="identifier">rightx</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">;</span>
 
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">kec</span><span class="plain">, </span><span class="reserved">known_extension_clash</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;first_known</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">leftx</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;leftx</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">))) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="identifier">first_known</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">leftx</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">leftx</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">))) {</span>
                 &lt;<span class="cwebmacro">Search list of KECs deriving from the same left extension as this clash</span> <span class="cwebmacronumber">18.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -829,9 +813,9 @@ they would only clutter up the dictionary with spurious warnings.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">both definitions come from the same extension</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede2</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede2</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">d</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">both definitions come from the same extension</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede2</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede1</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede2</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"property"</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -855,13 +839,13 @@ extension anywhere in the list, we must add the new pair of definitions:
 
 <pre class="displaydefn">
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">kec</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">rightx</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;rightx</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">)) {</span>
-                <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;number_clashes</span><span class="plain">++; </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Works::match</span><span class="plain">(</span><span class="identifier">rightx</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">rightx</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">)) {</span>
+                <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">number_clashes</span><span class="plain">++; </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="functiontext">Extensions::Dictionary::kec_new</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="functiontext">Extensions::Dictionary::kec_new</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">kec</span><span class="plain"> = </span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="identifier">kec</span><span class="plain"> = </span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -873,14 +857,13 @@ extension anywhere in the list, we must add the new pair of definitions:
 clashes in a concise, human-readable way, which is what we now do.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::list_known_extension_clashes</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">kec</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">known_extension_clash</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">known_extension_clash</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Write the headnote about what extension clashes mean</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">kec</span><span class="plain">, </span><span class="reserved">known_extension_clash</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;first_known</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">first_known</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Write a paragraph about extensions clashing with the lefthand one here</span> <span class="cwebmacronumber">19.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -928,23 +911,23 @@ matter to the UTF-8 HTML file:
 <pre class="displaydefn">
         <span class="reserved">known_extension_clash</span><span class="plain"> *</span><span class="identifier">example</span><span class="plain">;</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
-        <span class="functiontext">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-</span><span class="element">&gt;leftx</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kec</span><span class="plain">-&gt;</span><span class="element">leftx</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">": "</span><span class="plain">);</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain"> = </span><span class="identifier">kec</span><span class="plain">; </span><span class="identifier">example</span><span class="plain">; </span><span class="identifier">example</span><span class="plain"> = </span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain"> = </span><span class="identifier">kec</span><span class="plain">; </span><span class="identifier">example</span><span class="plain">; </span><span class="identifier">example</span><span class="plain"> = </span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"clash with "</span><span class="plain">);</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
-            <span class="functiontext">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;rightx</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="functiontext">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">rightx</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (on "</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;number_clashes</span><span class="plain"> &gt; 1)</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d names, for instance "</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;number_clashes</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S)"</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;leftx</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"; "</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">number_clashes</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d names, for instance "</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">number_clashes</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S)"</span><span class="plain">, </span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">leftx</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"; "</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -954,7 +937,6 @@ matter to the UTF-8 HTML file:
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Writing the HTML extension index. </b>This is the index of terms, not the directory of extensions: it is, in
 fact, the HTML rendering of the dictionary constructed above.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Dictionary::write_to_HTML</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
@@ -970,12 +952,12 @@ fact, the HTML rendering of the dictionary constructed above.
         <span class="reserved">extension_dictionary_entry</span><span class="plain"> *</span><span class="identifier">ede</span><span class="plain">, *</span><span class="identifier">previous_ede</span><span class="plain">, *</span><span class="identifier">next_ede</span><span class="plain">;</span>
         <span class="functiontext">Extensions::Dictionary::erase_entries_of_uninstalled_extensions</span><span class="plain">();</span>
         <span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Extensions::Dictionary::sort_extension_dictionary</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt;= 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">previous_ede</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain"> = </span><span class="identifier">first_in_sorted_dictionary</span><span class="plain">; </span><span class="identifier">ede</span><span class="plain">;</span>
-            <span class="identifier">previous_ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"indexing"</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="identifier">next_ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_first</span><span class="plain"> = </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">));</span>
+            <span class="identifier">previous_ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"indexing"</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="identifier">next_ede</span><span class="plain"> = </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_first</span><span class="plain"> = </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_letter</span><span class="plain"> != </span><span class="identifier">this_first</span><span class="plain">) {</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="identifier">first_letter</span><span class="plain"> = </span><span class="identifier">this_first</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -999,7 +981,7 @@ A vs B, A vs C, then B vs C. This has O(N^2) running time, so if there are
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">EDES_DEFINE_SAME_WORD</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) ((</span><span class="identifier">X</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Y</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">-</span><span class="element">&gt;sorting</span><span class="plain">)))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">EDES_DEFINE_SAME_WORD</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">) ((</span><span class="identifier">X</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Y</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">-&gt;</span><span class="element">sorting</span><span class="plain">)))</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -1013,15 +995,15 @@ A vs B, A vs C, then B vs C. This has O(N^2) running time, so if there are
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">EDES_DEFINE_SAME_WORD</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="identifier">next_ede</span><span class="plain">)) {</span>
             <span class="identifier">tint</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="functiontext">Extensions::Dictionary::extension_clash</span><span class="plain">(</span><span class="identifier">ede</span><span class="plain">, </span><span class="identifier">next_ede</span><span class="plain">);</span>
-            <span class="identifier">next_ede</span><span class="plain"> = </span><span class="identifier">next_ede</span><span class="plain">-</span><span class="element">&gt;next_in_sorted_dictionary</span><span class="plain">;</span>
+            <span class="identifier">next_ede</span><span class="plain"> = </span><span class="identifier">next_ede</span><span class="plain">-&gt;</span><span class="element">next_in_sorted_dictionary</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"style='margin:0px; padding:0px;'"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tint</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"FF8080"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;entry_text</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">entry_text</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tint</span><span class="plain">) </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" - &lt;i&gt;%S&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;type</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">smaller\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="functiontext">Works::write_link_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-</span><span class="element">&gt;ede_work</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" - &lt;i&gt;%S&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">type</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"smaller\""</span><span class="plain">);</span>
+        <span class="functiontext">Works::write_link_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ede</span><span class="plain">-&gt;</span><span class="element">ede_work</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>

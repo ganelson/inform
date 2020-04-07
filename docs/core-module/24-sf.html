@@ -70,18 +70,17 @@ are visible, and also of the current values of the kind variables A to Z,
 if any, and the consequent return kind.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">locals_slate</span><span class="plain"> </span><span class="identifier">local_value_variables</span><span class="plain">; </span>    <span class="comment">those in scope here</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">local_stvol</span><span class="plain">; </span>    <span class="comment">those in scope here</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">locals_slate</span><span class="plain"> </span><span class="identifier">local_value_variables</span><span class="plain">; </span><span class="comment">those in scope here</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">local_stvol</span><span class="plain">; </span><span class="comment">those in scope here</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">allocated_pointers</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_formal_parameters_needed</span><span class="plain">; </span>    <span class="comment">usually 0, unless there are ambiguities</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_formal_parameters_needed</span><span class="plain">; </span><span class="comment">usually 0, unless there are ambiguities</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_returned</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> for no return value</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">local_kind_variables</span><span class="plain">; </span>    <span class="comment">points to an array indexed 1 to 26</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_returned</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> for no return value</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">local_kind_variables</span><span class="plain">; </span><span class="comment">points to an array indexed 1 to 26</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">determines_past_conditions</span><span class="plain">; </span>    <span class="comment">or rather, in the present, but for future use</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">determines_past_conditions</span><span class="plain">; </span><span class="comment">or rather, in the present, but for future use</span>
     <span class="plain">} </span><span class="reserved">ph_stack_frame</span><span class="plain">;</span>
 </pre>
 
@@ -94,7 +93,6 @@ we need to make one and keep it around. For this, we have the ability to box
 up a stack frame: by allocating an instance of the following structure, we
 can have a permanently valid pointer to a unique new PHSF.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame_box</span><span class="plain"> {</span>
@@ -111,16 +109,15 @@ can have a permanently valid pointer to a unique new PHSF.
 for which memory allocation and deallocation will be needed:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pointer_allocation</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">allocation</span><span class="plain">; </span>    <span class="comment">needed to compile a function call returning a pointer to a new value</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">local_reference_code</span><span class="plain">; </span>    <span class="comment">an I6 lvalue for the storage holding the pointer</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">escaped_local_reference_code</span><span class="plain">; </span>    <span class="comment">the same, but suitable for schema use</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">schema_for_promotion</span><span class="plain">; </span>    <span class="comment">an I6 schema for promoting this value</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">offset_index</span><span class="plain">; </span>    <span class="comment">start of small block wrt current stack frame</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">offset_past</span><span class="plain">; </span>    <span class="comment">just past the end of the small block</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">next_in_frame</span><span class="plain">; </span>    <span class="comment">within the linked list</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">allocation</span><span class="plain">; </span><span class="comment">needed to compile a function call returning a pointer to a new value</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">local_reference_code</span><span class="plain">; </span><span class="comment">an I6 lvalue for the storage holding the pointer</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">escaped_local_reference_code</span><span class="plain">; </span><span class="comment">the same, but suitable for schema use</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">schema_for_promotion</span><span class="plain">; </span><span class="comment">an I6 schema for promoting this value</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">offset_index</span><span class="plain">; </span><span class="comment">start of small block wrt current stack frame</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">offset_past</span><span class="plain">; </span><span class="comment">just past the end of the small block</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">next_in_frame</span><span class="plain">; </span><span class="comment">within the linked list</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">pointer_allocation</span><span class="plain">;</span>
 </pre>
@@ -132,17 +129,16 @@ for which memory allocation and deallocation will be needed:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Creation. </b>A completely black stack frame...
 </p>
 
-
 <pre class="display">
     <span class="reserved">ph_stack_frame</span><span class="plain"> </span><span class="functiontext">Frames::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.local_value_variables</span><span class="plain"> = </span><span class="functiontext">LocalVariables::blank_slate</span><span class="plain">();</span>
-        <span class="identifier">phsf</span><span class="element">.local_kind_variables</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.local_stvol</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.determines_past_conditions</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.allocated_pointers</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.kind_returned</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="element">.no_formal_parameters_needed</span><span class="plain"> = 0;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">local_value_variables</span><span class="plain"> = </span><span class="functiontext">LocalVariables::blank_slate</span><span class="plain">();</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">local_kind_variables</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">local_stvol</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">determines_past_conditions</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">allocated_pointers</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">kind_returned</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">.</span><span class="element">no_formal_parameters_needed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -155,7 +151,6 @@ for which memory allocation and deallocation will be needed:
 stack frame suitable for "nonphrasal" compilation, that is, for when Inform
 wants to compile an I6 routine for some purpose other than to define a phrase.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nonphrasal_stack_frame_is_current</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -171,7 +166,7 @@ wants to compile an I6 routine for some purpose other than to define a phrase.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::remove_nonphrase_stack_frame</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">nonphrasal_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::new</span><span class="plain">(); </span>    <span class="comment">to prevent accidental lucky misuse</span>
+        <span class="identifier">nonphrasal_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::new</span><span class="plain">(); </span><span class="comment">to prevent accidental lucky misuse</span>
         <span class="identifier">nonphrasal_stack_frame_is_current</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="functiontext">Frames::remove_current</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -186,16 +181,15 @@ wants to compile an I6 routine for some purpose other than to define a phrase.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Another way to get hold of a PHSF is to request a boxed one, as noted above:
 </p>
 
-
 <pre class="display">
     <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">ph_stack_frame_box</span><span class="plain"> *</span><span class="identifier">phsfb</span><span class="plain">;</span>
         <span class="identifier">phsfb</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">ph_stack_frame_box</span><span class="plain">);</span>
-        <span class="identifier">phsfb</span><span class="plain">-</span><span class="element">&gt;boxed_phsf</span><span class="plain"> = *</span><span class="identifier">phsf</span><span class="plain">;</span>
-        <span class="functiontext">LocalVariables::deep_copy_locals_slate</span><span class="plain">(&amp;(</span><span class="identifier">phsfb</span><span class="plain">-</span><span class="element">&gt;boxed_phsf.local_value_variables</span><span class="plain">),</span>
-            <span class="plain">&amp;(</span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_value_variables</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">phsfb</span><span class="plain">-</span><span class="element">&gt;boxed_phsf</span><span class="plain">);</span>
+        <span class="identifier">phsfb</span><span class="plain">-&gt;</span><span class="element">boxed_phsf</span><span class="plain"> = *</span><span class="identifier">phsf</span><span class="plain">;</span>
+        <span class="functiontext">LocalVariables::deep_copy_locals_slate</span><span class="plain">(&amp;(</span><span class="identifier">phsfb</span><span class="plain">-&gt;</span><span class="element">boxed_phsf</span><span class="plain">.</span><span class="element">local_value_variables</span><span class="plain">),</span>
+            <span class="plain">&amp;(</span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_value_variables</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">phsfb</span><span class="plain">-&gt;</span><span class="element">boxed_phsf</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -207,7 +201,6 @@ wants to compile an I6 routine for some purpose other than to define a phrase.
 and phrase option names used as conditions. It will be the nonphrasal one
 if that's active, and otherwise must be set as needed.
 </p>
-
 
 <pre class="display">
     <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">current_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -237,16 +230,15 @@ if that's active, and otherwise must be set as needed.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Kinds. </b>The kind of value we expect to return from within this stack frame, if any.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::set_kind_returned</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;kind_returned</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">kind_returned</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Frames::get_kind_returned</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;kind_returned</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">kind_returned</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -266,21 +258,21 @@ if that's active, and otherwise must be set as needed.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::set_kind_variables</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">vars</span><span class="plain">) {</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_kind_variables</span><span class="plain"> = </span><span class="identifier">vars</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_kind_variables</span><span class="plain"> = </span><span class="identifier">vars</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Frames::get_kind_variable</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phsf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_kind_variables</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_kind_variables</span><span class="plain">[</span><span class="identifier">N</span><span class="plain">];</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phsf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_kind_variables</span><span class="plain">))</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_kind_variables</span><span class="plain">[</span><span class="identifier">N</span><span class="plain">];</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> **</span><span class="functiontext">Frames::temporarily_set_kvs</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">vars</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_kind_variables</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_kind_variables</span><span class="plain"> = </span><span class="identifier">vars</span><span class="plain">;</span>
+        <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_kind_variables</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_kind_variables</span><span class="plain"> = </span><span class="identifier">vars</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prev</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -295,15 +287,14 @@ if that's active, and otherwise must be set as needed.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Stacked variables. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::set_stvol</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">, </span><span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">stvol</span><span class="plain">) {</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_stvol</span><span class="plain"> = </span><span class="identifier">stvol</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_stvol</span><span class="plain"> = </span><span class="identifier">stvol</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="functiontext">Frames::get_stvol</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_stvol</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_stvol</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -318,20 +309,19 @@ if that's active, and otherwise must be set as needed.
 reference to the past.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::determines_the_past</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span>
             <span class="string">"tried to determine past where no stack frame exists"</span><span class="plain">);</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;determines_past_conditions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Stack frame determines past\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">determines_past_conditions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Stack frame determines past\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Frames::used_for_past_tense</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;determines_past_conditions</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="identifier">determines_past_conditions</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -344,24 +334,23 @@ reference to the past.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::log</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null stack frame&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Stack frame at %08x: it:%s, dpc:%s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null stack frame&gt;\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Stack frame at %08x: it:%s, dpc:%s\n"</span><span class="plain">,</span>
             <span class="identifier">phsf</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_value_variables.it_variable_exists</span><span class="plain">)?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;determines_past_conditions</span><span class="plain">)?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">);</span>
+            <span class="plain">(</span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_value_variables</span><span class="plain">.</span><span class="element">it_variable_exists</span><span class="plain">)?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">,</span>
+            <span class="plain">(</span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">determines_past_conditions</span><span class="plain">)?</span><span class="string">"yes"</span><span class="plain">:</span><span class="string">"no"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;local_value_variables.local_variable_allocation</span><span class="plain">; </span><span class="identifier">lvar</span><span class="plain">; </span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">lvar</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain">-</span><span class="element">&gt;lv_purpose</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">LET_VALUE_LV</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Let/loop value: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOKEN_CALL_PARAMETER_LV</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Call value: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERNAL_USE_LV</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Internal use: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Other: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">local_value_variables</span><span class="plain">.</span><span class="element">local_variable_allocation</span><span class="plain">; </span><span class="identifier">lvar</span><span class="plain">; </span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">lvar</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain">-&gt;</span><span class="element">lv_purpose</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LET_VALUE_LV:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Let/loop value: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOKEN_CALL_PARAMETER_LV:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Call value: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTERNAL_USE_LV:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Internal use: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Other: "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%~L: "</span><span class="plain">, </span><span class="identifier">lvar</span><span class="plain">);</span>
-            <span class="functiontext">LocalVariables::log</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="functiontext">LocalVariables::log</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -374,14 +363,13 @@ reference to the past.
 invocation ambiguities, and this is how they're requested:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::need_at_least_this_many_formals</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"requested formal parameters outside all stack frames"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain">)</span>
-            <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;no_formal_parameters_needed</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">no_formal_parameters_needed</span><span class="plain">)</span>
+            <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">no_formal_parameters_needed</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -397,20 +385,19 @@ code will be needed to allocate and deallocate the memory storing the block.
 The following is the routine called to make this note.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="functiontext">Frames::add_allocation</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">proto</span><span class="plain">) {</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to allocate: $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to allocate: $u\n"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to allocate block kind outside all stack frames"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">pointer_allocation</span><span class="plain">);</span>
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain">;</span>
-        <span class="identifier">phsf</span><span class="plain">-</span><span class="element">&gt;allocated_pointers</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain"> = 0;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;next_in_frame</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain">;</span>
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_past</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain"> + </span><span class="identifier">Kinds::Behaviour::get_small_block_size</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">next_in_frame</span><span class="plain"> = </span><span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain">;</span>
+        <span class="identifier">phsf</span><span class="plain">-&gt;</span><span class="element">allocated_pointers</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="identifier">next_in_frame</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="identifier">offset_index</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">next_in_frame</span><span class="plain">-&gt;</span><span class="element">offset_past</span><span class="plain">;</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_past</span><span class="plain"> = </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain"> + </span><span class="identifier">Kinds::Behaviour::get_small_block_size</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Work out heap allocation code for this pointer value</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Work out local reference code for this pointer value</span> <span class="cwebmacronumber">15.2</span>&gt;<span class="plain">;</span>
@@ -426,7 +413,7 @@ The following is the routine called to make this note.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::emit_allocation</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain"> = </span><span class="functiontext">Frames::add_allocation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">all_sch</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain">);</span>
+        <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">all_sch</span><span class="plain"> = </span><span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain">);</span>
         <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">all_sch</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -450,7 +437,7 @@ default value of the given kind.
 
 
 <pre class="displaydefn">
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;allocation</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::make_heap_allocation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, 0, </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain">);</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">allocation</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::make_heap_allocation</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -468,17 +455,17 @@ a subarray of short blocks, indexed by the offset.
 
 
 <pre class="displaydefn">
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;local_reference_code</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain"> == 0) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;local_reference_code</span><span class="plain">, </span><span class="string">"I7SFRAME"</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain">, </span><span class="string">"I7SFRAME"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain"> == 1) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE)"</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE)"</span><span class="plain">);</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">local_reference_code</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="identifier">offset_index</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">local_reference_code</span><span class="plain">, </span><span class="string">"I7SFRAME"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain">, </span><span class="string">"I7SFRAME"</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE)"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE)"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE*%d)"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE**%d)"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;offset_index</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE*%d)"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain">, </span><span class="string">"(I7SFRAME+WORDSIZE**%d)"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">offset_index</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -492,15 +479,15 @@ a subarray of short blocks, indexed by the offset.
 
 
 <pre class="displaydefn">
-        <span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;schema_for_promotion</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">schema_for_promotion</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">proto</span><span class="plain">) {</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'*'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1] == </span><span class="character">'#'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+2] == </span><span class="character">'#'</span><span class="plain">)) {</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;schema_for_promotion</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;escaped_local_reference_code</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">schema_for_promotion</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">escaped_local_reference_code</span><span class="plain">);</span>
                     <span class="identifier">i</span><span class="plain">+=2;</span>
                     <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;schema_for_promotion</span><span class="plain">, </span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+                <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">schema_for_promotion</span><span class="plain">, </span><span class="identifier">proto</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -511,14 +498,13 @@ a subarray of short blocks, indexed by the offset.
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Frames::pall_get_local_reference</span><span class="plain">(</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;local_reference_code</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">local_reference_code</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Frames::pall_get_expanded_schema</span><span class="plain">(</span><span class="reserved">pointer_allocation</span><span class="plain"> *</span><span class="identifier">pall</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-</span><span class="element">&gt;schema_for_promotion</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pall</span><span class="plain">-&gt;</span><span class="element">schema_for_promotion</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

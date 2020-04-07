@@ -69,14 +69,13 @@ for creating and using them.
 <p class="inwebparagraph">Kinds can be faithfully represented as specifications, but not vice versa:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Specifications::from_kind</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Descriptions::from_kind</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Descriptions::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_lvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Lvalues::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
@@ -91,8 +90,8 @@ for creating and using them.
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Specifications::to_true_kind_disambiguated</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_lvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Lvalues::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_rvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Rvalues::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -114,7 +113,6 @@ result from <code class="display"><span class="extract">Specifications::from_kin
 is kind-like, but "even numbers" is not.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Specifications::is_kind_like</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Descriptions::is_kind_like</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -131,7 +129,6 @@ description-like, but names of objects are. Thus "Mrs Jones" is description-like
 but "12" is not.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Specifications::is_description_like</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -143,7 +140,7 @@ but "12" is not.
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">CON_description</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">CON_description</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -168,7 +165,6 @@ but "12" is not.
 is a DESCRIPTION. The following extracts the object, if any, from either case:
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">Specifications::object_exactly_described_if_any</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -191,7 +187,6 @@ new variable declaration, such as that in "The tally is a number that varies."
 We do this with the kind-like specification for "K that varies". Such a node
 is called "new-variable-like".
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Specifications::new_new_variable_like</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -226,14 +221,13 @@ produce good error messages, and also in order to describe phrases in the
 Index; those have to be English language forms.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Specifications::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"something unknown"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_lvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="functiontext">Lvalues::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_rvalue</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="functiontext">Rvalues::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_condition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="functiontext">Conditions::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="functiontext">Specifications::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="functiontext">Specifications::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"something unrecognised"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -256,13 +250,12 @@ more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cco</span><span class="plain"> = 0; </span>    <span class="comment">comparison count: used to make the debugging log vaguely searchable</span>
-    <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">c_s_stage_law</span><span class="plain"> = </span><span class="string">""</span><span class="plain">; </span>    <span class="comment">name of the law being applied, which caused this to be called</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cco</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">comparison count: used to make the debugging log vaguely searchable</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">c_s_stage_law</span><span class="plain"> = </span><span class="string">""</span><span class="plain">; </span><span class="comment">name of the law being applied, which caused this to be called</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Specifications::compare_specificity</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">wont_mix</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SPECIFICITIES</span><span class="plain">, </span><span class="string">"Law %s (test %d): comparing $P with $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SPECIFICITIES</span><span class="plain">, </span><span class="string">"Law %s (test %d): comparing $P with $P\n"</span><span class="plain">,</span>
             <span class="identifier">c_s_stage_law</span><span class="plain">, </span><span class="identifier">cco</span><span class="plain">++, </span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">spec2</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Existence is itself something specific</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
@@ -279,14 +272,14 @@ used in sorting algorithms.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wont_mix</span><span class="plain">) </span>&lt;<span class="cwebmacro">If one matches the other, but not vice versa, it must be more specific</span> <span class="cwebmacronumber">7.5</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">b</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) { </span>    <span class="comment">case 1: both are descriptions</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">b</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) { </span><span class="comment">case 1: both are descriptions</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Descriptions::compare_specificity</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">spec2</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">b</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) { </span>    <span class="comment">case 2: neither is a description</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">b</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) { </span><span class="comment">case 2: neither is a description</span>
             &lt;<span class="cwebmacro">Table entries are more specific than other non-descriptions</span> <span class="cwebmacronumber">7.6</span>&gt;<span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span>    <span class="comment">case 3: one is a description, the other isn't</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> { </span><span class="comment">case 3: one is a description, the other isn't</span>
             &lt;<span class="cwebmacro">When is a description more specific than a non-description?</span> <span class="cwebmacronumber">7.7</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -313,8 +306,8 @@ rate he changed his mind in 1896.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -338,7 +331,7 @@ it doesn't much matter either way.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">aa</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ba</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">b</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">ba</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">aa</span><span class="plain">) &amp;&amp; (!</span><span class="identifier">ba</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">aa</span><span class="plain">) &amp;&amp; (!</span><span class="identifier">ba</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((!</span><span class="identifier">aa</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ba</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
 </pre>
 
@@ -357,7 +350,7 @@ or even just "a door", even though the latter is linguistically simpler.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
 </pre>
 
@@ -380,10 +373,10 @@ equal status.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SPECIFICITIES</span><span class="plain">, </span><span class="string">"Test %d: Comparing specificity of instances $O and $O\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SPECIFICITIES</span><span class="plain">, </span><span class="string">"Test %d: Comparing specificity of instances $O and $O\n"</span><span class="plain">,</span>
             <span class="identifier">cco</span><span class="plain">, </span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pref</span><span class="plain"> = </span><span class="functiontext">Plugins::Call::more_specific</span><span class="plain">(</span><span class="identifier">I1</span><span class="plain">, </span><span class="identifier">I2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pref</span><span class="plain"> != 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pref</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pref</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pref</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -404,11 +397,11 @@ equal status.)
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">spec2</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">y</span><span class="plain"> = </span><span class="functiontext">Dash::compatible_with_description</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> 1;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">y</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wont_mix</span><span class="plain">) *</span><span class="identifier">wont_mix</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -438,7 +431,7 @@ a convention as a bug, which is usually telling.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">, </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">, </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
 </pre>
 
@@ -461,8 +454,8 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I1</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> -1; }</span>
-        <span class="reserved">else</span><span class="plain"> { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> 1; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I1</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> -1; }</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1; </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">; }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -472,7 +465,6 @@ but also "the tallest door in the Castle" (a phrase) beats "an open door".
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The Unknown. </b>We begin with s-nodes used to represent text not yet parsed, or for which no
 meaning could be found.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>

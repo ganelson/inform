@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -55,11 +55,10 @@ message; <code class="display"><span class="extract">ln</span></code> is an opti
 original source text (though in fact I7 does not use this at present).
 </p>
 
-
 <pre class="display">
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">RTP_Buffer</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; (-1) </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">RTP_Buffer</span><span class="plain"> --&gt; (-1) </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">RunTimeProblem</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain"> </span><span class="identifier">par3</span><span class="plain"> </span><span class="identifier">ln</span><span class="plain"> </span><span class="identifier">file</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == </span><span class="constant">-1</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == -1) {</span>
             <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="identifier">n</span><span class="plain">;</span>
             <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;1 = </span><span class="identifier">par1</span><span class="plain">;</span>
             <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;2 = </span><span class="identifier">par2</span><span class="plain">;</span>
@@ -70,7 +69,7 @@ original source text (though in fact I7 does not use this at present).
         <span class="identifier">RunTimeProblemShow</span><span class="plain">();</span>
     <span class="plain">];</span>
     <span class="plain">[ </span><span class="identifier">ClearRTP</span><span class="plain">;</span>
-        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = -1;</span>
         <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6 = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="plain">];</span>
     <span class="plain">[ </span><span class="identifier">SuspendRTP</span><span class="plain">;</span>
@@ -80,7 +79,7 @@ original source text (though in fact I7 does not use this at present).
         <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6 = </span><span class="reserved">false</span><span class="plain">;</span>
     <span class="plain">];</span>
     <span class="plain">[ </span><span class="identifier">RunTimeProblemShow</span><span class="plain">   </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">par1</span><span class="plain"> </span><span class="identifier">par2</span><span class="plain"> </span><span class="identifier">par3</span><span class="plain"> </span><span class="identifier">ln</span><span class="plain"> </span><span class="identifier">file</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == </span><span class="constant">-1</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">-2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 == -1 </span><span class="reserved">or</span><span class="plain"> -2) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;6) </span><span class="reserved">return</span><span class="plain">;</span>
 
         <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0;</span>
@@ -89,7 +88,7 @@ original source text (though in fact I7 does not use this at present).
         <span class="identifier">par3</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;3;</span>
         <span class="identifier">ln</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;4;</span>
         <span class="identifier">file</span><span class="plain"> = </span><span class="identifier">RTP_Buffer</span><span class="plain">--&gt;5;</span>
-        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = </span><span class="constant">-2</span><span class="plain">;</span>
+        <span class="identifier">RTP_Buffer</span><span class="plain">--&gt;0 = -2;</span>
 
         <span class="reserved">new_line</span><span class="plain">;</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">"*** Run-time problem P"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">;</span>
@@ -165,7 +164,7 @@ original source text (though in fact I7 does not use this at present).
                     <span class="plain">(</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">par1</span><span class="plain">, </span><span class="string">"'.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_ROUTELESS</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to find route or count steps through an implicit</span>
-                    <span class="identifier">relation</span><span class="plain">.^</span><span class="string">";</span>
+                    <span class="string">relation.^"</span><span class="plain">;</span>
             <span class="identifier">RTP_PROPOFNOTHING</span><span class="plain">:</span>
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to use a property of the 'nothing' non-object: property "</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="identifier">PrintPropertyName</span><span class="plain">) </span><span class="identifier">par2</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
@@ -229,7 +228,6 @@ so error 4 is out of the question. But we retain the routine because the
 veneer code added by I6 requires it to be present.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">MAX_TIMERS</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">RunTimeError</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain">;</span>
@@ -242,11 +240,11 @@ veneer code added by I6 requires it to be present.
         <span class="constant">3</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Entry in property list not routine or string: ~"</span><span class="plain">, (</span><span class="identifier">property</span><span class="plain">) </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">"~ list of ~"</span><span class="plain">,</span>
                     <span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
         <span class="constant">4</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Too many timers/daemons are active simultaneously.</span>
-                    <span class="identifier">The</span><span class="plain"> </span><span class="identifier">limit</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> </span><span class="identifier">library</span><span class="plain"> </span><span class="identifier">constant</span><span class="plain"> </span><span class="identifier">MAX_TIMERS</span><span class="plain"> (</span><span class="identifier">currently</span><span class="plain"> </span><span class="string">",</span>
+                    <span class="string">The limit is the library constant MAX_TIMERS (currently "</span><span class="plain">,</span>
                     <span class="identifier">MAX_TIMERS</span><span class="plain">, </span><span class="string">") and should be increased"</span><span class="plain">;</span>
         <span class="constant">5</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Object ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ has no ~time_left~ property"</span><span class="plain">;</span>
         <span class="constant">7</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"The object ~"</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">"~ can only be used as a player object if it has</span>
-                    <span class="identifier">the</span><span class="plain"> ~</span><span class="identifier">number</span><span class="plain">~ </span><span class="identifier">property</span><span class="string">";</span>
+                    <span class="string">the ~number~ property"</span><span class="plain">;</span>
         <span class="constant">8</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Attempt to take random entry from an empty table array"</span><span class="plain">;</span>
         <span class="constant">9</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">" is not a valid direction property number"</span><span class="plain">;</span>
         <span class="constant">10</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"The player-object is outside the object tree"</span><span class="plain">;</span>
@@ -258,7 +256,7 @@ veneer code added by I6 requires it to be present.
         <span class="reserved">print</span><span class="plain"> </span><span class="string">" **^"</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">;</span>
         <span class="reserved">print</span><span class="plain"> </span><span class="string">"** Library error "</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">p1</span><span class="plain">, </span><span class="string">","</span><span class="plain">, </span><span class="identifier">p2</span><span class="plain">, </span><span class="string">") **^"</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">! DEBUG</span>
+        <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
         <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_LOWLEVELERROR</span><span class="plain">);</span>
     <span class="plain">];</span>
 </pre>
@@ -268,7 +266,6 @@ veneer code added by I6 requires it to be present.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Argument Type Checking Failed. </b>This is called when run-time type checking for the argument of a phrase
 fails, so that no definition for the phrase can be applied.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ArgumentTypeFailed</span><span class="plain"> </span><span class="identifier">line</span><span class="plain"> </span><span class="identifier">file</span><span class="plain">;</span>
@@ -287,7 +284,6 @@ the following routine. The value <code class="display"><span class="extract">V</
 it can be <code class="display"><span class="extract">nothing</span></code>, and we must check that it matches a given I7 kind <code class="display"><span class="extract">K</span></code>
 (where <code class="display"><span class="extract">nothing</span></code> is not valid).
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CheckKindReturned</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
@@ -312,7 +308,6 @@ have it, or its kind's kind, and so on. Thirdly, the object has to actually
 have the property in question at an I6 level &mdash; having permission to have
 it doesn't mean it actually does have.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">WhetherProvides</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">either_or</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">issue_rtp</span><span class="plain">  </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">;</span>
@@ -364,7 +359,6 @@ property; the position in the table is called the "offset" for the property.
 The following searches from a given offset.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ScanPropertyMetadata</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">off</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">off</span><span class="plain">: </span><span class="identifier">property_metadata</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">i</span><span class="plain">++)</span>
@@ -395,7 +389,6 @@ applied against any object without run-time errors, even though it is only
 normally valid for doors and containers.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GetEitherOrProperty</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="reserved">nothing</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -413,7 +406,6 @@ normally valid for doors and containers.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Set Either-Or Property. </b>An attempt to write an either/or property which is not provided will,
 however, always produce a run-time problem.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SetEitherOrProperty</span><span class="plain"> </span><span class="identifier">o</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">negate</span><span class="plain"> </span><span class="identifier">adj</span><span class="plain">;</span>
@@ -447,7 +439,6 @@ this enables it to be an I6 routine returning the other side of the door from
 the one which the player is on.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">GProperty</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">OBJECT_TY</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> = </span><span class="identifier">value_property_holders</span><span class="plain">--&gt;</span><span class="identifier">K</span><span class="plain">;</span>
@@ -459,13 +450,13 @@ the one which the player is on.
                 <span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K0_kind</span><span class="plain">)</span>
-                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">! to force a run-time problem</span>
+                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">to force a run-time problem</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">V</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">V</span><span class="plain"> &gt; </span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">value_range</span><span class="plain">)) {</span>
                 <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_BADVALUEPROPERTY</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; }</span>
             <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">pr</span><span class="plain">)--&gt;(</span><span class="identifier">V</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K0_kind</span><span class="plain">)</span>
-                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">! to force a run-time problem</span>
+                <span class="identifier">WhetherProvides</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">); </span><span class="comment">to force a run-time problem</span>
         <span class="plain">}</span>
         <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -477,7 +468,6 @@ the one which the player is on.
 with the prefix <code class="display"><span class="extract">Write</span></code>, as that is how a reference to such a property is
 converted from an rvalue to an lvalue.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">WriteGProperty</span><span class="plain"> </span><span class="identifier">K</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
@@ -498,7 +488,6 @@ converted from an rvalue to an lvalue.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Printing Property Names. </b>Inform doesn't print property names prettily; it more or less prints them
 only as decimal numbers.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PROPERTY_TY_Say</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>

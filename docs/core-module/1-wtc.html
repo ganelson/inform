@@ -68,7 +68,6 @@ represent the program we have to compile; but we will need additional data
 about that compilation, and it's stored in the following.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">compile_task_data</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">build_step</span><span class="plain"> *</span><span class="identifier">task</span><span class="plain">;</span>
@@ -103,7 +102,6 @@ sense of being able to compile two source texts simultaneously. The global
 thing which is being compiled when it is.
 </p>
 
-
 <pre class="display">
     <span class="reserved">compile_task_data</span><span class="plain"> *</span><span class="identifier">inform7_task</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">latest_syntax_tree</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -116,23 +114,23 @@ thing which is being compiled when it is.
 
         <span class="functiontext">Task::issue_problems_arising</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">vertex</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"cannot re-enter with new task"</span><span class="plain">);</span>
         <span class="identifier">inform7_task</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">compile_task_data</span><span class="plain">);</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;task</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;path</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">associated_copy</span><span class="plain">-&gt;</span><span class="identifier">location_if_path</span><span class="plain">;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;build</span><span class="plain"> = </span><span class="identifier">Projects::build_pathname</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;build</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain"> = </span><span class="identifier">Inbuild::materials</span><span class="plain">();</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;existing_storyfile</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain"> = -1;</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;next_resource_number</span><span class="plain"> = 3;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">task</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">path</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">associated_copy</span><span class="plain">-&gt;</span><span class="identifier">location_if_path</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">build</span><span class="plain"> = </span><span class="identifier">Projects::build_pathname</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">build</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain"> = </span><span class="identifier">Inbuild::materials</span><span class="plain">();</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">existing_storyfile</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain"> = -1;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">next_resource_number</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">;</span>
 
         <span class="identifier">English_language</span><span class="plain"> = </span><span class="identifier">Projects::get_language_of_syntax</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Sequence::carry_out</span><span class="plain">(</span><span class="identifier">TargetVMs::debug_enabled</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;task</span><span class="plain">-&gt;</span><span class="identifier">for_vm</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Sequence::carry_out</span><span class="plain">(</span><span class="identifier">TargetVMs::debug_enabled</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">task</span><span class="plain">-&gt;</span><span class="identifier">for_vm</span><span class="plain">));</span>
         <span class="identifier">inform7_task</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -150,11 +148,10 @@ because the Inform problems file wasn't open back then; and besides, it can
 only issue stubby Unix-like command line errors.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Task::issue_problems_arising</span><span class="plain">(</span><span class="identifier">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">type</span><span class="plain"> == </span><span class="identifier">COPY_VERTEX</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Issue from copy of %X at %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Issue from copy of %X at %08x\n"</span><span class="plain">,</span>
                 <span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">);</span>
             <span class="functiontext">SourceProblems::issue_problems_arising</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -174,34 +171,33 @@ only issue stubby Unix-like command line errors.)
 rough stages. Twenty is plenty.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> &lt;= </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not an advance"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> &gt;= 20) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"went too far"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> &lt;= </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not an advance"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> &gt;= </span><span class="constant">20</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"went too far"</span><span class="plain">);</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">roman</span><span class="plain">[] = {</span>
             <span class="string">"I"</span><span class="plain">, </span><span class="string">"II"</span><span class="plain">, </span><span class="string">"III"</span><span class="plain">, </span><span class="string">"IV"</span><span class="plain">, </span><span class="string">"V"</span><span class="plain">, </span><span class="string">"VI"</span><span class="plain">, </span><span class="string">"VII"</span><span class="plain">, </span><span class="string">"VIII"</span><span class="plain">, </span><span class="string">"IX"</span><span class="plain">, </span><span class="string">"X"</span><span class="plain">,</span>
             <span class="string">"XI"</span><span class="plain">, </span><span class="string">"XII"</span><span class="plain">, </span><span class="string">"XIII"</span><span class="plain">, </span><span class="string">"XIV"</span><span class="plain">, </span><span class="string">"XV"</span><span class="plain">, </span><span class="string">"XVI"</span><span class="plain">, </span><span class="string">"XVII"</span><span class="plain">, </span><span class="string">"XVIII"</span><span class="plain">, </span><span class="string">"XIX"</span><span class="plain">, </span><span class="string">"XX"</span><span class="plain"> };</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Log::new_phase</span><span class="plain">(</span><span class="identifier">roman</span><span class="plain">[</span><span class="identifier">stage</span><span class="plain">], </span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> &gt;= 0) </span><span class="functiontext">ProgressBar::update</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, 0);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">ProgressBar::update</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain"> = </span><span class="identifier">stage</span><span class="plain">;</span>
+        <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain"> = </span><span class="identifier">stage</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::is_before_stage</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain"> &lt; </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain"> &lt; </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::is_during_stage</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain"> == </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain"> == </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::is_after_stage</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;stage_of_compilation</span><span class="plain"> &gt; </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">stage_of_compilation</span><span class="plain"> &gt; </span><span class="identifier">stage</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -219,21 +215,20 @@ rough stages. Twenty is plenty.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The current project and the virtual machine we want to compile it for:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inform_project</span><span class="plain"> *</span><span class="functiontext">Task::project</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">target_vm</span><span class="plain"> *</span><span class="functiontext">Task::vm</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;task</span><span class="plain">-&gt;</span><span class="identifier">for_vm</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">task</span><span class="plain">-&gt;</span><span class="identifier">for_vm</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">inbuild_edition</span><span class="plain"> *</span><span class="functiontext">Task::edition</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -263,11 +258,10 @@ number but a long or short beep. If a genuine sound effect had resource ID
 1 or 2, therefore, it would be unplayable on the Z-machine.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::get_next_free_blorb_resource_ID</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;next_resource_number</span><span class="plain">++;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">next_resource_number</span><span class="plain">++;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -279,11 +273,10 @@ number but a long or short beep. If a genuine sound effect had resource ID
 a non-zero value to make testing Inform easier.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::rng_seed</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">-&gt;</span><span class="identifier">fix_rng</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">-&gt;</span><span class="identifier">fix_rng</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -295,16 +288,15 @@ a non-zero value to make testing Inform easier.
 referring something back up to Inbuild.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Task::load_types</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="identifier">Projects::load_types</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">);</span>
+        <span class="identifier">Projects::load_types</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::begin_execution_at_to_begin</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Projects::Main_defined</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Projects::Main_defined</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -355,23 +347,22 @@ have no purpose unless Inform is in a release run (with <code class="display"><s
 the command line), but they take no time to generate so we make them anyway.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::uuid_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"uuid.txt"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"uuid.txt"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::ifiction_record_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Metadata.iFiction"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Metadata.iFiction"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::manifest_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"manifest.plist"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"manifest.plist"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::blurb_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release.blurb"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release.blurb"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -391,15 +382,14 @@ during the compilation process. The debugging log and Inform problems report
 section for details. In addition we have:
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::cblorb_report_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"StatusCblorb.html"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"StatusCblorb.html"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::parse_tree_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Parse tree.txt"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Parse tree.txt"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -413,11 +403,10 @@ section for details. In addition we have:
 we have to extract it from the build graph:
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::storyfile_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="identifier">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;project</span><span class="plain">-&gt;</span><span class="identifier">unblorbed_vertex</span><span class="plain">;</span>
+        <span class="identifier">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">project</span><span class="plain">-&gt;</span><span class="identifier">unblorbed_vertex</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"project graph not ready"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">as_file</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -435,11 +424,10 @@ which holds the mini-website of the Index for a project.
 details on actions live in the subfolder <code class="display"><span class="extract">Details</span></code>: see below.
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::index_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Index"</span><span class="plain">);</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Index"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -455,7 +443,6 @@ application, if it wants it, but is not linked to or used by the HTML of
 the index as seen by the user.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::xml_headings_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="functiontext">Task::index_path</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"Headings.xml"</span><span class="plain">);</span>
@@ -469,7 +456,6 @@ the index as seen by the user.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Within the Index is a deeper level, into the weeds as it were, called
 <code class="display"><span class="extract">Details</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::index_details_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -490,10 +476,9 @@ mini-website. Filenames down in the <code class="display"><span class="extract">
 leafname <code class="display"><span class="extract">A.html</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::index_file</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sub</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sub</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sub</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">full_leafname</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">full_leafname</span><span class="plain">, </span><span class="string">"%d_%S"</span><span class="plain">, </span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
             <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="functiontext">Task::index_details_path</span><span class="plain">(), </span><span class="identifier">full_leafname</span><span class="plain">);</span>
@@ -526,26 +511,25 @@ as read this filename. Whatever the leafname, though, it lives in the top
 level of materuals.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;existing_storyfile</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">existing_storyfile</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Task::set_existing_storyfile</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="string">"story.%S"</span><span class="plain">, </span><span class="identifier">TargetVMs::get_unblorbed_extension</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()));</span>
-            <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;existing_storyfile</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
+            <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">existing_storyfile</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;existing_storyfile</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">existing_storyfile</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::existing_storyfile_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;existing_storyfile</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">existing_storyfile</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -568,25 +552,24 @@ Materials but outside Release which we write to.
 and Sounds, if any, live: in their own subfolders.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::large_cover_art_file</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">JPEG</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">JPEG</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.jpg"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.png"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">JPEG</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.jpg"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.png"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Task::epsmap_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Inform Map.eps"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Inform Map.eps"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::figures_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Figures"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Figures"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::sounds_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Sounds"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Sounds"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -606,11 +589,10 @@ is that everything in Release can always be thrown away without loss, because
 it can all be generated again.
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::release_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inform7_task</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"there is no current task"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-</span><span class="element">&gt;materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_task</span><span class="plain">-&gt;</span><span class="element">materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Task::released_figures_path</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="functiontext">Task::release_path</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"Figures"</span><span class="plain">);</span>

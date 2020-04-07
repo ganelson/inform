@@ -80,15 +80,14 @@ implementation reasons.
 will vary depending on the verb it's coupled with.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preposition_identity</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">prep_text</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">lexicon_entry</span><span class="plain"> *</span><span class="identifier">prep_lex_entry</span><span class="plain">; </span>    <span class="comment">for use when indexing</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">lexicon_entry</span><span class="plain"> *</span><span class="identifier">prep_lex_entry</span><span class="plain">; </span><span class="comment">for use when indexing</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_prep_created</span><span class="plain">; </span>    <span class="comment">for use if problem messages needed</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_unexpected_upper_case</span><span class="plain">; </span>    <span class="comment">for preps like "in Cahoots With"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_prep_created</span><span class="plain">; </span><span class="comment">for use if problem messages needed</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_unexpected_upper_case</span><span class="plain">; </span><span class="comment">for preps like "in Cahoots With"</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">preposition_identity</span><span class="plain">;</span>
 </pre>
@@ -102,23 +101,22 @@ will vary depending on the verb it's coupled with.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_IN_PREPOSITION</span><span class="plain"> (</span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain"> - 2)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_IN_PREPOSITION</span><span class="plain"> (</span><span class="identifier">MAX_WORDS_IN_ASSEMBLAGE</span><span class="plain"> - </span><span class="constant">2</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Preposition words are marked for efficiency of parsing:
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PREPOSITION_MC</span><span class="plain"> 0</span><span class="identifier">x00800000</span><span class="plain"> </span>    <span class="comment">a word which might introduce a relative clause</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREPOSITION_MC</span><span class="plain"> </span><span class="constant">0x00800000</span><span class="plain"> </span><span class="comment">a word which might introduce a relative clause</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Logging. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Prepositions::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vprep</span><span class="plain">) {</span>
         <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = (</span><span class="reserved">preposition_identity</span><span class="plain"> *) </span><span class="identifier">vprep</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prep</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"___"</span><span class="plain">); }</span>
-        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"p=%A"</span><span class="plain">, &amp;(</span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">)); }</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"p=%A"</span><span class="plain">, &amp;(</span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">)); }</span>
     <span class="plain">}</span>
 </pre>
 
@@ -130,24 +128,23 @@ will vary depending on the verb it's coupled with.
 to one verb is the same preposition as the "for" attached to another one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="functiontext">Prepositions::make</span><span class="plain">(</span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">) {</span>
         <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prep</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare</span><span class="plain">(&amp;(</span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">), &amp;</span><span class="identifier">wa</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">WordAssemblages::compare</span><span class="plain">(&amp;(</span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">), &amp;</span><span class="identifier">wa</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prep</span><span class="plain">;</span>
 
         <span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">preposition_identity</span><span class="plain">);</span>
-        <span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
-        <span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;where_prep_created</span><span class="plain"> = </span><span class="identifier">set_where_created</span><span class="plain">;</span>
-        <span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;allow_unexpected_upper_case</span><span class="plain"> = </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">;</span>
+        <span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
+        <span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">where_prep_created</span><span class="plain"> = </span><span class="identifier">set_where_created</span><span class="plain">;</span>
+        <span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">allow_unexpected_upper_case</span><span class="plain"> = </span><span class="identifier">unexpected_upper_casing_used</span><span class="plain">;</span>
         <span class="functiontext">Prepositions::mark_as_preposition</span><span class="plain">(</span><span class="identifier">WordAssemblages::first_word</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">));</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_lex_entry</span><span class="plain"> = </span><span class="identifier">Index::Lexicon::new_main_verb</span><span class="plain">(</span><span class="identifier">wa</span><span class="plain">, </span><span class="identifier">PREP_LEXE</span><span class="plain">);</span>
+        <span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_lex_entry</span><span class="plain"> = </span><span class="identifier">Index::Lexicon::new_main_verb</span><span class="plain">(</span><span class="identifier">wa</span><span class="plain">, </span><span class="identifier">PREP_LEXE</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"New preposition: $p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"New preposition: $p\n"</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prep</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -160,15 +157,14 @@ to one verb is the same preposition as the "for" attached to another one.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Two utility routines:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Prepositions::get_where_pu_created</span><span class="plain">(</span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;where_prep_created</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">where_prep_created</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Prepositions::length</span><span class="plain">(</span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prep</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::length</span><span class="plain">(&amp;(</span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prep</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::length</span><span class="plain">(&amp;(</span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -183,11 +179,10 @@ perhaps entirely filling, the given wording. We return the word number after
 the preposition ends, which might therefore be just outside the range.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Prepositions::parse_prep_against</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::parse_as_weakly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">), </span><span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
-            <span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;allow_unexpected_upper_case</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::parse_as_weakly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">), </span><span class="identifier">EMPTY_WORDING</span><span class="plain">,</span>
+            <span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">allow_unexpected_upper_case</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -198,7 +193,6 @@ the preposition ends, which might therefore be just outside the range.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following nonterminal is currently not used. In principle it spots any
 preposition, but note that it does so by testing in creation order.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">preposition</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
@@ -223,14 +217,13 @@ verb forms for "to be', which is constructed with longer prepositions first.
 So it will find the longest match.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">copular</span><span class="plain">-</span><span class="identifier">preposition</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">copular_verb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="constant">PREPOSITION_MC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">copular_verb</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">=</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">) {</span>
-            <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">copular_verb</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">=</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">) {</span>
+            <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">preposition</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">Prepositions::parse_prep_against</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prep</span><span class="plain">;</span>
@@ -248,14 +241,13 @@ So it will find the longest match.
 with a given "permitted verb".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">permitted</span><span class="plain">-</span><span class="identifier">preposition</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Vocabulary::test_flags</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="constant">PREPOSITION_MC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">permitted_verb_identity</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">permitted_verb_identity</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">=</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">) {</span>
-                <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">permitted_verb_identity</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">=</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">) {</span>
+                <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">preposition</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">Prepositions::parse_prep_against</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1)) {</span>
                         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prep</span><span class="plain">;</span>
@@ -270,7 +262,6 @@ with a given "permitted verb".
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Prepositions::mark_for_preform</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

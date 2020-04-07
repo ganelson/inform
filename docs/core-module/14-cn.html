@@ -126,7 +126,6 @@ in any other way.)
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Now some creator routines.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new</span><span class="plain">(</span><span class="identifier">time_period</span><span class="plain"> *</span><span class="identifier">tp</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">TEST_PROPOSITION_NT</span><span class="plain">);</span>
@@ -143,19 +142,18 @@ in any other way.)
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>So, some more specific creators. The operators are easy:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new_LOGICAL_AND</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">LOGICAL_AND_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">spec1</span><span class="plain">;</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">spec2</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">spec1</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">spec2</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new_LOGICAL_OR</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">LOGICAL_OR_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">spec1</span><span class="plain">;</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">spec2</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">spec1</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">spec2</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -168,12 +166,11 @@ in any other way.)
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::negate</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="constant">LOGICAL_NOT_NT</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">cond</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="constant">LOGICAL_NOT_NT</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">cond</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">LOGICAL_NOT_NT</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">));</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -185,7 +182,6 @@ in any other way.)
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Testing propositions is also straightforward. There's no creator for
 <code class="display"><span class="extract">NOW_PREPOSITION_VNT</span></code>, since this is formed only by coercion of one of these.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new_TEST_PROPOSITION</span><span class="plain">(</span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">) {</span>
@@ -203,7 +199,6 @@ in any other way.)
 exactly feasible, since the specification data field is 16 bits wide.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new_TEST_PHRASE_OPTION</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">opt_num</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">TEST_PHRASE_OPTION_NT</span><span class="plain">);</span>
@@ -218,14 +213,13 @@ exactly feasible, since the specification data field is 16 bits wide.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::new_TEST_ACTION</span><span class="plain">(</span><span class="identifier">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ap</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null action pattern"</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">TEST_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_action_pattern</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_action_pattern</span><span class="plain">(</span><span class="identifier">ap</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
@@ -239,7 +233,7 @@ exactly feasible, since the specification data field is 16 bits wide.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Conditions::is_TEST_ACTION</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Rvalues::to_action_pattern</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="plain">(</span><span class="functiontext">Rvalues::to_action_pattern</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -248,7 +242,7 @@ exactly feasible, since the specification data field is 16 bits wide.
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Conditions::is_TEST_ACTION</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"action improperly extracted"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't perform action_tested without IF module"</span><span class="plain">);</span>
@@ -272,7 +266,6 @@ to it, we need a follow-up routine to attach this as necessary to a newly
 created condition:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::attach_tense</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -282,7 +275,7 @@ created condition:
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">LOGICAL_TENSE_NT</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">));</span>
             <span class="identifier">ParseTree::set_condition_tense</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">Occurrence::store</span><span class="plain">(</span><span class="identifier">Occurrence::new_tense_marker</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">)));</span>
-            <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
+            <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -290,7 +283,7 @@ created condition:
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Conditions::attach_historic_requirement</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">time_period</span><span class="plain"> *</span><span class="identifier">tp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">amb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">cond</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">cond</span><span class="plain">; </span><span class="identifier">cond</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">cond</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">; </span><span class="identifier">cond</span><span class="plain">; </span><span class="identifier">cond</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">reading</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">);</span>
                 <span class="identifier">reading</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">reading</span><span class="plain"> = </span><span class="functiontext">Conditions::attach_historic_requirement</span><span class="plain">(</span><span class="identifier">reading</span><span class="plain">, </span><span class="identifier">tp</span><span class="plain">);</span>
@@ -307,7 +300,7 @@ created condition:
             <span class="identifier">t</span><span class="plain"> = </span><span class="identifier">Occurrence::get_tense</span><span class="plain">(</span><span class="identifier">ParseTree::get_condition_tense</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">LOGICAL_TENSE_NT</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cond</span><span class="plain">));</span>
-            <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
+            <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">cond</span><span class="plain">;</span>
             <span class="identifier">t</span><span class="plain"> = </span><span class="identifier">IS_TENSE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">ParseTree::set_condition_tense</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">tp</span><span class="plain">);</span>
@@ -324,13 +317,12 @@ created condition:
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Pretty-printing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Conditions::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
             <span class="functiontext">Descriptions::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">))) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">TEST_VALUE_NT</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">))) {</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
                 <span class="identifier">Kinds::Textual::write_articled</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
@@ -347,7 +339,6 @@ created condition:
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And the log:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Conditions::log</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -374,15 +365,14 @@ the following is used to compare such "when..." conditions.
 beat shorter ones.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Conditions::compare_specificity_of_CONDITIONs</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">spec1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">spec2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count1</span><span class="plain"> = </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count2</span><span class="plain"> = </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &gt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &gt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count1</span><span class="plain"> &lt; </span><span class="identifier">count2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -396,28 +386,27 @@ perfect way to define complexity of conditions in a language as complex as
 Inform; this bit of scruffy, rather than neat, logic will have to do.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_condition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_condition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_AND_NT</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">)</span>
-                    <span class="plain">+ </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_OR_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_AND_NT:</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">)</span>
+                    <span class="plain">+ </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_OR_NT:</span>
                 <span class="reserved">return</span><span class="plain"> -1;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_NOT_NT</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_TENSE_NT</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_PROPOSITION_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_NOT_NT:</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_TENSE_NT:</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Conditions::count</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_PROPOSITION_NT:</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::length</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_PHRASE_OPTION_NT</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_VALUE_NT</span><span class="plain">:</span>
-                <span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_PHRASE_OPTION_NT:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_VALUE_NT:</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -431,20 +420,19 @@ I6 condition must be enclosed in round brackets, and that a redundant pair
 of brackets never does any harm; so we always compile one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Conditions::compile</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec_found</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_PROPOSITION_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_PROPOSITION_NT:</span>
                 <span class="functiontext">Calculus::Deferrals::emit_test_of_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">,</span>
                     <span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_TENSE_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_TENSE_NT:</span>
                 <span class="functiontext">Chronology::compile_past_tense_condition</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_NOT_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a logical negation</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_AND_NT</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">LOGICAL_OR_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a logical operator</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_VALUE_NT</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_NOT_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a logical negation</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_AND_NT:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOGICAL_OR_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a logical operator</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_VALUE_NT:</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Conditions::is_TEST_ACTION</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
                     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                     <span class="identifier">action_pattern</span><span class="plain"> *</span><span class="identifier">ap</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_action_pattern</span><span class="plain">(</span>
@@ -452,13 +440,13 @@ of brackets never does any harm; so we always compile one.
                     <span class="identifier">PL::Actions::Patterns::compile_pattern_match</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, *</span><span class="identifier">ap</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1); </span>    <span class="comment">purely for problem recovery</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">); </span><span class="comment">purely for problem recovery</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_PHRASE_OPTION_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a phrase option test</span> <span class="cwebmacronumber">16.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_PHRASE_OPTION_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a phrase option test</span> <span class="cwebmacronumber">16.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -477,11 +465,11 @@ of brackets never does any harm; so we always compile one.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled malformed LOGICAL_NOT_NT"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NOT_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
@@ -499,10 +487,10 @@ of brackets never does any harm; so we always compile one.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != 2)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != </span><span class="constant">2</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled malformed logical operator"</span><span class="plain">);</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">left_operand</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">right_operand</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">left_operand</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">right_operand</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_operand</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">right_operand</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled CONDITION/AND with LHS operands"</span><span class="plain">);</span>
 
@@ -536,7 +524,7 @@ type-checker won't allow these specifications to be compiled anywhere else.
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">po</span><span class="plain"> = </span><span class="functiontext">LocalVariables::phrase_options</span><span class="plain">();</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">po</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no phrase options exist in this frame"</span><span class="plain">);</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">po_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">po</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">po_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">po</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">po_s</span><span class="plain">);</span>
             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">, </span><span class="constant">phrase_option_ANNOT</span><span class="plain">));</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>

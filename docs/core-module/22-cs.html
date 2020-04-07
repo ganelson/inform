@@ -77,14 +77,14 @@ because everything has to happen in just the right order.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">DAWN_PHT</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EARLY_MORNING_PHT</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LATE_MORNING_PHT</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PRE_NOON_PHT</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EARLY_AFTERNOON_PHT</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MID_AFTERNOON_PHT</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LATE_AFTERNOON_PHT</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EVENING_PHT</span><span class="plain"> 7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DAWN_PHT</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EARLY_MORNING_PHT</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LATE_MORNING_PHT</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PRE_NOON_PHT</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EARLY_AFTERNOON_PHT</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MID_AFTERNOON_PHT</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LATE_AFTERNOON_PHT</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EVENING_PHT</span><span class="plain"> </span><span class="constant">7</span>
 </pre>
 
 <pre class="display">
@@ -92,7 +92,7 @@ because everything has to happen in just the right order.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">advance_to</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">advance_to</span><span class="plain"> &lt; </span><span class="identifier">phrase_time_now</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Advance from %d to %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">phrase_time_now</span><span class="plain">, </span><span class="identifier">advance_to</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Advance from %d to %d\n"</span><span class="plain">, </span><span class="identifier">phrase_time_now</span><span class="plain">, </span><span class="identifier">advance_to</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span>
                 <span class="string">"The necessary phrase construction events are out of sequence"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -121,7 +121,6 @@ But at least it does pick out the name "fire alarm rule", and Inform
 creates an empty "rule" structure called this, registering this as the
 name of a new constant.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::traverse_for_names</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -159,10 +158,9 @@ but we let them go by. The <code class="display"><span class="extract">NULL</spa
 to do anything when the assertion traverse reaches nodes of these types:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">COMMAND_SH_handler</span><span class="plain"> = { </span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
-    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">ROUTINE_SH_handler</span><span class="plain"> = { </span><span class="identifier">ROUTINE_NT</span><span class="plain">, -1, 0, </span><span class="identifier">NULL</span><span class="plain"> };</span>
+    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">COMMAND_SH_handler</span><span class="plain"> = { </span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain"> };</span>
+    <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">ROUTINE_SH_handler</span><span class="plain"> = { </span><span class="identifier">ROUTINE_NT</span><span class="plain">, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain"> };</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -220,12 +218,11 @@ darkness" phrase. So for now we just make a mental note to do automatic
 placement later on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::traverse</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">LATE_MORNING_PHT</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">progress_target</span><span class="plain"> = 0, </span><span class="identifier">progress_made</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">progress_target</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">progress_made</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">ParseTree::traverse_int</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Phrases::Manager::visit_to_count</span><span class="plain">, &amp;</span><span class="identifier">progress_target</span><span class="plain">);</span>
         <span class="identifier">ParseTree::traverse_int_int</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Phrases::Manager::visit_to_create</span><span class="plain">, &amp;</span><span class="identifier">progress_target</span><span class="plain">, &amp;</span><span class="identifier">progress_made</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -236,7 +233,7 @@ placement later on.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::visit_to_create</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">progress_target</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">progress_made</span><span class="plain">) {</span>
         <span class="plain">(*</span><span class="identifier">progress_made</span><span class="plain">)++;</span>
-        <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">progress_made</span><span class="plain">) % 10 == 0)</span>
+        <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">progress_made</span><span class="plain">) % </span><span class="constant">10</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">ProgressBar::update</span><span class="plain">(3,</span>
                 <span class="plain">((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">progress_made</span><span class="plain">))/((</span><span class="reserved">float</span><span class="plain">) (*</span><span class="identifier">progress_target</span><span class="plain">)));</span>
 
@@ -263,7 +260,6 @@ of them all. Well: at last, we do know that, and can make the registration.
 Phrases are the very last things to get their names in Inform (well, not
 counting local variables, whose names only exist fleetingly).
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::register_meanings</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -306,17 +302,16 @@ order which <code class="display"><span class="extract">LOOP_OVER</span></code> 
 correctly refer to the most recently mentioned action.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::parse_rule_parameters</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">EARLY_AFTERNOON_PHT</span><span class="plain">);</span>
 
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">) {</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
-            <span class="functiontext">Frames::make_current</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain"> =</span>
-                <span class="functiontext">Phrases::Usage::to_runtime_context_data</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
+            <span class="functiontext">Frames::make_current</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">));</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain"> =</span>
+                <span class="functiontext">Phrases::Usage::to_runtime_context_data</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
             <span class="functiontext">Frames::remove_current</span><span class="plain">();</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -330,7 +325,6 @@ correctly refer to the most recently mentioned action.
 our "fire alarm rule" will at last be placed in the "Instead" rulebook. The
 PHRCDs are used to make sure it appears in the right position.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::add_rules_to_rulebooks</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -360,7 +354,6 @@ of this general sort. Rules can also be unlisted, or constrained to happen
 only conditionally, or substituted by other rules.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::parse_rule_placements</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">EARLY_AFTERNOON_PHT</span><span class="plain">);</span>
@@ -369,12 +362,12 @@ only conditionally, or substituted by other rules.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::visit_to_parse_placements</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">AVERB_NT</span><span class="plain">)) {</span>
+            <span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">AVERB_NT</span><span class="plain">)) {</span>
             <span class="identifier">prevailing_mood</span><span class="plain"> =</span>
-                <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">verbal_certainty_ANNOT</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">)</span>
-                <span class="functiontext">Assertions::Traverse::try_special_meaning</span><span class="plain">(</span><span class="constant">TRAVERSE_FOR_RULE_FILING_SMFT</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+                <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">verbal_certainty_ANNOT</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">)</span>
+                <span class="functiontext">Assertions::Traverse::try_special_meaning</span><span class="plain">(</span><span class="constant">TRAVERSE_FOR_RULE_FILING_SMFT</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -392,10 +385,9 @@ the evening. But we do get rid of some easy cases now: the rules and
 adjective definitions.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_phrases_to_compile</span><span class="plain"> = 0;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_phrases_compiled</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_phrases_to_compile</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_phrases_compiled</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::compile_first_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">MID_AFTERNOON_PHT</span><span class="plain">);</span>
 
@@ -419,10 +411,10 @@ adjective definitions.
 
 
 <pre class="displaydefn">
-        <span class="identifier">total_phrases_compiled</span><span class="plain"> = 0;</span>
+        <span class="identifier">total_phrases_compiled</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain">)</span>
                 <span class="identifier">total_phrases_to_compile</span><span class="plain">++;</span>
 </pre>
 
@@ -476,7 +468,7 @@ of Inform.
 <pre class="displaydefn">
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">)) ==</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">)) ==</span>
                 <span class="constant">DEFINITIONAL_PHRASE_EFF</span><span class="plain">)</span>
                 <span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, &amp;</span><span class="identifier">total_phrases_compiled</span><span class="plain">,</span>
                     <span class="identifier">total_phrases_to_compile</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
@@ -510,9 +502,9 @@ points", say). This is where we do it:
 <pre class="displaydefn">
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">));</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;at_least_one_compiled_form_needed</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">at_least_one_compiled_form_needed</span><span class="plain">)</span>
                     <span class="functiontext">Routines::ToPhrases::make_request</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -530,7 +522,7 @@ points", say). This is where we do it:
 <pre class="displaydefn">
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KR</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::get_return_kind</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">));</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">KR</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::get_return_kind</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::semidefinite</span><span class="plain">(</span><span class="identifier">KR</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Phrases::TypeData::arithmetic_operation</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) == -1)) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
@@ -546,7 +538,7 @@ points", say). This is where we do it:
             <span class="plain">}</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">=1; </span><span class="identifier">k</span><span class="plain">&lt;=26; </span><span class="identifier">k</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="identifier">KR</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">)) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="functiontext">Phrases::TypeData::tokens_contain_variable</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+                    <span class="plain">(</span><span class="functiontext">Phrases::TypeData::tokens_contain_variable</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">), </span><span class="identifier">k</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                     <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">var_letter</span><span class="plain">);</span>
                     <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">var_letter</span><span class="plain">, </span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">k</span><span class="plain">-1);</span>
@@ -577,7 +569,7 @@ points", say). This is where we do it:
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::invoked_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Phrases::Usage::has_name_as_constant</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">)))) {</span>
+                <span class="plain">(</span><span class="functiontext">Phrases::Usage::has_name_as_constant</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">)))) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">Phrases::declaration_node</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NamedInline</span><span class="plain">));</span>
@@ -604,7 +596,6 @@ in any order, so long as they all occur in the late afternoon.
 noted down:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::TimedEventsTable</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">LATE_AFTERNOON_PHT</span><span class="plain">);</span>
@@ -625,7 +616,6 @@ noted down:
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Second, the rulebooks need to be compiled into I6 arrays:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::rulebooks_array</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -657,7 +647,6 @@ which prints out values of the kind "rule" at run-time &mdash; for example, taki
 the address of the routine which our example rule was compiled to and then
 printing out "fire alarm rule".
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::RulePrintingRule_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -710,7 +699,6 @@ hand over to the others to generate more work. (Indeed, the routine below
 can be called multiple times in the course of the evening.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Manager::compile_as_needed</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Phrases::Manager::advance_phrase_time_to</span><span class="plain">(</span><span class="constant">EVENING_PHT</span><span class="plain">);</span>
@@ -722,17 +710,17 @@ can be called multiple times in the course of the evening.)
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">repeat</span><span class="plain">) {</span>
             <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Routines::ToPhrases::compilation_coroutine</span><span class="plain">(</span>
-                <span class="plain">&amp;</span><span class="identifier">total_phrases_compiled</span><span class="plain">, </span><span class="identifier">total_phrases_to_compile</span><span class="plain">) &gt; 0)</span>
+                <span class="plain">&amp;</span><span class="identifier">total_phrases_compiled</span><span class="plain">, </span><span class="identifier">total_phrases_to_compile</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ListTogether::compilation_coroutine</span><span class="plain">() &gt; 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ListTogether::compilation_coroutine</span><span class="plain">() &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::ScopeLoops::compilation_coroutine</span><span class="plain">() &gt; 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Actions::ScopeLoops::compilation_coroutine</span><span class="plain">() &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Strings::TextSubstitutions::compilation_coroutine</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">) &gt; 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Strings::TextSubstitutions::compilation_coroutine</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::Deferred::compilation_coroutine</span><span class="plain">() &gt; 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Propositions::Deferred::compilation_coroutine</span><span class="plain">() &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

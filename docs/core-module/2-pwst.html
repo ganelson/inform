@@ -63,14 +63,13 @@
 group.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">SourceProblems::issue_problems_arising</span><span class="plain">(</span><span class="identifier">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">errors_reading_source_text</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">error_category</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPEN_FAILED_CE</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPEN_FAILED_CE:</span>
                     <span class="identifier">Problems::quote_stream</span><span class="plain">(1, </span><span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_file</span><span class="plain">));</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">));</span>
                     <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -80,7 +79,7 @@ group.
                         <span class="string">"typo in it?"</span><span class="plain">);</span>
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_MISWORDED_CE</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_MISWORDED_CE:</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtMiswordedBeginsHere</span><span class="plain">));</span>
@@ -90,7 +89,7 @@ group.
                         <span class="string">"Specifically, %2."</span><span class="plain">);</span>
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIT_MISWORDED_CE</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIT_MISWORDED_CE:</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
                     <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">));</span>
@@ -100,7 +99,7 @@ group.
                         <span class="string">"Specifically, %2."</span><span class="plain">);</span>
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_TITLE_TOO_LONG_CE</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_TITLE_TOO_LONG_CE:</span><span class="plain"> {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = </span><span class="identifier">MAX_EXTENSION_TITLE_LENGTH</span><span class="plain">;</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">overage</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_N</span><span class="plain"> - </span><span class="identifier">MAX_EXTENSION_TITLE_LENGTH</span><span class="plain">;</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
@@ -114,7 +113,7 @@ group.
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_AUTHOR_TOO_LONG_CE</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXT_AUTHOR_TOO_LONG_CE:</span><span class="plain"> {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = </span><span class="identifier">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain">;</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">overage</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_N</span><span class="plain"> - </span><span class="identifier">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain">;</span>
                     <span class="functiontext">Problems::quote_work</span><span class="plain">(1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">copy</span><span class="plain">-&gt;</span><span class="identifier">found_by</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
@@ -128,16 +127,16 @@ group.
                     <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LEXER_CE</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LEXER_CE:</span>
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">error_subcategory</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR:</span>
                             <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooMuchQuotedText</span><span class="plain">),</span>
                                 <span class="string">"Too much text in quotation marks"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
-                                <span class="string">"...\</span><span class="plain">"</span><span class="string"> The maximum length is very high, so this is more "</span>
+                                <span class="string">"...\" The maximum length is very high, so this is more "</span>
                                 <span class="string">"likely to be because a close quotation mark was "</span>
                                 <span class="string">"forgotten."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR:</span>
                             <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WordTooLong</span><span class="plain">),</span>
                                 <span class="string">"Word too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
                                 <span class="string">"(Individual words of unquoted text can run up to "</span>
@@ -152,15 +151,15 @@ group.
                                 <span class="string">"creation's thunderclap from Finnegan's Wake. And both of those "</span>
                                 <span class="string">"words are fine.)"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
-                            <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">), </span>    <span class="comment">well, not at all conveniently</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR:</span>
+                            <span class="identifier">Problems::Issue::lexical_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">Untestable</span><span class="plain">), </span><span class="comment">well, not at all conveniently</span>
                                 <span class="string">"Verbatim Inform 6 extract too long"</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_word</span><span class="plain">,</span>
                                 <span class="string">"... -). The maximum length is quite high, so this "</span>
                                 <span class="string">"may be because a '-)' was forgotten. Still, if "</span>
                                 <span class="string">"you do need to paste a huge I6 program in, try "</span>
                                 <span class="string">"using several verbatim inclusions in a row."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_NEVER_ENDS_LEXERERROR:</span>
                             <span class="identifier">Problems::Issue::lexical_problem_S</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnendingQuote</span><span class="plain">),</span>
                                 <span class="string">"Some source text ended in the middle of quoted text"</span><span class="plain">,</span>
                                 <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">,</span>
@@ -172,7 +171,7 @@ group.
                                 <span class="string">"another piece of quoted text - this is not allowed, and causes "</span>
                                 <span class="string">"me to lose track.)"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_NEVER_ENDS_LEXERERROR:</span>
                             <span class="identifier">Problems::Issue::lexical_problem_S</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnendingComment</span><span class="plain">),</span>
                                 <span class="string">"Some source text ended in the middle of a comment"</span><span class="plain">,</span>
                                 <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">,</span>
@@ -186,20 +185,20 @@ group.
                                 <span class="string">"and so doesn't end the comment: only the second ']' ends "</span>
                                 <span class="string">"the comment."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_NEVER_ENDS_LEXERERROR:</span>
                             <span class="identifier">Problems::Issue::lexical_problem_S</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnendingI6</span><span class="plain">),</span>
                                 <span class="string">"Some source text ended in the middle of a verbatim passage "</span>
                                 <span class="string">"of Inform 6 code"</span><span class="plain">,</span>
                                 <span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">,</span>
                                 <span class="string">"This probably means that a '-)' is missing."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">default</span><span class="plain">:</span>
+                        <span class="identifier">default:</span>
                             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown lexer error"</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SYNTAX_CE</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SYNTAX_CE:</span>
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">error_subcategory</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnexpectedSemicolon_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnexpectedSemicolon_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnexpectedSemicolon</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -209,7 +208,7 @@ group.
                                 <span class="string">"Perhaps you want a full stop '.' instead?"</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ParaEndsInColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ParaEndsInColon_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ParaEndsInColon</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -218,7 +217,7 @@ group.
                                 <span class="string">"skipped line here?)"</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInColon_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SentenceEndsInColon</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -226,7 +225,7 @@ group.
                                 <span class="string">"punctuation I don't understand."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInSemicolon_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SentenceEndsInSemicolon</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -234,7 +233,7 @@ group.
                                 <span class="string">"punctuation I don't understand."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterColon_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterColon_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SemicolonAfterColon</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -242,7 +241,7 @@ group.
                                 <span class="string">"punctuation I don't understand."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterStop_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterStop_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_SemicolonAfterStop</span><span class="plain">));</span>
                             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -250,7 +249,7 @@ group.
                                 <span class="string">"punctuation I don't understand."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingOverLine_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingOverLine_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_N</span><span class="plain">-1)));</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_N</span><span class="plain">)));</span>
@@ -264,7 +263,7 @@ group.
                                 <span class="string">"skipped line above and below."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingStopsBeforeEndOfLine_SYNERROR:</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">));</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(2,</span>
                                 <span class="identifier">NounPhrases::new_raw</span><span class="plain">(</span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">)+1, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_N</span><span class="plain">-1)));</span>
@@ -282,48 +281,48 @@ group.
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
 
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoBeginsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoBeginsHere_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtNoBeginsHere</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has no 'begins here' sentence"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoEndsHere_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtNoEndsHere</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has no 'ends here' sentence"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtSpuriouslyContinues_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtSpuriouslyContinues</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"continues after the 'ends here' sentence"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMultipleEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMultipleEndsHere_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtMultipleEndsHere</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has more than one 'ends here' sentence"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMultipleBeginsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMultipleBeginsHere_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtMultipleBeginsHere</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has more than one 'begins here' sentence"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtBeginsAfterEndsHere_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtBeginsAfterEndsHere_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtBeginsAfterEndsHere</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has a further 'begins here' after an 'ends here'"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtEndsWithoutBegins_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtEndsWithoutBegins_SYNERROR:</span>
                             <span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                                 <span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">),</span>
                                 <span class="string">"has an 'ends here' with nothing having begun"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BadTitleSentence_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BadTitleSentence_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadTitleSentence</span><span class="plain">),</span>
                                 <span class="string">"the initial bibliographic sentence can only be a title in double-quotes"</span><span class="plain">,</span>
                                 <span class="string">"possibly followed with 'by' and the name of the author."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnknownLanguageElement_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnknownLanguageElement_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownLanguageElement</span><span class="plain">),</span>
@@ -332,7 +331,7 @@ group.
                                 <span class="string">"and should be something like '(for Glulx external files "</span>
                                 <span class="string">"language element only)'."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnknownVirtualMachine_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnknownVirtualMachine_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownVirtualMachine</span><span class="plain">),</span>
@@ -341,7 +340,7 @@ group.
                                 <span class="string">"and should be something like '(for Z-machine version 5 "</span>
                                 <span class="string">"or 8 only)' or '(for Glulx only)'."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UseElementWithdrawn_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UseElementWithdrawn_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UseElementWithdrawn</span><span class="plain">),</span>
@@ -349,16 +348,16 @@ group.
                                 <span class="string">"in source text has been withdrawn"</span><span class="plain">,</span>
                                 <span class="string">"in favour of a new system with Inform kits."</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IncludeExtQuoted_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IncludeExtQuoted_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_IncludeExtQuoted</span><span class="plain">),</span>
                                 <span class="string">"the name of an included extension should be given without double "</span>
                                 <span class="string">"quotes in an Include sentence"</span><span class="plain">,</span>
                                 <span class="string">"so for instance 'Include Oh My God by Janice Bing.' rather than "</span>
-                                <span class="string">"'Include \</span><span class="plain">"</span><span class="string">Oh My God\</span><span class="plain">"</span><span class="string"> by Janice Bing.')"</span><span class="plain">);</span>
+                                <span class="string">"'Include \"Oh My God\" by Janice Bing.')"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BogusExtension_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BogusExtension_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BogusExtension</span><span class="plain">));</span>
@@ -369,7 +368,7 @@ group.
                                 <span class="string">"Library in the Extensions panel."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtVersionTooLow_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtVersionTooLow_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
@@ -382,7 +381,7 @@ group.
                                 <span class="string">"Library in the Extensions panel."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtVersionMalformed_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtVersionMalformed_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ExtVersionMalformed</span><span class="plain">),</span>
@@ -391,7 +390,7 @@ group.
                                 <span class="string">"(The DDDDDD part is optional, so '3' is a legal version number too. "</span>
                                 <span class="string">"N must be between 1 and 999: in particular, there is no version 0.)"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtInadequateVM_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtInadequateVM_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details</span><span class="plain">);</span>
@@ -404,7 +403,7 @@ group.
                                 <span class="string">"the format used for this project on the Settings panel.)"</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMisidentifiedEnds_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtMisidentifiedEnds_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="functiontext">Problems::quote_extension</span><span class="plain">(1, </span><span class="identifier">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">));</span>
                             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_W</span><span class="plain">);</span>
@@ -418,7 +417,7 @@ group.
                                 <span class="string">"would match with 'Hocus Pocus ends here.')"</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfUnincluded_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfUnincluded_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_extension_id</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_work</span><span class="plain">);</span>
@@ -431,7 +430,7 @@ group.
                                 <span class="string">"headings."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnequalHeadingInPlaceOf_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnequalHeadingInPlaceOf_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span>
                                 <span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnequalHeadingInPlaceOf</span><span class="plain">),</span>
@@ -440,7 +439,7 @@ group.
                                 <span class="string">"being a Volume, Book, Part, Chapter or Section: for instance, "</span>
                                 <span class="string">"only a Chapter heading can be used 'in place of' a Chapter.)"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfSubordinate_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfSubordinate_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_extension_id</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_work</span><span class="plain">);</span>
@@ -454,7 +453,7 @@ group.
                                 <span class="string">"heading ('%3') which is already being replaced spliced into '%4'."</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfUnknown_SYNERROR</span><span class="plain">:</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingInPlaceOfUnknown_SYNERROR:</span>
                             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_node</span><span class="plain">;</span>
                             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                             <span class="functiontext">Problems::quote_extension_id</span><span class="plain">(2, </span><span class="identifier">CE</span><span class="plain">-&gt;</span><span class="identifier">details_work</span><span class="plain">);</span>
@@ -468,11 +467,11 @@ group.
                                 <span class="string">"was %4.)"</span><span class="plain">);</span>
                             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                             <span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">default</span><span class="plain">:</span>
+                        <span class="identifier">default:</span>
                             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown syntax error"</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"an unknown error occurred"</span><span class="plain">);</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"an unknown error occurred"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

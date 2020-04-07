@@ -170,9 +170,8 @@ is the only place in NI where "source:" is used.
 panel, for obvious reasons, so we produce nothing if the location is internal.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_link_case</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_link_case</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::set_source_link_case</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">source_link_case</span><span class="plain"> = </span><span class="identifier">Characters::toupper</span><span class="plain">(</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
     <span class="plain">}</span>
@@ -190,13 +189,13 @@ panel, for obvious reasons, so we produce nothing if the location is internal.
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::begins_with_wide_string</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Source"</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, 6) == </span><span class="identifier">FOLDER_SEPARATOR</span><span class="plain">))</span>
-                <span class="identifier">Str::delete_n_characters</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, 7);</span>
+                <span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="constant">6</span><span class="plain">) == </span><span class="identifier">FOLDER_SEPARATOR</span><span class="plain">))</span>
+                <span class="identifier">Str::delete_n_characters</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, </span><span class="constant">7</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nonbreaking_space</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_link_case</span><span class="plain">)</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">source:%S?case=%c#line%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">source_link_case</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">)</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"source:%S?case=%c#line%d\""</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">source_link_case</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">)</span>
             <span class="reserved">else</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">source:%S#line%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"source:%S#line%d\""</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/Reveal.png"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">);</span>
@@ -215,13 +214,12 @@ mouse arrow, when it is poised waiting over the icon. (We make heavy use of
 these in the World index, for instance, to clarify what abbreviations mean.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::html_icon_with_tooltip</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">icon_name</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tip</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tip2</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/%s "</span><span class="plain">, </span><span class="identifier">icon_name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tip</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">"title=\</span><span class="plain">"</span><span class="string">%s"</span><span class="plain">, </span><span class="identifier">tip</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tip2</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">" %s"</span><span class="plain">, </span><span class="identifier">tip2</span><span class="plain">); </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">"title=\"%s"</span><span class="plain">, </span><span class="identifier">tip</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tip2</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">" %s"</span><span class="plain">, </span><span class="identifier">tip2</span><span class="plain">); </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">, </span><span class="string">"\""</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">img</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">img</span><span class="plain">);</span>
@@ -238,8 +236,8 @@ success or failure. We also use special images on special occasions.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <pre class="display">
@@ -253,8 +251,8 @@ success or failure. We also use special images on special occasions.
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">be_festive</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">Time::feast</span><span class="plain">()) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CHRISTMAS_FEAST</span><span class="plain">: </span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"_2"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EASTER_FEAST</span><span class="plain">: </span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"_3"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CHRISTMAS_FEAST:</span><span class="plain"> </span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"_2"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EASTER_FEAST:</span><span class="plain"> </span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"_3"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vn</span><span class="plain">[0]) </span><span class="identifier">outcome_image_style</span><span class="plain"> = </span><span class="constant">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -262,23 +260,23 @@ success or failure. We also use special images on special occasions.
         <span class="identifier">Problems::Issue::issue_problems_banner</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">verdict</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">outcome_image_style</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CENTRED_OUTCOME_IMAGE_STYLE</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CENTRED_OUTCOME_IMAGE_STYLE:</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
                 <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"src=inform:/outcome_images/%s%s.png border=0"</span><span class="plain">, </span><span class="identifier">image</span><span class="plain">, </span><span class="identifier">vn</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SIDE_OUTCOME_IMAGE_STYLE</span><span class="plain">:</span>
-                <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, 0, 4, 0, 0, 0);</span>
-                <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 110);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SIDE_OUTCOME_IMAGE_STYLE:</span>
+                <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">4</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">110</span><span class="plain">);</span>
                 <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">,</span>
                     <span class="string">"src=inform:/outcome_images/%s%s@2x.png border=1 width=100 height=100"</span><span class="plain">, </span><span class="identifier">image</span><span class="plain">, </span><span class="identifier">vn</span><span class="plain">);</span>
-                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">HTML::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"HEADNOTE"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">margin-top:0;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"style=\"margin-top:0;\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(Each time &lt;b&gt;Go&lt;/b&gt; or &lt;b&gt;Replay&lt;/b&gt; is clicked, Inform tries to "</span>
             <span class="string">"translate the source text into a working story, and updates this report.)"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
@@ -303,7 +301,6 @@ success or failure. We also use special images on special occasions.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Header and footer. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::html_header</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">) {</span>
         <span class="identifier">HTML::declare_as_HTML</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -321,7 +318,7 @@ success or failure. We also use special images on special occasions.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::html_footer</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">HTML::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CONTENT ENDS"</span><span class="plain">);</span>
         <span class="identifier">HTML::end_body</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -335,14 +332,13 @@ success or failure. We also use special images on special occasions.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. HTML paragraphs with indentation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">depth</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">class</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">margin</span><span class="plain"> = </span><span class="identifier">depth</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">margin</span><span class="plain"> &lt; 1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"minimal HTML indentation is 1"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">margin</span><span class="plain"> &gt; 9) </span><span class="identifier">margin</span><span class="plain"> = 9;</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">%sin%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">class</span><span class="plain">, </span><span class="identifier">margin</span><span class="plain">);</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; 9) { </span><span class="identifier">depth</span><span class="plain">--; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">margin</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"minimal HTML indentation is 1"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">margin</span><span class="plain"> &gt; </span><span class="constant">9</span><span class="plain">) </span><span class="identifier">margin</span><span class="plain"> = </span><span class="constant">9</span><span class="plain">;</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"%sin%d\""</span><span class="plain">, </span><span class="identifier">class</span><span class="plain">, </span><span class="identifier">margin</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">depth</span><span class="plain"> &gt; </span><span class="constant">9</span><span class="plain">) { </span><span class="identifier">depth</span><span class="plain">--; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); }</span>
     <span class="plain">}</span>
 </pre>
 
@@ -373,13 +369,12 @@ we then parse a little, tidy up and send it to <code class="display"><span class
 turned into a <code class="display"><span class="extract">source:</span></code> link.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">source_ref_fields</span><span class="plain">[3] = { </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain"> }; </span>    <span class="comment">paraphrase, filename, line</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_ref_field</span><span class="plain"> = -1; </span>    <span class="comment">which field we are buffering</span>
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">source_ref_fields</span><span class="plain">[3] = { </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain"> }; </span><span class="comment">paraphrase, filename, line</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_ref_field</span><span class="plain"> = -1; </span><span class="comment">which field we are buffering</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::char_out</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_ref_field</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_ref_field</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_ref_fields</span><span class="plain">[</span><span class="identifier">source_ref_field</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">source_ref_fields</span><span class="plain">[</span><span class="identifier">source_ref_field</span><span class="plain">] = </span><span class="identifier">Str::new</span><span class="plain">();</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PROBLEMS_MODULE</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">charcode</span><span class="plain"> != </span><span class="identifier">SOURCE_REF_CHAR</span><span class="plain">) { </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">source_ref_fields</span><span class="plain">[</span><span class="identifier">source_ref_field</span><span class="plain">], </span><span class="identifier">charcode</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
@@ -393,23 +388,23 @@ turned into a <code class="display"><span class="extract">source:</span></code> 
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'&lt;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;lt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'&gt;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'&amp;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;amp;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">: </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEWLINE_IN_STRING:</span><span class="plain"> </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PROBLEMS_MODULE</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FORCE_NEW_PARA_CHAR</span><span class="plain">: </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">in2\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FORCE_NEW_PARA_CHAR:</span><span class="plain"> </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"in2\""</span><span class="plain">);</span>
                 <span class="functiontext">HTMLFiles::html_icon_with_tooltip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"ornament_flower.png"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_REF_CHAR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_REF_CHAR:</span>
                 <span class="identifier">source_ref_field</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_ref_field</span><span class="plain"> == 3) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_ref_field</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) {</span>
                     <span class="identifier">source_ref_field</span><span class="plain"> = -1;</span>
                     <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">;</span>
                     <span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain"> = </span><span class="identifier">TextFromFiles::filename_to_source_file</span><span class="plain">(</span><span class="identifier">source_ref_fields</span><span class="plain">[1]);</span>
-                    <span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">source_ref_fields</span><span class="plain">[2], 0);</span>
+                    <span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">source_ref_fields</span><span class="plain">[2], </span><span class="constant">0</span><span class="plain">);</span>
                     <span class="functiontext">HTMLFiles::html_source_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">source_ref_fields</span><span class="plain">[</span><span class="identifier">source_ref_field</span><span class="plain">]);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">charcode</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -422,7 +417,6 @@ turned into a <code class="display"><span class="extract">source:</span></code> 
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Writing streams in XML-escaped form. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFiles::write_xml_safe_text</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">txt</span><span class="plain">) {</span>
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">txt</span><span class="plain">) {</span>
@@ -431,7 +425,7 @@ turned into a <code class="display"><span class="extract">source:</span></code> 
                 <span class="reserved">case</span><span class="plain"> </span><span class="character">'&amp;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;amp;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="character">'&lt;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;lt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="character">'&gt;'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;gt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

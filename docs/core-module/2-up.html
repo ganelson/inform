@@ -83,9 +83,9 @@ non-problem messages when everything was fine. That all happens here:
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Using::final_report</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">disaster_struck</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">problems_count</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_words</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_words</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"*"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disaster_struck</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue problem summary for an internal error</span> <span class="cwebmacronumber">2.1</span>&gt;
@@ -93,15 +93,15 @@ non-problem messages when everything was fine. That all happens here:
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
             <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rooms</span><span class="plain"> = 0, </span><span class="identifier">things</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rooms</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">things</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">HTMLFiles::html_outcome_image</span><span class="plain">(</span><span class="identifier">problems_file</span><span class="plain">, </span><span class="string">"ni_succeeded"</span><span class="plain">, </span><span class="string">"Succeeded"</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
             <span class="identifier">PL::Spatial::get_world_size</span><span class="plain">(&amp;</span><span class="identifier">rooms</span><span class="plain">, &amp;</span><span class="identifier">things</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(1, &amp;</span><span class="identifier">rooms</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rooms</span><span class="plain"> == 1) </span><span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"room"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"rooms"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rooms</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"room"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(2, </span><span class="string">"rooms"</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(3, &amp;</span><span class="identifier">things</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">things</span><span class="plain"> == 1) </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"thing"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"things"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">things</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"thing"</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::quote_text</span><span class="plain">(4, </span><span class="string">"things"</span><span class="plain">);</span>
             <span class="identifier">total_words</span><span class="plain"> = </span><span class="identifier">TextFromFiles::total_word_count</span><span class="plain">(</span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="identifier">source_file</span><span class="plain">));</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">total_words</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Issue problem summaries for a run without problems</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
@@ -156,7 +156,7 @@ ingratitude of some &mdash; oh, all right.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"Because of this problem, the source could not be translated "</span>
                 <span class="string">"into a working game. (Correct the source text to "</span>
@@ -222,10 +222,10 @@ command line &mdash; deserves the truth.
                 <span class="string">"into a world with %1 %2 and %3 %4, and the index has been "</span>
                 <span class="string">"brought up to date."</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">telmy</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Problems::Buffer::redirect_problem_stream</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"**"</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
             <span class="string">"The %5-word source text has successfully been translated "</span>

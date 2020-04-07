@@ -61,14 +61,13 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b></p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">prepare_counter</span><span class="plain"> = 0, </span><span class="identifier">knowledge_counter</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">prepare_counter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">knowledge_counter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Var::prepare</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prepare_counter</span><span class="plain"> = 0;</span>
-        <span class="identifier">knowledge_counter</span><span class="plain"> = 0;</span>
-        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::Var::visitor1</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">VARIABLE_IST</span><span class="plain">);</span>
+        <span class="identifier">prepare_counter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">knowledge_counter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">, </span><span class="functiontext">CodeGen::Var::visitor1</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">VARIABLE_IST</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Var::visitor1</span><span class="plain">(</span><span class="identifier">inter_tree</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -80,7 +79,7 @@
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Var::knowledge</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">variables_written</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">variables_written</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-</span><span class="element">&gt;from</span><span class="plain">, </span><span class="functiontext">CodeGen::Var::visitor2</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">VARIABLE_IST</span><span class="plain">);</span>
+            <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">-&gt;</span><span class="element">from</span><span class="plain">, </span><span class="functiontext">CodeGen::Var::visitor2</span><span class="plain">, </span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">VARIABLE_IST</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

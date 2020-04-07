@@ -71,7 +71,6 @@ but at other times it behaves more like a determiner, as in "if nothing
 is on the table". For now, though, we treat it as a noun.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">constant</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">literal</span><span class="plain">&gt; |										==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -131,7 +130,6 @@ kinds; activity names; table names; equation names; and names of phrases
 being used as nouns for functional-programming purposes.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">miscellaneous</span><span class="plain">-</span><span class="identifier">proper</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -163,7 +161,6 @@ being used as nouns for functional-programming purposes.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Named constants are handled separately.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">named</span><span class="plain">-</span><span class="identifier">constant</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">VARIABLE_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -183,7 +180,6 @@ being used as nouns for functional-programming purposes.
 names; but because they are stored internally without the compulsory words
 "outcome" and "option", they need nonterminals of their own.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -221,7 +217,6 @@ column names, and similarly for property names. These don't fall under
 as constants.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">TABLE_COLUMN_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -238,7 +233,6 @@ the explicit syntax ("the property open" rather than "open", say).
 The internal &lt;s-property-name&gt; uses &lt;property-name-as-noun-phrase&gt;
 to do this.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt; ::=</span>
@@ -281,7 +275,6 @@ that "scenery" &mdash; an adjective list with one entry &mdash; is sometimes a
 description on a par with "door" &mdash; a common noun. In effect, "scenery"
 is read as if it were "scenery thing".
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">desc</span><span class="plain">&gt; ::=</span>
@@ -381,18 +374,17 @@ definite what the truth is, so it can't afford to read this as saying that
 the chimp is either not hairy or not an animal.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |	==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]), </span><span class="identifier">W</span><span class="plain">)</span>
-        <span class="plain">&lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |		==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2], </span><span class="identifier">W</span><span class="plain">)</span>
-        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt;								==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |	==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2]), </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="plain">&lt;</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |		==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2], </span><span class="identifier">W</span><span class="plain">)</span>
+        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt;								==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::make_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">)</span>
 
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; |											==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1])</span>
-        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; |												==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
-        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |			==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::join_adjlist</span><span class="plain">(</span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]), </span><span class="identifier">RP</span><span class="plain">[2])</span>
-        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt;					==&gt; 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::join_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2])</span>
+        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; |											==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1])</span>
+        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; |												==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
+        <span class="identifier">not</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt; |			==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::join_adjlist</span><span class="plain">(</span><span class="functiontext">ParseTree::AdjectiveLists::negate_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]), </span><span class="identifier">RP</span><span class="plain">[2])</span>
+        <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">unarticled</span><span class="plain">&gt;					==&gt; </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ParseTree::AdjectiveLists::join_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2])</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -400,7 +392,6 @@ the chimp is either not hairy or not an animal.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>That reduces us to an internal nonterminal, which matches the longest
 possible adjective name it can see.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
@@ -412,8 +403,8 @@ possible adjective name it can see.
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Descriptions::from_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">Descriptions::add_to_adjective_list</span><span class="plain">(</span><span class="identifier">ale</span><span class="plain">, *</span><span class="identifier">XP</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain"> = </span><span class="identifier">ParseTree::get_score</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Length-scored maximal parse with length 0"</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">sc</span><span class="plain"> - 1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Length-scored maximal parse with length 0"</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">sc</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -422,7 +413,6 @@ possible adjective name it can see.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ParseTree::AdjectiveLists::join_adjlist</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
@@ -467,7 +457,6 @@ possible adjective name it can see.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ParseTree::AdjectiveLists::add_adjlist</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">adjlist</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">adjlist</span><span class="plain">) {</span>
@@ -497,7 +486,6 @@ possible adjective name it can see.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And this makes a more semantic check:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ParseTree::AdjectiveLists::adjlist_applies_to_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="identifier">au</span><span class="plain">;</span>
@@ -519,7 +507,6 @@ to another one parsed immediately after it has been matched; it has no
 significance the rest of the time.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">s_adj_domain</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -528,7 +515,6 @@ significance the rest of the time.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>This prevents doubled issue of the same problem message.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PM_DefiniteCommonNoun_issued_at</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -556,7 +542,6 @@ them with conditions like
 
 </blockquote>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">qualifiable</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="identifier">kind</span><span class="plain">&gt; |								==&gt; </span><span class="functiontext">Specifications::from_kind</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1]); </span><span class="identifier">s_adj_domain</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
@@ -574,7 +559,6 @@ them with conditions like
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>&lt;s-instance-name&gt; parses text exactly as if it were &lt;instance-of-object&gt;, but
 is just a little faster written as an internal like this.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">instance</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -600,7 +584,6 @@ adjective listed must be one which applies to the noun. For example,
 (perhaps curiously) the Standard Rules don't define "empty" for rooms;
 whereas "empty rulebook" will work.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">applicable</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
@@ -677,7 +660,6 @@ splits later.
 <p class="inwebparagraph">In the grammar for &lt;s-description&gt;, the noun is compulsory.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">description</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">description</span><span class="plain">-</span><span class="identifier">uncomposite</span><span class="plain">-</span><span class="identifier">inner</span><span class="plain">&gt; |								==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -712,14 +694,14 @@ splits later.
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">qualifiable</span><span class="plain">-</span><span class="identifier">proper</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">&gt; |									==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">applicable</span><span class="plain">-</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">qualifiable</span><span class="plain">-</span><span class="identifier">proper</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">&gt;		==&gt; </span><span class="functiontext">ParseTree::AdjectiveLists::add_adjlist</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[2], </span><span class="identifier">RP</span><span class="plain">[1])</span>
 
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">trying</span><span class="plain">-</span><span class="identifier">omission</span><span class="plain">-</span><span class="identifier">permitted</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">trying</span><span class="plain">-</span><span class="identifier">omission</span><span class="plain">-</span><span class="identifier">permitted</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">permit_trying_omission</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">multiplicitous</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">multiplicitous</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt;-&gt;</span><span class="identifier">multiplicitous</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -730,7 +712,6 @@ splits later.
 <p class="inwebparagraph"><a id="SP19_1"></a><b>&#167;19.1.  </b>The grammar for &lt;s-description-nounless&gt; is almost exactly the same
 except that the noun is optional. The only difference is right at the bottom.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">description</span><span class="plain">-</span><span class="identifier">nounless</span><span class="plain">&gt; ::=</span>
@@ -865,7 +846,6 @@ context of a proper noun, as in "some tea", because it may be confusion of
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>This simply wraps up a calling name into S-grammar form.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">calling</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">article</span><span class="plain">&gt; ... |		==&gt; </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">UNKNOWN_NT</span><span class="plain">, </span><span class="identifier">WR</span><span class="plain">[1])</span>
@@ -899,12 +879,11 @@ notice whether the article is definite or not, and we're similarly turning a
 blind eye to singular vs plural.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">specifier</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">which_N</span><span class="plain"> = -1; </span><span class="identifier">quantifier</span><span class="plain"> *</span><span class="identifier">quantifier_used</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x1</span><span class="plain"> = </span><span class="identifier">Quantifiers::parse_against_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;</span><span class="identifier">which_N</span><span class="plain">, &amp;</span><span class="identifier">quantifier_used</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x1</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x1</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">x1</span><span class="plain">&lt;</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Preform::test_word</span><span class="plain">(</span><span class="identifier">x1</span><span class="plain">, &lt;</span><span class="identifier">article</span><span class="plain">&gt;))) </span><span class="identifier">x1</span><span class="plain">++;</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">qp</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">x1</span><span class="plain">-1));</span>
             <span class="identifier">ParseTree::set_quant</span><span class="plain">(</span><span class="identifier">qp</span><span class="plain">, </span><span class="identifier">quantifier_used</span><span class="plain">);</span>
@@ -912,7 +891,7 @@ blind eye to singular vs plural.
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">qp</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">x1</span><span class="plain">-1;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -924,7 +903,6 @@ to the kind "thing", whereas "somebody" does refer to people and
 "everywhere" to places: English is slippery on this.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">specifying</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">DW</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -935,9 +913,9 @@ to the kind "thing", whereas "somebody" does refer to people and
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quantifier_used</span><span class="plain">)</span>
                 <span class="functiontext">Descriptions::quantify</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">quantifier_used</span><span class="plain">, -1);</span>
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) - 1;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

@@ -120,12 +120,11 @@ distinct from its meaning, and this is it.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following declares a new adjective, creating it only if necessary:
 </p>
 
-
 <pre class="display">
     <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="functiontext">Adjectives::declare</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">, </span><span class="reserved">adjectival_phrase</span><span class="plain">) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Clusters::get_name_in_play</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;adjective_names</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Clusters::get_name_in_play</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">adjective_names</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">aph</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Adjectives::from_word_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
@@ -139,22 +138,21 @@ distinct from its meaning, and this is it.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Whereas this simply creates it:
 </p>
 
-
 <pre class="display">
     <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="functiontext">Adjectives::from_word_range</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">aph</span><span class="plain"> = </span><span class="functiontext">Adjectives::parse</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">aph</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">aph</span><span class="plain">;</span>
         <span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">adjectival_phrase</span><span class="plain">);</span>
-        <span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;adjective_names</span><span class="plain"> = </span><span class="identifier">Clusters::new</span><span class="plain">();</span>
-        <span class="identifier">Clusters::add_with_agreements</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;adjective_names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
-        <span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;meanings</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">adjective_names</span><span class="plain"> = </span><span class="identifier">Clusters::new</span><span class="plain">();</span>
+        <span class="identifier">Clusters::add_with_agreements</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">adjective_names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
+        <span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">meanings</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">EMPTY_ADJECTIVE_MEANING</span>
-        <span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;meanings</span><span class="plain"> = </span><span class="identifier">EMPTY_ADJECTIVE_MEANING</span><span class="plain">();</span>
+        <span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">meanings</span><span class="plain"> = </span><span class="identifier">EMPTY_ADJECTIVE_MEANING</span><span class="plain">();</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;aph_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::package</span><span class="plain">(</span><span class="identifier">Modules::current</span><span class="plain">(), </span><span class="identifier">ADJECTIVES_HAP</span><span class="plain">);</span>
-        <span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;aph_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">ADJECTIVE_HL</span><span class="plain">, </span><span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;aph_package</span><span class="plain">);</span>
+        <span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">aph_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::package</span><span class="plain">(</span><span class="identifier">Modules::current</span><span class="plain">(), </span><span class="identifier">ADJECTIVES_HAP</span><span class="plain">);</span>
+        <span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">aph_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">ADJECTIVE_HL</span><span class="plain">, </span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">aph_package</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">ADJECTIVE_NAME_VETTING</span>
@@ -178,10 +176,9 @@ distinct from its meaning, and this is it.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Adjectives::get_text</span><span class="plain">(</span><span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;adjective_names</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">adjective_names</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -192,7 +189,6 @@ distinct from its meaning, and this is it.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Parsing adjectives. </b>This does what its name suggests: matches the name of any adjective known to
 Inform.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -214,7 +210,6 @@ there is only one <code class="display"><span class="extract">adjectival_phrase<
 the following is unambiguous:
 </p>
 
-
 <pre class="display">
     <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="functiontext">Adjectives::parse</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
@@ -228,21 +223,20 @@ the following is unambiguous:
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Testing agreement. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Adjectives::test_adjective</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="functiontext">Adjectives::declare</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">aph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Failed test\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">aph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Failed test\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">NEUTER_GENDER</span><span class="plain">; </span><span class="identifier">g</span><span class="plain"> &lt;= </span><span class="identifier">FEMININE_GENDER</span><span class="plain">; </span><span class="identifier">g</span><span class="plain">++) {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEUTER_GENDER</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"neuter "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MASCULINE_GENDER</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"masculine "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FEMININE_GENDER</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"feminine "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEUTER_GENDER:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"neuter "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MASCULINE_GENDER:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"masculine "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FEMININE_GENDER:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"feminine "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = 1; </span><span class="identifier">n</span><span class="plain"> &lt;= 2; </span><span class="identifier">n</span><span class="plain">++) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"singular: "</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" / plural: "</span><span class="plain">);</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Clusters::get_name_general</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-</span><span class="element">&gt;adjective_names</span><span class="plain">,</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> &lt;= </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">++) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"singular: "</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" / plural: "</span><span class="plain">);</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Clusters::get_name_general</span><span class="plain">(</span><span class="identifier">aph</span><span class="plain">-&gt;</span><span class="element">adjective_names</span><span class="plain">,</span>
                     <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -257,7 +251,6 @@ the following is unambiguous:
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Logging. </b>To identify an adjective in the debugging log:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Adjectives::log</span><span class="plain">(</span><span class="reserved">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">) {</span>

@@ -66,7 +66,6 @@ the things they represent &mdash; a typical example would be <code class="displa
 it's convenient to associate them with nametags.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">UseNouns::identifier</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"nothing"</span><span class="plain">;</span>
@@ -75,7 +74,7 @@ it's convenient to associate them with nametags.
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">UseNouns::iname</span><span class="plain">(</span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"So %W / %S is stuck\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">), </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">); </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stuck"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"So %W / %S is stuck\n"</span><span class="plain">, </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">), </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">); </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stuck"</span><span class="plain">); }</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">nt_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -130,7 +129,6 @@ instance, the Standard Rules want the player-character object to be called
 <code class="display"><span class="extract">selfobj</span></code> in I6 source text, not something like <code class="display"><span class="extract">I32_yourself</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseNouns::name_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
@@ -140,8 +138,8 @@ instance, the Standard Rules want the player-character object to be called
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseNouns::visit_to_name</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">) == </span><span class="constant">NOUN_I6TR</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">category_of_I6_translation_ANNOT</span><span class="plain">) == </span><span class="constant">NOUN_I6TR</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Act on a request to translate a noun in a specific way</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -158,13 +156,13 @@ instance, the Standard Rules want the player-character object to be called
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="identifier">NOUN_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">) {</span>
             <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">Nouns::disambiguate</span><span class="plain">(</span><span class="identifier">res</span><span class="plain">, </span><span class="identifier">MAX_NOUN_PRIORITY</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">i6r</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">i6r</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)));</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">i6r</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)));</span>
                 <span class="functiontext">UseNouns::noun_set_I6_representation</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">i6r</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">i6r</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -184,8 +182,8 @@ instance, the Standard Rules want the player-character object to be called
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRANS_KIND</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRANS_INSTANCE</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRANS_KIND</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRANS_INSTANCE</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This is for translation of nouns into different natural languages,
 and is a somewhat provisional feature for now.
@@ -195,7 +193,6 @@ and is a somewhat provisional feature for now.
     <p>Thing translates into French as chose (f).</p>
 
 </blockquote>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">nl</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
@@ -207,12 +204,11 @@ and is a somewhat provisional feature for now.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseNouns::nl_translates</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="comment">the object</span>
-        <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">ParseTree::get_defn_language</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">gender_reference_ANNOT</span><span class="plain">);</span>
+        <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">ParseTree::get_defn_language</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">gender_reference_ANNOT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"No such NL"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">English_language</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateIntoEnglish</span><span class="plain">),</span>
@@ -221,7 +217,7 @@ and is a somewhat provisional feature for now.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">nl</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">into</span><span class="plain">-</span><span class="identifier">nl</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">))) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantTranslateValue</span><span class="plain">),</span>
                 <span class="string">"this isn't something which can be translated"</span><span class="plain">,</span>
                 <span class="string">"that is, it isn't a kind."</span><span class="plain">);</span>
@@ -229,25 +225,25 @@ and is a somewhat provisional feature for now.
         <span class="plain">}</span>
 
         <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRANS_INSTANCE</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRANS_INSTANCE:</span><span class="plain"> {</span>
                 <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Instances::get_noun</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stuck on instance name"</span><span class="plain">);</span>
-                <span class="identifier">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">), </span><span class="identifier">nl</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">,</span>
-                    <span class="plain">1, </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain">);</span>
+                <span class="identifier">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">), </span><span class="identifier">nl</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">,</span>
+                    <span class="constant">1</span><span class="plain">, </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRANS_KIND</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRANS_KIND:</span><span class="plain"> {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">KC</span><span class="plain"> = </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">KC</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"stuck on kind name"</span><span class="plain">);</span>
                 <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">Kinds::Constructors::get_noun</span><span class="plain">(</span><span class="identifier">KC</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"further stuck on kind name"</span><span class="plain">);</span>
-                <span class="identifier">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">), </span><span class="identifier">nl</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">,</span>
-                    <span class="plain">1, </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">REGISTER_PLURAL_NTOPT</span><span class="plain">);</span>
+                <span class="identifier">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">), </span><span class="identifier">nl</span><span class="plain">, </span><span class="identifier">g</span><span class="plain">,</span>
+                    <span class="constant">1</span><span class="plain">, </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">REGISTER_PLURAL_NTOPT</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad translation category"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

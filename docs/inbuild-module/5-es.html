@@ -67,25 +67,25 @@ length to one character less than the following constants:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXTENSION_TITLE_LENGTH</span><span class="plain"> 51</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain"> 51</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXTENSION_TITLE_LENGTH</span><span class="plain"> </span><span class="constant">51</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain"> </span><span class="constant">51</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inform_extension</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">as_copy</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">body_text</span><span class="plain">; </span>    <span class="comment">Body of source text supplied in extension, if any</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">body_text_unbroken</span><span class="plain">; </span>    <span class="comment">Does this contain text waiting to be sentence-broken?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">documentation_text</span><span class="plain">; </span>    <span class="comment">Documentation supplied in extension, if any</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">standard</span><span class="plain">; </span>    <span class="comment">the (or perhaps just a) Standard Rules extension</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">authorial_modesty</span><span class="plain">; </span>    <span class="comment">Do not credit in the compiled game</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">rubric_as_lexed</span><span class="plain">; </span>    <span class="comment">brief description found in opening lines</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">body_text</span><span class="plain">; </span><span class="comment">Body of source text supplied in extension, if any</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">body_text_unbroken</span><span class="plain">; </span><span class="comment">Does this contain text waiting to be sentence-broken?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">documentation_text</span><span class="plain">; </span><span class="comment">Documentation supplied in extension, if any</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">standard</span><span class="plain">; </span><span class="comment">the (or perhaps just a) Standard Rules extension</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">authorial_modesty</span><span class="plain">; </span><span class="comment">Do not credit in the compiled game</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">rubric_as_lexed</span><span class="plain">; </span><span class="comment">brief description found in opening lines</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">read_into_file</span><span class="plain">; </span>    <span class="comment">Which source file loaded this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">read_into_file</span><span class="plain">; </span><span class="comment">Which source file loaded this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">must_satisfy</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">loaded_from_built_in_area</span><span class="plain">; </span>    <span class="comment">Located within Inform application</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">loaded_from_built_in_area</span><span class="plain">; </span><span class="comment">Located within Inform application</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">syntax_tree</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inclusion_sentence</span><span class="plain">; </span>    <span class="comment">Where the source called for this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inclusion_sentence</span><span class="plain">; </span><span class="comment">Where the source called for this</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inform_extension</span><span class="plain">;</span>
 </pre>
@@ -99,11 +99,10 @@ We scan the extension file for the title, author, version number and any
 compatibility notes given (such as "for Glulx only").
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::scan</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="functiontext">Copies::set_content</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">STORE_POINTER_inform_extension</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">));</span>
         &lt;<span class="cwebmacro">Initialise the extension docket</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
 
@@ -113,7 +112,7 @@ compatibility notes given (such as "for Glulx only").
         <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">VersionNumbers::null</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Scan the file</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Change the edition of the copy in light of the metadata found in the scan</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
+        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">reqs</span><span class="plain">);</span>
@@ -130,18 +129,18 @@ compatibility notes given (such as "for Glulx only").
 
 
 <pre class="displaydefn">
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;documentation_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;standard</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;authorial_modesty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;rubric_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;extra_credit_as_lexed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;loaded_from_built_in_area</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain"> = </span><span class="identifier">ParseTree::new_tree</span><span class="plain">();</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">documentation_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">standard</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">authorial_modesty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">rubric_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">extra_credit_as_lexed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">must_satisfy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">loaded_from_built_in_area</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">syntax_tree</span><span class="plain"> = </span><span class="identifier">ParseTree::new_tree</span><span class="plain">();</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">inclusion_sentence</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -162,7 +161,7 @@ alone, and the version number is returned.
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">titling_line</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">version_text</span><span class="plain">);</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain">;</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain">;</span>
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">EXTF</span><span class="plain"> = </span><span class="identifier">Filenames::fopen_caseless</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="string">"r"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EXTF</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">CopyErrors::new_F</span><span class="plain">(</span><span class="constant">OPEN_FAILED_CE</span><span class="plain">, -1, </span><span class="identifier">F</span><span class="plain">));</span>
@@ -171,7 +170,7 @@ alone, and the version number is returned.
             &lt;<span class="cwebmacro">Read the rubric text, if any is present</span> <span class="cwebmacronumber">2.2.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Parse the version, title, author and VM requirements from the titling line</span> <span class="cwebmacronumber">2.2.3</span>&gt;<span class="plain">;</span>
             <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">EXTF</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">version_text</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">version_text</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">V</span><span class="plain"> = </span><span class="identifier">VersionNumbers::from_text</span><span class="plain">(</span><span class="identifier">version_text</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">)) {</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">error_text</span><span class="plain">);</span>
@@ -202,8 +201,8 @@ by the local <code class="display"><span class="extract">\n</span></code> for go
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">EXTF</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">)) != </span><span class="identifier">EOF</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0</span><span class="identifier">xFEFF</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">skip the optional Unicode BOM pseudo-character</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0xFEFF</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">skip the optional Unicode BOM pseudo-character</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">titling_line</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Works::normalise_casing</span><span class="plain">(</span><span class="identifier">titling_line</span><span class="plain">);</span>
@@ -230,13 +229,13 @@ thing we read here is a meaningless <code class="display"><span class="extract">
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">, </span><span class="identifier">found_start</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">EXTF</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">)) != </span><span class="identifier">EOF</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\t'</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> != </span><span class="character">' '</span><span class="plain">) &amp;&amp; (</span><span class="identifier">found_start</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) </span><span class="identifier">found_start</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found_start</span><span class="plain">) </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;rubric_as_lexed</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">found_start</span><span class="plain">) </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">rubric_as_lexed</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -372,18 +371,18 @@ are immutable, and need to be for the extensions dictionary to work.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">) == 0) { </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">, </span><span class="string">"Unknown"</span><span class="plain">); }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">) == 0) { </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">, </span><span class="string">"Anonymous"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">, </span><span class="string">"Unknown"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">, </span><span class="string">"Anonymous"</span><span class="plain">); }</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">) &gt; </span><span class="constant">MAX_EXTENSION_TITLE_LENGTH</span><span class="plain">) {</span>
             <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">CopyErrors::new_N</span><span class="plain">(</span><span class="constant">EXT_TITLE_TOO_LONG_CE</span><span class="plain">, -1, </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_title</span><span class="plain">)));</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">) &gt; </span><span class="constant">MAX_EXTENSION_AUTHOR_LENGTH</span><span class="plain">) {</span>
             <span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="functiontext">CopyErrors::new_N</span><span class="plain">(</span><span class="constant">EXT_AUTHOR_TOO_LONG_CE</span><span class="plain">, -1, </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">claimed_author_name</span><span class="plain">)));</span>
         <span class="plain">}</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain"> = </span><span class="functiontext">Editions::new</span><span class="plain">(</span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="identifier">claimed_title</span><span class="plain">, </span><span class="identifier">claimed_author_name</span><span class="plain">), </span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">reqs</span><span class="plain">) &gt; 0) {</span>
+        <span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain"> = </span><span class="functiontext">Editions::new</span><span class="plain">(</span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">extension_genre</span><span class="plain">, </span><span class="identifier">claimed_title</span><span class="plain">, </span><span class="identifier">claimed_author_name</span><span class="plain">), </span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">reqs</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">compatibility_specification</span><span class="plain"> *</span><span class="identifier">CS</span><span class="plain"> = </span><span class="identifier">Compatibility::from_text</span><span class="plain">(</span><span class="identifier">reqs</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CS</span><span class="plain">) </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;compatibility</span><span class="plain"> = </span><span class="identifier">CS</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CS</span><span class="plain">) </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="element">compatibility</span><span class="plain"> = </span><span class="identifier">CS</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">, </span><span class="string">"cannot read compatibility '%S'"</span><span class="plain">, </span><span class="identifier">reqs</span><span class="plain">);</span>
@@ -403,20 +402,19 @@ that we need to use for something, we'll need to read its full text eventually.
 This is that time.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::read_source_text_for</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain">;</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">doc_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">census_mode</span><span class="plain">) </span><span class="identifier">doc_only</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">synopsis</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Concoct a synopsis for the extension to be read</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain"> = </span><span class="functiontext">SourceText::read_file</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">synopsis</span><span class="plain">, </span><span class="identifier">doc_only</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain"> = </span><span class="functiontext">SourceText::read_file</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">synopsis</span><span class="plain">, </span><span class="identifier">doc_only</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">synopsis</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">) {</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">-&gt;</span><span class="identifier">your_ref</span><span class="plain"> = </span><span class="identifier">STORE_POINTER_inbuild_copy</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain">) {</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain">-&gt;</span><span class="identifier">your_ref</span><span class="plain"> = </span><span class="identifier">STORE_POINTER_inbuild_copy</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Break the text into sentences</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -429,7 +427,6 @@ This is that time.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">"Pantomime Sausages by Mr Punch"</span>
@@ -448,8 +445,8 @@ range, we flatten them from general ISO to plain ASCII.
 
 <pre class="displaydefn">
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">synopsis</span><span class="plain">, </span><span class="string">"%S by %S"</span><span class="plain">,</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">,</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;author_name</span><span class="plain">);</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">,</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">author_name</span><span class="plain">);</span>
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">synopsis</span><span class="plain">)</span>
             <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">,</span>
                 <span class="identifier">Characters::make_filename_safe</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)));</span>
@@ -473,13 +470,13 @@ then its sentences will go to the extension's own tree.
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EXW</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;read_into_file</span><span class="plain">-&gt;</span><span class="identifier">text_read</span><span class="plain">;</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">EXW</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">read_into_file</span><span class="plain">-&gt;</span><span class="identifier">text_read</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">EXW</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Break the extension's text into body and documentation</span> <span class="cwebmacronumber">3.2.2</span>&gt;<span class="character">;</span>
         <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">Inbuild::project</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain">;</span>
-        <span class="identifier">Sentences::break_into_extension_copy</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;syntax_tree</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">syntax_tree</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-&gt;</span><span class="element">syntax_tree</span><span class="plain">;</span>
+        <span class="identifier">Sentences::break_into_extension_copy</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">syntax_tree</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text_unbroken</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -491,7 +488,6 @@ then its sentences will go to the extension's own tree.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">---- Documentation ----</span>
 </pre>
@@ -502,7 +498,6 @@ saved until later, but not broken into sentences for the parse tree, and it
 is therefore invisible to the rest of Inform. If this division line is not
 present then the extension contains only body source and no documentation.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt; ::=</span>
@@ -519,9 +514,9 @@ present then the extension contains only body source and no documentation.
 
 <pre class="displaydefn">
         <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt;(</span><span class="identifier">EXW</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt;, 1);</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;documentation_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt;, 2);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;body_text_unbroken</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">mark this to be sentence-broken</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">documentation_text</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">body</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">body_text_unbroken</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">mark this to be sentence-broken</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -533,13 +528,12 @@ attached a reference to say which <code class="display"><span class="extract">in
 make use of that:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_extension</span><span class="plain"> *</span><span class="functiontext">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_inbuild_copy</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="identifier">your_ref</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> != </span><span class="identifier">extension_genre</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain"> != </span><span class="identifier">extension_genre</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">ExtensionManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -550,19 +544,18 @@ make use of that:
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Miscellaneous. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::write</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"none"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%X"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%X"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::write_name_to_file</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;raw_title</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">raw_title</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::write_author_to_file</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;raw_author_name</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">raw_author_name</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -587,23 +580,22 @@ the one after for the optional extra credit line, used to acknowledge I6
 sources, collaborators, translators and so on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_rubric</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfound ef"</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;rubric_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension rubric: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;rubric_as_lexed</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">rubric_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension rubric: %S\n"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">rubric_as_lexed</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Extensions::get_rubric</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;rubric_as_lexed</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">rubric_as_lexed</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_extra_credit</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfound ef"</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;extra_credit_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension extra credit: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;extra_credit_as_lexed</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">extra_credit_as_lexed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXTENSIONS_CENSUS</span><span class="plain">, </span><span class="string">"Extension extra credit: %S\n"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">extra_credit_as_lexed</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -621,42 +613,41 @@ the following routines, depending on whether it was in an extension or in
 the main source text:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">general_authorial_modesty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_authorial_modesty</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfound ef"</span><span class="plain">);</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;authorial_modesty</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">authorial_modesty</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_general_authorial_modesty</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">general_authorial_modesty</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::set_inclusion_sentence</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">inclusion_sentence</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Extensions::get_inclusion_sentence</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;inclusion_sentence</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">inclusion_sentence</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::is_standard</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;standard</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">standard</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::make_standard</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;standard</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">standard</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::must_satisfy</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">VersionNumberRanges::intersect_range</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain">-</span><span class="element">&gt;version_range</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;version_range</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">must_satisfy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">must_satisfy</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">VersionNumberRanges::intersect_range</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">must_satisfy</span><span class="plain">-&gt;</span><span class="element">version_range</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">version_range</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::satisfies</span><span class="plain">(</span><span class="reserved">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Requirements::meets</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;must_satisfy</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Requirements::meets</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">must_satisfy</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

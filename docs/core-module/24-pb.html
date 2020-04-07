@@ -81,22 +81,22 @@ store the block stack in the only instance of a private structure.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_BLOCK_NESTING</span><span class="plain"> 50 </span>    <span class="comment">which frankly seems plenty</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_BLOCK_NESTING</span><span class="plain"> </span><span class="constant">50</span><span class="plain"> </span><span class="comment">which frankly seems plenty</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">block_stack</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pb_sp</span><span class="plain">; </span>    <span class="comment">stack pointer for the block stack which follows:</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pb_sp</span><span class="plain">; </span><span class="comment">stack pointer for the block stack which follows:</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_block</span><span class="plain"> </span><span class="identifier">pb_stack</span><span class="plain">[</span><span class="constant">MAX_BLOCK_NESTING</span><span class="plain">+1];</span>
     <span class="plain">} </span><span class="reserved">block_stack</span><span class="plain">;</span>
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_block</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">from_structure</span><span class="plain">; </span>    <span class="comment">e.g., "if" or "while"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">block_location</span><span class="plain">; </span>    <span class="comment">where block begins</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">switch_val</span><span class="plain">; </span>    <span class="comment">for a switch statement</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">tail_schema</span><span class="plain">; </span>    <span class="comment">code to add when the block closes</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">csi_state</span><span class="plain"> </span><span class="identifier">compilation_state</span><span class="plain">; </span>    <span class="comment">details needed to compile that code</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">label_following</span><span class="plain">; </span>    <span class="comment">or -1 if none is used</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">from_structure</span><span class="plain">; </span><span class="comment">e.g., "if" or "while"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">block_location</span><span class="plain">; </span><span class="comment">where block begins</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">switch_val</span><span class="plain">; </span><span class="comment">for a switch statement</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">tail_schema</span><span class="plain">; </span><span class="comment">code to add when the block closes</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">csi_state</span><span class="plain"> </span><span class="identifier">compilation_state</span><span class="plain">; </span><span class="comment">details needed to compile that code</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">label_following</span><span class="plain">; </span><span class="comment">or -1 if none is used</span>
     <span class="plain">} </span><span class="reserved">phrase_block</span><span class="plain">;</span>
 </pre>
 
@@ -110,11 +110,10 @@ store the block stack in the only instance of a private structure.
 and, sometimes, the one above it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">block_stack</span><span class="plain"> </span><span class="identifier">current_block_stack</span><span class="plain">;</span>
-    <span class="reserved">phrase_block</span><span class="plain"> *</span><span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one being compiled, if any</span>
-    <span class="reserved">phrase_block</span><span class="plain"> *</span><span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one about to open, if any</span>
+    <span class="reserved">phrase_block</span><span class="plain"> *</span><span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one being compiled, if any</span>
+    <span class="reserved">phrase_block</span><span class="plain"> *</span><span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one about to open, if any</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -123,10 +122,9 @@ and, sometimes, the one above it.
 line, so the only code allowed to change them is here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::empty_stack</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> = 0;</span>
+        <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -140,10 +138,9 @@ line, so the only code allowed to change them is here:
 is not yet, the top of the stack:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::prepush_stack</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">block_being_opened</span><span class="plain"> = &amp;(</span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">]);</span>
+        <span class="identifier">block_being_opened</span><span class="plain"> = &amp;(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">]);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -154,10 +151,9 @@ is not yet, the top of the stack:
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And then we actually increment the stack pointer:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::push_stack</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">++;</span>
+        <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">++;</span>
         <span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">block_being_opened</span><span class="plain">;</span>
         <span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -170,15 +166,14 @@ is not yet, the top of the stack:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Popping is easier:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::pop_stack</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">--;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> &gt; 0)</span>
-            <span class="identifier">block_being_compiled</span><span class="plain"> = &amp;(</span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> - 1]);</span>
+        <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">--;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">block_being_compiled</span><span class="plain"> = &amp;(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">]);</span>
         <span class="reserved">else</span>
             <span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">which should be true anyway</span>
+        <span class="identifier">block_being_opened</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">which should be true anyway</span>
     <span class="plain">}</span>
 </pre>
 
@@ -190,15 +185,14 @@ is not yet, the top of the stack:
 begins:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::begin_code_blocks</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">() == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to use blocks outside stack frame"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to begin block stack already in use"</span><span class="plain">);</span>
-        <span class="functiontext">Frames::Blocks::empty_stack</span><span class="plain">(); </span>    <span class="comment">which it should be anyway</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Block stack now active\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="functiontext">Frames::Blocks::empty_stack</span><span class="plain">(); </span><span class="comment">which it should be anyway</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Block stack now active\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -211,15 +205,14 @@ case we are recovering from some kind of problem, we'll empty anything
 somehow left on it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::end_code_blocks</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">) {</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;block_location</span><span class="plain">;</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">block_location</span><span class="plain">;</span>
             <span class="functiontext">Frames::Blocks::pop_stack</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="identifier">block_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Block stack now inactive\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Block stack now inactive\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -242,11 +235,10 @@ to warn us. (That doesn't mean the block is opening yet: the setup code
 for the loop hasn't been compiled yet.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::beginning_block_phrase</span><span class="plain">(</span><span class="identifier">control_structure_phrase</span><span class="plain"> *</span><span class="identifier">csp</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> == </span><span class="constant">MAX_BLOCK_NESTING</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"block stack overflow"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> == </span><span class="constant">MAX_BLOCK_NESTING</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"block stack overflow"</span><span class="plain">);</span>
             <span class="functiontext">Frames::Blocks::pop_stack</span><span class="plain">();</span>
         <span class="plain">}</span>
         <span class="functiontext">Frames::Blocks::prepush_stack</span><span class="plain">();</span>
@@ -272,11 +264,11 @@ the loop begins, and pull them again when it finishes.
 
 
 <pre class="displaydefn">
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;switch_val</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;tail_schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;block_location</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;from_structure</span><span class="plain"> = </span><span class="identifier">csp</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;label_following</span><span class="plain"> = -1;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">switch_val</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">tail_schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">block_location</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">from_structure</span><span class="plain"> = </span><span class="identifier">csp</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">label_following</span><span class="plain"> = -1;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -286,12 +278,11 @@ the loop begins, and pull them again when it finishes.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Slightly later on, we know these:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::supply_val_and_stream</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">inter_schema</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">csi_state</span><span class="plain"> </span><span class="identifier">CSIS</span><span class="plain">) {</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;switch_val</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;tail_schema</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="identifier">block_being_opened</span><span class="plain">-</span><span class="element">&gt;compilation_state</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">switch_val</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">tail_schema</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
+        <span class="identifier">block_being_opened</span><span class="plain">-&gt;</span><span class="element">compilation_state</span><span class="plain"> = </span><span class="identifier">CSIS</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -303,11 +294,10 @@ the loop begins, and pull them again when it finishes.
 has been compiled, and we're ready to open the actual block:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> != </span><span class="constant">MAX_BLOCK_NESTING</span><span class="plain">) </span><span class="functiontext">Frames::Blocks::push_stack</span><span class="plain">();</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Start of block level %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> != </span><span class="constant">MAX_BLOCK_NESTING</span><span class="plain">) </span><span class="functiontext">Frames::Blocks::push_stack</span><span class="plain">();</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Start of block level %d\n"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -320,12 +310,11 @@ for example, but also for cases in a switch-style "if", so there can be
 many of them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::divide_code_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">for problem recovery only</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Division in block level %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
-        <span class="functiontext">LocalVariables::end_scope</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">for problem recovery only</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"Division in block level %d\n"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
+        <span class="functiontext">LocalVariables::end_scope</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -336,24 +325,23 @@ many of them.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Whatever we pushed earlier, we now pull:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">for problem recovery only</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;label_following</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">for problem recovery only</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">label_following</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">, </span><span class="string">".loop_break_%d"</span><span class="plain">, </span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;label_following</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">, </span><span class="string">".loop_break_%d"</span><span class="plain">, </span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">label_following</span><span class="plain">);</span>
             <span class="identifier">Produce::place_label</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">Produce::reserve_label</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">TL</span><span class="plain">));</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"End of block level %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
-        <span class="functiontext">LocalVariables::end_scope</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LOCAL_VARIABLES</span><span class="plain">, </span><span class="string">"End of block level %d\n"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
+        <span class="functiontext">LocalVariables::end_scope</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;tail_schema</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">tail_schema</span><span class="plain">) {</span>
             <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">);</span>
             <span class="functiontext">Invocations::Inline::csi_inline_inner</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">,</span>
-                <span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;tail_schema</span><span class="plain">, &amp;(</span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;compilation_state</span><span class="plain">));</span>
+                <span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">tail_schema</span><span class="plain">, &amp;(</span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">compilation_state</span><span class="plain">));</span>
         <span class="plain">}</span>
         <span class="functiontext">Frames::Blocks::pop_stack</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -366,12 +354,11 @@ many of them.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Bodies. </b>Are we in the body of a loop, perhaps indirectly?
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::inside_a_loop_body</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain"> &gt;= 0; </span><span class="identifier">i</span><span class="plain">--)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::is_a_loop</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.from_structure</span><span class="plain">))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">--)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::is_a_loop</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">from_structure</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -389,25 +376,24 @@ there is no current block stack, which is important when typechecking an
 expression whose evaluation requires the use of a phrase.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::current_block_level</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Frames::Blocks::name_of_current_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ControlStructures::incipit</span><span class="plain">(</span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;from_structure</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ControlStructures::incipit</span><span class="plain">(</span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">from_structure</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Frames::Blocks::start_of_current_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;block_location</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">block_location</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Frames::Blocks::switch_value</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block_being_compiled</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">block_being_compiled</span><span class="plain">-</span><span class="element">&gt;switch_val</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">block_being_compiled</span><span class="plain">-&gt;</span><span class="element">switch_val</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -428,19 +414,18 @@ to a wider loop, whereas in I7 we want always to exit the innermost loop.
 So we do this by hand, jumping to a label placed just after the loop ends.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_breakage_count</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_breakage_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::emit_break</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain"> &gt;= 0; </span><span class="identifier">i</span><span class="plain">--)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::permits_break</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.from_structure</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.label_following</span><span class="plain"> == -1)</span>
-                    <span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.label_following</span><span class="plain"> =</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="identifier">pb_sp</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">--)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::permits_break</span><span class="plain">(</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">from_structure</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">label_following</span><span class="plain"> == -1)</span>
+                    <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">label_following</span><span class="plain"> =</span>
                         <span class="identifier">unique_breakage_count</span><span class="plain">++;</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">JUMP_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">, </span><span class="string">".loop_break_%d"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="element">.pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.label_following</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">, </span><span class="string">".loop_break_%d"</span><span class="plain">, </span><span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_stack</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">label_following</span><span class="plain">);</span>
                     <span class="identifier">Produce::lab</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">Produce::reserve_label</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">TL</span><span class="plain">));</span>
                     <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TL</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -457,12 +442,11 @@ So we do this by hand, jumping to a label placed just after the loop ends.
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Blocks and scope. </b>When "let" creates something, this is called:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::set_variable_scope</span><span class="plain">(</span><span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">())</span>
             <span class="functiontext">LocalVariables::set_scope_to</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">,</span>
-                <span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain">);</span>
+                <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -475,12 +459,11 @@ counter exists in one scope level inside the one holding the loop header
 phrase:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Frames::Blocks::set_scope_to_block_about_to_open</span><span class="plain">(</span><span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">())</span>
             <span class="functiontext">LocalVariables::set_scope_to</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">,</span>
-                <span class="identifier">current_block_stack</span><span class="element">.pb_sp</span><span class="plain"> + 1);</span>
+                <span class="identifier">current_block_stack</span><span class="plain">.</span><span class="element">pb_sp</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

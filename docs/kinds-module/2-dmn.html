@@ -125,7 +125,6 @@ so that the rule A times B specifies C causes (B, C) to be stored
 in the list of <code class="display"><span class="extract">multiplications</span></code> belonging to A.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dimensional_rules</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dimensional_rule</span><span class="plain"> *</span><span class="identifier">multiplications</span><span class="plain">;</span>
@@ -160,7 +159,6 @@ see that
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Base units: time, length, mass, elapsed time, electric current, temperature, luminosity</span>
@@ -233,7 +231,6 @@ velocity in? The answer has to be
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(length)2.(elapsed time)-2</span>
 </pre>
@@ -278,11 +275,10 @@ the derivation for a dimensionless unit. (As discussed above, Inform doesn't
 see different dimensionless units as being physically different.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">unit_pair</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">fund_unit</span><span class="plain">; </span>    <span class="comment">and this really must be a fundamental kind</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain">; </span>    <span class="comment">a non-zero integer</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">fund_unit</span><span class="plain">; </span><span class="comment">and this really must be a fundamental kind</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain">; </span><span class="comment">a non-zero integer</span>
     <span class="plain">} </span><span class="reserved">unit_pair</span><span class="plain">;</span>
 </pre>
 
@@ -300,14 +296,14 @@ if you're taking notes).
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain"> 16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain"> </span><span class="constant">16</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">unit_sequence</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_unit_pairs</span><span class="plain">; </span>    <span class="comment">in range 0 to <code class="display"><span class="extract">MAX_BASE_UNITS_IN_SEQUENCE</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_unit_pairs</span><span class="plain">; </span><span class="comment">in range 0 to <code class="display"><span class="extract">MAX_BASE_UNITS_IN_SEQUENCE</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">unit_pair</span><span class="plain"> </span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scaling_factor</span><span class="plain">; </span>    <span class="comment">see discussion of scaling below</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scaling_factor</span><span class="plain">; </span><span class="comment">see discussion of scaling below</span>
     <span class="plain">} </span><span class="reserved">unit_sequence</span><span class="plain">;</span>
 </pre>
 
@@ -372,19 +368,19 @@ in the Standard Rules.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_OPERATIONS</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PLUS_OPERATION</span><span class="plain"> 0 </span>    <span class="comment">addition</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MINUS_OPERATION</span><span class="plain"> 1 </span>    <span class="comment">subtraction</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TIMES_OPERATION</span><span class="plain"> 2 </span>    <span class="comment">multiplication</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DIVIDE_OPERATION</span><span class="plain"> 3 </span>    <span class="comment">division</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REMAINDER_OPERATION</span><span class="plain"> 4 </span>    <span class="comment">remainder after division</span>
-    <span class="definitionkeyword">define</span> <span class="constant">APPROXIMATION_OPERATION</span><span class="plain"> 5 </span>    <span class="comment">"X to the nearest Y"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ROOT_OPERATION</span><span class="plain"> 6 </span>    <span class="comment">square root &mdash; a unary operation</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REALROOT_OPERATION</span><span class="plain"> 7 </span>    <span class="comment">real-valued square root &mdash; a unary operation</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CUBEROOT_OPERATION</span><span class="plain"> 8 </span>    <span class="comment">cube root &mdash; similarly unary</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EQUALS_OPERATION</span><span class="plain"> 9 </span>    <span class="comment">set equal &mdash; used only in equations</span>
-    <span class="definitionkeyword">define</span> <span class="constant">POWER_OPERATION</span><span class="plain"> 10 </span>    <span class="comment">raise to integer power &mdash; used only in equations</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNARY_MINUS_OPERATION</span><span class="plain"> 11 </span>    <span class="comment">unary minus &mdash; used only in equations</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_OPERATIONS</span><span class="plain"> </span><span class="constant">9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PLUS_OPERATION</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">addition</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MINUS_OPERATION</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">subtraction</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TIMES_OPERATION</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">multiplication</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DIVIDE_OPERATION</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">division</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REMAINDER_OPERATION</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">remainder after division</span>
+    <span class="definitionkeyword">define</span> <span class="constant">APPROXIMATION_OPERATION</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">"X to the nearest Y"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ROOT_OPERATION</span><span class="plain"> </span><span class="constant">6</span><span class="plain"> </span><span class="comment">square root &mdash; a unary operation</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REALROOT_OPERATION</span><span class="plain"> </span><span class="constant">7</span><span class="plain"> </span><span class="comment">real-valued square root &mdash; a unary operation</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CUBEROOT_OPERATION</span><span class="plain"> </span><span class="constant">8</span><span class="plain"> </span><span class="comment">cube root &mdash; similarly unary</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EQUALS_OPERATION</span><span class="plain"> </span><span class="constant">9</span><span class="plain"> </span><span class="comment">set equal &mdash; used only in equations</span>
+    <span class="definitionkeyword">define</span> <span class="constant">POWER_OPERATION</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="comment">raise to integer power &mdash; used only in equations</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNARY_MINUS_OPERATION</span><span class="plain"> </span><span class="constant">11</span><span class="plain"> </span><span class="comment">unary minus &mdash; used only in equations</span>
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The following is associated with "total...", as in "the total weight
 of things on the table", but that's a dodge used in the Standard Rules,
@@ -393,7 +389,7 @@ and for dimensional purposes we ignore it.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TOTAL_OPERATION</span><span class="plain"> 12 </span>    <span class="comment">not really one of the above</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TOTAL_OPERATION</span><span class="plain"> </span><span class="constant">12</span><span class="plain"> </span><span class="comment">not really one of the above</span>
 </pre>
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>There are two reasons why Inform monitors arithmetic: to keep track of
 how it changes kinds, and to preserve scaling factors.
@@ -449,7 +445,6 @@ which is completely unlike the &lt;= relation; it just places them in
 order of creation.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_prior</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
@@ -472,10 +467,9 @@ order of creation.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Multiplication lists. </b>The linked lists of multiplication rules begin empty for every kind:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::dim_initialise</span><span class="plain">(</span><span class="reserved">dimensional_rules</span><span class="plain"> *</span><span class="identifier">dimrs</span><span class="plain">) {</span>
-        <span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">dimrs</span><span class="plain">-&gt;</span><span class="element">multiplications</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -486,27 +480,26 @@ order of creation.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>And this adds a new one to the relevant list:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::record_multiplication_rule</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">right</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">outcome</span><span class="plain">) {</span>
         <span class="reserved">dimensional_rules</span><span class="plain"> *</span><span class="identifier">dimrs</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dim_rules</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">);</span>
         <span class="reserved">dimensional_rule</span><span class="plain"> *</span><span class="identifier">dimr</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;right</span><span class="plain"> == </span><span class="identifier">right</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimrs</span><span class="plain">-&gt;</span><span class="element">multiplications</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain">; </span><span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="identifier">right</span><span class="plain"> == </span><span class="identifier">right</span><span class="plain">) {</span>
                 <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">DimensionRedundant_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
 
         <span class="reserved">dimensional_rule</span><span class="plain"> *</span><span class="identifier">dimr_new</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">dimensional_rule</span><span class="plain">);</span>
-        <span class="identifier">dimr_new</span><span class="plain">-</span><span class="element">&gt;right</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">;</span>
-        <span class="identifier">dimr_new</span><span class="plain">-</span><span class="element">&gt;outcome</span><span class="plain"> = </span><span class="identifier">outcome</span><span class="plain">;</span>
+        <span class="identifier">dimr_new</span><span class="plain">-&gt;</span><span class="identifier">right</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">;</span>
+        <span class="identifier">dimr_new</span><span class="plain">-&gt;</span><span class="identifier">outcome</span><span class="plain"> = </span><span class="identifier">outcome</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain">)</span>
-            <span class="identifier">dimr_new</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+            <span class="identifier">dimr_new</span><span class="plain">-&gt;</span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">dimr_new</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">dimr_new</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain">;</span>
-        <span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain"> = </span><span class="identifier">dimr_new</span><span class="plain">;</span>
+            <span class="identifier">dimr_new</span><span class="plain">-&gt;</span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">dimr_new</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain"> = </span><span class="identifier">dimrs</span><span class="plain">-&gt;</span><span class="element">multiplications</span><span class="plain">;</span>
+        <span class="identifier">dimrs</span><span class="plain">-&gt;</span><span class="element">multiplications</span><span class="plain"> = </span><span class="identifier">dimr_new</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -525,20 +518,19 @@ order of creation.
         <span class="reserved">dimensional_rule</span><span class="plain"> *</span><span class="identifier">dimr</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">left_operand</span><span class="plain">)</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dimrs</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dim_rules</span><span class="plain">(</span><span class="identifier">left_operand</span><span class="plain">),</span>
-                <span class="identifier">dimr</span><span class="plain"> = (</span><span class="identifier">dimrs</span><span class="plain">)?(</span><span class="identifier">dimrs</span><span class="plain">-</span><span class="element">&gt;multiplications</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">,</span>
-                <span class="identifier">wn</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)):-1,</span>
-                <span class="identifier">right_operand</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;right</span><span class="plain">):0,</span>
-                <span class="identifier">outcome_type</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;outcome</span><span class="plain">):0;</span>
+                <span class="identifier">dimr</span><span class="plain"> = (</span><span class="identifier">dimrs</span><span class="plain">)?(</span><span class="identifier">dimrs</span><span class="plain">-&gt;</span><span class="element">multiplications</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">,</span>
+                <span class="identifier">wn</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)):-1,</span>
+                <span class="identifier">right_operand</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">right</span><span class="plain">):0,</span>
+                <span class="identifier">outcome_type</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">outcome</span><span class="plain">):0;</span>
                 <span class="identifier">dimr</span><span class="plain">;</span>
-                <span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">,</span>
-                <span class="identifier">wn</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)):-1,</span>
-                <span class="identifier">right_operand</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;right</span><span class="plain">):0,</span>
-                <span class="identifier">outcome_type</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-</span><span class="element">&gt;outcome</span><span class="plain">):0)</span>
+                <span class="identifier">dimr</span><span class="plain"> = </span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
+                <span class="identifier">wn</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)):-1,</span>
+                <span class="identifier">right_operand</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">right</span><span class="plain">):0,</span>
+                <span class="identifier">outcome_type</span><span class="plain"> = (</span><span class="identifier">dimr</span><span class="plain">)?(</span><span class="identifier">dimr</span><span class="plain">-&gt;</span><span class="element">outcome</span><span class="plain">):0)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>And this is where the user asks for a multiplication to come out in a
 particular way:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::dim_set_multiplication</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">right</span><span class="plain">,</span>
@@ -569,14 +561,13 @@ particular way:
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Unary operations. </b>All we need to know is which ones are unary, in fact, and:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::arithmetic_op_is_unary</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">op</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROOT_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">REALROOT_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNARY_MINUS_OPERATION</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CUBEROOT_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROOT_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REALROOT_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNARY_MINUS_OPERATION:</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -603,13 +594,12 @@ constant, and an evaluation of the derivative of the Riemann zeta function
 quick. But I don't look at the code and immediately see this, myself.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::gcd</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">m</span><span class="plain">&lt;1) || (</span><span class="identifier">n</span><span class="plain">&lt;1)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"applied Kinds::Dimensions::gcd outside natural numbers"</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rem</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">%</span><span class="identifier">n</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rem</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rem</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
             <span class="identifier">m</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> = </span><span class="identifier">rem</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -622,7 +612,6 @@ quick. But I don't look at the code and immediately see this, myself.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>The sequence of operation here is to reduce the risk of integer overflows
 when multiplying <code class="display"><span class="extract">m</span></code> by <code class="display"><span class="extract">n</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::lcm</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
@@ -639,16 +628,15 @@ get a sequence with a single pair: ((B, 1)). Uniquely, "number" is born
 derived and dimensionless, though, so that comes out as the empty sequence.
 </p>
 
-
 <pre class="display">
     <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::fundamental_unit_sequence</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="identifier">us</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">B</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">us</span><span class="element">.no_unit_pairs</span><span class="plain"> = 0;</span>
-            <span class="identifier">us</span><span class="element">.unit_pairs</span><span class="plain">[0]</span><span class="element">.fund_unit</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">us</span><span class="element">.unit_pairs</span><span class="plain">[0]</span><span class="element">.power</span><span class="plain"> = 0; </span>    <span class="comment">redundant, but appeases <code class="display"><span class="extract">gcc -O2</span></code></span>
+            <span class="identifier">us</span><span class="plain">.</span><span class="element">no_unit_pairs</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">us</span><span class="plain">.</span><span class="element">unit_pairs</span><span class="plain">[0].</span><span class="element">fund_unit</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">us</span><span class="plain">.</span><span class="element">unit_pairs</span><span class="plain">[0].</span><span class="element">power</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">redundant, but appeases <code class="display"><span class="extract">gcc -O2</span></code></span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">us</span><span class="element">.no_unit_pairs</span><span class="plain"> = 1;</span>
-            <span class="identifier">us</span><span class="element">.unit_pairs</span><span class="plain">[0]</span><span class="element">.fund_unit</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">; </span><span class="identifier">us</span><span class="element">.unit_pairs</span><span class="plain">[0]</span><span class="element">.power</span><span class="plain"> = 1;</span>
+            <span class="identifier">us</span><span class="plain">.</span><span class="element">no_unit_pairs</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">us</span><span class="plain">.</span><span class="element">unit_pairs</span><span class="plain">[0].</span><span class="element">fund_unit</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">; </span><span class="identifier">us</span><span class="plain">.</span><span class="element">unit_pairs</span><span class="plain">[0].</span><span class="element">power</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">us</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -662,16 +650,15 @@ derived and dimensionless, though, so that comes out as the empty sequence.
 quantities if and only if they are identical, which makes comparison easy:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::compare_unit_sequences</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">ik1</span><span class="plain">, </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">ik2</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ik1</span><span class="plain"> == </span><span class="identifier">ik2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ik1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">ik2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ik1</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> != </span><span class="identifier">ik2</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ik1</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">ik1</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">, </span><span class="identifier">ik2</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
-                <span class="plain">(</span><span class="identifier">ik1</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain"> != </span><span class="identifier">ik2</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ik1</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> != </span><span class="identifier">ik2</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ik1</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">ik1</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">, </span><span class="identifier">ik2</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
+                <span class="plain">(</span><span class="identifier">ik1</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain"> != </span><span class="identifier">ik2</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain">))</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -708,28 +695,27 @@ numerically lower <code class="display"><span class="extract">t</span></code> fi
 out in numerical order.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">us1</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s1</span><span class="plain">, </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">us2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s2</span><span class="plain">,</span>
         <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">us1</span><span class="plain">) || (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">us2</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"result must be different structure"</span><span class="plain">);</span>
 
-        <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> = 0;</span>
+        <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i1</span><span class="plain"> = 0, </span><span class="identifier">i2</span><span class="plain"> = 0; </span>    <span class="comment">read position in sequences 1, 2</span>
-        <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> = 0; </span>    <span class="comment">start with no current term from sequence 1</span>
-        <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain"> = 0; </span>    <span class="comment">start with no current term from sequence 2</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">i2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">read position in sequences 1, 2</span>
+        <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">start with no current term from sequence 1</span>
+        <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">start with no current term from sequence 2</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">If we have no current term from sequence 1, and it hasn't run out, fetch a new one</span> <span class="cwebmacronumber">24.1</span>&gt;<span class="character">;</span>
             &lt;<span class="cwebmacro">If we have no current term from sequence 2, and it hasn't run out, fetch a new one</span> <span class="cwebmacronumber">24.2</span>&gt;<span class="character">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">t1</span><span class="plain">, </span><span class="identifier">t2</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">; </span>    <span class="comment">both sequences have now run out</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">both sequences have now run out</span>
                 &lt;<span class="cwebmacro">Both terms refer to the same fundamental unit, so combine these into the result</span> <span class="cwebmacronumber">24.3</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 &lt;<span class="cwebmacro">The terms refer to different fundamental units, so copy the numerically lower one into the result</span> <span class="cwebmacronumber">24.4</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Multiplication: $Q * $Q = $Q\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">us1</span><span class="plain">, </span><span class="identifier">us2</span><span class="plain">, </span><span class="identifier">result</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Multiplication: $Q * $Q = $Q\n"</span><span class="plain">, </span><span class="identifier">us1</span><span class="plain">, </span><span class="identifier">us2</span><span class="plain">, </span><span class="identifier">result</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -743,8 +729,8 @@ out in numerical order.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i1</span><span class="plain"> &lt; </span><span class="identifier">us1</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">)) {</span>
-            <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">us1</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i1</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">; </span><span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">us1</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i1</span><span class="plain">]</span><span class="element">.power</span><span class="plain">; </span><span class="identifier">i1</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i1</span><span class="plain"> &lt; </span><span class="identifier">us1</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">)) {</span>
+            <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">us1</span><span class="plain">-&gt;</span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="identifier">i1</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">; </span><span class="identifier">p1</span><span class="plain"> = </span><span class="identifier">us1</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i1</span><span class="plain">].</span><span class="element">power</span><span class="plain">; </span><span class="identifier">i1</span><span class="plain">++;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -758,8 +744,8 @@ out in numerical order.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i2</span><span class="plain"> &lt; </span><span class="identifier">us2</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">)) {</span>
-            <span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">us2</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i2</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">us2</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i2</span><span class="plain">]</span><span class="element">.power</span><span class="plain">; </span><span class="identifier">i2</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i2</span><span class="plain"> &lt; </span><span class="identifier">us2</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">)) {</span>
+            <span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">us2</span><span class="plain">-&gt;</span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="identifier">i2</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">us2</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i2</span><span class="plain">].</span><span class="element">power</span><span class="plain">; </span><span class="identifier">i2</span><span class="plain">++;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -780,14 +766,14 @@ cancelled out, that is, where p_1s_1+p_2s_2 = 0.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p1</span><span class="plain">*</span><span class="identifier">s1</span><span class="plain"> + </span><span class="identifier">p2</span><span class="plain">*</span><span class="identifier">s2</span><span class="plain">; </span>    <span class="comment">combined power of <code class="display"><span class="extract">t1</span></code> = <code class="display"><span class="extract">t2</span></code></span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> != 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p1</span><span class="plain">*</span><span class="identifier">s1</span><span class="plain"> + </span><span class="identifier">p2</span><span class="plain">*</span><span class="identifier">s2</span><span class="plain">; </span><span class="comment">combined power of <code class="display"><span class="extract">t1</span></code> = <code class="display"><span class="extract">t2</span></code></span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Trip a unit sequence overflow</span> <span class="cwebmacronumber">24.3.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain"> = </span><span class="identifier">t1</span><span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">++]</span><span class="element">.power</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain"> = </span><span class="identifier">t1</span><span class="plain">;</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">++].</span><span class="element">power</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">dispose of both terms as dealt with</span>
+        <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">dispose of both terms as dealt with</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -813,17 +799,17 @@ to deal with <code class="display"><span class="extract">UNKNOWN_NT</span></code
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || ((</span><span class="identifier">t1</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Kinds::Dimensions::kind_prior</span><span class="plain">(</span><span class="identifier">t1</span><span class="plain">, </span><span class="identifier">t2</span><span class="plain">)))) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Trip a unit sequence overflow</span> <span class="cwebmacronumber">24.3.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain"> = </span><span class="identifier">t1</span><span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">++]</span><span class="element">.power</span><span class="plain"> = </span><span class="identifier">p1</span><span class="plain">*</span><span class="identifier">s1</span><span class="plain">;</span>
-            <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">dispose of the head of sequence 1 as dealt with</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain"> = </span><span class="identifier">t1</span><span class="plain">;</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">++].</span><span class="element">power</span><span class="plain"> = </span><span class="identifier">p1</span><span class="plain">*</span><span class="identifier">s1</span><span class="plain">;</span>
+            <span class="identifier">t1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">dispose of the head of sequence 1 as dealt with</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || ((</span><span class="identifier">t2</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Kinds::Dimensions::kind_prior</span><span class="plain">(</span><span class="identifier">t2</span><span class="plain">, </span><span class="identifier">t1</span><span class="plain">)))) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> == </span><span class="constant">MAX_BASE_UNITS_IN_SEQUENCE</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Trip a unit sequence overflow</span> <span class="cwebmacronumber">24.3.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain"> = </span><span class="identifier">t2</span><span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">++]</span><span class="element">.power</span><span class="plain"> = </span><span class="identifier">p2</span><span class="plain">*</span><span class="identifier">s2</span><span class="plain">;</span>
-            <span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">dispose of the head of sequence 1 as dealt with</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain"> = </span><span class="identifier">t2</span><span class="plain">;</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">++].</span><span class="element">power</span><span class="plain"> = </span><span class="identifier">p2</span><span class="plain">*</span><span class="identifier">s2</span><span class="plain">;</span>
+            <span class="identifier">t2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">dispose of the head of sequence 1 as dealt with</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unit pairs disarrayed"</span><span class="plain">);</span>
 </pre>
 
@@ -863,15 +849,14 @@ whether the root could be taken, and if <code class="display"><span class="extra
 <code class="display"><span class="extract">result</span></code> are undefined.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">us</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pow</span><span class="plain">, </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">us</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">*</span><span class="identifier">result</span><span class="plain"> = *</span><span class="identifier">us</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain">) % </span><span class="identifier">pow</span><span class="plain"> != 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain"> = (</span><span class="identifier">result</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain">)/</span><span class="identifier">pow</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain">) % </span><span class="identifier">pow</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain"> = (</span><span class="identifier">result</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain">)/</span><span class="identifier">pow</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -891,14 +876,13 @@ we are no longer allowed to keep B in any unit sequence.)
 multiply by K_D^p.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::dim_substitute</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">existing</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">fundamental</span><span class="plain">, </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">derived</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">p</span><span class="plain"> = 0, </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">existing</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">, </span><span class="identifier">fundamental</span><span class="plain">)) {</span>
-                <span class="identifier">p</span><span class="plain"> = </span><span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.power</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">, </span><span class="identifier">fundamental</span><span class="plain">)) {</span>
+                <span class="identifier">p</span><span class="plain"> = </span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">power</span><span class="plain">;</span>
                 <span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Remove the B term from the existing sequence</span> <span class="cwebmacronumber">26.1</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -921,9 +905,9 @@ multiply by K_D^p.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">-1; </span><span class="identifier">j</span><span class="plain">++)</span>
-            <span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] = </span><span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">+1];</span>
-        <span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">--;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">-1; </span><span class="identifier">j</span><span class="plain">++)</span>
+            <span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] = </span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">+1];</span>
+        <span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">no_unit_pairs</span><span class="plain">--;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -941,7 +925,7 @@ multiply by K_D^p.
 
 <pre class="displaydefn">
         <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="identifier">result</span><span class="plain">;</span>
-        <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">, 1, </span><span class="identifier">derived</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">derived</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
         <span class="plain">*</span><span class="identifier">existing</span><span class="plain"> = </span><span class="identifier">result</span><span class="plain">;</span>
 </pre>
 
@@ -953,11 +937,10 @@ multiply by K_D^p.
 a scale factor associated with it:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::us_get_scaling_factor</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">us</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">us</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">us</span><span class="plain">-</span><span class="element">&gt;scaling_factor</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">us</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">us</span><span class="plain">-&gt;</span><span class="identifier">scaling_factor</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -968,16 +951,15 @@ a scale factor associated with it:
 <p class="inwebparagraph"><a id="SP28"></a><b>&#167;28.  </b>That just leaves, as usual, indexing...
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::index_unit_sequence</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">deriv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">briefly</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == 0) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"dimensionless"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="identifier">no_unit_pairs</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"dimensionless"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-            <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">fundamental</span><span class="plain"> = </span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain"> = </span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.power</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
+            <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">fundamental</span><span class="plain"> = </span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="element">fund_unit</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain"> = </span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="identifier">power</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">briefly</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">&gt;0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"."</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">);</span>
@@ -987,17 +969,17 @@ a scale factor associated with it:
                 <span class="functiontext">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">fundamental</span><span class="plain">);</span>
                 <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> != 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;sup&gt;%d&lt;/sup&gt;"</span><span class="plain">, </span><span class="identifier">power</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;sup&gt;%d&lt;/sup&gt;"</span><span class="plain">, </span><span class="identifier">power</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">&gt;0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" times "</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> &lt; 0) { </span><span class="identifier">power</span><span class="plain"> = -</span><span class="identifier">power</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"reciprocal of "</span><span class="plain">); }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">power</span><span class="plain"> = -</span><span class="identifier">power</span><span class="plain">; </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"reciprocal of "</span><span class="plain">); }</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_name</span><span class="plain">(</span><span class="identifier">fundamental</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> 1: </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" squared"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" cubed"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">default</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" to the power %d"</span><span class="plain">, </span><span class="identifier">power</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" squared"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" cubed"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" to the power %d"</span><span class="plain">, </span><span class="identifier">power</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -1011,17 +993,16 @@ a scale factor associated with it:
 <p class="inwebparagraph"><a id="SP29"></a><b>&#167;29.  </b>...and logging.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::log_unit_sequence</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">deriv</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-us&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == 0) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"dimensionless"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="identifier">no_unit_pairs</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"dimensionless"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">&gt;0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"."</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"($u)"</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.fund_unit</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.power</span><span class="plain"> != 1) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">-</span><span class="element">&gt;unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]</span><span class="element">.power</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"($u)"</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="identifier">fund_unit</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="identifier">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="element">power</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">-&gt;</span><span class="element">unit_pairs</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="element">power</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -1052,14 +1033,13 @@ probably set things out with what the user thinks are the most fundamental
 units first.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::make_unit_derivation</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">right</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">outcome</span><span class="plain">) {</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">terms</span><span class="plain">[3];</span>
         <span class="identifier">terms</span><span class="plain">[0] = </span><span class="identifier">left</span><span class="plain">; </span><span class="identifier">terms</span><span class="plain">[1] = </span><span class="identifier">right</span><span class="plain">; </span><span class="identifier">terms</span><span class="plain">[2] = </span><span class="identifier">outcome</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">newest_term</span><span class="plain"> = -1;</span>
         &lt;<span class="cwebmacro">Find which (if any) of the three units is the newest-made fundamental unit</span> <span class="cwebmacronumber">30.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newest_term</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newest_term</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">derivation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Derive the newest one by rearranging the equation in terms of the other two</span> <span class="cwebmacronumber">30.2</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Substitute this new derivation to eliminate this fundamental unit from other sequences</span> <span class="cwebmacronumber">30.3</span>&gt;<span class="plain">;</span>
@@ -1104,19 +1084,19 @@ and we do that by fixing the newest unit to make it so.
 
 
 <pre class="displaydefn">
-        <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">kx</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ky</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sx</span><span class="plain"> = 0, </span><span class="identifier">sy</span><span class="plain"> = 0;</span>
+        <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">kx</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ky</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sx</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">sy</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">newest_term</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 0: </span>    <span class="comment">here L is newest and we derive L = R^{-1}O</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="comment">here L is newest and we derive L = R^{-1}O</span>
                 <span class="identifier">kx</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]); </span><span class="identifier">sx</span><span class="plain"> = -1;</span>
-                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2]); </span><span class="identifier">sy</span><span class="plain"> = 1;</span>
+                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2]); </span><span class="identifier">sy</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span>    <span class="comment">here R is newest and we derive R = L^{-1}O</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="comment">here R is newest and we derive R = L^{-1}O</span>
                 <span class="identifier">kx</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[0]); </span><span class="identifier">sx</span><span class="plain"> = -1;</span>
-                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2]); </span><span class="identifier">sy</span><span class="plain"> = 1;</span>
+                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2]); </span><span class="identifier">sy</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span>    <span class="comment">here O is newest and we derive O = LR</span>
-                <span class="identifier">kx</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[0]); </span><span class="identifier">sx</span><span class="plain"> = 1;</span>
-                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]); </span><span class="identifier">sy</span><span class="plain"> = 1;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="comment">here O is newest and we derive O = LR</span>
+                <span class="identifier">kx</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[0]); </span><span class="identifier">sx</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="identifier">ky</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]); </span><span class="identifier">sy</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">derivation</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[</span><span class="identifier">newest_term</span><span class="plain">]);</span>
@@ -1174,8 +1154,8 @@ the Kinds index page more helpful. But we must reject a contradiction.
 <pre class="displaydefn">
         <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="identifier">product</span><span class="plain">;</span>
         <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span>
-            <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[0]), 1,</span>
-            <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]), 1, &amp;</span><span class="identifier">product</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[0]), </span><span class="constant">1</span><span class="plain">,</span>
+            <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[1]), </span><span class="constant">1</span><span class="plain">, &amp;</span><span class="identifier">product</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::compare_unit_sequences</span><span class="plain">(&amp;</span><span class="identifier">product</span><span class="plain">,</span>
             <span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">terms</span><span class="plain">[2])) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">DimensionsInconsistent_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
@@ -1190,7 +1170,6 @@ is always dimensionless; and any unit whose derivation is the empty
 unit sequence must be dimensionless.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1201,7 +1180,7 @@ unit sequence must be dimensionless.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::us_dimensionless</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">us</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">us</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us</span><span class="plain">-</span><span class="element">&gt;no_unit_pairs</span><span class="plain"> == 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">us</span><span class="plain">) &amp;&amp; (</span><span class="identifier">us</span><span class="plain">-&gt;</span><span class="element">no_unit_pairs</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1215,7 +1194,6 @@ unit sequence must be dimensionless.
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32.  </b>Using these definitions, we can now print analyses of the units into the
 index and the debugging log.
 </p>
-
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -1241,7 +1219,7 @@ index and the debugging log.
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"calculator"</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/calc2.png"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Kinds of value marked with the &lt;b&gt;calculator symbol&lt;/b&gt; are numerical - "</span>
@@ -1266,13 +1244,13 @@ index and the debugging log.
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 
-        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;kind of value&lt;/b&gt;"</span><span class="plain">);</span>
-        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;minimum&lt;/b&gt;"</span><span class="plain">);</span>
-        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;maximum&lt;/b&gt;"</span><span class="plain">);</span>
-        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;dimensions&lt;/b&gt;"</span><span class="plain">);</span>
         <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 
@@ -1280,13 +1258,13 @@ index and the debugging log.
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::is_intermediate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+                <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Index the minimum positive value for a quasinumerical kind</span> <span class="cwebmacronumber">32.2.1</span>&gt;<span class="plain">;</span>
-                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 &lt;<span class="cwebmacro">Index the maximum positive value for a quasinumerical kind</span> <span class="cwebmacronumber">32.2.2</span>&gt;<span class="plain">;</span>
-                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+                <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;dimensionless&lt;/i&gt;"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">deriv</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
@@ -1316,9 +1294,9 @@ scaling this can appear to be much lower.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"1"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_index_minimum_value</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">LiteralPatterns::index_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), 1);</span>
+                <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1337,14 +1315,14 @@ scaling this can appear to be much lower.
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"2147483647"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_index_maximum_value</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">()))</span>
                     <span class="identifier">LiteralPatterns::index_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                        <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), 32767);</span>
+                        <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), </span><span class="constant">32767</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="identifier">LiteralPatterns::index_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                        <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), 2147483647);</span>
+                        <span class="identifier">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">), </span><span class="constant">2147483647</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
@@ -1366,18 +1344,18 @@ text, sorted into kind order of left and then right operand.
 
 <pre class="displaydefn">
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, *</span><span class="identifier">R</span><span class="plain">, *</span><span class="identifier">O</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NP</span><span class="plain"> = 0, </span><span class="identifier">wn</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NP</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_MULTIPLICATIONS</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NP</span><span class="plain">++ == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NP</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"This is how multiplication changes kinds:"</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                 <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt;= 0) </span><span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+            <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">);</span>
+            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" x "</span><span class="plain">);</span>
@@ -1388,7 +1366,7 @@ text, sorted into kind order of left and then right operand.
             <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+            <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">LiteralPatterns::index_benchmark_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" x "</span><span class="plain">);</span>
@@ -1400,7 +1378,7 @@ text, sorted into kind order of left and then right operand.
             <span class="identifier">LiteralPatterns::index_benchmark_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">O</span><span class="plain">);</span>
             <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NP</span><span class="plain"> &gt; 0) { </span><span class="identifier">HTML::end_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NP</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">HTML::end_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1411,25 +1389,24 @@ text, sorted into kind order of left and then right operand.
 the internal "dimensions" test:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::log_unit_analysis</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Dimensionless: "</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0; </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ &gt; 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">); }</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">Base units: "</span><span class="plain">);</span>
-        <span class="identifier">c</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) { </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">); }</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\nBase units: "</span><span class="plain">);</span>
+        <span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Kinds::Dimensions::kind_is_derived</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)))</span>
-            <span class="plain">{ </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ &gt; 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">); }</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">Derived units:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="plain">{ </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain">++ &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">", "</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">); }</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\nDerived units:\n"</span><span class="plain">);</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Kinds::Dimensions::kind_is_derived</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">Kinds::is_intermediate</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">deriv</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u = $Q\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u = $Q\n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">deriv</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -1490,7 +1467,6 @@ won't always do this &mdash; they may use some Babylonian, base 60, units, such
 as minutes and degrees, for instance, where k=3600 would be more natural.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_rescale_multiplication</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindx</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindy</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kindx</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">kindy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -1542,7 +1518,6 @@ as minutes and degrees, for instance, where k=3600 would be more natural.
 so this time the excess to correct is a factor of k_X/k_Ok_Y.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_rescale_division</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindx</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindy</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kindx</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">kindy</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -1591,19 +1566,18 @@ so this time the excess to correct is a factor of k_X/k_Ok_Y.
 <p class="inwebparagraph"><a id="SP37"></a><b>&#167;37.  </b>Third, the taking of pth roots, at any rate for p=2 or p=3.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_rescale_root</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindx</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindx</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindo</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_X</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_O</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindo</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Apply a scaling correction for square roots</span> <span class="cwebmacronumber">37.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span>&lt;<span class="cwebmacro">Apply a scaling correction for cube roots</span> <span class="cwebmacronumber">37.2</span>&gt;
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Apply a scaling correction for square roots</span> <span class="cwebmacronumber">37.1</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span>&lt;<span class="cwebmacro">Apply a scaling correction for cube roots</span> <span class="cwebmacronumber">37.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can only scale square and cube roots"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -1663,20 +1637,19 @@ the rooting function, we scale by k^3:
 
 <p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_rescale_root_emit_op</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindx</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindx</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindo</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_X</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_O</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindo</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Emit a scaling correction for square roots</span> <span class="cwebmacronumber">38.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span>&lt;<span class="cwebmacro">Emit a scaling correction for cube roots</span> <span class="cwebmacronumber">38.2</span>&gt;
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Emit a scaling correction for square roots</span> <span class="cwebmacronumber">38.1</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span>&lt;<span class="cwebmacro">Emit a scaling correction for cube roots</span> <span class="cwebmacronumber">38.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can only scale square and cube roots"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
@@ -1737,20 +1710,19 @@ the rooting function, we scale by k^3:
 
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::kind_rescale_root_emit_factor</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindx</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">power</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindx</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kindo</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">ROOT_OPERATION</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="identifier">kindo</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kindo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_X</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindx</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k_O</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">kindo</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Emit factor for a scaling correction for square roots</span> <span class="cwebmacronumber">39.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == 3) </span>&lt;<span class="cwebmacro">Emit factor for a scaling correction for cube roots</span> <span class="cwebmacronumber">39.2</span>&gt;
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Emit factor for a scaling correction for square roots</span> <span class="cwebmacronumber">39.1</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">power</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span>&lt;<span class="cwebmacro">Emit factor for a scaling correction for cube roots</span> <span class="cwebmacronumber">39.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can only scale square and cube roots"</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
@@ -1819,7 +1791,6 @@ has no significance and should be <code class="display"><span class="extract">NU
 <p class="inwebparagraph">The kinds here are called operands, because they are what will be operated on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">op</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -1833,38 +1804,38 @@ has no significance and should be <code class="display"><span class="extract">NU
         <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="identifier">result</span><span class="plain">;</span>
 
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">op</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PLUS_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MINUS_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EQUALS_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">APPROXIMATION_OPERATION</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PLUS_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MINUS_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EQUALS_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">APPROXIMATION_OPERATION:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::compare_unit_sequences</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="identifier">operand2</span><span class="plain">)) {</span>
                     <span class="identifier">result</span><span class="plain"> = *</span><span class="identifier">operand1</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNARY_MINUS_OPERATION</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">REMAINDER_OPERATION</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNARY_MINUS_OPERATION:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REMAINDER_OPERATION:</span>
                 <span class="identifier">result</span><span class="plain"> = *</span><span class="identifier">operand1</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROOT_OPERATION</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, 2, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROOT_OPERATION:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">REALROOT_OPERATION</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, 2, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REALROOT_OPERATION:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CUBEROOT_OPERATION</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, 3, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CUBEROOT_OPERATION:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::root_unit_sequence</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="constant">3</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TIMES_OPERATION</span><span class="plain">:</span>
-                <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, 1, </span><span class="identifier">operand2</span><span class="plain">, 1, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TIMES_OPERATION:</span>
+                <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">operand2</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIVIDE_OPERATION</span><span class="plain">:</span>
-                <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, 1, </span><span class="identifier">operand2</span><span class="plain">, -1, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIVIDE_OPERATION:</span>
+                <span class="functiontext">Kinds::Dimensions::multiply_unit_sequences</span><span class="plain">(</span><span class="identifier">operand1</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">operand2</span><span class="plain">, -1, &amp;</span><span class="identifier">result</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         &lt;<span class="cwebmacro">Handle calculations entirely between dimensionless units more delicately</span> <span class="cwebmacronumber">40.1</span>&gt;<span class="plain">;</span>
@@ -2003,7 +1974,7 @@ the physics but on the arithmetic method being used.
 
 
 <pre class="displaydefn">
-        <span class="identifier">result</span><span class="element">.scaling_factor</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::lcm</span><span class="plain">(</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">), </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K2</span><span class="plain">));</span>
+        <span class="identifier">result</span><span class="plain">.</span><span class="element">scaling_factor</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::lcm</span><span class="plain">(</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">), </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K2</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::intermediate_construction</span><span class="plain">(&amp;</span><span class="identifier">result</span><span class="plain">);</span>
 </pre>
 
@@ -2013,19 +1984,18 @@ the physics but on the arithmetic method being used.
 
 <p class="inwebparagraph"><a id="SP41"></a><b>&#167;41.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::Dimensions::to_rational_power</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain"> &lt; 1) || (</span><span class="identifier">m</span><span class="plain"> &lt; 1)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad rational power"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">m</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad rational power"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Dimensions::dimensionless</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_number</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">op</span><span class="plain"> = </span><span class="constant">TIMES_OPERATION</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; 0) { </span><span class="identifier">n</span><span class="plain"> = -</span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">op</span><span class="plain"> = </span><span class="constant">DIVIDE_OPERATION</span><span class="plain">; }</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">n</span><span class="plain"> = -</span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">op</span><span class="plain"> = </span><span class="constant">DIVIDE_OPERATION</span><span class="plain">; }</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::arithmetic_on_kinds</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">op</span><span class="plain">);</span>
             <span class="identifier">n</span><span class="plain">--;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
 
         <span class="reserved">unit_sequence</span><span class="plain"> </span><span class="identifier">result</span><span class="plain">;</span>
         <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">operand</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>

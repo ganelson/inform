@@ -84,7 +84,6 @@ logical operations or chronological restrictions to apply to them. So the
 only valid impure conditions are description noun phrases.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">-</span><span class="identifier">pure</span><span class="plain">&gt; |							==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -97,7 +96,6 @@ only valid impure conditions are description noun phrases.
 directly right here, rather than being phrases defined in the Standard Rules,
 and that they aren't the same as the "and" and "or" used a list dividers.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">-</span><span class="identifier">pure</span><span class="plain">&gt; ::=</span>
@@ -132,7 +130,6 @@ and that they aren't the same as the "and" and "or" used a list dividers.
 to express this in Preform grammar, the result doesn't run quickly, so I've
 implemented this as a hand-coded nonterminal instead.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">-</span><span class="identifier">with</span><span class="plain">-</span><span class="identifier">chronology</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -207,7 +204,6 @@ nothing, i.e., "we are taking" and "taking" are synonymous. Translators
 to other languages may want to find more elegant solutions.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">-</span><span class="identifier">atomic</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">&gt; |								==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -232,7 +228,6 @@ of "there is" we make the presumption that the author intends a sentence
 testing the existence of something.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">nonexistential</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">decide</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">existential</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt; |								==&gt; </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain">;</span>
@@ -253,7 +248,7 @@ testing the existence of something.
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">ExParser::add_ilist</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">tval</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">TEST_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">tval</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
+            <span class="identifier">tval</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
             <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">tval</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -266,12 +261,11 @@ testing the existence of something.
 being compiled; all others are out of scope.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phrase_being_compiled</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::parse_phrase_option_used</span><span class="plain">(</span><span class="identifier">phrase_being_compiled</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">Conditions::new_TEST_PHRASE_OPTION</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -294,7 +288,6 @@ conditions, so this is where the condition in
 <p class="inwebparagraph">is handled. The following nonterminal exists to enter the AP to the meaning list.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">pattern</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">we</span><span class="plain">-</span><span class="identifier">are</span><span class="plain">-</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">pattern</span><span class="plain">&gt;			==&gt; </span><span class="functiontext">Conditions::new_TEST_ACTION</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">);</span>
@@ -307,7 +300,6 @@ conditions, so this is where the condition in
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And similarly:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">past</span><span class="plain">-</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">pattern</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt; ::=</span>
@@ -363,7 +355,6 @@ parameters of the phrase match; it simply records possibilities for
 typechecking to choose between much later on.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">command</span><span class="plain">&gt; ::=</span>
         <span class="plain">( &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">command</span><span class="plain">&gt; ) |				==&gt; </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -389,7 +380,6 @@ typechecking to choose between much later on.
 <p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>"To..." phrases are easy, or at least, easy to delegate:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">VOID_PHRASE_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -405,7 +395,6 @@ typechecking to choose between much later on.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b></p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">-</span><span class="identifier">substitution</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -440,15 +429,14 @@ typechecking to choose between much later on.
 singulars.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::say_adjective</span><span class="plain">(</span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::new</span><span class="plain">();</span>
         <span class="functiontext">Invocations::set_word_range</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">Invocations::set_adjectival_phrase</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">aph</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -461,15 +449,14 @@ singulars.
 person plurals.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::say_verb</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">neg</span><span class="plain">, </span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">mvc</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new_with_words</span><span class="plain">(</span><span class="constant">PHRASE_TO_DECIDE_VALUE_NT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::new</span><span class="plain">();</span>
         <span class="functiontext">Invocations::set_word_range</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">Invocations::set_verb_conjugation</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">vc</span><span class="plain">, </span><span class="identifier">mvc</span><span class="plain">, </span><span class="identifier">neg</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -492,16 +479,15 @@ at run-time which of several possible definitions is to apply, so the
 possibilities will all be invoked.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExParser::add_ilist</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Build the invocation list</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> = </span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> = </span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt;= </span><span class="constant">MAX_INVOCATIONS_PER_PHRASE</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Issue overcomplicated phrase problem message</span> <span class="cwebmacronumber">12.2</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; 0)</span>
-            <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Invocations::sort_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Invocations::sort_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -524,15 +510,15 @@ S-tree as we run sideways through the alternative readings.
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_phrase</span><span class="plain">(</span>
                 <span class="identifier">ExcerptMeanings::data</span><span class="plain">(</span><span class="identifier">ParseTree::get_meaning</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)));</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Phrases::Parser::parse_against</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::is_the_primordial_say</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::is_the_primordial_say</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span>
-                    <span class="functiontext">Invocations::get_token_as_parsed</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, 0), </span><span class="identifier">K_text</span><span class="plain">)))</span>
+                    <span class="functiontext">Invocations::get_token_as_parsed</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="constant">0</span><span class="plain">), </span><span class="identifier">K_text</span><span class="plain">)))</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
-                <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
+                <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
             <span class="plain">}</span>
-            <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
+            <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="functiontext">Invocations::add_to_list</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -555,7 +541,7 @@ limit that we were unable to construct a test case for it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">truncate to just one</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">truncate to just one</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">));</span>

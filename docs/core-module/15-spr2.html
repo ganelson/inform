@@ -65,7 +65,6 @@
 when Inform starts up.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_create_initial_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
@@ -82,15 +81,14 @@ therefore store the text of the property name (say, "weight") in
 <code class="display"><span class="extract">property_pending_text</span></code> and come back to it later on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Properties::SettingRelations::make_set_property_BP</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::make_pair</span><span class="plain">(</span><span class="constant">PROPERTY_SETTING_KBP</span><span class="plain">,</span>
             <span class="functiontext">BinaryPredicates::new_term</span><span class="plain">(</span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K_object</span><span class="plain">)),</span>
             <span class="functiontext">BinaryPredicates::new_term</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">),</span>
             <span class="identifier">I</span><span class="string">"set-property"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">());</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">reversal</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -104,13 +102,12 @@ the property may not exist yet; we have to use the text of the name of the
 property as a key, clumsy as that may seem.
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Properties::SettingRelations::find_set_property_BP</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">right_way_round</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -124,20 +121,19 @@ property as a key, clumsy as that may seem.
 that the two can never fall out of step.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::fix_property_bp</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
-        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bpr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">;</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain">;</span>
+        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bpr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">reversal</span><span class="plain">;</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-            <span class="identifier">bpr</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;bp_created_at</span><span class="plain">;</span>
+            <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+            <span class="identifier">bpr</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">bp_created_at</span><span class="plain">;</span>
             <span class="plain">&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">a problem was issued</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">a problem was issued</span>
             <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-            <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="identifier">bpr</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;right_way_round</span><span class="plain">) </span><span class="functiontext">Properties::SettingRelations::set_property_BP_schemas</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
+            <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="identifier">bpr</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">right_way_round</span><span class="plain">) </span><span class="functiontext">Properties::SettingRelations::set_property_BP_schemas</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::set_property_BP_schemas</span><span class="plain">(</span><span class="identifier">bpr</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -157,7 +153,6 @@ that the two can never fall out of step.
 
 <p class="inwebparagraph">...then its name (in this case "weight") is required to pass:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
@@ -204,12 +199,11 @@ that the two can never fall out of step.
 Inform:
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Properties::SettingRelations::make_set_nameless_property_BP</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="functiontext">Properties::SettingRelations::make_set_property_BP</span><span class="plain">(</span><span class="identifier">EMPTY_WORDING</span><span class="plain">);</span>
-        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bpr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">;</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="identifier">bpr</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bpr</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">reversal</span><span class="plain">;</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">; </span><span class="identifier">bpr</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="functiontext">Properties::SettingRelations::set_property_BP_schemas</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -223,12 +217,11 @@ Inform:
 the perfect opportunity to go over all of the property-setting BPs:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_create_second_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain">))</span>
                 <span class="functiontext">Properties::SettingRelations::fix_property_bp</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -244,14 +237,13 @@ guarantees that it does have permission, and as a result we gain some speed
 and simplicity.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::set_property_BP_schemas</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;test_function</span><span class="plain"> =</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">test_function</span><span class="plain"> =</span>
             <span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"*1.%n == *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;make_true_function</span><span class="plain"> =</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">make_true_function</span><span class="plain"> =</span>
             <span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"*1.%n = *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;term_details</span><span class="plain">[1]),</span>
+        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">term_details</span><span class="plain">[1]),</span>
             <span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
@@ -273,11 +265,10 @@ It might be an object which will eventually be deduced to be a room, for
 instance, but hasn't been yet.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_typecheck</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
             <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_of_terms</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_required</span><span class="plain">, </span><span class="reserved">tc_problem_kit</span><span class="plain"> *</span><span class="identifier">tck</span><span class="plain">) {</span>
-        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain">;</span>
+        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">val_kind</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Require the value to be type-safe for storage in the property</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Require the subject to be able to have properties</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
@@ -323,7 +314,7 @@ be caught later on Inform's run.
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">safe</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Property value given as $u not $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1], </span><span class="identifier">val_kind</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Property value given as $u not $u\n"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1], </span><span class="identifier">val_kind</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(5, </span><span class="identifier">val_kind</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[1]) == </span><span class="identifier">CON_property</span><span class="plain">)</span>
@@ -356,7 +347,7 @@ be caught later on Inform's run.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::has_properties</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[0]) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Property value for impossible domain $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0]);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Property value for impossible domain $u\n"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0]);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0]);</span>
             <span class="functiontext">Problems::quote_property</span><span class="plain">(5, </span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="functiontext">Problems::Issue::tcp_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span><span class="identifier">tck</span><span class="plain">,</span>
@@ -374,12 +365,11 @@ be caught later on Inform's run.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Assertion. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_assert</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs0</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec0</span><span class="plain">,</span>
             <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain">) {</span>
-        <span class="functiontext">World::Inferences::draw_property</span><span class="plain">(</span><span class="identifier">infs0</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">);</span>
+        <span class="functiontext">World::Inferences::draw_property</span><span class="plain">(</span><span class="identifier">infs0</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain">, </span><span class="identifier">spec1</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -391,24 +381,23 @@ be caught later on Inform's run.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Compilation. </b>We need do nothing special: these relations can be compiled from their schemas.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_compile</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">,</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">annotated_i6_schema</span><span class="plain"> *</span><span class="identifier">asch</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0</span><span class="plain">);</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain">;</span>
+        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
-                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">,</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
+                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">,</span>
                     <span class="string">"GProperty(%k, *1, %n) == *2"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
-                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">,</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
+                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">,</span>
                     <span class="string">"WriteGProperty(%k, *1, %n, *2)"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -422,10 +411,9 @@ be caught later on Inform's run.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::bp_sets_a_property</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;set_property</span><span class="plain">) || (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;property_pending_text</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">set_property</span><span class="plain">) || (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">property_pending_text</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -435,7 +423,6 @@ be caught later on Inform's run.
 <p class="endnote">The function Properties::SettingRelations::bp_sets_a_property is used in 9/ma (<a href="9-ma.html#SP3_3_34_3">&#167;3.3.34.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Problem message text. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SettingRelations::REL_describe_for_problems</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>

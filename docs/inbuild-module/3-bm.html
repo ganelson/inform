@@ -96,35 +96,34 @@ which used tangled mode by default, but untangled mode if the user has
 specified an explicit path at the command line.
 </p>
 
-
 <pre class="display">
     <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="functiontext">BuildMethodology::new</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">tools_path</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">tangled</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">meth</span><span class="plain">) {</span>
         <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">build_methodology</span><span class="plain">);</span>
-        <span class="identifier">BM</span><span class="plain">-</span><span class="element">&gt;methodology</span><span class="plain"> = </span><span class="identifier">meth</span><span class="plain">;</span>
+        <span class="identifier">BM</span><span class="plain">-&gt;</span><span class="element">methodology</span><span class="plain"> = </span><span class="identifier">meth</span><span class="plain">;</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">inter_path</span><span class="plain"> = </span><span class="identifier">tools_path</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tangled</span><span class="plain">) {</span>
             <span class="identifier">inter_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inter_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inter"</span><span class="plain">);</span>
             <span class="identifier">inter_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inter_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">BM</span><span class="plain">-</span><span class="element">&gt;to_inter</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inter_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inter"</span><span class="plain">);</span>
+        <span class="identifier">BM</span><span class="plain">-&gt;</span><span class="element">to_inter</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inter_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inter"</span><span class="plain">);</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">inform6_path</span><span class="plain"> = </span><span class="identifier">tools_path</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tangled</span><span class="plain">) {</span>
             <span class="identifier">inform6_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform6_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform6"</span><span class="plain">);</span>
             <span class="identifier">inform6_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform6_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">BM</span><span class="plain">-</span><span class="element">&gt;to_inform6</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform6_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform6"</span><span class="plain">);</span>
+        <span class="identifier">BM</span><span class="plain">-&gt;</span><span class="element">to_inform6</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform6_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform6"</span><span class="plain">);</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">inform7_path</span><span class="plain"> = </span><span class="identifier">tools_path</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tangled</span><span class="plain">) {</span>
             <span class="identifier">inform7_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform7"</span><span class="plain">);</span>
             <span class="identifier">inform7_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inform7_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">BM</span><span class="plain">-</span><span class="element">&gt;to_inform7</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform7"</span><span class="plain">);</span>
+        <span class="identifier">BM</span><span class="plain">-&gt;</span><span class="element">to_inform7</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inform7_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform7"</span><span class="plain">);</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">inblorb_path</span><span class="plain"> = </span><span class="identifier">tools_path</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tangled</span><span class="plain">) {</span>
             <span class="identifier">inblorb_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inblorb_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inblorb"</span><span class="plain">);</span>
             <span class="identifier">inblorb_path</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">inblorb_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Tangled"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">BM</span><span class="plain">-</span><span class="element">&gt;to_inblorb</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inblorb_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inblorb"</span><span class="plain">);</span>
+        <span class="identifier">BM</span><span class="plain">-&gt;</span><span class="element">to_inblorb</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">inblorb_path</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inblorb"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BM</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -137,7 +136,6 @@ specified an explicit path at the command line.
 these filenames are irrelevant, since no shell commands are ever issued.
 It gets its BM by calling the following:
 </p>
-
 
 <pre class="display">
     <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="functiontext">BuildMethodology::stay_in_current_process</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -43,10 +43,9 @@ values here aren't actually correct for any platform as they stand: in the
 <code class="display"><span class="extract">main</span></code> routine below, we set them as needed.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">FONT_TAG</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"size=2"</span><span class="plain">; </span>    <span class="comment">contents of a <code class="display"><span class="extract">&lt;font&gt;</span></code> tag</span>
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">JAVASCRIPT_PRELUDE</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"javascript:window.Project."</span><span class="plain">; </span>    <span class="comment">calling prefix</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">FONT_TAG</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"size=2"</span><span class="plain">; </span><span class="comment">contents of a <code class="display"><span class="extract">&lt;font&gt;</span></code> tag</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">JAVASCRIPT_PRELUDE</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"javascript:window.Project."</span><span class="plain">; </span><span class="comment">calling prefix</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_openUrl</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">escape_fileUrl</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reverse_slash_openUrl</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">reverse_slash_fileUrl</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
 </pre>
@@ -56,29 +55,28 @@ values here aren't actually correct for any platform as they stand: in the
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Some global variables:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">error_count</span><span class="plain"> = 0; </span>    <span class="comment">number of error messages produced so far</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">error_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of error messages produced so far</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">verbose_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span>    <span class="comment">print diagnostics to <code class="display"><span class="extract">stdout</span></code> while running?</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_year_AD</span><span class="plain"> = 0; </span>    <span class="comment">e.g., 2008</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">verbose_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment">print diagnostics to <code class="display"><span class="extract">stdout</span></code> while running?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_year_AD</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">e.g., 2008</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blorb_file_size</span><span class="plain"> = 0; </span>    <span class="comment">size in bytes of the blorb file written</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_pictures_included</span><span class="plain"> = 0; </span>    <span class="comment">number of picture resources included in the blorb</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_sounds_included</span><span class="plain"> = 0; </span>    <span class="comment">number of sound resources included in the blorb</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">HTML_pages_created</span><span class="plain"> = 0; </span>    <span class="comment">number of pages created in the website, if any</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_HTML_pages_created</span><span class="plain"> = 0; </span>    <span class="comment">number of those holding source</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sound_resource_num</span><span class="plain"> = 3; </span>    <span class="comment">current sound resource number we're working on</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">picture_resource_num</span><span class="plain"> = 1; </span>    <span class="comment">current picture resource number we're working on</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">blorb_file_size</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">size in bytes of the blorb file written</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_pictures_included</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of picture resources included in the blorb</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_sounds_included</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of sound resources included in the blorb</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">HTML_pages_created</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of pages created in the website, if any</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_HTML_pages_created</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of those holding source</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sound_resource_num</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">current sound resource number we're working on</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">picture_resource_num</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">current picture resource number we're working on</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_css_code_styles</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span>    <span class="comment">use <code class="display"><span class="extract">&lt;span class="X"&gt;</span></code> markings when setting code</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">project_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">pathname of I7 project folder, if any</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">release_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">pathname of folder for website to write, if any</span>
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">status_template</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">filename of report HTML page template, if any</span>
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">status_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">filename of report HTML page to write, if any</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cover_exists</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span>    <span class="comment">an image is specified as cover art</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_cover_used</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span>    <span class="comment">but it's only the default supplied by Inform</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cover_is_in_JPEG_format</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span>    <span class="comment">as opposed to <code class="display"><span class="extract">PNG</span></code> format</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_css_code_styles</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment">use <code class="display"><span class="extract">&lt;span class="X"&gt;</span></code> markings when setting code</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">project_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">pathname of I7 project folder, if any</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">release_folder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">pathname of folder for website to write, if any</span>
+    <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">status_template</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">filename of report HTML page template, if any</span>
+    <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">status_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">filename of report HTML page to write, if any</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cover_exists</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment">an image is specified as cover art</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_cover_used</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment">but it's only the default supplied by Inform</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cover_is_in_JPEG_format</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="comment">as opposed to <code class="display"><span class="extract">PNG</span></code> format</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -92,7 +90,6 @@ outputs along the way, in the course of parsing the blurb file. The blorb
 file is only the main output &mdash; there might also be a web page and a solution
 file, for instance.
 </p>
-
 
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -117,8 +114,8 @@ file, for instance.
         <span class="plain">}</span>
 
         <span class="functiontext">Foundation::end</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -160,7 +157,7 @@ file, for instance.
         &lt;<span class="cwebmacro">Set platform-dependent HTML and Javascript variables</span> <span class="cwebmacronumber">3.3.3</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">)</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Blurb in: &lt;%f&gt;\</span><span class="plain">n</span><span class="string">! Blorb out: &lt;%f&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Blurb in: &lt;%f&gt;\n! Blorb out: &lt;%f&gt;\n"</span><span class="plain">,</span>
                 <span class="identifier">blurb_filename</span><span class="plain">, </span><span class="identifier">blorb_filename</span><span class="plain">);</span>
 </pre>
 
@@ -174,24 +171,24 @@ file, for instance.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"inblorb: a releaser and packager for IF story files\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span>
-            <span class="identifier">L</span><span class="string">"usage: inblorb [-options] [blurbfile [blorbfile]]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"inblorb: a releaser and packager for IF story files\n\n"</span>
+            <span class="identifier">L</span><span class="string">"usage: inblorb [-options] [blurbfile [blorbfile]]\n"</span><span class="plain">);</span>
 
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">VERBOSE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"verbose"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">VERBOSE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"verbose"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print running notes on what's happening"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"work within Inform project X"</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bare_words</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bare_words</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, &amp;</span><span class="identifier">bare_words</span><span class="plain">, &amp;</span><span class="functiontext">Main::switch</span><span class="plain">, &amp;</span><span class="functiontext">Main::bareword</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project_folder</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bare_words</span><span class="plain"> &gt; 0) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"if -project is used, no other filenames should be given"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bare_words</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"if -project is used, no other filenames should be given"</span><span class="plain">);</span>
             <span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">project_folder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Release.blurb"</span><span class="plain">);</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">Build</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">project_folder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Build"</span><span class="plain">);</span>
             <span class="identifier">blorb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Build</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"output.zblorb"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bare_words</span><span class="plain"> == 0) </span><span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bare_words</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -201,13 +198,12 @@ file, for instance.
 
 <p class="inwebparagraph"><a id="SP3_3_2"></a><b>&#167;3.3.2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::switch</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERBOSE_CLSW</span><span class="plain">: </span><span class="identifier">verbose_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROJECT_CLSW</span><span class="plain">: </span><span class="identifier">project_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented switch"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERBOSE_CLSW:</span><span class="plain"> </span><span class="identifier">verbose_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROJECT_CLSW:</span><span class="plain"> </span><span class="identifier">project_folder</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented switch"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -215,9 +211,9 @@ file, for instance.
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">bare_words</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
         <span class="plain">(*</span><span class="identifier">bare_words</span><span class="plain">)++;</span>
         <span class="reserved">switch</span><span class="plain"> (*</span><span class="identifier">bare_words</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">blorb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"bad command line usage (see -help)"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">blurb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">blorb_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"bad command line usage (see -help)"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -244,7 +240,6 @@ Javascript, we abstract the prefix for these function calls into the
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">&lt;a href="***openUrl"&gt;...&lt;/a&gt;</span>
@@ -275,8 +270,8 @@ since backslashes are escape characters in Javascript literals.
 
 <pre class="displaydefn">
         <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">WINDOWS_JAVASCRIPT</span>
-            <span class="identifier">FONT_TAG</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"face=\</span><span class="plain">"</span><span class="string">lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\</span><span class="plain">"</span><span class="string"> size=2"</span><span class="plain">;</span>
-            <span class="identifier">escape_openUrl</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span>    <span class="comment">we want <code class="display"><span class="extract">openUrl</span></code> to escape, and <code class="display"><span class="extract">fileUrl</span></code> not to</span>
+            <span class="identifier">FONT_TAG</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"face=\"lucida grande,geneva,arial,tahoma,verdana,helvetica,helv\" size=2"</span><span class="plain">;</span>
+            <span class="identifier">escape_openUrl</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="comment">we want <code class="display"><span class="extract">openUrl</span></code> to escape, and <code class="display"><span class="extract">fileUrl</span></code> not to</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="constant">WINDOWS_JAVASCRIPT</span>
             <span class="identifier">JAVASCRIPT_PRELUDE</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"javascript:external.Project."</span><span class="plain">;</span>
@@ -294,7 +289,6 @@ be overridden by commands in the blurb file, and Inform always does this in
 the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::initialise_time_variables</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">datestamp</span><span class="plain">);</span>
@@ -308,12 +302,12 @@ the blurb files it writes. But it leaves [DATESTAMP] and [TIMESTAMP] alone.)
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">datestamp</span><span class="plain">, </span><span class="string">"%s %d %s %d"</span><span class="plain">, </span><span class="identifier">weekdays</span><span class="plain">[</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_wday</span><span class="plain">],</span>
             <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">, </span><span class="identifier">months</span><span class="plain">[</span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain">], </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">+1900);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">infocom</span><span class="plain">, </span><span class="string">"%02d%02d%02d"</span><span class="plain">,</span>
-            <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">-100, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + 1, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">);</span>
+            <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_year</span><span class="plain">-100, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mon</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_mday</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">timestamp</span><span class="plain">, </span><span class="string">"%02d:%02d.%02d"</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_hour</span><span class="plain">,</span>
             <span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_min</span><span class="plain">, </span><span class="identifier">the_present</span><span class="plain">-&gt;</span><span class="identifier">tm_sec</span><span class="plain">);</span>
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DATESTAMP"</span><span class="plain">, </span><span class="identifier">datestamp</span><span class="plain">, 0);</span>
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INFOCOMDATESTAMP"</span><span class="plain">, </span><span class="identifier">infocom</span><span class="plain">, 0);</span>
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TIMESTAMP"</span><span class="plain">, </span><span class="identifier">timestamp</span><span class="plain">, 0);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DATESTAMP"</span><span class="plain">, </span><span class="identifier">datestamp</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INFOCOMDATESTAMP"</span><span class="plain">, </span><span class="identifier">infocom</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TIMESTAMP"</span><span class="plain">, </span><span class="identifier">timestamp</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">datestamp</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">infocom</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">timestamp</span><span class="plain">);</span>
@@ -330,15 +324,14 @@ file in I6 code, where <code class="display"><span class="extract">!</span></cod
 I7 uses Inblorb, but it's traditional for blorbing programs to do this.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::print_banner</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ver</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"inblorb [[Build Number]]"</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fix_time_mode</span><span class="plain">) </span><span class="identifier">ver</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"inblorb 99.99"</span><span class="plain">;</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! %S [executing on %S at %S]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! %S [executing on %S at %S]\n"</span><span class="plain">,</span>
             <span class="identifier">ver</span><span class="plain">, </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"DATESTAMP"</span><span class="plain">), </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TIMESTAMP"</span><span class="plain">));</span>
         <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! The blorb spell (safely protect a small object "</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"as though in a strong box).\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"as though in a strong box).\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -353,10 +346,9 @@ placeholders in the template. All of the meat of the report is in those
 placeholders, of course; the template contains only some fancy formatting.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::print_report</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; 0) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Completed: %d error(s)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">error_count</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Completed: %d error(s)\n"</span><span class="plain">, </span><span class="identifier">error_count</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Set a whole pile of placeholders which will be needed to generate the status page</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">status_template</span><span class="plain">) </span><span class="functiontext">Websites::web_copy</span><span class="plain">(</span><span class="identifier">status_template</span><span class="plain">, </span><span class="identifier">status_file</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -378,40 +370,40 @@ that's where they're used.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; 0) {</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Failed"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSIMAGE"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform:/outcome_images/cblorb_failed.png"</span><span class="plain">, 0);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Failed"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSIMAGE"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inform:/outcome_images/cblorb_failed.png"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSTEXT"</span><span class="plain">,</span>
                 <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"Inform translated your source text as usual, to manufacture a 'story "</span>
                     <span class="identifier">L</span><span class="string">"file': all of that worked fine. But the Release then went wrong, for "</span>
-                    <span class="identifier">L</span><span class="string">"the following reason:&lt;p&gt;&lt;ul&gt;[CBLORBERRORS]&lt;/ul&gt;"</span><span class="plain">), 0</span>
+                    <span class="identifier">L</span><span class="string">"the following reason:&lt;p&gt;&lt;ul&gt;[CBLORBERRORS]&lt;/ul&gt;"</span><span class="plain">), </span><span class="constant">0</span>
             <span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBERRORS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"No problems occurred"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Succeeded"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSIMAGE"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"file://[SMALLCOVER]"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSTEXT"</span><span class="plain">,</span>
-                <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"All went well. I've put the released material into the 'Release' subfolder "</span>
-                    <span class="identifier">L</span><span class="string">"of the Materials folder for the project: you can take a look with "</span>
-                    <span class="identifier">L</span><span class="string">"the menu option &lt;b&gt;Release &amp;gt; Open Materials Folder&lt;/b&gt; or by clicking "</span>
-                    <span class="identifier">L</span><span class="string">"the blue folders above.&lt;p&gt;"</span>
-                    <span class="identifier">L</span><span class="string">"Releases can range in size from a single blorb file to a medium-sized website. "</span>
-                    <span class="identifier">L</span><span class="string">"Here's what we currently have:&lt;p&gt;"</span><span class="plain">), 0</span>
-            <span class="plain">);</span>
-            <span class="functiontext">Requests::report_requested_material</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSTEXT"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blorb_file_size</span><span class="plain"> &gt; 0) {</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILESIZE"</span><span class="plain">, </span><span class="identifier">blorb_file_size</span><span class="plain">/1024);</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILEPICTURES"</span><span class="plain">, </span><span class="identifier">no_pictures_included</span><span class="plain">);</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILESOUNDS"</span><span class="plain">, </span><span class="identifier">no_sounds_included</span><span class="plain">);</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Completed: wrote blorb file with "</span><span class="plain">);</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"%d picture(s), %d sound(s)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">no_pictures_included</span><span class="plain">, </span><span class="identifier">no_sounds_included</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILESIZE"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILEPICTURES"</span><span class="plain">, 0);</span>
-            <span class="functiontext">Placeholders::set_to_number</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BLORBFILESOUNDS"</span><span class="plain">, 0);</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Completed: no blorb output requested\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="plain">}</span>
+            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBERRORS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"No problems occurred"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUS"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Succeeded"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"CBLORBSTATUSIMAGE"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"file:</span><span class="comment">[SMALLCOVER]", 0);</span>
+            <span class="string">Placeholders::set_to(I"</span><span class="identifier">CBLORBSTATUSTEXT</span><span class="string">",</span>
+                <span class="string">Str::literal(L"</span><span class="identifier">All</span><span class="plain"> </span><span class="identifier">went</span><span class="plain"> </span><span class="identifier">well</span><span class="plain">. </span><span class="identifier">I</span><span class="character">'ve put the released material into the '</span><span class="identifier">Release</span><span class="character">' subfolder "</span>
+                    <span class="character">L"of the Materials folder for the project: you can take a look with "</span>
+                    <span class="character">L"the menu option &lt;b&gt;Release &amp;gt; Open Materials Folder&lt;/b&gt; or by clicking "</span>
+                    <span class="character">L"the blue folders above.&lt;p&gt;"</span>
+                    <span class="character">L"Releases can range in size from a single blorb file to a medium-sized website. "</span>
+                    <span class="character">L"Here'</span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">what</span><span class="plain"> </span><span class="identifier">we</span><span class="plain"> </span><span class="identifier">currently</span><span class="plain"> </span><span class="identifier">have:</span><span class="plain">&lt;</span><span class="identifier">p</span><span class="plain">&gt;</span><span class="string">"), 0</span>
+            <span class="string">);</span>
+            <span class="string">Requests::report_requested_material(I"</span><span class="identifier">CBLORBSTATUSTEXT</span><span class="string">");</span>
+        <span class="string">}</span>
+        <span class="string">if (blorb_file_size &gt; 0) {</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILESIZE</span><span class="string">", blorb_file_size/1024);</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILEPICTURES</span><span class="string">", no_pictures_included);</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILESOUNDS</span><span class="string">", no_sounds_included);</span>
+            <span class="string">PRINT("</span><span class="plain">! </span><span class="identifier">Completed:</span><span class="plain"> </span><span class="identifier">wrote</span><span class="plain"> </span><span class="identifier">blorb</span><span class="plain"> </span><span class="identifier">file</span><span class="plain"> </span><span class="identifier">with</span><span class="plain"> </span><span class="string">");</span>
+            <span class="string">PRINT("</span><span class="plain">%</span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">picture</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">), %</span><span class="identifier">d</span><span class="plain"> </span><span class="identifier">sound</span><span class="plain">(</span><span class="identifier">s</span><span class="plain">)\</span><span class="identifier">n</span><span class="string">", no_pictures_included, no_sounds_included);</span>
+        <span class="string">} else {</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILESIZE</span><span class="string">", 0);</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILEPICTURES</span><span class="string">", 0);</span>
+            <span class="string">Placeholders::set_to_number(I"</span><span class="identifier">BLORBFILESOUNDS</span><span class="string">", 0);</span>
+            <span class="string">PRINT("</span><span class="plain">! </span><span class="identifier">Completed:</span><span class="plain"> </span><span class="identifier">no</span><span class="plain"> </span><span class="identifier">blorb</span><span class="plain"> </span><span class="identifier">output</span><span class="plain"> </span><span class="identifier">requested</span><span class="plain">\</span><span class="identifier">n</span><span class="string">");</span>
+        <span class="string">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>

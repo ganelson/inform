@@ -63,16 +63,15 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Pipeline stage. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Externals::create_pipeline_stage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"resolve-external-symbols"</span><span class="plain">, </span><span class="functiontext">CodeGen::Externals::run_pipeline_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Externals::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
-        <span class="identifier">Inter::Connectors::stecker</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">);</span>
+        <span class="identifier">Inter::Connectors::stecker</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-&gt;</span><span class="identifier">repository</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">resolution_failed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Externals::visitor</span><span class="plain">, &amp;</span><span class="identifier">resolution_failed</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">PACKAGE_IST</span><span class="plain">);</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-&gt;</span><span class="element">repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Externals::visitor</span><span class="plain">, &amp;</span><span class="identifier">resolution_failed</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">PACKAGE_IST</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resolution_failed</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"undefined external link(s)"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -97,8 +96,8 @@
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">Inter::Symbols::is_defined</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Symbols::get_scope</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">) != </span><span class="identifier">PLUG_ISYMS</span><span class="plain">) {</span>
-                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$3 == $3 which is undefined\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
-                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"Failed to resolve symbol: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
+                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$3 == $3 which is undefined\n"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">);</span>
+                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"Failed to resolve symbol: %S\n"</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="identifier">symbol_name</span><span class="plain">);</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fail_flag</span><span class="plain">) *</span><span class="identifier">fail_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>

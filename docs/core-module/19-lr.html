@@ -64,7 +64,6 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Initial stock. </b>There is none, since no tables or columns exist when Inform starts up.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_create_initial_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
@@ -86,7 +85,6 @@ those. So we make a one-parameter family of <code class="display"><span class="e
 predicates instead.
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Tables::Relations::make_listed_in_predicate</span><span class="plain">(</span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">) {</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::make_pair</span><span class="plain">(</span><span class="constant">LISTED_IN_KBP</span><span class="plain">,</span>
@@ -96,7 +94,7 @@ predicates instead.
             <span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"(ct_1=ExistsTableRowCorr(ct_0=*2,%d,*1))"</span><span class="plain">,</span>
                 <span class="functiontext">Tables::Columns::get_id</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">)),</span>
             <span class="identifier">WordAssemblages::lit_0</span><span class="plain">());</span>
-        <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;a_listed_in_predicate</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">a_listed_in_predicate</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -113,11 +111,10 @@ the left-hand term at the time when the column is created. So we fill this
 in later, instead:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Relations::supply_kind_for_listed_in_tc</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;term_details</span><span class="plain">[0]), </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;reversal</span><span class="plain">-</span><span class="element">&gt;term_details</span><span class="plain">[1]), </span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">term_details</span><span class="plain">[0]), </span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="functiontext">BinaryPredicates::set_term_domain</span><span class="plain">(&amp;(</span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">reversal</span><span class="plain">-&gt;</span><span class="element">term_details</span><span class="plain">[1]), </span><span class="identifier">K</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -127,7 +124,6 @@ in later, instead:
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Second stock. </b>By this time, they all exist.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_create_second_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -139,7 +135,6 @@ in later, instead:
 <p class="endnote">The function Tables::Relations::REL_create_second_stock is used in 6/bp (<a href="6-bp.html#SP46">&#167;46</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Typechecking. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_typecheck</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
@@ -154,7 +149,6 @@ in later, instead:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Assertion. </b>These relations cannot be asserted.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_assert</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
@@ -173,7 +167,6 @@ present in the current stack frame, since we're going to need them to hold
 the table reference for any successful lookup.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_compile</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">annotated_i6_schema</span><span class="plain"> *</span><span class="identifier">asch</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain"> == </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">) </span><span class="functiontext">LocalVariables::add_table_lookup</span><span class="plain">();</span>
@@ -186,7 +179,6 @@ the table reference for any successful lookup.
 <p class="endnote">The function Tables::Relations::REL_compile is used in 6/bp (<a href="6-bp.html#SP47">&#167;47</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Problem message text. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Relations::REL_describe_for_problems</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>

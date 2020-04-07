@@ -82,52 +82,51 @@ capacity" or "colour". (These are called "valued" because they associate
 a value with the owner; it isn't that either/or properties are unloved.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">name of property</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ambiguous_name</span><span class="plain">; </span>    <span class="comment">does this look like a property test, e.g., "point of view"?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">owning_module</span><span class="plain">; </span>    <span class="comment">where defined</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">name of property</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ambiguous_name</span><span class="plain">; </span><span class="comment">does this look like a property test, e.g., "point of view"?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">owning_module</span><span class="plain">; </span><span class="comment">where defined</span>
 
         <span class="comment">the basic nature of this property</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">either_or</span><span class="plain">; </span>    <span class="comment">is this an either/or property? if not, it is a valued one</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">applicable_to</span><span class="plain">; </span>    <span class="comment">lists who has permission to have this</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_compile</span><span class="plain">; </span>    <span class="comment">for e.g. the "specification" pseudo-property</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_in_index</span><span class="plain">; </span>    <span class="comment">is this property shown in the indexes?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">either_or</span><span class="plain">; </span><span class="comment">is this an either/or property? if not, it is a valued one</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">applicable_to</span><span class="plain">; </span><span class="comment">lists who has permission to have this</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">do_not_compile</span><span class="plain">; </span><span class="comment">for e.g. the "specification" pseudo-property</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_in_index</span><span class="plain">; </span><span class="comment">is this property shown in the indexes?</span>
 
         <span class="comment">runtime implementation</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">metadata_table_offset</span><span class="plain">; </span>    <span class="comment">position in the <code class="display"><span class="extract">property_metadata</span></code> word array at run-time</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">prop_package</span><span class="plain">; </span>    <span class="comment">where to find:</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">prop_iname</span><span class="plain">; </span>    <span class="comment">the identifier we would like to use at run-time for this property</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">translated</span><span class="plain">; </span>    <span class="comment">has this been given an explicit translation?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">prn_emitted</span><span class="plain">; </span>    <span class="comment">has this been emitted to Inter yet?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">metadata_table_offset</span><span class="plain">; </span><span class="comment">position in the <code class="display"><span class="extract">property_metadata</span></code> word array at run-time</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">prop_package</span><span class="plain">; </span><span class="comment">where to find:</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">prop_iname</span><span class="plain">; </span><span class="comment">the identifier we would like to use at run-time for this property</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">translated</span><span class="plain">; </span><span class="comment">has this been given an explicit translation?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">prn_emitted</span><span class="plain">; </span><span class="comment">has this been emitted to Inter yet?</span>
 
         <span class="comment">temporary use only</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indexed_already</span><span class="plain">; </span>    <span class="comment">and has it been, thus far in index construction?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">visited_on_traverse</span><span class="plain">; </span>    <span class="comment">for temporary use when compiling objects</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">possession_marker</span><span class="plain"> </span><span class="identifier">pom</span><span class="plain">; </span>    <span class="comment">for temporary use when checking implications</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">indexed_already</span><span class="plain">; </span><span class="comment">and has it been, thus far in index construction?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">visited_on_traverse</span><span class="plain">; </span><span class="comment">for temporary use when compiling objects</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">possession_marker</span><span class="plain"> </span><span class="identifier">pom</span><span class="plain">; </span><span class="comment">for temporary use when checking implications</span>
 
         <span class="comment">used only for either-or properties</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implemented_as_attribute</span><span class="plain">; </span>    <span class="comment">if so: is it an I6 attribute at run-time?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">negation</span><span class="plain">; </span>    <span class="comment">and which property name (if any) negates it?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stored_in_negation</span><span class="plain">; </span>    <span class="comment">this is the dummy half of an either/or pair</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">adjectival_meaning_registered</span><span class="plain">; </span>    <span class="comment">and has it been made an adjective yet?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">adjectival_phrase_registered</span><span class="plain">; </span>    <span class="comment">similarly</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implemented_as_attribute</span><span class="plain">; </span><span class="comment">if so: is it an I6 attribute at run-time?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">negation</span><span class="plain">; </span><span class="comment">and which property name (if any) negates it?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stored_in_negation</span><span class="plain">; </span><span class="comment">this is the dummy half of an either/or pair</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">adjectival_meaning_registered</span><span class="plain">; </span><span class="comment">and has it been made an adjective yet?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">adjectival_phrase_registered</span><span class="plain">; </span><span class="comment">similarly</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">grammar_verb</span><span class="plain"> *</span><span class="identifier">eo_parsing_grammar</span><span class="plain">; </span>    <span class="comment">exotic forms used in parsing</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">grammar_verb</span><span class="plain"> *</span><span class="identifier">eo_parsing_grammar</span><span class="plain">; </span><span class="comment">exotic forms used in parsing</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
         <span class="comment">used only for valued properties</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">property_value_kind</span><span class="plain">; </span>    <span class="comment">if not either/or, what kind of value does it hold?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">setting_bp</span><span class="plain">; </span>    <span class="comment">and which relation sets it?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">stored_bp</span><span class="plain">; </span>    <span class="comment">does it store the content of a relation?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">used_for_non_typesafe_relation</span><span class="plain">; </span>    <span class="comment">expressing, e.g., a 1-1 relation to a kind</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">also_a_type</span><span class="plain">; </span>    <span class="comment">and is its name the same as that of the kind of value?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">run_time_only</span><span class="plain">; </span>    <span class="comment">does not correspond to an I7 property</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">property_value_kind</span><span class="plain">; </span><span class="comment">if not either/or, what kind of value does it hold?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">setting_bp</span><span class="plain">; </span><span class="comment">and which relation sets it?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">stored_bp</span><span class="plain">; </span><span class="comment">does it store the content of a relation?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">used_for_non_typesafe_relation</span><span class="plain">; </span><span class="comment">expressing, e.g., a 1-1 relation to a kind</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">also_a_type</span><span class="plain">; </span><span class="comment">and is its name the same as that of the kind of value?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">run_time_only</span><span class="plain">; </span><span class="comment">does not correspond to an I7 property</span>
 
         <span class="comment">used only for condition properties, a special kind of valued properties</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">condition_of</span><span class="plain">; </span>    <span class="comment">or is it a condition of an object?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">condition_anonymously_named</span><span class="plain">; </span>    <span class="comment">if so, is it named just "... condition"?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">condition_of</span><span class="plain">; </span><span class="comment">or is it a condition of an object?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">condition_anonymously_named</span><span class="plain">; </span><span class="comment">if so, is it named just "... condition"?</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">property</span><span class="plain">;</span>
@@ -141,13 +140,12 @@ a value with the owner; it isn't that either/or properties are unloved.)
 (though plugins are interested in many others):
 </p>
 
-
 <pre class="display">
-    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_specification</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a pseudo-property for indexing kinds</span>
-    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_variable_initial_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a pseudo-property for initialising variables</span>
+    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_specification</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a pseudo-property for indexing kinds</span>
+    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_variable_initial_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a pseudo-property for initialising variables</span>
     <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_indefinite_appearance_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_description</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a text property for holding annotations</span>
-    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_grammatical_gender</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a value property describing names</span>
+    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_description</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a text property for holding annotations</span>
+    <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P_grammatical_gender</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a value property describing names</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -158,7 +156,6 @@ existing one, we need to make absolutely certain that we aren't using an
 either/or property where a valued property is wanted, or vice versa.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::obtain</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">valued</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="constant">PROPERTY_MC</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -167,15 +164,15 @@ either/or property where a valued property is wanted, or vice versa.
             <span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::create</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">valued</span><span class="plain">) {</span>
                 <span class="functiontext">Properties::Valued::make_setting_relation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">valued</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">valued</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">))</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"either/or property made into valued"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">valued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">valued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"valued property made into either/or"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
@@ -188,7 +185,6 @@ either/or property where a valued property is wanted, or vice versa.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And: (2) To create a new structure outright.
 </p>
-
 
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::create</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">using_package</span><span class="plain">, </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">using_iname</span><span class="plain">) {</span>
@@ -204,7 +200,7 @@ either/or property where a valued property is wanted, or vice versa.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Register the property name as a noun</span> <span class="cwebmacronumber">5.8</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_CREATIONS</span><span class="plain">, </span><span class="string">"Created property: $Y\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_CREATIONS</span><span class="plain">, </span><span class="string">"Created property: $Y\n"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -307,21 +303,21 @@ something.
 
 
 <pre class="displaydefn">
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;ambiguous_name</span><span class="plain"> = &lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">looking</span><span class="plain">-</span><span class="identifier">like</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">test</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;applicable_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_package</span><span class="plain"> = </span><span class="identifier">using_package</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain"> = </span><span class="identifier">using_iname</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prn_emitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;indexed_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;visited_on_traverse</span><span class="plain"> = -1;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;metadata_table_offset</span><span class="plain"> = </span><span class="constant">UNSET_TABLE_OFFSET</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">owning_module</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">ambiguous_name</span><span class="plain"> = &lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">looking</span><span class="plain">-</span><span class="identifier">like</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">test</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">applicable_to</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_package</span><span class="plain"> = </span><span class="identifier">using_package</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain"> = </span><span class="identifier">using_iname</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prn_emitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">translated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">do_not_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">indexed_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">visited_on_traverse</span><span class="plain"> = -1;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">metadata_table_offset</span><span class="plain"> = </span><span class="constant">UNSET_TABLE_OFFSET</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">run_time_only</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="functiontext">Properties::EitherOr::initialise</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="functiontext">Properties::Valued::initialise</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
 </pre>
@@ -350,7 +346,6 @@ by the Standard Rules (which are in English, so there's no need to translate
 this to any other language).
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt; ::=</span>
         <span class="identifier">description</span><span class="plain"> |</span>
@@ -369,25 +364,25 @@ this to any other language).
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">P_description</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">P_description</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">P_specification</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">P_specification</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="functiontext">Properties::Valued::set_kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="functiontext">World::Permissions::grant</span><span class="plain">(</span><span class="identifier">model_world</span><span class="plain">, </span><span class="identifier">P_specification</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 2: </span><span class="identifier">P_indefinite_appearance_text</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="identifier">P_indefinite_appearance_text</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="functiontext">Properties::Valued::set_kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="functiontext">World::Permissions::grant</span><span class="plain">(</span><span class="identifier">global_constants</span><span class="plain">,</span>
                         <span class="identifier">P_indefinite_appearance_text</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 3: </span><span class="identifier">P_variable_initial_value</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="identifier">P_variable_initial_value</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">do_not_compile</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="functiontext">Properties::Valued::set_kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="functiontext">World::Permissions::grant</span><span class="plain">(</span><span class="identifier">nonlocal_variables</span><span class="plain">, </span><span class="identifier">P_variable_initial_value</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -403,7 +398,6 @@ this to any other language).
 thus "the property open", for instance. We achieve this by registering the
 name in both forms. The following grammar is used to construct this prefix.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt; ::=</span>
@@ -422,7 +416,7 @@ name in both forms. The following grammar is used to construct this prefix.
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="constant">PROPERTY_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_property</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
         <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> =</span>
-            <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, 0,</span>
+            <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                 <span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">WordAssemblages::to_wording</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">);</span>
         <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
@@ -436,12 +430,11 @@ name in both forms. The following grammar is used to construct this prefix.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. As kinds. </b></p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Properties::to_kind</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"took kind of null property"</span><span class="plain">);</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">stored</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;property_value_kind</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">) </span><span class="identifier">stored</span><span class="plain"> = </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">stored</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">property_value_kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">) </span><span class="identifier">stored</span><span class="plain"> = </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">CON_property</span><span class="plain">, </span><span class="identifier">stored</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -452,11 +445,10 @@ name in both forms. The following grammar is used to construct this prefix.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Properties::get_name</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -468,15 +460,14 @@ name in both forms. The following grammar is used to construct this prefix.
 article:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
                 <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) - 1;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -487,14 +478,13 @@ article:
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>With two variants:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">either</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -505,8 +495,8 @@ article:
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -520,14 +510,13 @@ article:
 (and doesn't accept the definite article):
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">v</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
                 <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) - 1;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -541,7 +530,6 @@ be mistaken for the "point" property of something called "view". Formally,
 it's ambiguous if it matches the following:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">looking</span><span class="plain">-</span><span class="identifier">like</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">test</span><span class="plain">&gt; ::=</span>
         <span class="plain">*** </span><span class="identifier">of</span><span class="plain"> ***</span>
@@ -553,15 +541,14 @@ it's ambiguous if it matches the following:
 matches ambiguous cases.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">ambiguous</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> ? {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;ambiguous_name</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">ambiguous_name</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) - 1;</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) + </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -575,15 +562,14 @@ finding the length of the longest property name at the start of an excerpt.
 (The assertion parser uses this to break text like "carrying capacity 20".)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::match_longest</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">maxlen</span><span class="plain"> = -1;</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">maxlen</span><span class="plain"> &lt; </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))</span>
-                    <span class="identifier">maxlen</span><span class="plain"> = </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::starts_with</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">maxlen</span><span class="plain"> &lt; </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">))</span>
+                    <span class="identifier">maxlen</span><span class="plain"> = </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">maxlen</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -596,13 +582,12 @@ finding the length of the longest property name at the start of an excerpt.
 important enough to have their own section: here, all we do is...
 </p>
 
-
 <pre class="display">
     <span class="reserved">property_permission</span><span class="plain"> *</span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;applicable_to</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">applicable_to</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::set_permission_list</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;applicable_to</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">applicable_to</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -614,12 +599,11 @@ important enough to have their own section: here, all we do is...
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::log</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="functiontext">Properties::log_basic_pname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Streams::I6_escapes_enabled</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">)) || (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">) {</span>
             <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">neg</span><span class="plain"> = </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">neg</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=~"</span><span class="plain">); </span><span class="functiontext">Properties::log_basic_pname</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">); }</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -629,8 +613,8 @@ important enough to have their own section: here, all we do is...
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::log_basic_pname</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-property&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"'%W'"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">); }</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"'%W'"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">); }</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain">); }</span>
         <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"nameless"</span><span class="plain">); }</span>
     <span class="plain">}</span>
 </pre>
@@ -646,13 +630,12 @@ and for clarity we define two test routines, even though each is the negation
 of the other:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::is_value_property</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -669,10 +652,9 @@ like "indefinite appearance" have no existence at run-time, and can't
 be compiled, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::can_be_compiled</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;do_not_compile</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">do_not_compile</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -685,13 +667,12 @@ be compiled, so:
 sake:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::is_shown_in_index</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::exclude_from_index</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">include_in_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -704,13 +685,12 @@ sake:
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>During indexing we try to avoid mentioning properties more than once:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::set_indexed_already_flag</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;indexed_already</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">indexed_already</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::get_indexed_already_flag</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;indexed_already</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">indexed_already</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -723,13 +703,12 @@ sake:
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>Used to support the run-time storage code: see "Properties of Objects".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::offset_in_runtime_metadata_table_is</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">) {</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;metadata_table_offset</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">metadata_table_offset</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::get_offset_in_runtime_metadata_table</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;metadata_table_offset</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">metadata_table_offset</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -748,11 +727,10 @@ plugins to give their favourite properties names which will help their own
 run-time support code to work.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"translation set for null property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">)) {</span>
             <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">t</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -764,15 +742,15 @@ run-time support code to work.
             <span class="reserved">else</span>
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">);</span>
+        <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">prop_iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::set_translation_S</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"translation set for null property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">)) {</span>
             <span class="functiontext">Properties::set_translation_S</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">t</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -785,14 +763,14 @@ run-time support code to work.
             <span class="reserved">else</span>
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, 31);</span>
-        <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="constant">31</span><span class="plain">);</span>
+        <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">prop_iname</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">translated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::has_been_translated</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">translated</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -813,7 +791,6 @@ to sentences like:
 
 </blockquote>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::translates</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -823,9 +800,9 @@ to sentences like:
         &lt;<span class="cwebmacro">Make sure this is a genuine and previously untranslated property</span> <span class="cwebmacronumber">22.1</span>&gt;<span class="plain">;</span>
 
         <span class="functiontext">Properties::set_translation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_TRANSLATIONS</span><span class="plain">, </span><span class="string">"Property &lt;$Y&gt; translates as &lt;%w&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_TRANSLATIONS</span><span class="plain">, </span><span class="string">"Property &lt;$Y&gt; translates as &lt;%w&gt;\n"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;either_or</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">either_or</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Check to see if a sense reversal has taken place in translation</span> <span class="cwebmacronumber">22.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -846,7 +823,7 @@ to sentences like:
                 <span class="string">"so cannot be translated."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">translated</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">Produce::get_translation</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)), </span><span class="identifier">text</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TranslatedTwice</span><span class="plain">),</span>
                 <span class="string">"this property has already been translated"</span><span class="plain">,</span>
@@ -894,7 +871,7 @@ to their analogous Inform 6 ones.)
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">neg</span><span class="plain"> = </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">neg</span><span class="plain">) {</span>
             <span class="functiontext">Properties::EitherOr::make_stored_in_negation</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">);</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_TRANSLATIONS</span><span class="plain">, </span><span class="string">"Storing this way round: $Y\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PROPERTY_TRANSLATIONS</span><span class="plain">, </span><span class="string">"Storing this way round: $Y\n"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -907,19 +884,18 @@ once, when working through some complicated search space. (Visiting an either/or
 property also visits its negation.)
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">property_traverse_count</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">property_traverse_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::begin_traverse</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">property_traverse_count</span><span class="plain">++;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::visited_in_traverse</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;visited_on_traverse</span><span class="plain"> == </span><span class="identifier">property_traverse_count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;visited_on_traverse</span><span class="plain"> = </span><span class="identifier">property_traverse_count</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">visited_on_traverse</span><span class="plain"> == </span><span class="identifier">property_traverse_count</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">visited_on_traverse</span><span class="plain"> = </span><span class="identifier">property_traverse_count</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
             <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prnbar</span><span class="plain"> = </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prnbar</span><span class="plain">) </span><span class="identifier">prnbar</span><span class="plain">-</span><span class="element">&gt;visited_on_traverse</span><span class="plain"> = </span><span class="identifier">property_traverse_count</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prnbar</span><span class="plain">) </span><span class="identifier">prnbar</span><span class="plain">-&gt;</span><span class="element">visited_on_traverse</span><span class="plain"> = </span><span class="identifier">property_traverse_count</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -936,10 +912,9 @@ properties things seem to have, but only as temporary data used when working
 on implications. Here we only make it available as storage.
 </p>
 
-
 <pre class="display">
     <span class="reserved">possession_marker</span><span class="plain"> *</span><span class="functiontext">Properties::get_possession_marker</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;pom</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">pom</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -952,7 +927,6 @@ property values of something are drawn from the most specific knowledge we have
 about it; and two, that if we have no knowledge of any specificity, then we fill
 in a default value.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::compile_inferred_value</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
@@ -977,14 +951,13 @@ we find it, we compile it and return <code class="display"><span class="extract"
 <code class="display"><span class="extract">FALSE</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::compile_property_value_inner</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">;</span>
         <span class="identifier">KNOWLEDGE_LOOP</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">, </span><span class="identifier">infs</span><span class="plain">, </span><span class="constant">PROPERTY_INF</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">World::Inferences::get_inference_type</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) == </span><span class="constant">PROPERTY_INF</span><span class="plain">) {</span>
                 <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">World::Inferences::where_inferred</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = (</span><span class="functiontext">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) &gt; 0)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain"> = (</span><span class="functiontext">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">;</span>
                 <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">inferred_property</span><span class="plain"> = </span><span class="functiontext">World::Inferences::get_property</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inferred_property</span><span class="plain"> == </span><span class="identifier">prn</span><span class="plain">) {</span>
@@ -992,7 +965,7 @@ we find it, we compile it and return <code class="display"><span class="extract"
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inferred_property</span><span class="plain"> == </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                        <span class="functiontext">Properties::EitherOr::compile_value</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">inferred_property</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">);</span>
+                        <span class="functiontext">Properties::EitherOr::compile_value</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">inferred_property</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">?</span><span class="identifier">FALSE:TRUE</span><span class="plain">);</span>
                         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -1019,45 +992,44 @@ we find it, we compile it and return <code class="display"><span class="extract"
 
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27. Emitting to Inter. </b></p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to find iname for null property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">, </span><span class="constant">PROPERTIES_HAP</span><span class="plain">);</span>
-            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_package</span><span class="plain">, </span><span class="constant">PROPERTY_NAME_HMD</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_package</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">owning_module</span><span class="plain">, </span><span class="constant">PROPERTIES_HAP</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_package</span><span class="plain">, </span><span class="constant">PROPERTY_NAME_HMD</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">PROPERTY_HL</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_package</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Properties::package</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to find package for null property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Properties::package</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
         <span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prop_package</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prop_package</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::emit_single</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to find emit single for null property"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">)) {</span>
             <span class="functiontext">Properties::emit_single</span><span class="plain">(</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prn_emitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prn_emitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
 
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;property_value_kind</span><span class="plain">;</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">property_value_kind</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"kindless property"</span><span class="plain">);</span>
-            <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;prn_emitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">prn_emitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
             <span class="functiontext">Emit::property</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain">) </span><span class="functiontext">Emit::permission</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;translated</span><span class="plain">) </span><span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">EXPLICIT_ATTRIBUTE_IANN</span><span class="plain">, 1);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">run_time_only</span><span class="plain">) </span><span class="functiontext">Emit::permission</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">translated</span><span class="plain">) </span><span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">EXPLICIT_ATTRIBUTE_IANN</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">SOURCE_ORDER_IANN</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -1065,16 +1037,16 @@ we find it, we compile it and return <code class="display"><span class="extract"
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::emit</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;property_value_kind</span><span class="plain">;</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">property_value_kind</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"kindless property"</span><span class="plain">);</span>
             <span class="functiontext">Properties::emit_single</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_PROPERTY</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">) {</span>
-                <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_owner</span><span class="plain">;</span>
+                <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">property_owner</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">subj</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unowned property"</span><span class="plain">);</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">subj</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Emit::permission</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Properties::OfValues::annotate_table_storage</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
@@ -1085,9 +1057,9 @@ we find it, we compile it and return <code class="display"><span class="extract"
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::emit_default_values</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;property_value_kind</span><span class="plain">;</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">property_value_kind</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="functiontext">Emit::ensure_defaultvalue</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -1098,16 +1070,16 @@ we find it, we compile it and return <code class="display"><span class="extract"
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">EITHER_OR_IANN</span><span class="plain">, 0);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">EITHER_OR_IANN</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::implemented_as_attribute</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
-                    <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">ATTRIBUTE_IANN</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">))</span>
-                <span class="identifier">Produce::annotate_w</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">PROPERTY_NAME_IANN</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;run_time_only</span><span class="plain">)</span>
-                <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">RTO_IANN</span><span class="plain">, 0);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">))</span>
+                <span class="identifier">Produce::annotate_w</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">PROPERTY_NAME_IANN</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">run_time_only</span><span class="plain">)</span>
+                <span class="identifier">Produce::annotate_i</span><span class="plain">(</span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">), </span><span class="identifier">RTO_IANN</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Properties::emit_default_values</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -1116,9 +1088,9 @@ we find it, we compile it and return <code class="display"><span class="extract"
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_PERMISSIONS_FOR_INFS</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">) {</span>
-            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-</span><span class="element">&gt;property_granted</span><span class="plain">;</span>
+            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">pp</span><span class="plain">-&gt;</span><span class="element">property_granted</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">stored_in_negation</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="functiontext">Emit::instance_permission</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="functiontext">Instances::emitted_iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

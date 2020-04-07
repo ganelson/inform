@@ -44,12 +44,11 @@ with specific numbered files of HTML documentation.
 <p class="inwebparagraph">This hash holds all known references to the Inform documentation:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Updater::add_reference_symbol</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;no_doc_reference_symbols</span><span class="plain"> &gt;= </span><span class="constant">MAX_DRS_PER_SECTION</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">no_doc_reference_symbols</span><span class="plain"> &gt;= </span><span class="constant">MAX_DRS_PER_SECTION</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"too many documentation reference symbols in this section"</span><span class="plain">);</span>
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;doc_reference_symbols</span><span class="plain">[</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;no_doc_reference_symbols</span><span class="plain">++] = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">symbol_name</span><span class="plain">);</span>
+        <span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">doc_reference_symbols</span><span class="plain">[</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">no_doc_reference_symbols</span><span class="plain">++] = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">symbol_name</span><span class="plain">);</span>
         <span class="functiontext">Indexes::index_notify_of_symbol</span><span class="plain">(</span><span class="identifier">symbol_name</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -63,7 +62,6 @@ clumsy way, with explicit sentences such as:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Document kind_person at doc45 "3.17" "Men, women and animals".</span>
@@ -79,7 +77,6 @@ was far from elegant. This has now gone, and instead we write a stand-alone
 "cross-references file" which Inform reads separately from any extensions.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Updater::write_xrefs_file</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">SR</span><span class="plain">;</span>
@@ -89,11 +86,11 @@ was far from elegant. This has now gone, and instead we write a stand-alone
 
         <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;no_doc_reference_symbols</span><span class="plain"> &gt; 0) {</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;no_doc_reference_symbols</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S "</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;doc_reference_symbols</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"_ doc%d \</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string"> \</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                    <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> + 1, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;label</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">no_doc_reference_symbols</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">no_doc_reference_symbols</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S "</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">doc_reference_symbols</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"_ doc%d \"%S\" \"%S\"\n"</span><span class="plain">,</span>
+                    <span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">label</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
             <span class="plain">}</span>
 
         <span class="functiontext">Streams::close</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -109,19 +106,18 @@ also write a one-off file containing all of the phrase definitions, which
 the Inform index-generator can use:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Updater::write_definitions_file</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">DEFNS</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;</span><span class="identifier">DEFNS</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Streams::open_to_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;definitions_filename</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"can't write definitions file"</span><span class="plain">, </span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;definitions_filename</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Streams::open_to_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">definitions_filename</span><span class="plain">, </span><span class="constant">UTF8_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+            <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"can't write definitions file"</span><span class="plain">, </span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">definitions_filename</span><span class="plain">);</span>
         <span class="reserved">formatted_file</span><span class="plain"> *</span><span class="identifier">ftd</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ftd</span><span class="plain">, </span><span class="reserved">formatted_file</span><span class="plain">) {</span>
             <span class="reserved">definitions_helper_state</span><span class="plain"> </span><span class="identifier">dhs</span><span class="plain">;</span>
-            <span class="identifier">dhs</span><span class="element">.transcribe</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="identifier">dhs</span><span class="element">.OUT</span><span class="plain"> = </span><span class="identifier">OUT</span><span class="plain">;</span>
-            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">ftd</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't reopen written file"</span><span class="plain">,</span>
+            <span class="identifier">dhs</span><span class="plain">.</span><span class="element">transcribe</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+            <span class="identifier">dhs</span><span class="plain">.</span><span class="element">OUT</span><span class="plain"> = </span><span class="identifier">OUT</span><span class="plain">;</span>
+            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">ftd</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't reopen written file"</span><span class="plain">,</span>
                 <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Updater::definitions_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">dhs</span><span class="plain">);</span>
         <span class="plain">}</span>
 
@@ -138,11 +134,11 @@ the Inform index-generator can use:
         <span class="functiontext">Str::trim_white_space_at_end</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *&lt;!--definition of (%c*?)--%c*"</span><span class="plain">)) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dhs</span><span class="plain">-</span><span class="element">&gt;OUT</span><span class="plain">, </span><span class="string">"*=%S=*\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-            <span class="identifier">dhs</span><span class="plain">-</span><span class="element">&gt;transcribe</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dhs</span><span class="plain">-&gt;</span><span class="element">OUT</span><span class="plain">, </span><span class="string">"*=%S=*\n"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="identifier">dhs</span><span class="plain">-&gt;</span><span class="element">transcribe</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *&lt;!--end definition--%c*"</span><span class="plain">)) {</span>
-            <span class="identifier">dhs</span><span class="plain">-</span><span class="element">&gt;transcribe</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dhs</span><span class="plain">-</span><span class="element">&gt;transcribe</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dhs</span><span class="plain">-</span><span class="element">&gt;OUT</span><span class="plain">, </span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
+            <span class="identifier">dhs</span><span class="plain">-&gt;</span><span class="element">transcribe</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dhs</span><span class="plain">-&gt;</span><span class="element">transcribe</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dhs</span><span class="plain">-&gt;</span><span class="element">OUT</span><span class="plain">, </span><span class="string">"%S\n"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

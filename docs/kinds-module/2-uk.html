@@ -63,21 +63,20 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Names of kinds. </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_name</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural_form</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::get_name</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="identifier">plural_form</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::get_name</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="identifier">plural_form</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_name_in_play</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural_form</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::get_name_in_play</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="identifier">plural_form</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::get_name_in_play</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="identifier">plural_form</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">noun</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_noun</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dt_tag</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">dt_tag</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -93,11 +92,10 @@
 kind of kind, like "arithmetic value":
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::is_kind_of_kind</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;group</span><span class="plain"> == </span><span class="constant">KIND_OF_KIND_GRP</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">group</span><span class="plain"> == </span><span class="constant">KIND_OF_KIND_GRP</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -111,36 +109,35 @@ made from something indefinite, like "list of values". So the following
 checks that we aren't doing that:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::is_definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::is_definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::semidefinite</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::is_definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::is_definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::semidefinite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::semidefinite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kind_variable_number</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kind_variable_number</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">arity</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">v</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">v</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -164,17 +161,16 @@ might be a kind of object created in the source text, because at the end of
 the day "object" is built in.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::is_built_in</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;defined_in_source_text</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">defined_in_source_text</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_creating_sentence</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;where_defined_in_source_text</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">where_defined_in_source_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -192,11 +188,10 @@ it has an incompletely defined flag set: once one of the conversion routines
 has been used, the matter is settled and there is no going back.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::is_uncertainly_defined</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;is_incompletely_defined</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">is_incompletely_defined</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -207,11 +202,10 @@ has been used, the matter is settled and there is no going back.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Here we test for being an enumeration:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -224,11 +218,10 @@ if the kind was already a unit or was successfully converted into one,
 <code class="display"><span class="extract">FALSE</span></code> if it's now too late.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_unit</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::convert_to_unit</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -239,10 +232,9 @@ if the kind was already a unit or was successfully converted into one,
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And similarly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -253,10 +245,9 @@ if the kind was already a unit or was successfully converted into one,
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And similarly to switch from integer to real arithmetic.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::convert_to_real</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Kinds::Constructors::convert_to_real</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -269,12 +260,11 @@ run-time; the following returns N+1, that is, a value which can be held
 by the next instance to be created.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">Kinds::Behaviour::convert_to_enumeration</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;next_free_value</span><span class="plain">++;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain">++;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -285,11 +275,10 @@ by the next instance to be created.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>At present we aren't using named aliases for kinds, but we may in future.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::stored_as</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;stored_as</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">stored_as</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -303,16 +292,15 @@ by the next instance to be created.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. (C) Compatibility with other kinds. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::set_superkind_set_at</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"set_superkind_set_at for null kind"</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;superkind_set_at</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">superkind_set_at</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_superkind_set_at</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;superkind_set_at</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">superkind_set_at</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -327,11 +315,10 @@ instance "maroon" might be an instance of kind "colour", while "234
 kilopascals" might be a notation for a kind where constants are not named.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::has_named_constant_values</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;named_values_created_with_assertions</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">named_values_created_with_assertions</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -346,11 +333,10 @@ specification of this kind: in other words, when compiling an I6
 value for a constant of this kind.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_constant_compilation_method</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">NONE_CCM</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;constant_compilation_method</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">constant_compilation_method</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -361,21 +347,20 @@ value for a constant of this kind.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>The following is used only when the kind has named instances.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_highest_valid_value_as_integer</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_activity</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">activity</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K_equation</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">equation</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_rule</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">booking</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_rulebook</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">rulebook</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">table</span><span class="plain">) + 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K_table</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">table</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K_use_option</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">use_option</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K_response</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">response_message</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;next_free_value</span><span class="plain"> - 1;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -387,7 +372,6 @@ value for a constant of this kind.
 others can't &mdash; numbers or times, for instance. In general v can have
 properties only if its kind passes this test:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::has_properties</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -407,20 +391,19 @@ standard <code class="display"><span class="extract">&lt;</span></code> or <code
 we have to.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::uses_signed_comparisons</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"signed"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">comparison_routine</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"signed"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_comparison_routine</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_real_number</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"signed"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_real_number</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">comparison_routine</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">comparison_routine</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"signed"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">comparison_routine</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -445,38 +428,37 @@ track of dimensions, and the following routines connect the code in the
 "Dimensions" section to kind structures.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_arithmetic</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_arithmetic</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_dimensional_form</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dimensional_form</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dimensional_form</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::test_if_derived</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dimensional_form_fixed</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">dimensional_form_fixed</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::now_derived</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't derive null kind"</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dimensional_form_fixed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dimensional_form_fixed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain">)</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::us_get_scaling_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Dimensions::us_get_scaling_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">LITERAL_PATTERNS</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">LiteralPatterns::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="plain">#</span><span class="reserved">else</span>
-        <span class="reserved">return</span><span class="plain"> 1;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">}</span>
 </pre>
@@ -497,11 +479,10 @@ track of dimensions, and the following routines connect the code in the
 operations can be applied, and if so, what kind the result has.
 </p>
 
-
 <pre class="display">
     <span class="reserved">dimensional_rules</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_dim_rules</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dim_rules</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dim_rules</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -511,11 +492,10 @@ operations can be applied, and if so, what kind the result has.
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. (H) Representing this kind at run-time. </b></p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"UNKNOWN_NT"</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">name_in_template_code</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -526,12 +506,11 @@ operations can be applied, and if so, what kind the result has.
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>Some kinds have a support routine:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::write_support_routine_name</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no support name for null kind"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;stored_as</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;stored_as</span><span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S_Support"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">stored_as</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">stored_as</span><span class="plain">;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S_Support"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">name_in_template_code</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -558,11 +537,10 @@ are word values, texts and lists are pointer values. Which form a value
 takes depends on its kind:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -573,11 +551,10 @@ takes depends on its kind:
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>Exactly how large the small block is:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_small_block_size</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;small_block_size</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">small_block_size</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -589,11 +566,10 @@ takes depends on its kind:
 for a pointer-value kind, in bytes.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;heap_size_estimate</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">heap_size_estimate</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -603,16 +579,15 @@ for a pointer-value kind, in bytes.
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::cast_possible</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
         <span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
         <span class="identifier">to</span><span class="plain"> = </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">to</span><span class="plain">) &amp;&amp; (</span><span class="identifier">from</span><span class="plain">) &amp;&amp; (</span><span class="identifier">to</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> != </span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">to</span><span class="plain">) &amp;&amp; (</span><span class="identifier">from</span><span class="plain">) &amp;&amp; (</span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> != </span><span class="identifier">from</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">to</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> != </span><span class="identifier">CON_property</span><span class="plain">))</span>
+            <span class="plain">(</span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> != </span><span class="identifier">CON_property</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -623,7 +598,6 @@ for a pointer-value kind, in bytes.
 <p class="endnote">The function Kinds::Behaviour::cast_possible is used in <a href="#SP27">&#167;27</a>.</p>
 
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b></p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::cast_constant</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
@@ -649,11 +623,10 @@ values of K are different from each other; or <code class="display"><span class=
 sufficient to apply <code class="display"><span class="extract">~=</span></code> to the values.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_distinguisher</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;distinguisher</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">distinguisher</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -677,13 +650,12 @@ over all texts. We use the term "domain" to mean the set of values which
 a loop traverses.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::compile_domain_possible</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;loop_domain_schema</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">loop_domain_schema</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -696,7 +668,6 @@ a loop traverses.
 despite its improbability, be valid for this kind. If we can prove that it is
 not, we should return <code class="display"><span class="extract">FALSE</span></code>; if in any doubt, we must return <code class="display"><span class="extract">TRUE</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::requires_blanks_bitmap</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -715,11 +686,10 @@ not, we should return <code class="display"><span class="extract">FALSE</span></
 by some other Inform story file, or by this one running on a different day?
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::can_exchange</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;can_exchange</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">can_exchange</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -731,7 +701,6 @@ by some other Inform story file, or by this one running on a different day?
 in some human-readable format.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -739,47 +708,47 @@ in some human-readable format.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K_number</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_iname</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null kind has no printing routine"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_use_option</span><span class="plain">)) {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_USE_OPTION_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_USE_OPTION_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_table</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_TABLE_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_TABLE_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_rulebook_outcome</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_RULEBOOK_OUTCOME_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_RULEBOOK_OUTCOME_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_response</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_RESPONSE_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_RESPONSE_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_figure_name</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_FIGURE_NAME_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_FIGURE_NAME_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_sound_name</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_SOUND_NAME_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_SOUND_NAME_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_external_file</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_EXTERNAL_FILE_NAME_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_EXTERNAL_FILE_NAME_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_scene</span><span class="plain">))  {</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_SCENE_HL</span><span class="plain">);</span>
-            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">PRINT_SCENE_HL</span><span class="plain">);</span>
+            <span class="identifier">Hierarchy::make_available</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -789,59 +758,59 @@ in some human-readable format.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">); </span><span class="identifier">external</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dt_I6_identifier</span><span class="plain">;</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dt_I6_identifier</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">); </span><span class="identifier">external</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_time</span><span class="plain">)) </span><span class="identifier">external</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">)) </span><span class="identifier">external</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_real_number</span><span class="plain">)) </span><span class="identifier">external</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) == 0) </span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"DecimalNumber"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"DecimalNumber"</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">external</span><span class="plain">) {</span>
-                <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">PRINT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+                <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">PRINT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">actual_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">X</span><span class="plain">);</span>
-                <span class="identifier">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">actual_iname</span><span class="plain">);</span>
+                <span class="identifier">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">actual_iname</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"internal but unknown kind printing routine"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">external</span><span class="plain">) </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">X</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">external</span><span class="plain">) </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">X</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"internal but unpackaged kind printing routine"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;pr_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">pr_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_inc_iname</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null kind has no inc routine"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;inc_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;inc_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">inc_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">inc_iname</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;inc_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">DECREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;inc_iname</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">inc_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">DECREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">inc_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_dec_iname</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null kind has no dec routine"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dec_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dec_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dec_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dec_iname</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dec_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">INCREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;dec_iname</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">dec_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">INCREMENT_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">dec_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_ranger_iname</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null kind has no inc routine"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;ranger_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;ranger_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">ranger_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">ranger_iname</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;ranger_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">RANGER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;ranger_iname</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">ranger_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">RANGER_FN_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">ranger_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_name_of_printing_rule_ACTIONS</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K_number</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;name_of_printing_rule_ACTIONS</span><span class="plain">) &gt; 0)</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;name_of_printing_rule_ACTIONS</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">trace_iname</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">trace_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">name_of_printing_rule_ACTIONS</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">trace_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">name_of_printing_rule_ACTIONS</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"DA_Name"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;trace_iname</span><span class="plain">;</span>
+            <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">trace_iname</span><span class="plain"> = </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"DA_Name"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">trace_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
@@ -870,20 +839,19 @@ jargon) defined somewhere in the template: if so, this returns its name;
 if not, it returns <code class="display"><span class="extract">NULL</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_explicit_I6_GPR</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Kinds::Behaviour::get_explicit_I6_GPR on null kind"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"wrong way to handle object grammar"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;explicit_i6_GPR</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">explicit_i6_GPR</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_explicit_I6_GPR_iname</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Kinds::Behaviour::get_explicit_I6_GPR on null kind"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"wrong way to handle object grammar"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;explicit_i6_GPR</span><span class="plain">) &gt; 0)</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;explicit_i6_GPR</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">explicit_i6_GPR</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Produce::find_by_name</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">explicit_i6_GPR</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
@@ -898,11 +866,10 @@ if not, it returns <code class="display"><span class="extract">NULL</span></code
 <p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>Can the kind have a GPR of any kind in the final code?
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::offers_I6_GPR</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;has_i6_GPR</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">has_i6_GPR</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -914,13 +881,12 @@ if not, it returns <code class="display"><span class="extract">NULL</span></code
 this will be allowed or not.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::request_I6_GPR</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"wrong way to handle object grammar"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;has_i6_GPR</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">can't oblige</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;I6_GPR_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">make note to oblige later</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">has_i6_GPR</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">can't oblige</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">I6_GPR_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">make note to oblige later</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -932,11 +898,10 @@ this will be allowed or not.
 <p class="inwebparagraph"><a id="SP36"></a><b>&#167;36.  </b>Do we need to compile a GPR of our own for this kind?
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::needs_I6_GPR</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;I6_GPR_needed</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">I6_GPR_needed</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -949,11 +914,10 @@ recognition-only GPR is used for matching specific data in the course of
 parsing names of objects, but not as a grammar token in its own right.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_recognition_only_GPR</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;recognition_only_GPR</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">recognition_only_GPR</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -973,16 +937,15 @@ parsing names of objects, but not as a grammar token in its own right.
 
 <p class="inwebparagraph"><a id="SP38"></a><b>&#167;38. (K) Indexing and documentation. </b></p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;documentation_reference</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">documentation_reference</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::set_documentation_reference</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">dr</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;documentation_reference</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">dr</span><span class="plain">);</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">documentation_reference</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">dr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -996,31 +959,30 @@ parsing names of objects, but not as a grammar token in its own right.
 values for each kind:
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_index_default_value</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;index_default_value</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">index_default_value</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_index_minimum_value</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;index_minimum_value</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">index_minimum_value</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_index_maximum_value</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;index_maximum_value</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">index_maximum_value</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::get_index_priority</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;index_priority</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">index_priority</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::indexed_grey_if_empty</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;indexed_grey_if_empty</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">indexed_grey_if_empty</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1042,16 +1004,15 @@ set explicitly in the source text, but initialised for built-in kinds from
 the I6 template files.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Behaviour::set_specification_text</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">desc</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't set specification for null kind"</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;specification_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">desc</span><span class="plain">);</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="element">specification_text</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">desc</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Behaviour::get_specification_text</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't get specification of null kind"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-</span><span class="element">&gt;specification_text</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="element">specification_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 
 </pre>

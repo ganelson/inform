@@ -94,11 +94,10 @@ We record the provenance of text using the following structure; the
 currently reading.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_location</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">file_of_origin</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> if internally written and not from a file</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">line_number</span><span class="plain">; </span>    <span class="comment">counting upwards from 1 within file (if any)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">file_of_origin</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> if internally written and not from a file</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">line_number</span><span class="plain">; </span><span class="comment">counting upwards from 1 within file (if any)</span>
     <span class="plain">} </span><span class="reserved">source_location</span><span class="plain">;</span>
 
     <span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">lexer_position</span><span class="plain">;</span>
@@ -137,9 +136,8 @@ mean the first word in the list. The maximum legal word number is always one
 less than the following variable's value.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_wordcount</span><span class="plain">; </span>    <span class="comment">Number of words read in to arrays</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_wordcount</span><span class="plain">; </span><span class="comment">Number of words read in to arrays</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -150,26 +148,26 @@ characters cause word divisions, or signal literals.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STRING_BEGIN</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> /* </span><span class="identifier">Strings</span><span class="plain"> </span><span class="identifier">are</span><span class="plain"> </span><span class="identifier">always</span><span class="plain"> </span><span class="reserved">double</span><span class="plain">-</span><span class="identifier">quoted</span><span class="plain"> */</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STRING_BEGIN</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> </span><span class="comment">Strings are always double-quoted</span>
     <span class="definitionkeyword">define</span> <span class="constant">STRING_END</span><span class="plain"> </span><span class="character">'"'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TEXT_SUBSTITUTION_BEGIN</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span>    <span class="comment">Inside strings, this denotes a text substitution</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TEXT_SUBSTITUTION_BEGIN</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="comment">Inside strings, this denotes a text substitution</span>
     <span class="definitionkeyword">define</span> <span class="constant">TEXT_SUBSTITUTION_END</span><span class="plain"> </span><span class="character">']'</span>
     <span class="definitionkeyword">define</span> <span class="constant">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain"> </span><span class="character">','</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMMENT_BEGIN</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span>    <span class="comment">Text between these, outside strings, is comment</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMMENT_BEGIN</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="comment">Text between these, outside strings, is comment</span>
     <span class="definitionkeyword">define</span> <span class="constant">COMMENT_END</span><span class="plain"> </span><span class="character">']'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INFORM6_ESCAPE_BEGIN_1</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span>    <span class="comment">Text beginning with this pair is literal I6 code</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INFORM6_ESCAPE_BEGIN_1</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span><span class="comment">Text beginning with this pair is literal I6 code</span>
     <span class="definitionkeyword">define</span> <span class="constant">INFORM6_ESCAPE_BEGIN_2</span><span class="plain"> </span><span class="character">'-'</span>
     <span class="definitionkeyword">define</span> <span class="constant">INFORM6_ESCAPE_END_1</span><span class="plain"> </span><span class="character">'-'</span>
     <span class="definitionkeyword">define</span> <span class="constant">INFORM6_ESCAPE_END_2</span><span class="plain"> </span><span class="character">')'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PARAGRAPH_BREAK</span><span class="plain"> </span><span class="identifier">L</span><span class="string">"|__"</span><span class="plain"> </span>    <span class="comment">Inserted as a special word to mark paragraph breaks</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNICODE_CHAR_IN_STRING</span><span class="plain"> ((</span><span class="identifier">wchar_t</span><span class="plain">) 0</span><span class="identifier">x1b</span><span class="plain">) </span>    <span class="comment">To represent awkward characters in metadata only</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARAGRAPH_BREAK</span><span class="plain"> </span><span class="identifier">L</span><span class="string">"|__"</span><span class="plain"> </span><span class="comment">Inserted as a special word to mark paragraph breaks</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNICODE_CHAR_IN_STRING</span><span class="plain"> ((</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="constant">0x1b</span><span class="plain">) </span><span class="comment">To represent awkward characters in metadata only</span>
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>This is the standard set used for parsing source text.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STANDARD_PUNCTUATION_MARKS</span><span class="plain"> </span><span class="identifier">L</span><span class="string">".,:;?!(){}[]"</span><span class="plain"> </span>    <span class="comment">Do not add to this list lightly!</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STANDARD_PUNCTUATION_MARKS</span><span class="plain"> </span><span class="identifier">L</span><span class="string">".,:;?!(){}[]"</span><span class="plain"> </span><span class="comment">Do not add to this list lightly!</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This seems a good point to describe how best to syntax-colour source
 text, something which the user interfaces do on every platform. By
@@ -283,19 +281,18 @@ see "The Inform 6 Technical Manual" for an algorithm.)
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. What the lexer stores for each word. </b>The lexer builds a small data structure for each individual word it reads.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">lexer_details</span><span class="plain"> {</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lw_text</span><span class="plain">; </span>    <span class="comment">text of word after treatment to normalise</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lw_rawtext</span><span class="plain">; </span>    <span class="comment">original untouched text of word</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">lw_source</span><span class="plain">; </span>    <span class="comment">where it was read from</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lw_break</span><span class="plain">; </span>    <span class="comment">the divider (space, tab, etc.) preceding it</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">lw_identity</span><span class="plain">; </span>    <span class="comment">which distinct word</span>
+        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lw_text</span><span class="plain">; </span><span class="comment">text of word after treatment to normalise</span>
+        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lw_rawtext</span><span class="plain">; </span><span class="comment">original untouched text of word</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">lw_source</span><span class="plain">; </span><span class="comment">where it was read from</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lw_break</span><span class="plain">; </span><span class="comment">the divider (space, tab, etc.) preceding it</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">lw_identity</span><span class="plain">; </span><span class="comment">which distinct word</span>
     <span class="plain">} </span><span class="reserved">lexer_details</span><span class="plain">;</span>
 
-    <span class="reserved">lexer_details</span><span class="plain"> *</span><span class="identifier">lw_array</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">a dynamically allocated (and mobile) array</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_details_memory_allocated</span><span class="plain"> = 0; </span>    <span class="comment">bytes allocated to this array</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_workspace_allocated</span><span class="plain"> = 0; </span>    <span class="comment">bytes allocated to text storage</span>
+    <span class="reserved">lexer_details</span><span class="plain"> *</span><span class="identifier">lw_array</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">a dynamically allocated (and mobile) array</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_details_memory_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">bytes allocated to this array</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_workspace_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">bytes allocated to text storage</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -315,9 +312,9 @@ make it a tourist attraction for the new railway age.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TEXT_STORAGE_CHUNK_SIZE</span><span class="plain"> 600000 </span>    <span class="comment">Must exceed <code class="display"><span class="extract">MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_VERBATIM_LENGTH</span><span class="plain"> 200000 </span>    <span class="comment">Largest quantity of Inform 6 which can be quoted verbatim.</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORD_LENGTH</span><span class="plain"> 128 </span>    <span class="comment">Maximum length of any unquoted word</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TEXT_STORAGE_CHUNK_SIZE</span><span class="plain"> </span><span class="constant">600000</span><span class="plain"> </span><span class="comment">Must exceed <code class="display"><span class="extract">MAX_VERBATIM_LENGTH+MAX_WORD_LENGTH</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_VERBATIM_LENGTH</span><span class="plain"> </span><span class="constant">200000</span><span class="plain"> </span><span class="comment">Largest quantity of Inform 6 which can be quoted verbatim.</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORD_LENGTH</span><span class="plain"> </span><span class="constant">128</span><span class="plain"> </span><span class="comment">Maximum length of any unquoted word</span>
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The main text area of memory has a simple structure: it is allocated in
 one contiguous block, and at any given time the memory is used from the
@@ -325,16 +322,15 @@ lowest address up to (but not including) the "high water mark", a pointer
 in effect to the first free character.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_workspace</span><span class="plain">; </span>    <span class="comment">Large area of contiguous memory for text</span>
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_word</span><span class="plain">; </span>    <span class="comment">Start of current word in workspace</span>
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_hwm</span><span class="plain">; </span>    <span class="comment">High water mark of workspace</span>
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_workspace_end</span><span class="plain">; </span>    <span class="comment">Pointer to just past the end of the workspace: HWM must not exceed this</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_workspace</span><span class="plain">; </span><span class="comment">Large area of contiguous memory for text</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_word</span><span class="plain">; </span><span class="comment">Start of current word in workspace</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_hwm</span><span class="plain">; </span><span class="comment">High water mark of workspace</span>
+    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_workspace_end</span><span class="plain">; </span><span class="comment">Pointer to just past the end of the workspace: HWM must not exceed this</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">lexer_wordcount</span><span class="plain"> = 0;</span>
-        <span class="functiontext">Lexer::ensure_space_up_to</span><span class="plain">(50000); </span>    <span class="comment">the Standard Rules are about 44,000 words</span>
+        <span class="identifier">lexer_wordcount</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="functiontext">Lexer::ensure_space_up_to</span><span class="plain">(50000); </span><span class="comment">the Standard Rules are about 44,000 words</span>
         <span class="functiontext">Lexer::allocate_lexer_workspace_chunk</span><span class="plain">(1);</span>
         <span class="functiontext">Vocabulary::start_hash_table</span><span class="plain">();</span>
     <span class="plain">}</span>
@@ -351,9 +347,8 @@ text, never using more than twice what we need, and we impose no absolute
 upper limits.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_lw_array_size</span><span class="plain"> = 0, </span><span class="identifier">next_lw_array_size</span><span class="plain"> = 75000;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_lw_array_size</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">next_lw_array_size</span><span class="plain"> = </span><span class="constant">75000</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::ensure_space_up_to</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="identifier">current_lw_array_size</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -368,17 +363,17 @@ upper limits.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">new_lw_array</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="functiontext">Lexer::lexer_problem_handler</span><span class="plain">(</span><span class="constant">MEMORY_OUT_LEXERERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">exit</span><span class="plain">(1); </span>    <span class="comment">in case the handler fails to do this</span>
+            <span class="identifier">exit</span><span class="plain">(1); </span><span class="comment">in case the handler fails to do this</span>
         <span class="plain">}</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">new_size</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">current_lw_array_size</span><span class="plain">) </span><span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_break</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_source.file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_source.line_number</span><span class="plain"> = -1;</span>
-                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.lw_identity</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_break</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain">.</span><span class="element">line_number</span><span class="plain"> = -1;</span>
+                <span class="identifier">new_lw_array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">lw_identity</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lw_array</span><span class="plain">) </span><span class="identifier">Memory::I7_array_free</span><span class="plain">(</span><span class="identifier">lw_array</span><span class="plain">, </span><span class="constant">LEXER_WORDS_MREASON</span><span class="plain">,</span>
@@ -399,15 +394,14 @@ termination character, plus breathing space for a single character's worth
 of lookahead:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::ensure_lexer_hwm_can_be_raised_by</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">transfer_partial_word</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_hwm</span><span class="plain"> + </span><span class="identifier">n</span><span class="plain"> + 2 &gt;= </span><span class="identifier">lexer_workspace_end</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_hwm</span><span class="plain"> + </span><span class="identifier">n</span><span class="plain"> + </span><span class="constant">2</span><span class="plain"> &gt;= </span><span class="identifier">lexer_workspace_end</span><span class="plain">) {</span>
             <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">old_hwm</span><span class="plain"> = </span><span class="identifier">lexer_hwm</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = 1;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">transfer_partial_word</span><span class="plain">) {</span>
-                <span class="identifier">m</span><span class="plain"> = (((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">old_hwm</span><span class="plain"> - </span><span class="identifier">lexer_word</span><span class="plain">) + </span><span class="identifier">n</span><span class="plain"> + 3)/</span><span class="constant">TEXT_STORAGE_CHUNK_SIZE</span><span class="plain">) + 1;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> &lt; 1) </span><span class="identifier">m</span><span class="plain"> = 1;</span>
+                <span class="identifier">m</span><span class="plain"> = (((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">old_hwm</span><span class="plain"> - </span><span class="identifier">lexer_word</span><span class="plain">) + </span><span class="identifier">n</span><span class="plain"> + </span><span class="constant">3</span><span class="plain">)/</span><span class="constant">TEXT_STORAGE_CHUNK_SIZE</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> &lt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">m</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="functiontext">Lexer::allocate_lexer_workspace_chunk</span><span class="plain">(</span><span class="identifier">m</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">transfer_partial_word</span><span class="plain">) {</span>
@@ -418,7 +412,7 @@ of lookahead:
                 <span class="plain">}</span>
                 <span class="identifier">lexer_word</span><span class="plain"> = </span><span class="identifier">new_lword</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_hwm</span><span class="plain"> + </span><span class="identifier">n</span><span class="plain"> + 2 &gt;= </span><span class="identifier">lexer_workspace_end</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_hwm</span><span class="plain"> + </span><span class="identifier">n</span><span class="plain"> + </span><span class="constant">2</span><span class="plain"> &gt;= </span><span class="identifier">lexer_workspace_end</span><span class="plain">)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"further allocation failed to liberate enough space"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -445,12 +439,11 @@ of its argument, then: it should never be used while the lexer is actually
 running.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Lexer::copy_to_memory</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="functiontext">Lexer::ensure_lexer_hwm_can_be_raised_by</span><span class="plain">(</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = </span><span class="identifier">lexer_hwm</span><span class="plain">;</span>
-        <span class="identifier">lexer_hwm</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain"> + </span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) + 1;</span>
+        <span class="identifier">lexer_hwm</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain"> + </span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">wcscpy</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -501,12 +494,11 @@ documentation: it then drops out of this mode and back into normal running,
 so that subsequent words are lexed as usual.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lexer_punctuation_marks</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">""</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_divide_strings_at_text_substitutions</span><span class="plain">; </span>    <span class="comment">Break up text substitutions in quoted text</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_allow_I6_escapes</span><span class="plain">; </span>    <span class="comment">Recognise <code class="display"><span class="extract">(-</span></code> and <code class="display"><span class="extract">-)</span></code></span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_wait_for_dashes</span><span class="plain">; </span>    <span class="comment">Ignore all text until first <code class="display"><span class="extract">----</span></code> found</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_divide_strings_at_text_substitutions</span><span class="plain">; </span><span class="comment">Break up text substitutions in quoted text</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_allow_I6_escapes</span><span class="plain">; </span><span class="comment">Recognise <code class="display"><span class="extract">(-</span></code> and <code class="display"><span class="extract">-)</span></code></span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_wait_for_dashes</span><span class="plain">; </span><span class="comment">Ignore all text until first <code class="display"><span class="extract">----</span></code> found</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -514,7 +506,6 @@ so that subsequent words are lexed as usual.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Definition of punctuation. </b>As we have seen, the question of whether something is a punctuation mark
 or not depends slightly on the context:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lexer::is_punctuation</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
@@ -537,20 +528,20 @@ distinguished. We'll do this with the letters <code class="display"><span class=
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">GROSS_AMOUNT_OF_INDENTATION</span><span class="plain"> 26</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GROSS_AMOUNT_OF_INDENTATION</span><span class="plain"> </span><span class="constant">26</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lexer::indentation_level</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">q</span><span class="plain"> = </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_break</span><span class="plain"> - </span><span class="character">'A'</span><span class="plain"> + 1;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">q</span><span class="plain"> &gt;= 1) &amp;&amp; (</span><span class="identifier">q</span><span class="plain"> &lt;= </span><span class="constant">GROSS_AMOUNT_OF_INDENTATION</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">q</span><span class="plain"> = </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_break</span><span class="plain"> - </span><span class="character">'A'</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">q</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain"> &lt;= </span><span class="constant">GROSS_AMOUNT_OF_INDENTATION</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lexer::break_char_for_indents</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> &lt;= 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad indentation break"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> &gt;= 26) </span><span class="reserved">return</span><span class="plain"> </span><span class="character">'Z'</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">t</span><span class="plain"> - 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> &lt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad indentation break"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> &gt;= </span><span class="constant">26</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="character">'Z'</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">t</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -562,53 +553,52 @@ distinguished. We'll do this with the letters <code class="display"><span class=
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Access functions. </b></p>
 
-
 <pre class="display">
     <span class="reserved">vocabulary_entry</span><span class="plain"> *</span><span class="functiontext">Lexer::word</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_identity</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_identity</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::set_word</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">, </span><span class="reserved">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_identity</span><span class="plain"> = </span><span class="identifier">ve</span><span class="plain">;</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_identity</span><span class="plain"> = </span><span class="identifier">ve</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lexer::break_before</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_break</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_break</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">source_file</span><span class="plain"> *</span><span class="functiontext">Lexer::file_of_origin</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_source.file_of_origin</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">source_location</span><span class="plain"> </span><span class="functiontext">Lexer::word_location</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &lt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">nowhere</span><span class="plain">;</span>
-            <span class="identifier">nowhere</span><span class="element">.file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">nowhere</span><span class="element">.line_number</span><span class="plain"> = 0;</span>
+            <span class="identifier">nowhere</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">nowhere</span><span class="plain">.</span><span class="element">line_number</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">nowhere</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_source</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::set_word_location</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">, </span><span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &lt; 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't set word location"</span><span class="plain">);</span>
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_source</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't set word location"</span><span class="plain">);</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Lexer::word_raw_text</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::set_word_raw_text</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">rt</span><span class="plain">) {</span>
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain"> = </span><span class="identifier">rt</span><span class="plain">;</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain"> = </span><span class="identifier">rt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::set_word_text</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">rt</span><span class="plain">) {</span>
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain"> = </span><span class="identifier">rt</span><span class="plain">;</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain"> = </span><span class="identifier">rt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::word_copy</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">) {</span>
@@ -616,19 +606,19 @@ distinguished. We'll do this with the letters <code class="display"><span class=
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::writer</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">wn</span><span class="plain"> &lt; 0) || (</span><span class="identifier">wn</span><span class="plain"> &gt;= </span><span class="identifier">lexer_wordcount</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">wn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">wn</span><span class="plain"> &gt;= </span><span class="identifier">lexer_wordcount</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format_string</span><span class="plain">[0]) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="character">'+'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="character">'+'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'~'</span><span class="plain">:</span>
-                <span class="functiontext">Word::compile_to_I6_dictionary</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="functiontext">Word::compile_to_I6_dictionary</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'&lt;'</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_USES_UTF8</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">)) </span><span class="identifier">Streams::enable_XML_escapes</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain">);</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_USES_UTF8</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">)) </span><span class="identifier">Streams::disable_XML_escapes</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="character">'N'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad %N extension"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="character">'N'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">wn</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad %N extension"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -667,7 +657,7 @@ It is therefore used only twice, with care, and only in this section below.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">is_whitespace</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">) ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">is_whitespace</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">) ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\t'</span><span class="plain">))</span>
 </pre>
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Internal lexer states. </b>The current situation of the lexer is specified by the collective values
 of all of the following. First, the start of the current word being
@@ -678,9 +668,8 @@ little careful about the type of this: it needs to be an <code class="display"><
 can on occasion hold the pseudo-character value <code class="display"><span class="extract">EOF</span></code>.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_previous_char_in_raw_feed</span><span class="plain">; </span>    <span class="comment">Preceding character in raw file read</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_previous_char_in_raw_feed</span><span class="plain">; </span><span class="comment">Preceding character in raw file read</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -693,14 +682,14 @@ the variable <code class="display"><span class="extract">lxs_kind_of_word</span>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ORDINARY_KW</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMMENT_KW</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">STRING_KW</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">I6_INCLUSION_KW</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ORDINARY_KW</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMMENT_KW</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STRING_KW</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">I6_INCLUSION_KW</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_kind_of_word</span><span class="plain">; </span>    <span class="comment">One of the defined values above</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_kind_of_word</span><span class="plain">; </span><span class="comment">One of the defined values above</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -715,20 +704,19 @@ to be able to switch in and out of literal mode without changing the kind
 of word.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_literal_mode</span><span class="plain">; </span>    <span class="comment">Are we in literal or ordinary mode?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_literal_mode</span><span class="plain">; </span><span class="comment">Are we in literal or ordinary mode?</span>
 
     <span class="comment">significant in ordinary mode:</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain">; </span>    <span class="comment">Most significant whitespace character preceding</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain">; </span>    <span class="comment">Number of consecutive tabs</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_this_line_is_empty_so_far</span><span class="plain">; </span>    <span class="comment">Current line white space so far?</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_this_word_is_empty_so_far</span><span class="plain">; </span>    <span class="comment">Looking for a word to start?</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_scanning_text_substitution</span><span class="plain">; </span>    <span class="comment">Used to break up strings at [substitutions]</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain">; </span><span class="comment">Most significant whitespace character preceding</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain">; </span><span class="comment">Number of consecutive tabs</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_this_line_is_empty_so_far</span><span class="plain">; </span><span class="comment">Current line white space so far?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_this_word_is_empty_so_far</span><span class="plain">; </span><span class="comment">Looking for a word to start?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_scanning_text_substitution</span><span class="plain">; </span><span class="comment">Used to break up strings at [substitutions]</span>
 
     <span class="comment">significant in literal mode:</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_comment_nesting</span><span class="plain">; </span>    <span class="comment">For square brackets within square brackets</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain">; </span>    <span class="comment">Used to fold strings which break across lines</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_comment_nesting</span><span class="plain">; </span><span class="comment">For square brackets within square brackets</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain">; </span><span class="comment">Used to fold strings which break across lines</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -738,7 +726,6 @@ whether from a file or internally. Note that this resets both external
 and internal states to their defaults (the default for external states
 always being "off").
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::reset_lexer</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -752,17 +739,17 @@ always being "off").
         <span class="identifier">lexer_allow_I6_escapes</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="comment">reset the internal states</span>
-        <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">; </span>    <span class="comment">we imagine each lexer feed starting a new line</span>
-        <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = 0; </span>    <span class="comment">but not yet indented with tabs</span>
+        <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\n'</span><span class="plain">; </span><span class="comment">we imagine each lexer feed starting a new line</span>
+        <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">but not yet indented with tabs</span>
 
-        <span class="identifier">lxs_this_line_is_empty_so_far</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">clearly</span>
-        <span class="identifier">lxs_this_word_is_empty_so_far</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">likewise</span>
+        <span class="identifier">lxs_this_line_is_empty_so_far</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">clearly</span>
+        <span class="identifier">lxs_this_word_is_empty_so_far</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">likewise</span>
 
-        <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">begin in ordinary mode...</span>
-        <span class="identifier">lxs_kind_of_word</span><span class="plain"> = </span><span class="constant">ORDINARY_KW</span><span class="plain">; </span>    <span class="comment">...expecting an ordinary word</span>
+        <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">begin in ordinary mode...</span>
+        <span class="identifier">lxs_kind_of_word</span><span class="plain"> = </span><span class="constant">ORDINARY_KW</span><span class="plain">; </span><span class="comment">...expecting an ordinary word</span>
         <span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">lxs_scanning_text_substitution</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">lxs_comment_nesting</span><span class="plain"> = 0;</span>
+        <span class="identifier">lxs_comment_nesting</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -787,16 +774,15 @@ via <code class="display"><span class="extract">Lexer::feed_triplet</span></code
 <p class="inwebparagraph">Only one feeder can be active at a time, as the following routines ensure.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lexer_feed_started_at</span><span class="plain"> = -1;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::feed_begins</span><span class="plain">(</span><span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_feed_started_at</span><span class="plain"> &gt;= 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"one lexer feeder interrupted another"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_feed_started_at</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"one lexer feeder interrupted another"</span><span class="plain">);</span>
         <span class="identifier">lexer_feed_started_at</span><span class="plain"> = </span><span class="identifier">lexer_wordcount</span><span class="plain">;</span>
         <span class="identifier">lexer_position</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
         <span class="functiontext">Lexer::reset_lexer</span><span class="plain">();</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Lexer feed began at %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">lexer_feed_started_at</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Lexer feed began at %d\n"</span><span class="plain">, </span><span class="identifier">lexer_feed_started_at</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Lexer::feed_ends</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">extra_padding</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">problem_source_description</span><span class="plain">) {</span>
@@ -808,7 +794,7 @@ via <code class="display"><span class="extract">Lexer::feed_triplet</span></code
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_feed_started_at</span><span class="plain"> &lt; </span><span class="identifier">lexer_wordcount</span><span class="plain">)</span>
             <span class="identifier">RRW</span><span class="plain"> = </span><span class="functiontext">Wordings::new</span><span class="plain">(</span><span class="identifier">lexer_feed_started_at</span><span class="plain">, </span><span class="identifier">lexer_wordcount</span><span class="plain">-1);</span>
         <span class="identifier">lexer_feed_started_at</span><span class="plain"> = -1;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Lexer feed ended at %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">RRW</span><span class="plain">));</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Lexer feed ended at %d\n"</span><span class="plain">, </span><span class="functiontext">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">RRW</span><span class="plain">));</span>
         &lt;<span class="cwebmacro">Issue Problem messages if feed ended in the middle of quoted text, comment or verbatim I6</span> <span class="cwebmacronumber">24.3</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RRW</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -849,10 +835,10 @@ least one paragraph, even if a blank one.
             <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\n'</span><span class="plain">);</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\n'</span><span class="plain">);</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\n'</span><span class="plain">);</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">'\n'</span><span class="plain">);</span>
             <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -880,12 +866,12 @@ be a bug, and NI is bug-free, so it follows that it could never happen.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> != </span><span class="constant">ORDINARY_KW</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt;= 20) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Last words: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Wordings::new</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">-20, </span><span class="identifier">lexer_wordcount</span><span class="plain">-1));</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt;= 1) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Last words: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Wordings::new</span><span class="plain">(0, </span><span class="identifier">lexer_wordcount</span><span class="plain">-1));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt;= </span><span class="constant">20</span><span class="plain">) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Last words: %W\n"</span><span class="plain">, </span><span class="functiontext">Wordings::new</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">-20, </span><span class="identifier">lexer_wordcount</span><span class="plain">-1));</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) {</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Last words: %W\n"</span><span class="plain">, </span><span class="functiontext">Wordings::new</span><span class="plain">(0, </span><span class="identifier">lexer_wordcount</span><span class="plain">-1));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"No words recorded\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"No words recorded\n"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> == </span><span class="constant">STRING_KW</span><span class="plain">)</span>
@@ -934,7 +920,6 @@ mode, and therefore the <code class="display"><span class="extract">]</span></co
 most common URLs glue up as single words.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::feed_triplet</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_cr</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_cr</span><span class="plain">) {</span>
         <span class="identifier">lxs_previous_char_in_raw_feed</span><span class="plain"> = </span><span class="identifier">last_cr</span><span class="plain">;</span>
@@ -944,24 +929,24 @@ most common URLs glue up as single words.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">space</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cr</span><span class="plain"> != </span><span class="character">'['</span><span class="plain">) &amp;&amp; (</span><span class="identifier">cr</span><span class="plain"> != </span><span class="character">']'</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">space</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_cr</span><span class="plain"> == </span><span class="character">'/'</span><span class="plain">)) </span><span class="identifier">space</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">space</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lc</span><span class="plain"> = 0, </span><span class="identifier">nc</span><span class="plain"> = 0;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">last_cr</span><span class="plain">)) </span><span class="identifier">lc</span><span class="plain"> = 1;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">last_cr</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">last_cr</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="identifier">lc</span><span class="plain"> = 2;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">next_cr</span><span class="plain">)) </span><span class="identifier">nc</span><span class="plain"> = 1;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_cr</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) </span><span class="identifier">nc</span><span class="plain"> = 1;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">next_cr</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_cr</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="identifier">nc</span><span class="plain"> = 2;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lc</span><span class="plain"> == 1) &amp;&amp; (</span><span class="identifier">nc</span><span class="plain"> == 1)) </span><span class="identifier">space</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lc</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">nc</span><span class="plain"> &gt; 0)) </span><span class="identifier">space</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">nc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">last_cr</span><span class="plain">)) </span><span class="identifier">lc</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">last_cr</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">last_cr</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="identifier">lc</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">next_cr</span><span class="plain">)) </span><span class="identifier">nc</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_cr</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) </span><span class="identifier">nc</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">next_cr</span><span class="plain"> &gt;= </span><span class="character">'a'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">next_cr</span><span class="plain"> &lt;= </span><span class="character">'z'</span><span class="plain">)) </span><span class="identifier">nc</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lc</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nc</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)) </span><span class="identifier">space</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">space</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">space</span><span class="plain">) {</span>
             <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">); </span>    <span class="comment">which might take us into literal mode, so to be careful...</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">); </span><span class="comment">which might take us into literal mode, so to be careful...</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_literal_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lexer_position</span><span class="element">.file_of_origin</span><span class="plain">))</span>
-            <span class="identifier">lexer_position</span><span class="element">.line_number</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cr</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lexer_position</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain">))</span>
+            <span class="identifier">lexer_position</span><span class="plain">.</span><span class="element">line_number</span><span class="plain">++;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -999,7 +984,6 @@ is the sequence of characters starting at <code class="display"><span class="ext
 <code class="display"><span class="extract">lexer_hwm-1</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="functiontext">Lexer::ensure_lexer_hwm_can_be_raised_by</span><span class="plain">(</span><span class="constant">MAX_WORD_LENGTH</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -1016,7 +1000,7 @@ is the sequence of characters starting at <code class="display"><span class="ext
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lxs_literal_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">is_whitespace</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">))) {</span>
             &lt;<span class="cwebmacro">Admire the texture of the whitespace</span> <span class="cwebmacronumber">26.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_word</span><span class="plain"> != </span><span class="identifier">lexer_hwm</span><span class="plain">) </span>&lt;<span class="cwebmacro">Complete the current word</span> <span class="cwebmacronumber">26.5</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) </span>&lt;<span class="cwebmacro">Line break outside a literal</span> <span class="cwebmacronumber">26.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) </span>&lt;<span class="cwebmacro">Line break outside a literal</span> <span class="cwebmacronumber">26.3</span>&gt;<span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -1058,13 +1042,13 @@ back to none if a newline is found).
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\t'</span><span class="plain">) {</span>
             <span class="identifier">lxs_number_of_tab_stops</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> != </span><span class="character">'\n'</span><span class="plain">) </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\t'</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) {</span>
-            <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = 0;</span>
-            <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) {</span>
+            <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">'\n'</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1088,14 +1072,14 @@ and the code in the previous paragraph has been watching them for us.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> &gt;= 1))</span>
-            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_break</span><span class="plain"> =</span>
-                <span class="functiontext">Lexer::break_char_for_indents</span><span class="plain">(</span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain">); </span>    <span class="comment">newline followed by 1 or more tabs</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lxs_most_significant_space_char</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">))</span>
+            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_break</span><span class="plain"> =</span>
+                <span class="functiontext">Lexer::break_char_for_indents</span><span class="plain">(</span><span class="identifier">lxs_number_of_tab_stops</span><span class="plain">); </span><span class="comment">newline followed by 1 or more tabs</span>
         <span class="reserved">else</span>
-            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_break</span><span class="plain"> = </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain">;</span>
+            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_break</span><span class="plain"> = </span><span class="identifier">lxs_most_significant_space_char</span><span class="plain">;</span>
 
-        <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span>    <span class="comment">waiting for the next run of whitespace, after this word</span>
-        <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = 0;</span>
+        <span class="identifier">lxs_most_significant_space_char</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="comment">waiting for the next run of whitespace, after this word</span>
+        <span class="identifier">lxs_number_of_tab_stops</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1147,15 +1131,15 @@ Inform print a paragraph break at run-time.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="character">' '</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">: </span><span class="identifier">c</span><span class="plain"> = *(</span><span class="identifier">lexer_hwm</span><span class="plain">-1); </span><span class="identifier">lexer_hwm</span><span class="plain">--; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="character">' '</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'\t'</span><span class="plain">: </span><span class="identifier">c</span><span class="plain"> = *(</span><span class="identifier">lexer_hwm</span><span class="plain">-1); </span><span class="identifier">lexer_hwm</span><span class="plain">--; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="character">'\n'</span><span class="plain">:</span>
                     <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">-1) = </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">;</span>
                     <span class="identifier">c</span><span class="plain"> = </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) {</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">is_whitespace</span><span class="plain">(*(</span><span class="identifier">lexer_hwm</span><span class="plain">-1))) </span><span class="identifier">lexer_hwm</span><span class="plain">--;</span>
             <span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1181,10 +1165,10 @@ is stored just below <code class="display"><span class="extract">lexer_hwm</span
 
 
 <pre class="displaydefn">
-        <span class="plain">*</span><span class="identifier">lexer_hwm</span><span class="plain">++ = 0; </span>    <span class="comment">terminate the current word as a C string</span>
+        <span class="plain">*</span><span class="identifier">lexer_hwm</span><span class="plain">++ = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">terminate the current word as a C string</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lexer_wait_for_dashes</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wide::cmp</span><span class="plain">(</span><span class="identifier">lexer_word</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"----"</span><span class="plain">) == 0))</span>
-            <span class="identifier">lexer_wait_for_dashes</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">our long wait for documentation is over</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lexer_wait_for_dashes</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Wide::cmp</span><span class="plain">(</span><span class="identifier">lexer_word</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"----"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">))</span>
+            <span class="identifier">lexer_wait_for_dashes</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">our long wait for documentation is over</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lexer_wait_for_dashes</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> != </span><span class="constant">COMMENT_KW</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Issue problem message and truncate if over maximum length for what it is</span> <span class="cwebmacronumber">26.5.1</span>&gt;<span class="plain">;</span>
@@ -1208,7 +1192,7 @@ and do not come here.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_STRING_LENGTH</span><span class="plain"> 8*1024</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_STRING_LENGTH</span><span class="plain"> </span><span class="constant">8</span><span class="plain">*1024</span>
     <span class="definitionkeyword">enum</span> <span class="constant">STRING_TOO_LONG_LEXERERROR</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WORD_TOO_LONG_LEXERERROR</span>
     <span class="definitionkeyword">enum</span> <span class="constant">I6_TOO_LONG_LEXERERROR</span>
@@ -1225,11 +1209,11 @@ and do not come here.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> == </span><span class="constant">I6_INCLUSION_KW</span><span class="plain">) </span><span class="identifier">max_len</span><span class="plain"> = </span><span class="constant">MAX_VERBATIM_LENGTH</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="identifier">max_len</span><span class="plain">) {</span>
-            <span class="identifier">lexer_word</span><span class="plain">[</span><span class="identifier">max_len</span><span class="plain">] = 0; </span>    <span class="comment">truncate to its maximum length</span>
+            <span class="identifier">lexer_word</span><span class="plain">[</span><span class="identifier">max_len</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">truncate to its maximum length</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> == </span><span class="constant">STRING_KW</span><span class="plain">) {</span>
                 <span class="functiontext">Lexer::lexer_problem_handler</span><span class="plain">(</span><span class="constant">STRING_TOO_LONG_LEXERERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">lexer_word</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> == </span><span class="constant">I6_INCLUSION_KW</span><span class="plain">) {</span>
-                <span class="identifier">lexer_word</span><span class="plain">[100] = 0; </span>    <span class="comment">to avoid an absurdly long problem message</span>
+                <span class="identifier">lexer_word</span><span class="plain">[100] = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">to avoid an absurdly long problem message</span>
                 <span class="functiontext">Lexer::lexer_problem_handler</span><span class="plain">(</span><span class="constant">I6_TOO_LONG_LEXERERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">lexer_word</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Lexer::lexer_problem_handler</span><span class="plain">(</span><span class="constant">WORD_TOO_LONG_LEXERERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">lexer_word</span><span class="plain">);</span>
@@ -1268,19 +1252,19 @@ workspace.
 
 
 <pre class="displaydefn">
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain"> = </span><span class="identifier">lexer_word</span><span class="plain">;</span>
-        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_source</span><span class="plain"> = </span><span class="identifier">lexer_position</span><span class="plain">;</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain"> = </span><span class="identifier">lexer_word</span><span class="plain">;</span>
+        <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_source</span><span class="plain"> = </span><span class="identifier">lexer_position</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_kind_of_word</span><span class="plain"> == </span><span class="constant">ORDINARY_KW</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain"> = </span><span class="identifier">lexer_hwm</span><span class="plain">;</span>
+            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain"> = </span><span class="identifier">lexer_hwm</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">lexer_word</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++) *(</span><span class="identifier">lexer_hwm</span><span class="plain">++) = </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">lexer_word</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">++) = 0;</span>
+            <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">++) = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_text</span><span class="plain"> = </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">]</span><span class="element">.lw_rawtext</span><span class="plain">;</span>
+            <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_text</span><span class="plain"> = </span><span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">].</span><span class="element">lw_rawtext</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="functiontext">Vocabulary::identify_word</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">); </span>    <span class="comment">which sets <code class="display"><span class="extract">lw_array[lexer_wordcount].lw_identity</span></code></span>
+        <span class="functiontext">Vocabulary::identify_word</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">); </span><span class="comment">which sets <code class="display"><span class="extract">lw_array[lexer_wordcount].lw_identity</span></code></span>
 
         <span class="identifier">lexer_wordcount</span><span class="plain">++;</span>
         <span class="functiontext">Lexer::ensure_space_up_to</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">);</span>
@@ -1328,24 +1312,24 @@ throwing away the hyphen from the material of the current word.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMENT_BEGIN</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_BEGIN:</span>
                 <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">lxs_kind_of_word</span><span class="plain"> = </span><span class="constant">COMMENT_KW</span><span class="plain">;</span>
-                <span class="identifier">lxs_comment_nesting</span><span class="plain"> = 1;</span>
+                <span class="identifier">lxs_comment_nesting</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_BEGIN</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_BEGIN:</span>
                 <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">lxs_kind_of_word</span><span class="plain"> = </span><span class="constant">STRING_KW</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INFORM6_ESCAPE_BEGIN_2</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INFORM6_ESCAPE_BEGIN_2:</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lxs_previous_char_in_raw_feed</span><span class="plain"> != </span><span class="constant">INFORM6_ESCAPE_BEGIN_1</span><span class="plain">) ||</span>
                     <span class="plain">(</span><span class="identifier">lexer_allow_I6_escapes</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">lxs_kind_of_word</span><span class="plain"> = </span><span class="constant">I6_INCLUSION_KW</span><span class="plain">;</span>
                 <span class="comment">because of spacing around punctuation outside literal mode, the <code class="display"><span class="extract">(</span></code> became a word</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt; 0) { </span>    <span class="comment">this should always be true: just being cautious</span>
-                    <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">-1]</span><span class="element">.lw_text</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"(-"</span><span class="plain">; </span>    <span class="comment">change the previous word's text from <code class="display"><span class="extract">(</span></code> to <code class="display"><span class="extract">(-</span></code></span>
-                    <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">-1]</span><span class="element">.lw_rawtext</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"(-"</span><span class="plain">;</span>
-                    <span class="functiontext">Vocabulary::identify_word</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">-1); </span>    <span class="comment">and re-identify</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lexer_wordcount</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="comment">this should always be true: just being cautious</span>
+                    <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">-1].</span><span class="element">lw_text</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"(-"</span><span class="plain">; </span><span class="comment">change the previous word's text from <code class="display"><span class="extract">(</span></code> to <code class="display"><span class="extract">(-</span></code></span>
+                    <span class="identifier">lw_array</span><span class="plain">[</span><span class="identifier">lexer_wordcount</span><span class="plain">-1].</span><span class="element">lw_rawtext</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"(-"</span><span class="plain">;</span>
+                    <span class="functiontext">Vocabulary::identify_word</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">-1); </span><span class="comment">and re-identify</span>
                 <span class="plain">}</span>
-                <span class="identifier">lexer_hwm</span><span class="plain">--; </span>    <span class="comment">erase the just-recorded <code class="display"><span class="extract">INFORM6_ESCAPE_BEGIN_2</span></code> character</span>
+                <span class="identifier">lexer_hwm</span><span class="plain">--; </span><span class="comment">erase the just-recorded <code class="display"><span class="extract">INFORM6_ESCAPE_BEGIN_2</span></code> character</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -1384,30 +1368,30 @@ finished.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">lxs_kind_of_word</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMENT_KW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_KW:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">COMMENT_BEGIN</span><span class="plain">) </span><span class="identifier">lxs_comment_nesting</span><span class="plain">++;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">COMMENT_END</span><span class="plain">) {</span>
                     <span class="identifier">lxs_comment_nesting</span><span class="plain">--;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_comment_nesting</span><span class="plain"> == 0) </span><span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_comment_nesting</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_KW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_KW:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">STRING_END</span><span class="plain">) {</span>
                     <span class="identifier">lxs_string_soak_up_spaces_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                    <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">++) = </span><span class="identifier">c</span><span class="plain">; </span>    <span class="comment">record the <code class="display"><span class="extract">STRING_END</span></code> character as part of the word</span>
+                    <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">++) = </span><span class="identifier">c</span><span class="plain">; </span><span class="comment">record the <code class="display"><span class="extract">STRING_END</span></code> character as part of the word</span>
                     <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">I6_INCLUSION_KW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_INCLUSION_KW:</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">INFORM6_ESCAPE_END_2</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="identifier">lxs_previous_char_in_raw_feed</span><span class="plain"> == </span><span class="constant">INFORM6_ESCAPE_END_1</span><span class="plain">)) {</span>
-                    <span class="identifier">lexer_hwm</span><span class="plain">--; </span>    <span class="comment">erase the <code class="display"><span class="extract">INFORM6_ESCAPE_END_1</span></code> character recorded last time</span>
+                    <span class="identifier">lexer_hwm</span><span class="plain">--; </span><span class="comment">erase the <code class="display"><span class="extract">INFORM6_ESCAPE_END_1</span></code> character recorded last time</span>
                     <span class="identifier">lxs_literal_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"in unknown literal mode"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"in unknown literal mode"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_literal_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span>    <span class="comment">trigger completion of this word</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lxs_literal_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="comment">trigger completion of this word</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1451,11 +1435,11 @@ to recording the character, so to get rid of the <code class="display"><span cla
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lexer_divide_strings_at_text_substitutions</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">TEXT_SUBSTITUTION_BEGIN</span><span class="plain">)) {</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">STRING_END</span><span class="plain">); </span>    <span class="comment">feed <code class="display"><span class="extract">"</span></code> to close the old string</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">STRING_END</span><span class="plain">); </span><span class="comment">feed <code class="display"><span class="extract">"</span></code> to close the old string</span>
             <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain">); </span>    <span class="comment">feed <code class="display"><span class="extract">,</span></code> to start new word</span>
-            <span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span>    <span class="comment">the lexer now goes on to record a space, which will end the <code class="display"><span class="extract">,</span></code> word</span>
-            <span class="identifier">lxs_scanning_text_substitution</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">but remember that we must get back again</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain">); </span><span class="comment">feed <code class="display"><span class="extract">,</span></code> to start new word</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="comment">the lexer now goes on to record a space, which will end the <code class="display"><span class="extract">,</span></code> word</span>
+            <span class="identifier">lxs_scanning_text_substitution</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="comment">but remember that we must get back again</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1492,9 +1476,9 @@ spurious space is never fed, and there is no problem.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">lexer_divide_strings_at_text_substitutions</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">TEXT_SUBSTITUTION_END</span><span class="plain">)) {</span>
             <span class="identifier">lxs_scanning_text_substitution</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">-1) = </span><span class="constant">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain">; </span>    <span class="comment">overwrite recorded copy of <code class="display"><span class="extract">]</span></code> with <code class="display"><span class="extract">,</span></code></span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">); </span>    <span class="comment">then feed a space to end the <code class="display"><span class="extract">,</span></code> word</span>
-            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">STRING_BEGIN</span><span class="plain">); </span>    <span class="comment">then feed <code class="display"><span class="extract">"</span></code> to open a new string</span>
+            <span class="plain">*(</span><span class="identifier">lexer_hwm</span><span class="plain">-1) = </span><span class="constant">TEXT_SUBSTITUTION_SEPARATOR</span><span class="plain">; </span><span class="comment">overwrite recorded copy of <code class="display"><span class="extract">]</span></code> with <code class="display"><span class="extract">,</span></code></span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="character">' '</span><span class="plain">); </span><span class="comment">then feed a space to end the <code class="display"><span class="extract">,</span></code> word</span>
+            <span class="functiontext">Lexer::feed_char_into_lexer</span><span class="plain">(</span><span class="constant">STRING_BEGIN</span><span class="plain">); </span><span class="comment">then feed <code class="display"><span class="extract">"</span></code> to open a new string</span>
         <span class="plain">}</span>
 </pre>
 
@@ -1527,14 +1511,13 @@ and then <code class="display"><span class="extract">(6,8)</span></code>, we end
 contains the same material as words 2, 3, 6, 7, 8.
 </p>
 
-
 <pre class="display">
     <span class="reserved">wording</span><span class="plain"> </span><span class="functiontext">Lexer::splice_words</span><span class="plain">(</span><span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="functiontext">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="functiontext">Lexer::ensure_space_up_to</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain"> + </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
             <span class="functiontext">Lexer::word_copy</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">, </span><span class="functiontext">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+</span><span class="identifier">i</span><span class="plain">);</span>
-        <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Wordings::new</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">, </span><span class="identifier">lexer_wordcount</span><span class="plain"> + </span><span class="identifier">L</span><span class="plain"> - 1);</span>
+        <span class="reserved">wording</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Wordings::new</span><span class="plain">(</span><span class="identifier">lexer_wordcount</span><span class="plain">, </span><span class="identifier">lexer_wordcount</span><span class="plain"> + </span><span class="identifier">L</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">lexer_wordcount</span><span class="plain"> += </span><span class="identifier">L</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1550,7 +1533,6 @@ texts in HTML. So the client is allowed to define <code class="display"><span cl
 to some routine of her own, gazumping this one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lexer::lexer_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">problem_source_description</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">word</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">LEXER_PROBLEM_HANDLER</span>
@@ -1562,25 +1544,25 @@ to some routine of her own, gazumping this one.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">word_t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">word</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">word_t</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">word</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_TOO_LONG_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"Too much text in quotation marks: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">WORD_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WORD_TOO_LONG_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"Word too long: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">I6_TOO_LONG_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_TOO_LONG_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"I6 inclusion too long: %S"</span><span class="plain">, </span><span class="identifier">word_t</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STRING_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STRING_NEVER_ENDS_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"Quoted text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMENT_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_NEVER_ENDS_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"Square-bracketed text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">I6_NEVER_ENDS_LEXERERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">I6_NEVER_ENDS_LEXERERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"I6 inclusion text never ends: %S"</span><span class="plain">, </span><span class="identifier">problem_source_description</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown lexer error"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">word_t</span><span class="plain">);</span>

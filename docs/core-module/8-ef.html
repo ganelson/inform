@@ -136,7 +136,6 @@ store the file in the external extensions area. For instance,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">~/Library/Inform/Extensions/Emily Short/Glulx Text Effects</span>
      (OS X)    <span class="plain">My Documents\Inform\Extensions\Emily Short\Glulx Text Effects</span>
@@ -181,7 +180,6 @@ on three occasions:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">ni -rules (...) -census</span>
 </pre>
@@ -201,7 +199,6 @@ the external extension area):
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">.../Extensions.html</span>
      (basically a contents page)    <span class="plain">.../ExtIndex.html</span>
@@ -211,7 +208,6 @@ the external extension area):
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html</span>
@@ -246,7 +242,6 @@ to keep track of the results.
 its purpose.
 </p>
 
-
 <pre class="display">
 </pre>
 
@@ -255,7 +250,6 @@ its purpose.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>We begin with some housekeeping, really: the code required to create new
 extension file structures, and to manage existing ones.
 </p>
-
 
 <pre class="display">
 </pre>
@@ -271,7 +265,6 @@ to require E version V+1. So it is only when all extensions have been
 loaded that we know the full set of requirements, and only then do we
 check that they have been met.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::check_versions</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -329,7 +322,6 @@ we can suppress the credit whoever that author was.
 feelings of modesty.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::ShowExtensionVersions_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SHOWEXTENSIONVERSIONS_HL</span><span class="plain">);</span>
@@ -342,11 +334,11 @@ feelings of modesty.
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PL::Bibliographic::story_author_is</span><span class="plain">(</span><span class="identifier">the_author_name</span><span class="plain">)) </span><span class="identifier">self_penned</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">authorial_modesty</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) &amp;&amp; </span>    <span class="comment">if (1) extension doesn't ask to be modest</span>
-                <span class="plain">((</span><span class="identifier">general_authorial_modesty</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || </span>    <span class="comment">and (2) author doesn't ask to be modest, or...</span>
-                <span class="plain">(</span><span class="identifier">self_penned</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))) { </span>    <span class="comment">...didn't write this extension</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">authorial_modesty</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) &amp;&amp; </span><span class="comment">if (1) extension doesn't ask to be modest</span>
+                <span class="plain">((</span><span class="identifier">general_authorial_modesty</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || </span><span class="comment">and (2) author doesn't ask to be modest, or...</span>
+                <span class="plain">(</span><span class="identifier">self_penned</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))) { </span><span class="comment">...didn't write this extension</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-                    <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">); </span>    <span class="comment">then we award a credit</span>
+                    <span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">); </span><span class="comment">then we award a credit</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
@@ -381,7 +373,7 @@ feelings of modesty.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">id_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1));</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">));</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -408,7 +400,6 @@ feelings of modesty.
 and author. These are printed as I6 strings, hence the ISO encoding.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::credit_ef</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">with_newline</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfound ef"</span><span class="plain">);</span>
@@ -416,8 +407,8 @@ and author. These are printed as I6 strings, hence the ISO encoding.
         <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">version</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" version %v"</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" by %S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">raw_author_name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (%S)"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">with_newline</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (%S)"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">with_newline</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -428,7 +419,6 @@ and author. These are printed as I6 strings, hence the ISO encoding.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Indexing extensions in the Contents index. </b>The routine below places a list of extensions used in the Contents index,
 giving only minimal entries about them.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
@@ -458,7 +448,7 @@ giving only minimal entries about them.
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">owner</span><span class="plain"> != </span><span class="identifier">from</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">show_head</span><span class="plain">) {</span>
-                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"hanging"</span><span class="plain">);</span>
+                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"hanging"</span><span class="plain">);</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Included "</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"automatically by Inform"</span><span class="plain">);</span>
@@ -470,26 +460,26 @@ giving only minimal entries about them.
                 <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">leaders\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">leaded indent2\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\"leaders\""</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">, </span><span class="string">"class=\"leaded indent2\""</span><span class="plain">);</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S "</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">title</span><span class="plain">);</span>
             <span class="identifier">Works::begin_extension_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/help.png"</span><span class="plain">);</span>
             <span class="identifier">Works::end_extension_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) { </span>    <span class="comment">give author and inclusion links, but not for SR</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="comment">give author and inclusion links, but not for SR</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" by %X"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">author_name</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">version</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">smaller\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"smaller\""</span><span class="plain">);</span>
                 <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">version</span><span class="plain">;</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"version %v"</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">smaller\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"smaller\""</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S)"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">extra_credit_as_lexed</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -500,7 +490,7 @@ giving only minimal entries about them.
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -518,7 +508,6 @@ paragraphs, as in Roget's Thesaurus, tries to proceed from solid things
 through to diffuse linguistic ones. But the reader of the resulting
 documentation page could be forgiven for thinking it a miscellany.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::document_in_detail</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
@@ -557,7 +546,7 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_creating_sentence</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -572,7 +561,7 @@ documentation page could be forgiven for thinking it a miscellany.
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -590,7 +579,7 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_OBJECT_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="functiontext">Instances::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Instances::get_creating_sentence</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">))) {</span>
@@ -608,7 +597,7 @@ documentation page could be forgiven for thinking it a miscellany.
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -626,17 +615,17 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, </span><span class="reserved">nonlocal_variable</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) &gt;= 0) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">NonlocalVariables::is_global</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Headings::indexed</span><span class="plain">(</span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)))) {</span>
-                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">understood</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Headings::indexed</span><span class="plain">(</span><span class="identifier">Headings::of_wording</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)))) {</span>
+                <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">understood</span><span class="plain">-</span><span class="identifier">variable</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="identifier">kc</span><span class="plain"> = </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                        <span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Values that vary"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"value"</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+                        <span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Values that vary"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"value"</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
             <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -654,13 +643,13 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_ENUMERATION_INSTANCES</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="functiontext">Instances::get_name</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
                 <span class="identifier">kc</span><span class="plain"> = </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Values"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"value"</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -733,14 +722,14 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">adj</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">adj</span><span class="plain">, </span><span class="identifier">adjectival_phrase</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Adjectives::get_text</span><span class="plain">(</span><span class="identifier">adj</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
                 <span class="identifier">kc</span><span class="plain"> = </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Adjectives"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"adjective"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -758,14 +747,14 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Properties::is_shown_in_index</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
+                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
                 <span class="identifier">kc</span><span class="plain"> = </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Properties"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"property"</span><span class="plain">,</span>
-                    <span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+                    <span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -783,13 +772,13 @@ documentation page could be forgiven for thinking it a miscellany.
 
 <pre class="displaydefn">
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">) &gt;= 0) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) == </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">read_into_file</span><span class="plain">))</span>
                 <span class="identifier">kc</span><span class="plain"> = </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="string">"Use options"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"use option"</span><span class="plain">,</span>
-                    <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+                    <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -801,11 +790,10 @@ suitable lists, while entering each entry in turn into the extension
 dictionary.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Extensions::Files::document_headword</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kc</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">par_heading</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain">++ == 0) { </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s: "</span><span class="plain">, </span><span class="identifier">par_heading</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kc</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s: "</span><span class="plain">, </span><span class="identifier">par_heading</span><span class="plain">); }</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%+W&lt;/b&gt;"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">Extensions::Dictionary::new_entry</span><span class="plain">(</span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -830,19 +818,18 @@ will always properly nest. We don't at present make use of this, but
 we might in future.
 </p>
 
-
 <pre class="display">
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">BEGINHERE_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="identifier">BEGINHERE_NT</span><span class="plain">, -1, 0, </span><span class="functiontext">Extensions::Files::handle_extension_begins</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">BEGINHERE_NT</span><span class="plain">, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="functiontext">Extensions::Files::handle_extension_begins</span><span class="plain"> };</span>
     <span class="reserved">sentence_handler</span><span class="plain"> </span><span class="identifier">ENDHERE_SH_handler</span><span class="plain"> =</span>
-        <span class="plain">{ </span><span class="identifier">ENDHERE_NT</span><span class="plain">, -1, 0, </span><span class="functiontext">Extensions::Files::handle_extension_ends</span><span class="plain"> };</span>
+        <span class="plain">{ </span><span class="identifier">ENDHERE_NT</span><span class="plain">, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="functiontext">Extensions::Files::handle_extension_ends</span><span class="plain"> };</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::handle_extension_begins</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
-        <span class="functiontext">Assertions::Traverse::new_discussion</span><span class="plain">(); </span><span class="identifier">near_start_of_extension</span><span class="plain"> = 1;</span>
+        <span class="functiontext">Assertions::Traverse::new_discussion</span><span class="plain">(); </span><span class="identifier">near_start_of_extension</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Extensions::Files::handle_extension_ends</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
-        <span class="identifier">near_start_of_extension</span><span class="plain"> = 0;</span>
+        <span class="identifier">near_start_of_extension</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

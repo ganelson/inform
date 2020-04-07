@@ -68,7 +68,6 @@ compiled in variant forms depending on the kinds of their arguments; so
 we use the following chits to keep track of what's outstanding:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">to_phrase_request</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">requested_phrase</span><span class="plain">;</span>
@@ -108,33 +107,33 @@ variety of values:
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">BEFORE_PH</span><span class="plain"> -3</span>
     <span class="definitionkeyword">define</span> <span class="constant">SUBSCHEMA_PH</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EQUAL_PH</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SUPERSCHEMA_PH</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INCOMPARABLE_PH</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AFTER_PH</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONFLICTED_PH</span><span class="plain"> 4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EQUAL_PH</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SUPERSCHEMA_PH</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INCOMPARABLE_PH</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AFTER_PH</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONFLICTED_PH</span><span class="plain"> </span><span class="constant">4</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::compare</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph1</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph2</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::comparison</span><span class="plain">(&amp;(</span><span class="identifier">ph1</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">), &amp;(</span><span class="identifier">ph2</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">));</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::comparison</span><span class="plain">(&amp;(</span><span class="identifier">ph1</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">), &amp;(</span><span class="identifier">ph2</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">));</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">PHRASE_COMPARISONS_DA</span><span class="plain">)) || (</span><span class="identifier">r</span><span class="plain"> == </span><span class="constant">CONFLICTED_PH</span><span class="plain">)) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Phrase comparison ("</span><span class="plain">);</span>
             <span class="functiontext">Phrases::write_HTML_representation</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">ph1</span><span class="plain">, </span><span class="constant">PASTE_PHRASE_FORMAT</span><span class="plain">);</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">") "</span><span class="plain">);</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">r</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INCOMPARABLE_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"~~"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUBSCHEMA_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUPERSCHEMA_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&gt;="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EQUAL_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONFLICTED_PH</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"!!"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INCOMPARABLE_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"~~"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUBSCHEMA_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUPERSCHEMA_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&gt;="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EQUAL_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BEFORE_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AFTER_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONFLICTED_PH:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"!!"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">" ("</span><span class="plain">);</span>
             <span class="functiontext">Phrases::write_HTML_representation</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">, </span><span class="identifier">ph2</span><span class="plain">, </span><span class="constant">PASTE_PHRASE_FORMAT</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">")\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">")\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> == </span><span class="constant">CONFLICTED_PH</span><span class="plain">) {</span>
@@ -160,26 +159,25 @@ phrase, which in particular means adding it to the list of To phrases in
 logical order.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::new</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">previous_phrase</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">current_phrase</span><span class="plain"> = </span><span class="identifier">first_in_logical_order</span><span class="plain">;</span>
-        <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;owning_module</span><span class="plain">, </span><span class="constant">PHRASES_HAP</span><span class="plain">);</span>
+        <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">requests_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">owning_module</span><span class="plain">, </span><span class="constant">PHRASES_HAP</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_in_logical_order</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">first_in_logical_order</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">current_phrase</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Routines::ToPhrases::compare</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">current_phrase</span><span class="plain">) &gt;= 0)) {</span>
+                <span class="plain">(</span><span class="functiontext">Routines::ToPhrases::compare</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">current_phrase</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="identifier">previous_phrase</span><span class="plain"> = </span><span class="identifier">current_phrase</span><span class="plain">;</span>
-            <span class="identifier">current_phrase</span><span class="plain"> = </span><span class="identifier">current_phrase</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain">;</span>
+            <span class="identifier">current_phrase</span><span class="plain"> = </span><span class="identifier">current_phrase</span><span class="plain">-&gt;</span><span class="identifier">next_in_logical_order</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">previous_phrase</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain"> = </span><span class="identifier">first_in_logical_order</span><span class="plain">;</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">next_in_logical_order</span><span class="plain"> = </span><span class="identifier">first_in_logical_order</span><span class="plain">;</span>
             <span class="identifier">first_in_logical_order</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">previous_phrase</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain"> = </span><span class="identifier">current_phrase</span><span class="plain">;</span>
+        <span class="identifier">previous_phrase</span><span class="plain">-&gt;</span><span class="element">next_in_logical_order</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
+        <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">next_in_logical_order</span><span class="plain"> = </span><span class="identifier">current_phrase</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -196,25 +194,24 @@ ordering has a profound effect on expression parsing throughout Inform.
 reasons, that is, to make the compiled code more legible.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::register_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">first_in_logical_order</span><span class="plain">; </span><span class="identifier">ph</span><span class="plain">; </span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;next_in_logical_order</span><span class="plain">) {</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">first_in_logical_order</span><span class="plain">; </span><span class="identifier">ph</span><span class="plain">; </span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">next_in_logical_order</span><span class="plain">) {</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
             <span class="functiontext">Phrases::Parser::register_excerpt</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
-            <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;sequence_count</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">++;</span>
+            <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">sequence_count</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">++;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::sequence_count</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;sequence_count</span><span class="plain"> == -1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">sequence_count</span><span class="plain"> == -1) {</span>
             <span class="functiontext">Phrases::log</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Sequence count not ready"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;sequence_count</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">sequence_count</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -244,7 +241,6 @@ has in this version: for example, given the definition
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">phrase (number, text) -&gt; nothing</span>
 </pre>
@@ -253,34 +249,33 @@ has in this version: for example, given the definition
 values in force, so that there is no possible ambiguity in how we read K.
 </p>
 
-
 <pre class="display">
     <span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::make_request</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">,</span>
         <span class="identifier">kind_variable_declaration</span><span class="plain"> *</span><span class="identifier">kvd</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad request"</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nr</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nr</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_phrase</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_phrase</span><span class="plain">) {</span>
                 <span class="identifier">nr</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_exact_kind</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::semidefinite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Issue a problem message for undetermined kinds</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">req</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain">);</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_phrase</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_exact_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_phrase</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
         <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) </span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">) </span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">);</span>
 
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_localised_iname_in</span><span class="plain">(</span><span class="constant">PHRASE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">);</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">REQUESTS_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">requests_package</span><span class="plain">);</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">req_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_localised_iname_in</span><span class="plain">(</span><span class="constant">PHRASE_FN_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">cm</span><span class="plain">);</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;27; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;kind_variables_interpretation</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-            <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;kind_variables_interpretation</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;27; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">kind_variables_interpretation</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">kvd</span><span class="plain">; </span><span class="identifier">kvd</span><span class="plain">=</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+            <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">kind_variables_interpretation</span><span class="plain">[</span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_number</span><span class="plain">] = </span><span class="identifier">kvd</span><span class="plain">-&gt;</span><span class="identifier">kv_value</span><span class="plain">;</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -328,7 +323,6 @@ the case of an inline definition which happens to consist of a call to an
 I6 routine.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">req_kind</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::TypeData::invoked_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">)) {</span>
@@ -337,8 +331,8 @@ I6 routine.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) {</span>
-                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = 0;</span>
-                    <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) || (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'_'</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">j</span><span class="plain">++ &lt; 31))</span>
+                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                    <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) || (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">])) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] == </span><span class="character">'_'</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">j</span><span class="plain">++ &lt; </span><span class="constant">31</span><span class="plain">))</span>
                         <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">++]);</span>
                     <span class="identifier">found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
@@ -375,11 +369,10 @@ I6 routine.
 since the last time it was called.
 </p>
 
-
 <pre class="display">
     <span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">latest_request_granted</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::compilation_coroutine</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_i</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_request_granted</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">req</span><span class="plain"> = </span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain">);</span>
@@ -387,7 +380,7 @@ since the last time it was called.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
 
             <span class="identifier">latest_request_granted</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">;</span>
-            <span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="identifier">latest_request_granted</span><span class="plain">-</span><span class="element">&gt;requested_phrase</span><span class="plain">,</span>
+            <span class="functiontext">Phrases::compile</span><span class="plain">(</span><span class="identifier">latest_request_granted</span><span class="plain">-&gt;</span><span class="element">requested_phrase</span><span class="plain">,</span>
                 <span class="identifier">i</span><span class="plain">, </span><span class="identifier">max_i</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">latest_request_granted</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">N</span><span class="plain">++;</span>
         <span class="plain">}</span>
@@ -403,14 +396,13 @@ since the last time it was called.
 to write a comment about this:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::comment_on_request</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"No specific request"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Request %d: "</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-            <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain">);</span>
+            <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_exact_kind</span><span class="plain">);</span>
             <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -424,16 +416,15 @@ to write a comment about this:
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>It also needs access to:
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::kind_of_request</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null request"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;requested_exact_kind</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">requested_exact_kind</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> **</span><span class="functiontext">Routines::ToPhrases::kind_variables_for_request</span><span class="plain">(</span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null request"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;kind_variables_interpretation</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">kind_variables_interpretation</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -447,10 +438,9 @@ to write a comment about this:
 is confined to the current Chapter.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::allows_options</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Options::allows_options</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;options_data</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Options::allows_options</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">options_data</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">phrase</span><span class="plain"> *</span><span class="functiontext">Routines::ToPhrases::meaning_as_phrase</span><span class="plain">(</span><span class="identifier">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain">) {</span>
@@ -459,7 +449,7 @@ is confined to the current Chapter.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::ToPhrases::parse_phrase_option_used</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Options::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;options_data</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Options::parse</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">options_data</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

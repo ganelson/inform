@@ -70,21 +70,21 @@ attached.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_LENGTH_OF_SCRIPT</span><span class="plain"> 10000 </span>    <span class="comment">including length byte, so the max no of chars is one less</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_LENGTH_OF_COMMAND</span><span class="plain"> 100 </span>    <span class="comment">any single command must be this long or shorter</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain"> 16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_LENGTH_OF_SCRIPT</span><span class="plain"> </span><span class="constant">10000</span><span class="plain"> </span><span class="comment">including length byte, so the max no of chars is one less</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_LENGTH_OF_COMMAND</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="comment">any single command must be this long or shorter</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain"> </span><span class="constant">16</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">test_scenario</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">in fact a single word identifying the test</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">in fact a single word identifying the test</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">text_of_script</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">place</span><span class="plain">; </span>    <span class="comment">room we need to be in to perform test</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_possessions</span><span class="plain">; </span>    <span class="comment">number of required possessions of player</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">possessions</span><span class="plain">[</span><span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain">]; </span>    <span class="comment">what they are</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">place</span><span class="plain">; </span><span class="comment">room we need to be in to perform test</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_possessions</span><span class="plain">; </span><span class="comment">number of required possessions of player</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">possessions</span><span class="plain">[</span><span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain">]; </span><span class="comment">what they are</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence_test_declared_at</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">text_iname</span><span class="plain">; </span>    <span class="comment">name at runtime for the text of the commands</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">req_iname</span><span class="plain">; </span>    <span class="comment">ditto for the array of requirements</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">text_iname</span><span class="plain">; </span><span class="comment">name at runtime for the text of the commands</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">req_iname</span><span class="plain">; </span><span class="comment">ditto for the array of requirements</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">test_scenario</span><span class="plain">;</span>
 </pre>
@@ -95,10 +95,9 @@ attached.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">internal_test_case</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">itc_code</span><span class="plain">; </span>    <span class="comment">one of the above <code class="display"><span class="extract">*_INTT</span></code> values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">itc_code</span><span class="plain">; </span><span class="comment">one of the above <code class="display"><span class="extract">*_INTT</span></code> values</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">text_supplying_the_case</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">itc_defined_at</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -116,19 +115,19 @@ attached.
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">NO_INTT</span><span class="plain"> -2</span>
     <span class="definitionkeyword">define</span> <span class="constant">EXTERNAL_INTT</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">HEADLINE_INTT</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SENTENCE_INTT</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DESCRIPTION_INTT</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DIMENSIONS_INTT</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EVALUATION_INTT</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EQUATION_INTT</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VERB_INTT</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ADJECTIVE_INTT</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ING_INTT</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">KIND_INTT</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAP_INTT</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DASH_INTT</span><span class="plain"> 11</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DASHLOG_INTT</span><span class="plain"> 12</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HEADLINE_INTT</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SENTENCE_INTT</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DESCRIPTION_INTT</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DIMENSIONS_INTT</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EVALUATION_INTT</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EQUATION_INTT</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VERB_INTT</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ADJECTIVE_INTT</span><span class="plain"> </span><span class="constant">7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ING_INTT</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">KIND_INTT</span><span class="plain"> </span><span class="constant">9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAP_INTT</span><span class="plain"> </span><span class="constant">10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DASH_INTT</span><span class="plain"> </span><span class="constant">11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DASHLOG_INTT</span><span class="plain"> </span><span class="constant">12</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The following grammar handles Test sentences such as:
 </p>
@@ -144,7 +143,6 @@ suite for Inform is made up of end-to-end tests, and sometimes these make
 it hard to see what any given component has done.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">internal</span><span class="plain">-</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ( </span><span class="identifier">internal</span><span class="plain"> ) |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
@@ -159,7 +157,6 @@ it hard to see what any given component has done.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>These test case names are in English only and may change at any time
 without notice.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">internal</span><span class="plain">-</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
@@ -182,7 +179,6 @@ without notice.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">ts_being_parsed</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -197,7 +193,6 @@ without notice.
 
 </blockquote>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; |									==&gt; </span><span class="identifier">TRUE</span><span class="plain">; </span>&lt;<span class="cwebmacro">Process the quoted test script</span> <span class="cwebmacronumber">8.1</span>&gt;
@@ -205,9 +200,9 @@ without notice.
         <span class="plain">...												==&gt; </span>&lt;<span class="cwebmacro">Issue PM_TestBadRequirements problem</span> <span class="cwebmacronumber">8.4</span>&gt;
 
     <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... |														==&gt; 0; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">;</span>
-        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; &lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">&gt; |	==&gt; 0</span>
-        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">&gt;									==&gt; 0</span>
+        <span class="plain">... |														==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">;</span>
+        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt; &lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">&gt; |	==&gt; </span><span class="constant">0</span>
+        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">&gt;									==&gt; </span><span class="constant">0</span>
 
     <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="reserved">case</span><span class="plain">-</span><span class="identifier">circumstance</span><span class="plain">&gt; ::=</span>
         <span class="identifier">in</span><span class="plain"> &lt;</span><span class="reserved">instance</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; |				==&gt; </span>&lt;<span class="cwebmacro">Process the in-test requirement</span> <span class="cwebmacronumber">8.2</span>&gt;
@@ -229,14 +224,14 @@ without notice.
         <span class="identifier">Word::dequote</span><span class="plain">(</span><span class="identifier">x1</span><span class="plain">);</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">x1</span><span class="plain">++);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">);</span>
-        <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">);</span>
+        <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">) == 0) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+1; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">]; </span><span class="identifier">l</span><span class="plain">++) </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] != </span><span class="character">' '</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == </span><span class="character">'/'</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == 0)) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == </span><span class="character">'/'</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">l</span><span class="plain">] == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'/'</span><span class="plain">) {</span>
@@ -245,13 +240,13 @@ without notice.
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
+            <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">PL::Parsing::TestScripts::check_test_command</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-1) == </span><span class="character">'/'</span><span class="plain">)</span>
-            <span class="identifier">Str::put_at</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-1, </span><span class="character">' '</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="identifier">text_of_script</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-1) == </span><span class="character">'/'</span><span class="plain">)</span>
+            <span class="identifier">Str::put_at</span><span class="plain">(</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-1, </span><span class="character">' '</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">individual_command</span><span class="plain">);</span>
 </pre>
 
@@ -265,7 +260,7 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
+        <span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">place</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -278,10 +273,10 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;no_possessions</span><span class="plain"> &gt;= </span><span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">no_possessions</span><span class="plain"> &gt;= </span><span class="constant">MAX_POSSESSIONS_PER_SCENARIO</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Issue PM_TestBadRequirements problem</span> <span class="cwebmacronumber">8.4</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span>
-            <span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;possessions</span><span class="plain">[</span><span class="identifier">ts_being_parsed</span><span class="plain">-</span><span class="element">&gt;no_possessions</span><span class="plain">++] = </span><span class="identifier">RP</span><span class="plain">[1];</span>
+            <span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">possessions</span><span class="plain">[</span><span class="identifier">ts_being_parsed</span><span class="plain">-&gt;</span><span class="element">no_possessions</span><span class="plain">++] = </span><span class="identifier">RP</span><span class="plain">[1];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -313,7 +308,7 @@ without notice.
         <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestQuoted</span><span class="plain">),</span>
             <span class="string">"test scenarios must have unquoted names"</span><span class="plain">,</span>
-            <span class="string">"so 'test garden with ...' is allowed but not 'test \</span><span class="plain">"</span><span class="string">garden\</span><span class="plain">"</span><span class="string"> with...'"</span><span class="plain">);</span>
+            <span class="string">"so 'test garden with ...' is allowed but not 'test \"garden\" with...'"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -360,8 +355,8 @@ without notice.
 <pre class="displaydefn">
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDoubleWith</span><span class="plain">),</span>
             <span class="string">"the second 'with' should be 'holding'"</span><span class="plain">,</span>
-            <span class="string">"as in 'test frogs with \</span><span class="plain">"</span><span class="string">get frogs\</span><span class="plain">"</span><span class="string"> holding net' rather than "</span>
-            <span class="string">"'test frogs with \</span><span class="plain">"</span><span class="string">get frogs\</span><span class="plain">"</span><span class="string"> with net'."</span><span class="plain">);</span>
+            <span class="string">"as in 'test frogs with \"get frogs\" holding net' rather than "</span>
+            <span class="string">"'test frogs with \"get frogs\" with net'."</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -370,20 +365,19 @@ without notice.
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::test_with_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Test me with..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Test me with..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">);</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE2_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
                 <span class="functiontext">PL::Parsing::TestScripts::new_test_text</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -391,11 +385,11 @@ without notice.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::new_test_text</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">))) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_INTT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTERNAL_INTT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create a test script</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="functiontext">PL::Parsing::TestScripts::new_internal</span><span class="plain">(&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_INTT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTERNAL_INTT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create a test script</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::new_internal</span><span class="plain">(&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -414,12 +408,12 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;, 1);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
 
         <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="reserved">test_scenario</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;sentence_test_declared_at</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)) {</span>
+                <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">sentence_test_declared_at</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TestDuplicate</span><span class="plain">));</span>
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -430,18 +424,18 @@ without notice.
         <span class="plain">}</span>
 
         <span class="identifier">test</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">);</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">XW</span><span class="plain">;</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;sentence_test_declared_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;no_possessions</span><span class="plain"> = 0;</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">XW</span><span class="plain">;</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">sentence_test_declared_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">place</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">no_possessions</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
 
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">TESTS_HAP</span><span class="plain">);</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">SCRIPT_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">REQUIREMENTS_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">SCRIPT_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">req_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">REQUIREMENTS_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 
         <span class="identifier">ts_being_parsed</span><span class="plain"> = </span><span class="identifier">test</span><span class="plain">;</span>
-        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
+        <span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -449,7 +443,6 @@ without notice.
 <p class="endnote">This code is used in <a href="#SP9">&#167;9</a>.</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::check_test_command</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -475,21 +468,21 @@ without notice.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::write_text</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">test_scenario</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="reserved">test_scenario</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_byte_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_iname</span><span class="plain">, </span><span class="identifier">K_text</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
-            <span class="functiontext">CompiledText::from_stream</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">,</span>
+            <span class="functiontext">CompiledText::from_stream</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">,</span>
                 <span class="constant">CT_EXPAND_APOSTROPHES</span><span class="plain"> + </span><span class="constant">CT_RECOGNISE_APOSTROPHE_SUBSTITUTION</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">, </span><span class="string">"||||"</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tttext</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-            <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;place</span><span class="plain">));</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;no_possessions</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;possessions</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;possessions</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]));</span>
+            <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">req_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="identifier">place</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">place</span><span class="plain">));</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">no_possessions</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="identifier">possessions</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">possessions</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]));</span>
             <span class="plain">}</span>
             <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
             <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -508,10 +501,10 @@ without notice.
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSCRIPTSUB_HL</span><span class="plain">);</span>
         <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">test_scenario</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; No test scripts exist for this game.\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; No test scripts exist for this game.\n"</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">SWITCH_BIP</span><span class="plain">);</span>
@@ -524,20 +517,20 @@ without notice.
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-                            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
+                            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="string">"%w"</span><span class="plain">, </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)));</span>
                             <span class="identifier">Produce::val_dword</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">W</span><span class="plain">);</span>
                             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TESTSTART_HL</span><span class="plain">));</span>
                                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_iname</span><span class="plain">);</span>
-                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">);</span>
-                                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> = 0;</span>
-                                    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;text_of_script</span><span class="plain">;</span>
+                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_iname</span><span class="plain">);</span>
+                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">req_iname</span><span class="plain">);</span>
+                                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                                    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">text_of_script</span><span class="plain">;</span>
                                     <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++, </span><span class="identifier">l</span><span class="plain">++)</span>
                                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"[']"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">))</span>
-                                            <span class="identifier">l</span><span class="plain"> -= 2;</span>
+                                            <span class="identifier">l</span><span class="plain"> -= </span><span class="constant">2</span><span class="plain">;</span>
                                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">l</span><span class="plain">);</span>
                                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -549,12 +542,12 @@ without notice.
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; The following tests are available:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"&gt;--&gt; The following tests are available:\n"</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="reserved">test_scenario</span><span class="plain">) {</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"'test %w'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
+                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"'test %w'\n"</span><span class="plain">,</span>
+                                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)));</span>
                                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                     <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">T</span><span class="plain">);</span>
@@ -563,7 +556,7 @@ without notice.
                             <span class="plain">}</span>
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\n"</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -587,13 +580,12 @@ without notice.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::new_internal</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">internal_test_case</span><span class="plain"> *</span><span class="identifier">itc</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">internal_test_case</span><span class="plain">);</span>
-        <span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_code</span><span class="plain"> = </span><span class="identifier">code</span><span class="plain">;</span>
-        <span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_defined_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">itc_code</span><span class="plain"> = </span><span class="identifier">code</span><span class="plain">;</span>
+        <span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">itc_defined_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">itc_save_DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">itc_save_OUT</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -601,14 +593,14 @@ without notice.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::InternalTestCases_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INTERNALTESTCASES_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">);</span>
-        <span class="reserved">internal_test_case</span><span class="plain"> *</span><span class="identifier">itc</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
+        <span class="reserved">internal_test_case</span><span class="plain"> *</span><span class="identifier">itc</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">, </span><span class="reserved">internal_test_case</span><span class="plain">) {</span>
             <span class="identifier">n</span><span class="plain">++;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_code</span><span class="plain"> == </span><span class="constant">HEADLINE_INTT</span><span class="plain">) {</span>
-                <span class="identifier">n</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">itc_code</span><span class="plain"> == </span><span class="constant">HEADLINE_INTT</span><span class="plain">) {</span>
+                <span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STYLEBOLD_BIP</span><span class="plain">);</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">%+W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"\n%+W\n"</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">);</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">T</span><span class="plain">);</span>
@@ -618,7 +610,7 @@ without notice.
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"%d. %+W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"%d. %+W\n"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="identifier">text_supplying_the_case</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
@@ -627,22 +619,22 @@ without notice.
 
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">itc_save_OUT</span><span class="plain"> = </span><span class="identifier">OUT</span><span class="plain">;</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_defined_at</span><span class="plain">;</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;itc_code</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SENTENCE_INTT</span><span class="plain">: {</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">itc_defined_at</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">itc_code</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SENTENCE_INTT:</span><span class="plain"> {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SV_not_SN</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Perform an internal test of the sentence converter</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DESCRIPTION_INTT</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DESCRIPTION_INTT:</span><span class="plain"> {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SV_not_SN</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     &lt;<span class="cwebmacro">Perform an internal test of the sentence converter</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EVALUATION_INTT</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EVALUATION_INTT:</span><span class="plain"> {</span>
                     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">spec</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">);</span>
                     <span class="functiontext">Dash::check_value</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Kind of value: "</span><span class="plain">);</span>
@@ -651,7 +643,7 @@ without notice.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
                         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">" scaled at k=%d"</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">Prints as: "</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\nPrints as: "</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -664,52 +656,52 @@ without notice.
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
                     <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DIMENSIONS_INTT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DIMENSIONS_INTT:</span>
                     &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
                     <span class="identifier">Kinds::Dimensions::log_unit_analysis</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EQUATION_INTT</span><span class="plain">:</span>
-                    <span class="functiontext">Equations::internal_test</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EQUATION_INTT:</span>
+                    <span class="functiontext">Equations::internal_test</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERB_INTT</span><span class="plain">:</span>
-                    <span class="identifier">Conjugation::test</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">, </span><span class="identifier">Projects::get_language_of_play</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERB_INTT:</span>
+                    <span class="identifier">Conjugation::test</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">, </span><span class="identifier">Projects::get_language_of_play</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">ADJECTIVE_INTT</span><span class="plain">:</span>
-                    <span class="identifier">Adjectives::test_adjective</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ADJECTIVE_INTT:</span>
+                    <span class="identifier">Adjectives::test_adjective</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">ING_INTT</span><span class="plain">:</span>
-                    <span class="identifier">Conjugation::test_participle</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ING_INTT:</span>
+                    <span class="identifier">Conjugation::test_participle</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIND_INTT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIND_INTT:</span>
                     &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
                     <span class="identifier">Kinds::Compare::log_poset</span><span class="plain">(</span>
                         <span class="identifier">Vocabulary::get_literal_number_value</span><span class="plain">(</span>
                             <span class="identifier">Lexer::word</span><span class="plain">(</span>
                                 <span class="identifier">Wordings::first_wn</span><span class="plain">(</span>
-                                    <span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">))));</span>
+                                    <span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">))));</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">MAP_INTT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MAP_INTT:</span>
                     &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
                     <span class="identifier">PL::SpatialMap::log_spatial_layout</span><span class="plain">();</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">endif</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DASH_INTT</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DASH_INTT:</span>
                     &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
-                    <span class="functiontext">Dash::experiment</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                    <span class="functiontext">Dash::experiment</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                     &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DASHLOG_INTT</span><span class="plain">:</span>
-                    <span class="functiontext">Dash::experiment</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DASHLOG_INTT:</span>
+                    <span class="functiontext">Dash::experiment</span><span class="plain">(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -750,9 +742,9 @@ without notice.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SV_not_SN</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -761,8 +753,8 @@ without notice.
         &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">; </span><span class="identifier">Streams::enable_I6_escapes</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: not a condition"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: proposition would not type-check\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$D\n"</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: proposition would not type-check\n"</span><span class="plain">);</span>
             <span class="functiontext">Calculus::Propositions::Checker::type_check</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="functiontext">Calculus::Propositions::Checker::tc_problem_logging</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="identifier">Streams::disable_I6_escapes</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span>&lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
@@ -779,7 +771,7 @@ without notice.
 
 <pre class="displaydefn">
         <span class="identifier">itc_save_DL</span><span class="plain"> = </span><span class="identifier">DL</span><span class="plain">; </span><span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">itc_save_OUT</span><span class="plain">;</span>
-        <span class="identifier">Streams::enable_debugging</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span>    <span class="comment">Streams::enable_I6_escapes(DL);</span>
+        <span class="identifier">Streams::enable_debugging</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span><span class="comment">Streams::enable_I6_escapes(DL);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -792,7 +784,7 @@ without notice.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Streams::disable_debugging</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span>    <span class="comment">Streams::disable_I6_escapes(DL);</span>
+        <span class="identifier">Streams::disable_debugging</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span><span class="comment">Streams::disable_I6_escapes(DL);</span>
         <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">itc_save_DL</span><span class="plain">;</span>
 </pre>
 
@@ -802,7 +794,6 @@ without notice.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Parsing::TestScripts::emit_showme</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -811,7 +802,7 @@ without notice.
             <span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Lvalues::underlying_property</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">%+W\</span><span class="plain">"</span><span class="string"> = "</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\"%+W\" = "</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
         &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
         <span class="identifier">Kinds::Textual::log</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>
@@ -826,7 +817,7 @@ without notice.
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_SAY_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
@@ -839,7 +830,7 @@ without notice.
         <span class="plain">}</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
     <span class="plain">}</span>
 </pre>
@@ -859,9 +850,9 @@ without notice.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SV_not_SN</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-</span><span class="element">&gt;text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt;(</span><span class="identifier">itc</span><span class="plain">-&gt;</span><span class="element">text_supplying_the_case</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">) {</span>
             <span class="identifier">prop</span><span class="plain"> = </span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -870,8 +861,8 @@ without notice.
         &lt;<span class="cwebmacro">Begin reporting on the internal test case</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">; </span><span class="identifier">Streams::enable_I6_escapes</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: not a condition"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: proposition would not type-check\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$D\n"</span><span class="plain">, </span><span class="identifier">prop</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Failed: proposition would not type-check\n"</span><span class="plain">);</span>
             <span class="functiontext">Calculus::Propositions::Checker::type_check</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">, </span><span class="functiontext">Calculus::Propositions::Checker::tc_problem_logging</span><span class="plain">());</span>
         <span class="plain">}</span>
         <span class="identifier">Streams::disable_I6_escapes</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span>&lt;<span class="cwebmacro">End reporting on the internal test case</span> <span class="cwebmacronumber">11.3</span>&gt;<span class="plain">;</span>

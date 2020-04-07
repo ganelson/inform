@@ -69,12 +69,11 @@ discussing stars and to "dwarves" when reading Tolkien, but it is devoutly
 to be hoped that few works of IF will contain both at once.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">plural_dictionary_entry</span><span class="plain"> {</span>
         <span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">defined_in</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">singular_form</span><span class="plain">; </span>    <span class="comment">words of singular form</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">plural_form</span><span class="plain">; </span>    <span class="comment">words of plural form</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">singular_form</span><span class="plain">; </span><span class="comment">words of singular form</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">plural_form</span><span class="plain">; </span><span class="comment">words of plural form</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">plural_dictionary_entry</span><span class="plain">;</span>
 </pre>
@@ -88,14 +87,13 @@ which already has a plural in the dictionary, even for the same language,
 which is why we do not trouble to search the existing dictionary here.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Pluralisation::register</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="reserved">plural_dictionary_entry</span><span class="plain"> *</span><span class="identifier">pde</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">plural_dictionary_entry</span><span class="plain">);</span>
-        <span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;singular_form</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;plural_form</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;defined_in</span><span class="plain"> = </span><span class="identifier">nl</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Registering plural of %W as %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">pde</span><span class="plain">-&gt;</span><span class="element">singular_form</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
+        <span class="identifier">pde</span><span class="plain">-&gt;</span><span class="element">plural_form</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">pde</span><span class="plain">-&gt;</span><span class="element">defined_in</span><span class="plain"> = </span><span class="identifier">nl</span><span class="plain">;</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Registering plural of %W as %W]\n"</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -111,7 +109,6 @@ been so defined) and finishing up with the worst (a mechanically-made
 one not found in the dictionary).
 </p>
 
-
 <pre class="display">
     <span class="reserved">plural_dictionary_entry</span><span class="plain"> *</span><span class="functiontext">Pluralisation::make</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">PW</span><span class="plain">,</span>
         <span class="reserved">plural_dictionary_entry</span><span class="plain"> *</span><span class="identifier">search_from</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
@@ -125,9 +122,9 @@ one not found in the dictionary).
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">search_from</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">search_from</span><span class="plain">, </span><span class="reserved">plural_dictionary_entry</span><span class="plain">);</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pde</span><span class="plain"> = </span><span class="identifier">search_from</span><span class="plain">; </span><span class="identifier">pde</span><span class="plain">; </span><span class="identifier">pde</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">pde</span><span class="plain">, </span><span class="reserved">plural_dictionary_entry</span><span class="plain">))</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;defined_in</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;defined_in</span><span class="plain"> == </span><span class="identifier">nl</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;singular_form</span><span class="plain">)) {</span>
-                    <span class="plain">*</span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">pde</span><span class="plain">-</span><span class="element">&gt;plural_form</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pde</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pde</span><span class="plain">-&gt;</span><span class="element">defined_in</span><span class="plain"> == </span><span class="identifier">nl</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::match</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pde</span><span class="plain">-&gt;</span><span class="element">singular_form</span><span class="plain">)) {</span>
+                    <span class="plain">*</span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">pde</span><span class="plain">-&gt;</span><span class="identifier">plural_form</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pde</span><span class="plain">;</span>
                 <span class="plain">}</span>
 
@@ -162,18 +159,18 @@ it can be rebuilt quickly whenever needed again.
 
 <pre class="displaydefn">
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 1) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_wn</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">original</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">original</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">last_wn</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">last_wn</span><span class="plain">)) == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">last_wn</span><span class="plain">)) == </span><span class="character">'\"'</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Pluralisation::regular</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">, </span><span class="identifier">original</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
         <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">);</span>
         <span class="plain">*</span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">original</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pluralised</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Constructing plural of %W as %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, *</span><span class="identifier">PW</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Constructing plural of %W as %W]\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, *</span><span class="identifier">PW</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -183,7 +180,6 @@ it can be rebuilt quickly whenever needed again.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. The pluralizing trie. </b>The following takes a single word, assumes it to be a noun which meaningfully
 has a plural, and modifies it to the plural form.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Pluralisation::regular</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>

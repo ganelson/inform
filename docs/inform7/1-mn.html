@@ -81,7 +81,6 @@ those should define the symbol <code class="display"><span class="extract">SUPPR
 when they want I7 to run.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">SUPPRESS_MAIN</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[]) {</span>
@@ -109,7 +108,7 @@ when they want I7 to run.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Foundation::start</span><span class="plain">(); </span>    <span class="comment">must be started first</span>
+        <span class="functiontext">Foundation::start</span><span class="plain">(); </span><span class="comment">must be started first</span>
         <span class="functiontext">WordsModule::start</span><span class="plain">();</span>
         <span class="functiontext">InflectionsModule::start</span><span class="plain">();</span>
         <span class="functiontext">SyntaxModule::start</span><span class="plain">();</span>
@@ -154,7 +153,7 @@ when they want I7 to run.
         <span class="functiontext">BuildingModule::end</span><span class="plain">();</span>
         <span class="functiontext">CodegenModule::end</span><span class="plain">();</span>
         <span class="functiontext">InbuildModule::end</span><span class="plain">();</span>
-        <span class="functiontext">Foundation::end</span><span class="plain">(); </span>    <span class="comment">must be ended last</span>
+        <span class="functiontext">Foundation::end</span><span class="plain">(); </span><span class="comment">must be ended last</span>
 </pre>
 
 <p class="inwebparagraph"></p>

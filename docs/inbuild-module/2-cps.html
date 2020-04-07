@@ -72,19 +72,18 @@ and we will need to generate data about them, some of which is most usefully
 stored here.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain">; </span>    <span class="comment">what is this a copy of?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">location_if_path</span><span class="plain">; </span>    <span class="comment">exactly one of these must be non-<code class="display"><span class="extract">NULL</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain">; </span><span class="comment">what is this a copy of?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">location_if_path</span><span class="plain">; </span><span class="comment">exactly one of these must be non-<code class="display"><span class="extract">NULL</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">location_if_file</span><span class="plain">;</span>
 
-        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">; </span>    <span class="comment">the type of which depends on the work's genre</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">vertex</span><span class="plain">; </span>    <span class="comment">head vertex of build graph for this copy</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_text_read</span><span class="plain">; </span>    <span class="comment">have we attempted to read Inform source text from this?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">source_text</span><span class="plain">; </span>    <span class="comment">the source text we read, if so</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">found_by</span><span class="plain">; </span>    <span class="comment">if this was claimed in a search</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">errors_reading_source_text</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">copy_error</span></code></span>
+        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">; </span><span class="comment">the type of which depends on the work's genre</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">vertex</span><span class="plain">; </span><span class="comment">head vertex of build graph for this copy</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_text_read</span><span class="plain">; </span><span class="comment">have we attempted to read Inform source text from this?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">source_text</span><span class="plain">; </span><span class="comment">the source text we read, if so</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">found_by</span><span class="plain">; </span><span class="comment">if this was claimed in a search</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">errors_reading_source_text</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">copy_error</span></code></span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inbuild_copy</span><span class="plain">;</span>
 </pre>
@@ -97,19 +96,18 @@ stored here.
 claiming. If you are a manager, do not call this...
 </p>
 
-
 <pre class="display">
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">Copies::new_p</span><span class="plain">(</span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain">) {</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">copy</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain">);</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain"> = </span><span class="identifier">edition</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;content</span><span class="plain"> = </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain"> = </span><span class="functiontext">Graphs::copy_vertex</span><span class="plain">(</span><span class="identifier">copy</span><span class="plain">);</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;source_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;found_by</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;errors_reading_source_text</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">copy_error</span><span class="plain">);</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain"> = </span><span class="identifier">edition</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">content</span><span class="plain"> = </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain"> = </span><span class="functiontext">Graphs::copy_vertex</span><span class="plain">(</span><span class="identifier">copy</span><span class="plain">);</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">source_text_read</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">source_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">found_by</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">errors_reading_source_text</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">copy_error</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">copy</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -121,17 +119,16 @@ claiming. If you are a manager, do not call this...
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>...call one of these:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">Copies::new_in_file</span><span class="plain">(</span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">copy</span><span class="plain"> = </span><span class="functiontext">Copies::new_p</span><span class="plain">(</span><span class="identifier">edition</span><span class="plain">);</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">copy</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">Copies::new_in_path</span><span class="plain">(</span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">copy</span><span class="plain"> = </span><span class="functiontext">Copies::new_p</span><span class="plain">(</span><span class="identifier">edition</span><span class="plain">);</span>
-        <span class="identifier">copy</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">copy</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">copy</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -146,10 +143,9 @@ claiming. If you are a manager, do not call this...
 additional data specific to your genre:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::set_content</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">ref</span><span class="plain">) {</span>
-        <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;content</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
+        <span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">content</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -161,20 +157,19 @@ additional data specific to your genre:
 for later reporting. These are stored in a list.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::attach_error</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no copy to attach to"</span><span class="plain">);</span>
         <span class="functiontext">CopyErrors::supply_attached_copy</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="reserved">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;errors_reading_source_text</span><span class="plain">);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="reserved">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">errors_reading_source_text</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::list_attached_errors</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">copy_error</span><span class="plain"> *</span><span class="identifier">CE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 1;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="reserved">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;errors_reading_source_text</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d. "</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++); </span><span class="functiontext">CopyErrors::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CE</span><span class="plain">, </span><span class="reserved">copy_error</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">errors_reading_source_text</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d. "</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++); </span><span class="functiontext">CopyErrors::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">CE</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -187,10 +182,9 @@ for later reporting. These are stored in a list.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::write_copy</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="functiontext">Editions::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">);</span>
+        <span class="functiontext">Editions::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -200,22 +194,21 @@ for later reporting. These are stored in a list.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Reading source text. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Copies::source_text_has_been_read</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no copy"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">source_text_read</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Copies::get_source_text</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text_read</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">source_text_read</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">source_text_read</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
-            <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_READ_SOURCE_TEXT_FOR_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">source_text</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;source_text</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">source_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -227,10 +220,9 @@ for later reporting. These are stored in a list.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Going operational. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::construct_graph</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_CONSTRUCT_GRAPH_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -241,25 +233,24 @@ for later reporting. These are stored in a list.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Miscellaneous Inbuild commands. </b>This function implements the command-line instruction to <code class="display"><span class="extract">-inspect</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::inspect</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S: "</span><span class="plain">, </span><span class="functiontext">Genres::name</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">));</span>
-        <span class="functiontext">Editions::inspect</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" at path %p"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S: "</span><span class="plain">, </span><span class="functiontext">Genres::name</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">));</span>
+        <span class="functiontext">Editions::inspect</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" at path %p"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain">) {</span>
-            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain">) {</span>
+            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" in directory %p"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;errors_reading_source_text</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="identifier">LinkedLists::len</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">errors_reading_source_text</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" - %d error"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"s"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"s"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 0) {</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">INDENT</span><span class="plain">; </span><span class="functiontext">Copies::list_attached_errors</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">); </span><span class="identifier">OUTDENT</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -274,16 +265,15 @@ is also called by the <code class="display"><span class="extract">core</span></c
 its main task: building an Inform project.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::build</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="functiontext">IncrementalBuild::build</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::rebuild</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="functiontext">IncrementalBuild::rebuild</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -298,23 +288,22 @@ its main task: building an Inform project.
 <code class="display"><span class="extract">-use-missing</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_graph</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="functiontext">Graphs::describe</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_needs</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">uses_only</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="functiontext">Graphs::show_needs</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">uses_only</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="functiontext">Graphs::show_needs</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">, </span><span class="identifier">uses_only</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::show_missing</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">uses_only</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">uses_only</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Nothing is missing\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">, </span><span class="identifier">uses_only</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Nothing is missing\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -329,14 +318,13 @@ its main task: building an Inform project.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And here is <code class="display"><span class="extract">-archive</span></code> and <code class="display"><span class="extract">-archive-to N</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::archive</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">BM</span><span class="plain">) {</span>
-        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NM</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NM</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Because there are missing resources, -archive is cancelled\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Graphs::archive</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
+        <span class="reserved">build_vertex</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_BUILDING_SOON_MTID</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NM</span><span class="plain"> = </span><span class="functiontext">Graphs::show_missing</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NM</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Because there are missing resources, -archive is cancelled\n"</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Graphs::archive</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">BM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -347,18 +335,17 @@ its main task: building an Inform project.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And lastly <code class="display"><span class="extract">-copy-to N</span></code> and <code class="display"><span class="extract">-sync-to N</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::copy_to</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">syncing</span><span class="plain">,</span>
         <span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">meth</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">destination_nest</span><span class="plain">)</span>
-            <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">, </span><span class="constant">GENRE_COPY_TO_NEST_MTID</span><span class="plain">,</span>
+            <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">, </span><span class="constant">GENRE_COPY_TO_NEST_MTID</span><span class="plain">,</span>
                 <span class="identifier">C</span><span class="plain">, </span><span class="identifier">destination_nest</span><span class="plain">, </span><span class="identifier">syncing</span><span class="plain">, </span><span class="identifier">meth</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Copies::overwrite_error</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">, </span><span class="string">"%X"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">, </span><span class="string">"%X"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">);</span>
         <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"already present (to overwrite, use -sync-to not -copy-to): '%S'"</span><span class="plain">, </span><span class="identifier">ext</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

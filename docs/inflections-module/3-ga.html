@@ -66,7 +66,6 @@ suffixing the inflected form with "than"; thus, "big" to "bigger than".
 The following does the suffixing:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="identifier">than</span>
@@ -76,12 +75,11 @@ The following does the suffixing:
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Grading::make_comparative</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\"'</span><span class="plain">)</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
@@ -91,10 +89,10 @@ The following does the suffixing:
         <span class="functiontext">Inflections::suffix_inflection</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">, </span><span class="identifier">comp_trie</span><span class="plain">, </span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
         <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">merged</span><span class="plain"> =</span>
-            <span class="functiontext">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, 0,</span>
+            <span class="functiontext">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">comparative</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                 <span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">PW</span><span class="plain">));</span>
         <span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">WordAssemblages::to_wording</span><span class="plain">(&amp;</span><span class="identifier">merged</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Comparative of %W is %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Comparative of %W is %W]\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain">;</span>
@@ -103,7 +101,7 @@ The following does the suffixing:
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Grading::make_superlative</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\"'</span><span class="plain">)</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
@@ -112,7 +110,7 @@ The following does the suffixing:
             <span class="functiontext">Preform::Nonparsing::define_trie</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">superlative</span><span class="plain">&gt;, </span><span class="identifier">TRIE_END</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
         <span class="functiontext">Inflections::suffix_inflection</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">, </span><span class="identifier">comp_trie</span><span class="plain">, </span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Superlative of %W is %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Superlative of %W is %W]\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain">;</span>
@@ -131,12 +129,11 @@ comparison: for instance, "tallness" for "tall", or "steeliness" for
 "steely".
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Grading::make_quiddity</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (*(</span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))) == </span><span class="character">'\"'</span><span class="plain">)</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">, </span><span class="string">"%N"</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
@@ -145,7 +142,7 @@ comparison: for instance, "tallness" for "tall", or "steeliness" for
             <span class="functiontext">Preform::Nonparsing::define_trie</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">quiddity</span><span class="plain">&gt;, </span><span class="identifier">TRIE_END</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
         <span class="functiontext">Inflections::suffix_inflection</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">, </span><span class="identifier">comp_trie</span><span class="plain">, </span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Quiddity of %W is %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PLURALS</span><span class="plain">, </span><span class="string">"[Quiddity of %W is %W]\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PW</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">transformed</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">comprised</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PW</span><span class="plain">;</span>

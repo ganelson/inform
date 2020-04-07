@@ -64,29 +64,28 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Comment. </b>The following compiles an I6 comment noting the reason for a deferral.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::Deferred::compile_comment_about_deferral_reason</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">reason</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONDITION_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONDITION_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! True or false?"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ASSERTION_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Force this to be true via 'now':"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Find the extremal x satisfying:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOOP_DOMAIN_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Find next x satisfying:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Construct a list of x satisfying:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! How many x satisfy this?"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Find a total property value over all x satisfying:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Find a random x satisfying:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MULTIPURPOSE_DEFER:</span>
                 <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"! Abstraction for set of x such that:"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Unknown proposition deferral reason"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Unknown proposition deferral reason"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -102,7 +101,6 @@ funny things can happen when we compile: we can create new text substitutions
 which create routines which... and so on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::Deferred::compile_remaining_deferred</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Calculus::Propositions::Deferred::compilation_coroutine</span><span class="plain">();</span>
@@ -110,7 +108,7 @@ which create routines which... and so on.
 
     <span class="reserved">pcalc_prop_deferral</span><span class="plain"> *</span><span class="identifier">latest_pcd</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Propositions::Deferred::compilation_coroutine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="reserved">pcalc_prop_deferral</span><span class="plain"> *</span><span class="identifier">pdef</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_pcd</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
@@ -144,7 +142,7 @@ quantifiers, either.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_QC_VARIABLES</span><span class="plain"> 100</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_QC_VARIABLES</span><span class="plain"> </span><span class="constant">100</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -157,10 +155,10 @@ quantifiers, either.
         <span class="identifier">current_pdef</span><span class="plain"> = </span><span class="identifier">pdef</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ct_locals_problem_thrown</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">negated_quantifier_found</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;deferred_from</span><span class="plain">;</span>
-        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::copy</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;proposition_to_defer</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multipurpose_routine</span><span class="plain"> = (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain"> == </span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">CONDITION_DEFER</span><span class="plain">; </span>    <span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
+        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">deferred_from</span><span class="plain">;</span>
+        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::copy</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">proposition_to_defer</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">multipurpose_routine</span><span class="plain"> = (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">reason</span><span class="plain"> == </span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">CONDITION_DEFER</span><span class="plain">; </span><span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">reason_s</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_s</span><span class="plain">[26], *</span><span class="identifier">var_ix_s</span><span class="plain">[26];</span>
@@ -176,14 +174,14 @@ quantifiers, either.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">total_s</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">+1];</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = 0; </span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">+1; </span><span class="identifier">r</span><span class="plain">++) </span><span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">MULTIPURPOSE_DEFER</span><span class="plain">+1; </span><span class="identifier">r</span><span class="plain">++) </span><span class="identifier">NextOuterLoop_labels</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Simplify the proposition by flipping negated quantifiers, if possible</span> <span class="cwebmacronumber">2.1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS</span><span class="plain">, </span><span class="string">"Compiling deferred proposition: %d: reason %d: $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS</span><span class="plain">, </span><span class="string">"Compiling deferred proposition: %d: reason %d: $D\n"</span><span class="plain">,</span>
+            <span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">reason</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">);</span>
 
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">ppd_iname</span><span class="plain">);</span>
 
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
@@ -195,7 +193,7 @@ quantifiers, either.
 
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile the constant origin text for run-time problem use</span> <span class="cwebmacronumber">2.1.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">rtp_iname</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile the constant origin text for run-time problem use</span> <span class="cwebmacronumber">2.1.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">current_pdef</span><span class="plain"> = </span><span class="identifier">save_current_pdef</span><span class="plain">;</span>
 </pre>
 
@@ -216,11 +214,11 @@ proposition would be wasteful of space in the Z-machine.
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;deferred_from</span><span class="plain">)</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"%~W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;deferred_from</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">deferred_from</span><span class="plain">)</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"%~W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">deferred_from</span><span class="plain">));</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">, </span><span class="string">"not sure where this came from"</span><span class="plain">);</span>
-        <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">, </span><span class="identifier">COTT</span><span class="plain">);</span>
+        <span class="functiontext">Emit::named_string_constant</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">rtp_iname</span><span class="plain">, </span><span class="identifier">COTT</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COTT</span><span class="plain">);</span>
 </pre>
 
@@ -241,7 +239,7 @@ proposition would be wasteful of space in the Z-machine.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">changed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Simplifications::negated_determiners</span><span class="plain">(</span><span class="identifier">proposition</span><span class="plain">, &amp;</span><span class="identifier">changed</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">changed</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS</span><span class="plain">, </span><span class="string">"Calculus::Simplifications::negated_determiners: $D\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PREDICATE_CALCULUS</span><span class="plain">, </span><span class="string">"Calculus::Simplifications::negated_determiners: $D\n"</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -325,7 +323,7 @@ specific to particular deferral reasons.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">var_states</span><span class="plain">[26], </span><span class="identifier">no_extras</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multipurpose_routine</span><span class="plain">)</span>
-            <span class="identifier">reason_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"reason"</span><span class="plain">); </span>    <span class="comment">no cinders exist here</span>
+            <span class="identifier">reason_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"reason"</span><span class="plain">); </span><span class="comment">no cinders exist here</span>
         <span class="reserved">else</span>
             <span class="functiontext">Calculus::Deferrals::Cinders::declare</span><span class="plain">(</span><span class="identifier">proposition</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">);</span>
 
@@ -346,10 +344,10 @@ specific to particular deferral reasons.
                 <span class="identifier">var_ix_lv</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">}</span>
 
-        <span class="identifier">no_extras</span><span class="plain"> = 0;</span>
+        <span class="identifier">no_extras</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">TRAVERSE_VARIABLE</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
         <span class="identifier">TRAVERSE_PROPOSITION</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_extras</span><span class="plain"> &gt;= </span><span class="constant">MAX_QC_VARIABLES</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">q_var</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">q_var</span><span class="plain">, </span><span class="string">"qcy_%d"</span><span class="plain">, </span><span class="identifier">no_extras</span><span class="plain">);</span>
@@ -381,7 +379,7 @@ specific to particular deferral reasons.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">reason_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -407,13 +405,13 @@ specific to particular deferral reasons.
                     <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">use</span><span class="plain"> = </span><span class="constant">EXTREMAL_DUSAGE</span><span class="plain">; </span><span class="identifier">use</span><span class="plain"> &lt;= </span><span class="constant">CONDITION_DUSAGE</span><span class="plain">; </span><span class="identifier">use</span><span class="plain">++) {</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use</span><span class="plain"> &gt; </span><span class="constant">EXTREMAL_DUSAGE</span><span class="plain">) </span><span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::copy</span><span class="plain">(</span><span class="identifier">safety_copy</span><span class="plain">);</span>
                         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">use</span><span class="plain">) {</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONDITION_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">CONDITION_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_DOMAIN_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">LIST_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">TOTAL_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DUSAGE</span><span class="plain">: </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONDITION_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">CONDITION_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOOP_DOMAIN_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">LIST_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">TOTAL_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DUSAGE:</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain"> = </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                         <span class="plain">}</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -428,7 +426,7 @@ specific to particular deferral reasons.
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">reason</span><span class="plain"> = </span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain">;</span>
+            <span class="identifier">reason</span><span class="plain"> = </span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">reason</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile body of deferred proposition for the given reason</span> <span class="cwebmacronumber">2.1.6.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -458,18 +456,18 @@ and at the end of the search it performs <code class="display"><span class="extr
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">def_prn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">def_prn_sign</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">def_prn_sign</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">OL</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">reason</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONDITION_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.14</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before LOOP search</span> <span class="cwebmacronumber">2.1.6.1.17</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before LIST search</span> <span class="cwebmacronumber">2.1.6.1.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.12</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Initialisation before RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ASSERTION_DEFER:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONDITION_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.14</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOOP_DOMAIN_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before LOOP search</span> <span class="cwebmacronumber">2.1.6.1.17</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before LIST search</span> <span class="cwebmacronumber">2.1.6.1.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.12</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Initialisation before RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Compile code to search for valid combinations of variables</span> <span class="cwebmacronumber">2.1.6.1.2</span>&gt;<span class="plain">;</span>
 
@@ -479,14 +477,14 @@ and at the end of the search it performs <code class="display"><span class="extr
         <span class="plain">}</span>
 
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">reason</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONDITION_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.15</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after LOOP search</span> <span class="cwebmacronumber">2.1.6.1.18</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after LIST search</span> <span class="cwebmacronumber">2.1.6.1.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.13</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Winding-up after RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ASSERTION_DEFER:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONDITION_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.15</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOOP_DOMAIN_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after LOOP search</span> <span class="cwebmacronumber">2.1.6.1.18</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after LIST search</span> <span class="cwebmacronumber">2.1.6.1.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.13</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Winding-up after RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -503,7 +501,6 @@ might compile to code in the form:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">blah, blah, blah {</span>
@@ -544,7 +541,6 @@ position <code class="display"><span class="extract">M</span></code>.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Forall x IN[ door(x) IN] open(x)</span>
@@ -608,43 +604,43 @@ capacity of 27 slots on the R-stack (counting the initial <code class="display">
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">block_nesting</span><span class="plain"> = 0; </span>    <span class="comment">how many <code class="display"><span class="extract">{</span></code> ... <code class="display"><span class="extract">}</span></code> blocks are open in I6 code being compiled</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">block_nesting</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">how many <code class="display"><span class="extract">{</span></code> ... <code class="display"><span class="extract">}</span></code> blocks are open in I6 code being compiled</span>
 
         <span class="comment">The R-stack</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R_stack_reason</span><span class="plain">[27];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R_stack_parity</span><span class="plain">[27];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R_sp</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="comment">The Q-stack</span>
         <span class="identifier">quantifier</span><span class="plain"> *</span><span class="identifier">Q_stack_quantifier</span><span class="plain">[26];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Q_stack_parameter</span><span class="plain">[26];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Q_stack_C_stack_level</span><span class="plain">[26];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Q_stack_block_nesting</span><span class="plain">[26];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Q_sp</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Q_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="comment">The C-stack</span>
-        <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">C_stack_term</span><span class="plain">[26]; </span>    <span class="comment">the term to which a called-name is being given</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">C_stack_index</span><span class="plain">[26]; </span>    <span class="comment">its index in the <code class="display"><span class="extract">deferred_calling_list</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">C_sp</span><span class="plain"> = 0;</span>
+        <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">C_stack_term</span><span class="plain">[26]; </span><span class="comment">the term to which a called-name is being given</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">C_stack_index</span><span class="plain">[26]; </span><span class="comment">its index in the <code class="display"><span class="extract">deferred_calling_list</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">C_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="comment">The L-stack</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L_stack_level</span><span class="plain">[26]; </span>    <span class="comment">emission level at start of block</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L_stack_level</span><span class="plain">[26]; </span><span class="comment">emission level at start of block</span>
         <span class="comment">block_nesting serves at stack pointer here</span>
 
         &lt;<span class="cwebmacro">Push initial reason onto the R-stack</span> <span class="cwebmacronumber">2.1.6.1.2.1</span>&gt;<span class="plain">;</span>
         <span class="comment">we now begin compiling the search code</span>
         &lt;<span class="cwebmacro">Compile the proposition into a search algorithm</span> <span class="cwebmacronumber">2.1.6.1.2.3</span>&gt;<span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Pop the Q-stack</span> <span class="cwebmacronumber">2.1.6.1.2.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Pop the C-stack</span> <span class="cwebmacronumber">2.1.6.1.2.5</span>&gt;<span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Pop the Q-stack</span> <span class="cwebmacronumber">2.1.6.1.2.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Pop the C-stack</span> <span class="cwebmacronumber">2.1.6.1.2.5</span>&gt;<span class="plain">;</span>
         <span class="comment">we are now at the magic match point <code class="display"><span class="extract">M</span></code> in the search code</span>
         &lt;<span class="cwebmacro">Pop the R-stack</span> <span class="cwebmacronumber">2.1.6.1.2.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">block_nesting</span><span class="plain"> &gt; 0)</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">block_nesting</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Close a block in the I6 code compiled to perform the search</span> <span class="cwebmacronumber">2.1.6.1.2.6</span>&gt;<span class="plain">;</span>
         <span class="comment">we have now finished compiling the search code</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_sp</span><span class="plain"> != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"R-stack failure"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Q-stack failure"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"C-stack failure"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_sp</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"R-stack failure"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Q-stack failure"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"C-stack failure"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -689,7 +685,7 @@ original to be resumed when we're done.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">FILTER_DEFER</span><span class="plain"> 10000 </span>    <span class="comment">pseudo-reason value used only inside this routine</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FILTER_DEFER</span><span class="plain"> </span><span class="constant">10000</span><span class="plain"> </span><span class="comment">pseudo-reason value used only inside this routine</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -724,23 +720,23 @@ in the above example. (See below.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">R_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_sp</span><span class="plain"> &lt; 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"R stack underflow"</span><span class="plain">);</span>
+        <span class="identifier">R_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_sp</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"R stack underflow"</span><span class="plain">);</span>
 
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">R_stack_reason</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">]) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FILTER_DEFER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FILTER_DEFER:</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcn_s</span><span class="plain">[</span><span class="identifier">Q_sp</span><span class="plain">-1]);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONDITION_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.2.2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.2.2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOOP_DOMAIN_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in LOOP search</span> <span class="cwebmacronumber">2.1.6.1.2.2.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.2.2.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in LIST search</span> <span class="cwebmacronumber">2.1.6.1.2.2.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.2.2.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">: </span>&lt;<span class="cwebmacro">Act on successful match in RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.2.2.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ASSERTION_DEFER:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONDITION_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in CONDITION search</span> <span class="cwebmacronumber">2.1.6.1.2.2.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in EXTREMAL search</span> <span class="cwebmacronumber">2.1.6.1.2.2.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOOP_DOMAIN_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in LOOP search</span> <span class="cwebmacronumber">2.1.6.1.2.2.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in NUMBER search</span> <span class="cwebmacronumber">2.1.6.1.2.2.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in LIST search</span> <span class="cwebmacronumber">2.1.6.1.2.2.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in TOTAL search</span> <span class="cwebmacronumber">2.1.6.1.2.2.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DEFER:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Act on successful match in RANDOM search</span> <span class="cwebmacronumber">2.1.6.1.2.2.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -760,53 +756,53 @@ I6 code as we go, but preserving the Invariant.
 
 <pre class="displaydefn">
         <span class="identifier">TRAVERSE_VARIABLE</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">run_of_conditions</span><span class="plain"> = 0;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_deferred_callings</span><span class="plain"> = 0; </span>    <span class="comment">how many <code class="display"><span class="extract">CALLED</span></code> atoms have been found to date</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">run_of_conditions</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_deferred_callings</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">how many <code class="display"><span class="extract">CALLED</span></code> atoms have been found to date</span>
 
         <span class="identifier">TRAVERSE_PROPOSITION</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEGATION_OPEN_ATOM</span><span class="plain">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEGATION_CLOSE_ATOM</span><span class="plain">:</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEGATION_OPEN_ATOM:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEGATION_CLOSE_ATOM:</span>
                     &lt;<span class="cwebmacro">End a run of predicate-like conditions, if one is under way</span> <span class="cwebmacronumber">2.1.6.1.2.3.3</span>&gt;<span class="plain">;</span>
-                    <span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] = (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">; </span>    <span class="comment">reverse parity</span>
+                    <span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] = (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="identifier">FALSE:TRUE</span><span class="plain">; </span><span class="comment">reverse parity</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">QUANTIFIER_ATOM</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">QUANTIFIER_ATOM:</span>
                     &lt;<span class="cwebmacro">End a run of predicate-like conditions, if one is under way</span> <span class="cwebmacronumber">2.1.6.1.2.3.3</span>&gt;<span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">negated_quantifier_found</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_quantifier</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;predicate</span><span class="plain">);</span>
+                    <span class="identifier">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_quantifier</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">predicate</span><span class="plain">);</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">param</span><span class="plain"> = </span><span class="functiontext">Calculus::Atoms::get_quantification_parameter</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain"> != </span><span class="identifier">exists_quantifier</span><span class="plain">) </span>&lt;<span class="cwebmacro">Push the Q-stack</span> <span class="cwebmacronumber">2.1.6.1.2.3.7</span>&gt;<span class="plain">;</span>
                     &lt;<span class="cwebmacro">Compile a loop through possible values of the variable quantified</span> <span class="cwebmacronumber">2.1.6.1.2.3.5</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOMAIN_OPEN_ATOM:</span>
                     &lt;<span class="cwebmacro">End a run of predicate-like conditions, if one is under way</span> <span class="cwebmacronumber">2.1.6.1.2.3.3</span>&gt;<span class="plain">;</span>
                     &lt;<span class="cwebmacro">Push domain-opening onto the R-stack</span> <span class="cwebmacronumber">.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_CLOSE_ATOM</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOMAIN_CLOSE_ATOM:</span>
                     &lt;<span class="cwebmacro">End a run of predicate-like conditions, if one is under way</span> <span class="cwebmacronumber">2.1.6.1.2.3.3</span>&gt;<span class="plain">;</span>
                     &lt;<span class="cwebmacro">Pop the R-stack</span> <span class="cwebmacronumber">2.1.6.1.2.2</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CALLED_ATOM</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CALLED_ATOM:</span>
                     &lt;<span class="cwebmacro">Push the C-stack</span> <span class="cwebmacronumber">2.1.6.1.2.3.8</span>&gt;<span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: {</span>
+                <span class="identifier">default:</span><span class="plain"> {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_stack_reason</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] == </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">)</span>
                         &lt;<span class="cwebmacro">Compile code to force the atom</span> <span class="cwebmacronumber">2.1.6.1.2.3.4</span>&gt;
                     <span class="reserved">else</span><span class="plain"> {</span>
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_in_run</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">first_in_run</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain">++ &gt; 0) </span><span class="identifier">first_in_run</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-                        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">ex</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ex</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">)) </span><span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">ex</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain">++ &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">first_in_run</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                        <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+                        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">ex</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ex</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">CALLED_ATOM</span><span class="plain">)) </span><span class="identifier">ex</span><span class="plain"> = </span><span class="identifier">ex</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ex</span><span class="plain">) {</span>
-                            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ex</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain">) {</span>
-                                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEGATION_OPEN_ATOM</span><span class="plain">:</span>
-                                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEGATION_CLOSE_ATOM</span><span class="plain">:</span>
-                                <span class="reserved">case</span><span class="plain"> </span><span class="constant">QUANTIFIER_ATOM</span><span class="plain">:</span>
-                                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">:</span>
-                                <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOMAIN_CLOSE_ATOM</span><span class="plain">:</span>
+                            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ex</span><span class="plain">-&gt;</span><span class="identifier">element</span><span class="plain">) {</span>
+                                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEGATION_OPEN_ATOM:</span>
+                                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEGATION_CLOSE_ATOM:</span>
+                                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">QUANTIFIER_ATOM:</span>
+                                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOMAIN_OPEN_ATOM:</span>
+                                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOMAIN_CLOSE_ATOM:</span>
                                     <span class="identifier">last_in_run</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                                     <span class="reserved">break</span><span class="plain">;</span>
-                                <span class="reserved">default</span><span class="plain">:</span>
+                                <span class="identifier">default:</span>
                                     <span class="identifier">last_in_run</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                                     <span class="reserved">break</span><span class="plain">;</span>
                             <span class="plain">}</span>
@@ -834,7 +830,6 @@ would be to take one term at a time:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if (X)</span>
         <span class="plain">    if (Y)</span>
@@ -858,7 +853,6 @@ we don't crash: it will never be run.) Thus we can assume that between
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if (~~(X &amp;&amp; Y &amp;&amp; Z))</span>
 </pre>
@@ -867,7 +861,6 @@ we don't crash: it will never be run.) Thus we can assume that between
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">if (~~X)</span>
@@ -915,10 +908,10 @@ statement properly:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain"> &gt; 0) {</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain"> &gt; 1) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">run_of_conditions</span><span class="plain">--; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">run_of_conditions</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">run_of_conditions</span><span class="plain">--; }</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
-            <span class="identifier">run_of_conditions</span><span class="plain"> = 0;</span>
+            <span class="identifier">run_of_conditions</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Open a block in the I6 code compiled to perform the search, if variant</span> <span class="cwebmacronumber">2.1.6.1.2.3.3.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -951,7 +944,7 @@ one at a time.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Calculus::Atoms::Compile::emit</span><span class="plain">((</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Calculus::Atoms::Compile::emit</span><span class="plain">((</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="identifier">NOW_ATOM_TRUE_TASK:NOW_ATOM_FALSE_TASK</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -966,7 +959,6 @@ preserved by them. There are two cases: ∃, and everything else.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">loop header for v to run through its domain set {</span>
@@ -987,10 +979,10 @@ pretty much requires that this is what we compile.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">level_back_to</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">pl</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Deferred::compile_loop_header</span><span class="plain">(</span>
-            <span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.variable</span><span class="plain">, </span><span class="identifier">var_ix_lv</span><span class="plain">[</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.variable</span><span class="plain">],</span>
+            <span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">variable</span><span class="plain">, </span><span class="identifier">var_ix_lv</span><span class="plain">[</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">variable</span><span class="plain">],</span>
             <span class="identifier">pl</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">R_stack_reason</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] == </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">quant</span><span class="plain"> != </span><span class="identifier">exists_quantifier</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">);</span>
+            <span class="plain">(</span><span class="identifier">R_stack_reason</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] == </span><span class="constant">NOW_ASSERTION_DEFER</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">,</span>
+            <span class="plain">(</span><span class="identifier">quant</span><span class="plain"> != </span><span class="identifier">exists_quantifier</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Open a block in the I6 code compiled to perform the search</span> <span class="cwebmacronumber">2.1.6.1.2.3.5.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -1007,7 +999,6 @@ looks like this:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; theta</span>
 </pre>
@@ -1016,7 +1007,6 @@ looks like this:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">set count of domain size to 0</span>
@@ -1072,12 +1062,12 @@ because the <code class="display"><span class="extract">DOMAIN_OPEN</span></code
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy_s</span><span class="plain">[</span><span class="identifier">Q_sp</span><span class="plain">]);</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcn_s</span><span class="plain">[</span><span class="identifier">Q_sp</span><span class="plain">]);</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="identifier">Q_sp</span><span class="plain">++;</span>
@@ -1104,7 +1094,7 @@ do want to allow "now nobody likes Mr Wickham", say, which asserts
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">not_exists_quantifier</span><span class="plain">) {</span>
-            <span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] = (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1] = (</span><span class="identifier">R_stack_parity</span><span class="plain">[</span><span class="identifier">R_sp</span><span class="plain">-1])?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
             <span class="identifier">quant</span><span class="plain"> = </span><span class="identifier">for_all_quantifier</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -1117,7 +1107,6 @@ do want to allow "now nobody likes Mr Wickham", say, which asserts
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; theta</span>
@@ -1141,7 +1130,6 @@ this proposition routine: see below. That leaves just this part:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">        }</span>
@@ -1169,7 +1157,7 @@ thing works, or doesn't, and is more like testing a single <code class="display"
 
 
 <pre class="displaydefn">
-        <span class="identifier">Q_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> &lt; 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Q stack underflow"</span><span class="plain">);</span>
+        <span class="identifier">Q_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Q_sp</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Q stack underflow"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">POSTINCREMENT_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy_s</span><span class="plain">[</span><span class="identifier">Q_sp</span><span class="plain">]);</span>
@@ -1214,7 +1202,7 @@ given a name.
 
 
 <pre class="displaydefn">
-        <span class="identifier">C_stack_term</span><span class="plain">[</span><span class="identifier">C_sp</span><span class="plain">] = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0];</span>
+        <span class="identifier">C_stack_term</span><span class="plain">[</span><span class="identifier">C_sp</span><span class="plain">] = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0];</span>
         <span class="identifier">C_stack_index</span><span class="plain">[</span><span class="identifier">C_sp</span><span class="plain">] = </span><span class="identifier">no_deferred_callings</span><span class="plain">++;</span>
         <span class="identifier">C_sp</span><span class="plain">++;</span>
 </pre>
@@ -1248,7 +1236,6 @@ is transferred as soon as a dark room is found. The code looks like this:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">set count of domain size to 1</span>
         <span class="plain">loop through domain (i.e., dark rooms adjacent to the person's location) {</span>
@@ -1273,7 +1260,7 @@ quantifier.
 
 
 <pre class="displaydefn">
-        <span class="identifier">C_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> &lt; 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"C stack underflow"</span><span class="plain">);</span>
+        <span class="identifier">C_sp</span><span class="plain">--; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C_sp</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"C stack underflow"</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">);</span>
@@ -1369,22 +1356,22 @@ of variable values is found; and some winding-up code.
             <span class="identifier">best_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"best"</span><span class="plain">);</span>
             <span class="identifier">best_with_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"best_with"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBER_OF_DEFER</span><span class="plain">:</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">reason</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBER_OF_DEFER:</span>
                     <span class="identifier">counter_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"counter"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">RANDOM_OF_DEFER</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RANDOM_OF_DEFER:</span>
                     <span class="identifier">counter_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"counter"</span><span class="plain">);</span>
                     <span class="identifier">selection_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"selection"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">TOTAL_DEFER</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TOTAL_DEFER:</span>
                     <span class="identifier">total_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"total"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_OF_DEFER</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_OF_DEFER:</span>
                     <span class="identifier">counter_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"counter"</span><span class="plain">);</span>
                     <span class="identifier">total_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"total"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTREMAL_DEFER</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTREMAL_DEFER:</span>
                     <span class="identifier">best_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"best"</span><span class="plain">);</span>
                     <span class="identifier">best_with_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"best_with"</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
@@ -1402,7 +1389,7 @@ of variable values is found; and some winding-up code.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((!</span><span class="identifier">multipurpose_routine</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;reason</span><span class="plain"> == </span><span class="constant">LIST_OF_DEFER</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((!</span><span class="identifier">multipurpose_routine</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">reason</span><span class="plain"> == </span><span class="constant">LIST_OF_DEFER</span><span class="plain">)) {</span>
             <span class="identifier">list_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"list"</span><span class="plain">);</span>
             <span class="identifier">strong_kind_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"strong_kind"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -1656,14 +1643,14 @@ syntax to break or continue a loop other than the innermost one.
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">TIMES_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 3);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">3</span><span class="plain">);</span>
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">total_s</span><span class="plain">);</span>
-                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
+                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 8);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
@@ -1685,7 +1672,7 @@ syntax to break or continue a loop other than the innermost one.
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">counter_s</span><span class="plain">);</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_ITEM_BASE_HL</span><span class="plain">));</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">var_s</span><span class="plain">[0]);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1755,14 +1742,14 @@ its random x than it ideally would, but we accept the trade-off.
 
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">WHILE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">counter_s</span><span class="plain">);</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
         <span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Deferred::compile_loop_header</span><span class="plain">(0, </span><span class="identifier">var_ix_lv</span><span class="plain">[0], </span><span class="identifier">proposition</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">);</span>
@@ -1840,12 +1827,12 @@ the state of the objects and thus the size of the set of possibilities.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">counter_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">selection_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1916,7 +1903,7 @@ which until runtime &mdash; when its identity will be found in the I6 variable
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multipurpose_routine</span><span class="plain">) {</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_TO_BE_TOTALLED_HL</span><span class="plain">));</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_property</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;defn_ref</span><span class="plain">);</span>
+                        <span class="identifier">prn</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_property</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">defn_ref</span><span class="plain">);</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                     <span class="plain">}</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1984,7 +1971,7 @@ we don't, and have to look that up at run-time.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_LOOP_SIGN_HL</span><span class="plain">));</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2005,9 +1992,9 @@ we don't, and have to look that up at run-time.
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">measurement_definition</span><span class="plain"> *</span><span class="identifier">mdef</span><span class="plain"> =</span>
-                <span class="identifier">RETRIEVE_POINTER_measurement_definition</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;defn_ref</span><span class="plain">);</span>
+                <span class="identifier">RETRIEVE_POINTER_measurement_definition</span><span class="plain">(</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">defn_ref</span><span class="plain">);</span>
             <span class="functiontext">Properties::Measurement::read_property_details</span><span class="plain">(</span><span class="identifier">mdef</span><span class="plain">, &amp;</span><span class="identifier">def_prn</span><span class="plain">, &amp;</span><span class="identifier">def_prn_sign</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def_prn_sign</span><span class="plain"> == 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def_prn_sign</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">best_s</span><span class="plain">);</span>
@@ -2050,7 +2037,7 @@ multiplying by -1 is order-reversing.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PROPERTY_LOOP_SIGN_HL</span><span class="plain">));</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2104,7 +2091,7 @@ multiplying by -1 is order-reversing.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def_prn_sign</span><span class="plain"> == 1) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GE_BIP</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">def_prn_sign</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GE_BIP</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     &lt;<span class="cwebmacro">Emit code for a property lookup</span> <span class="cwebmacronumber">2.1.6.1.2.2.6.1</span>&gt;<span class="plain">;</span>
@@ -2201,7 +2188,6 @@ domain.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if we're called with a valid member of the domain, go to Z</span>
         <span class="plain">loop x over members of the domain {</span>
@@ -2233,7 +2219,7 @@ proved to be entered and exited cleanly.)
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">var_ix_s</span><span class="plain">[0]);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2317,7 +2303,6 @@ involve loops through objects. Consider:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">loop over objects (x)</span>
         <span class="plain">    loop over objects (y)</span>
@@ -2335,7 +2320,6 @@ the Dining Room, so we're missing a trick there, too. What we want is:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">loop over objects in the Dining Room (x)</span>
@@ -2380,7 +2364,6 @@ doesn't suffer from this since kinds cannot be changed at run-time.
 then expand it into the output.
 </p>
 
-
 <pre class="display">
     <span class="reserved">i6_schema</span><span class="plain"> </span><span class="identifier">loop_schema</span><span class="plain">;</span>
     <span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="functiontext">Calculus::Propositions::Deferred::compile_loop_header</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">var</span><span class="plain">, </span><span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">index_var</span><span class="plain">,</span>
@@ -2400,13 +2383,13 @@ then expand it into the output.
 
         &lt;<span class="cwebmacro">Scan the proposition to find the domain of the loop, and look for opportunities</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parent_optimised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) { </span>    <span class="comment">parent optimisation is stronger, so we prefer that</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parent_optimised</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) { </span><span class="comment">parent optimisation is stronger, so we prefer that</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Deferrals::write_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RTP_HL</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;ppd_package</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="identifier">rtp_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                    <span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">rtp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">RTP_HL</span><span class="plain">, </span><span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">ppd_package</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="string">"if (RunTimeProblem(RTP_CANTITERATE, %n))"</span><span class="plain">,</span>
-                    <span class="identifier">pdef</span><span class="plain">-</span><span class="element">&gt;rtp_iname</span><span class="plain">);</span>
+                    <span class="identifier">pdef</span><span class="plain">-&gt;</span><span class="element">rtp_iname</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::delete_atom</span><span class="plain">(</span><span class="identifier">proposition</span><span class="plain">, </span><span class="identifier">kind_position</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -2428,7 +2411,6 @@ which case <code class="display"><span class="extract">grouped</span></code> is 
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; ...</span>
 </pre>
@@ -2446,22 +2428,22 @@ proposition makes up ψ, and now <code class="display"><span class="extract">gro
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = 0, </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">TRAVERSE_VARIABLE</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
         <span class="identifier">TRAVERSE_PROPOSITION</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">proposition</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Calculus::Atoms::element_get_group</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain">)) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">OPEN_OPERATORS_GROUP</span><span class="plain">: </span><span class="identifier">bl</span><span class="plain">++; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">CLOSE_OPERATORS_GROUP</span><span class="plain">: </span><span class="identifier">bl</span><span class="plain">--; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Calculus::Atoms::element_get_group</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain">)) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPEN_OPERATORS_GROUP:</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain">++; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CLOSE_OPERATORS_GROUP:</span><span class="plain"> </span><span class="identifier">bl</span><span class="plain">--; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">grouped</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">) </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">DOMAIN_CLOSE_ATOM</span><span class="plain">) </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">DOMAIN_OPEN_ATOM</span><span class="plain">) </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">DOMAIN_CLOSE_ATOM</span><span class="plain">) </span><span class="identifier">enabled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">enabled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> != 1) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; 0) </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &gt; 0) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             &lt;<span class="cwebmacro">Scan $\psi$, the part of the proposition establishing the domain</span> <span class="cwebmacronumber">5.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -2483,13 +2465,13 @@ parent-optimisable relations R.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">KIND_ATOM</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">)) {</span>
-            <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;assert_kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">KIND_ATOM</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">)) {</span>
+            <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">assert_kind</span><span class="plain">;</span>
             <span class="identifier">kind_position</span><span class="plain"> = </span><span class="identifier">pl_prev</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">avoid_parent_optimisation</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;element</span><span class="plain"> == </span><span class="constant">PREDICATE_ATOM</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;arity</span><span class="plain"> == 2))</span>
+            <span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">element</span><span class="plain"> == </span><span class="constant">PREDICATE_ATOM</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">arity</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Consider parent optimisation on this binary predicate</span> <span class="cwebmacronumber">5.1.1.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -2506,7 +2488,6 @@ loop in which <code class="display"><span class="extract">*1</span></code> denot
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">objectloop (*1 in *2) if (WearerOf(*1)==parent(*1))</span>
@@ -2528,22 +2509,22 @@ simplifications. We set <code class="display"><span class="extract">optimise_on<
 
 
 <pre class="displaydefn">
-        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;predicate</span><span class="plain">);</span>
+        <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_binary_predicate</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">predicate</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bp</span><span class="plain"> == </span><span class="identifier">R_equality</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">chk</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">chk</span><span class="plain">=0; </span><span class="identifier">chk</span><span class="plain">&lt;=1; </span><span class="identifier">chk</span><span class="plain">++) {</span>
-                <span class="reserved">pcalc_func</span><span class="plain"> *</span><span class="identifier">pf</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[</span><span class="identifier">chk</span><span class="plain">]</span><span class="element">.function</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pf</span><span class="plain">-</span><span class="element">&gt;fn_of.variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="functiontext">BinaryPredicates::write_optimised_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">pf</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain">))) {</span>
-                    <span class="identifier">second_term</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1-</span><span class="identifier">chk</span><span class="plain">];</span>
+                <span class="reserved">pcalc_func</span><span class="plain"> *</span><span class="identifier">pf</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[</span><span class="identifier">chk</span><span class="plain">].</span><span class="element">function</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pf</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">.</span><span class="element">variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="functiontext">BinaryPredicates::write_optimised_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">pf</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain">))) {</span>
+                    <span class="identifier">second_term</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1-</span><span class="identifier">chk</span><span class="plain">];</span>
                     <span class="identifier">parent_optimised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::delete_atom</span><span class="plain">(</span><span class="identifier">proposition</span><span class="plain">, </span><span class="identifier">pl_prev</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[0]</span><span class="element">.variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">) &amp;&amp;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[0].</span><span class="element">variable</span><span class="plain"> == </span><span class="identifier">var</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">BinaryPredicates::write_optimised_loop_schema</span><span class="plain">(&amp;</span><span class="identifier">loop_schema</span><span class="plain">, </span><span class="identifier">bp</span><span class="plain">))) {</span>
-            <span class="identifier">second_term</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-</span><span class="element">&gt;terms</span><span class="plain">[1];</span>
+            <span class="identifier">second_term</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="element">terms</span><span class="plain">[1];</span>
             <span class="identifier">parent_optimised</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">proposition</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::delete_atom</span><span class="plain">(</span><span class="identifier">proposition</span><span class="plain">, </span><span class="identifier">pl_prev</span><span class="plain">);</span>
         <span class="plain">}</span>

@@ -114,7 +114,7 @@ nodes in typical source &mdash; fall into one of two verb types:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ASSERT_VB</span><span class="plain"> 10 </span>    <span class="comment">"The bat and ball are on the table."</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ASSERT_VB</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="comment">"The bat and ball are on the table."</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Finally, the remaining verb types are all direct commands to Inform &mdash;
 note the imperative forms they take: Use, Understand, Include, and so forth.
@@ -150,17 +150,16 @@ the usual sort.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SPECIAL_MEANING_VB</span><span class="plain"> 70</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SPECIAL_MEANING_VB</span><span class="plain"> </span><span class="constant">70</span>
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>This isn't a verb, and is used only to mark errors:
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">BAD_NONVERB</span><span class="plain"> 1000</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BAD_NONVERB</span><span class="plain"> </span><span class="constant">1000</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">FOW</span><span class="plain">, </span><span class="identifier">FSW</span><span class="plain">;</span>
@@ -178,14 +177,13 @@ and remove the marker from them. (So, for instance, if this is run twice
 in quick succession, the second run-through does nothing.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::traverse</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Sentences::VPs::visit</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::visit</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">TRACE_NT</span><span class="plain">) {</span>
-            <span class="identifier">trace_sentences</span><span class="plain"> = 1 - </span><span class="identifier">trace_sentences</span><span class="plain">;</span>
+            <span class="identifier">trace_sentences</span><span class="plain"> = </span><span class="constant">1</span><span class="plain"> - </span><span class="identifier">trace_sentences</span><span class="plain">;</span>
             <span class="identifier">Log::tracing_on</span><span class="plain">(</span><span class="identifier">trace_sentences</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Diagramming"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) &amp;&amp;</span>
@@ -212,7 +210,7 @@ in quick succession, the second run-through does nothing.)
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::within</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">), </span><span class="identifier">options_file_wording</span><span class="plain">)) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rev</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">verb_meaning</span><span class="plain"> *</span><span class="identifier">vm</span><span class="plain"> = </span><span class="identifier">ParseTree::get_verb_meaning</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="identifier">verb_meaning</span><span class="plain"> *</span><span class="identifier">vm</span><span class="plain"> = </span><span class="identifier">ParseTree::get_verb_meaning</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="identifier">special_meaning_fn</span><span class="plain"> </span><span class="identifier">soa</span><span class="plain"> = </span><span class="identifier">VerbMeanings::get_special_meaning</span><span class="plain">(</span><span class="identifier">vm</span><span class="plain">, &amp;</span><span class="identifier">rev</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">err</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">soa</span><span class="plain"> == </span><span class="functiontext">UseOptions::use_SMF</span><span class="plain">) ||</span>
@@ -223,7 +221,7 @@ in quick succession, the second run-through does nothing.)
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">soa</span><span class="plain"> == </span><span class="identifier">PL::Bibliographic::Release::release_along_with_SMF</span><span class="plain">) </span><span class="identifier">err</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">err</span><span class="plain">)</span>
-                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span>    <span class="comment">not usefully testable, anyway</span>
+                <span class="identifier">Problems::Issue::unlocated_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">), </span><span class="comment">not usefully testable, anyway</span>
                     <span class="string">"The options file placed in this installation of Inform's folder "</span>
                     <span class="string">"is incorrect, making use of a sentence form which isn't allowed "</span>
                     <span class="string">"in that situation. The options file is only allowed to contain "</span>
@@ -241,7 +239,6 @@ is quite simple: we feed it to the &lt;nonstructural-sentence&gt; grammar,
 and if that doesn't work, we feed it to &lt;bad-nonstructural-sentence-diagnosis&gt;
 to look for a good contextual problem message.
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">nss_tree_head</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -265,7 +262,6 @@ to look for a good contextual problem message.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">the</span><span class="plain">-</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">&gt; ::=</span>
         <span class="identifier">the</span><span class="plain"> </span><span class="identifier">debugging</span><span class="plain"> </span><span class="identifier">log</span>
@@ -275,18 +271,17 @@ to look for a good contextual problem message.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::include_in_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Index map with ..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Index map with ..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">the</span><span class="plain">-</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -297,13 +292,13 @@ to look for a good contextual problem message.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::omit_from_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Index map with ..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Index map with ..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">the</span><span class="plain">-</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -322,12 +317,11 @@ to look for a good contextual problem message.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PN</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sense</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
-            <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+            <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
+            <span class="functiontext">Sentences::VPs::switch_dl_mode</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">sense</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Sentences::VPs::set_aspect_from_text</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">PN</span><span class="plain">), </span><span class="identifier">sense</span><span class="plain">);</span>
@@ -340,7 +334,6 @@ to look for a good contextual problem message.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">include</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="identifier">only</span><span class="plain"> &lt;</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">-</span><span class="identifier">request</span><span class="plain">&gt; |		==&gt; </span><span class="identifier">R</span><span class="plain">[1] | </span><span class="constant">ONLY_DLR</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -352,7 +345,7 @@ to look for a good contextual problem message.
         <span class="plain">&lt;</span><span class="identifier">preform</span><span class="plain">-</span><span class="identifier">nonterminal</span><span class="plain">&gt; |				==&gt; </span><span class="constant">PREFORM_DLR</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
         <span class="plain">...									==&gt; </span><span class="constant">SOMETHING_DLR</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::set_aspect_from_text</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_state</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">DEBUGGING_LOG_INCLUSIONS</span><span class="plain">, </span><span class="string">"Set contents of debugging log: %W -&gt; %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">DEBUGGING_LOG_INCLUSIONS</span><span class="plain">, </span><span class="string">"Set contents of debugging log: %W -&gt; %s\n"</span><span class="plain">,</span>
             <span class="identifier">W</span><span class="plain">, </span><span class="identifier">new_state</span><span class="plain">?</span><span class="string">"TRUE"</span><span class="plain">:</span><span class="string">"FALSE"</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">See if this is a compound request for debugging information</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="plain">;</span>
@@ -377,11 +370,11 @@ and we also understand "only R" and "everything" and "nothing".
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ONLY_DLR</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EVERYTHING_DLR</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOTHING_DLR</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SOMETHING_DLR</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_DLR</span><span class="plain"> 16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ONLY_DLR</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EVERYTHING_DLR</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOTHING_DLR</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SOMETHING_DLR</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_DLR</span><span class="plain"> </span><span class="constant">16</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -395,7 +388,7 @@ and we also understand "only R" and "everything" and "nothing".
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &amp; </span><span class="constant">EVERYTHING_DLR</span><span class="plain">) { </span><span class="identifier">Log::set_all_aspects</span><span class="plain">(</span><span class="identifier">new_state</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &amp; </span><span class="constant">NOTHING_DLR</span><span class="plain">) { </span><span class="identifier">Log::set_all_aspects</span><span class="plain">(1-</span><span class="identifier">new_state</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &amp; </span><span class="constant">SOMETHING_DLR</span><span class="plain">) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RQW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">-</span><span class="identifier">request</span><span class="plain">&gt;, 1);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RQW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">debugging</span><span class="plain">-</span><span class="identifier">log</span><span class="plain">-</span><span class="identifier">request</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">See if this is a simple request for debugging information</span> <span class="cwebmacronumber">13.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &amp; </span><span class="constant">PREFORM_DLR</span><span class="plain">) { </span><span class="identifier">Preform::watch</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;, </span><span class="identifier">new_state</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
@@ -500,7 +493,6 @@ thus having nothing interesting by way of an object noun phrase, whereas
 action declarations continue with usually extensive further text:
 "... is an action applying to two visible things.", say.
 </li></ul>
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">nonstructural</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">sentence</span><span class="plain">&gt;								==&gt; </span>&lt;<span class="cwebmacro">Construct NSS subtree for regular sentence</span> <span class="cwebmacronumber">14.1</span>&gt;
@@ -514,18 +506,18 @@ action declarations continue with usually extensive further text:
 
 
 <pre class="displaydefn">
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0;</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_PN</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">linguistic_error_here_ANNOT</span><span class="plain">) == </span><span class="identifier">TwoLikelihoods_LINERROR</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Issue two likelihoods problem</span> <span class="cwebmacronumber">14.1.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">ASSERT_VB</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">trace_sentences</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">); </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\n"</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">); </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0;</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -559,7 +551,6 @@ object noun phrase.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">SENTENCE_NT "Railway Departure begins when the player is in the train"</span>
         <span class="plain">    AVERB_NT "begins when"</span>
@@ -570,7 +561,6 @@ object noun phrase.
 <p class="inwebparagraph">This is made by <code class="display"><span class="extract">Sentences::VPs::nss_tree2</span></code>, but there are variants for one noun phrase or three.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::nss_tree1</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">VW</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np1</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_PN</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">AVERB_NT</span><span class="plain">);</span>
@@ -578,7 +568,7 @@ object noun phrase.
         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::nss_tree2</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">VW</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np2</span><span class="plain">) {</span>
@@ -588,7 +578,7 @@ object noun phrase.
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">VP_PN</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::nss_tree3</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">VW</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np3</span><span class="plain">) {</span>
@@ -599,7 +589,7 @@ object noun phrase.
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np1</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np2</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
         <span class="identifier">ParseTree::graft</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">np3</span><span class="plain">, </span><span class="identifier">nss_tree_head</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -630,7 +620,6 @@ regular sentence
 new action.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">figure</span><span class="plain">&gt; ::=</span>
         <span class="identifier">figure</span><span class="plain"> ...							==&gt; </span><span class="identifier">GENERATE_RAW_NP</span>
@@ -654,14 +643,13 @@ new action.
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>"I6" and "Inform 6" are synonymous here.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">&gt; ::=</span>
         <span class="identifier">unicode</span><span class="plain">								==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="plain">&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">&gt; ::=</span>
         <span class="identifier">i6</span><span class="plain"> |								==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">inform</span><span class="plain"> 6							==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">inform</span><span class="plain"> </span><span class="constant">6</span><span class="plain">							==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="plain">&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">natural</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt;					==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1];</span>
@@ -671,24 +659,23 @@ new action.
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::translates_into_unicode_as_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">unicode</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE2_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
                 <span class="functiontext">UnicodeTranslations::unicode_translates</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -699,19 +686,19 @@ new action.
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">i6</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE1_SMFT</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE2_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
                 <span class="functiontext">IdentifierTranslations::as</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -722,20 +709,20 @@ new action.
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">O2W</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[2]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Black king chess piece translates into Unicode as 9818"</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">translation</span><span class="plain">-</span><span class="identifier">target</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt;(</span><span class="identifier">O2W</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain"> = (</span><span class="identifier">inform_language</span><span class="plain"> *) (&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">definite</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="identifier">ParseTree::set_defn_language</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">ParseTree::set_defn_language</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">nl</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE1_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
                 <span class="functiontext">UseNouns::nl_translates</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -757,14 +744,13 @@ usages of past tense assertion verbs in order to give them a better
 Problem message than the one they will otherwise receive later on.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="identifier">nonstructural</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">&gt; ::=</span>
         <span class="plain">... &lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="identifier">nonstructural</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt;</span>
 
     <span class="plain">&lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="identifier">nonstructural</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; ::=</span>
-        <span class="plain">&lt;</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt; &lt;</span><span class="identifier">certainty</span><span class="plain">&gt; &lt;</span><span class="identifier">meaningful</span><span class="plain">-</span><span class="identifier">nonimperative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ... |	==&gt; 0; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain"> + </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">WR</span><span class="plain">[1]) - </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="plain">&lt;</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt; &lt;</span><span class="identifier">meaningful</span><span class="plain">-</span><span class="identifier">nonimperative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ... |						==&gt; 0; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain"> + </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">WR</span><span class="plain">[1]) - </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="plain">&lt;</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt; &lt;</span><span class="identifier">certainty</span><span class="plain">&gt; &lt;</span><span class="identifier">meaningful</span><span class="plain">-</span><span class="identifier">nonimperative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ... |	==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain"> + </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">WR</span><span class="plain">[1]) - </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="plain">&lt;</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt; &lt;</span><span class="identifier">meaningful</span><span class="plain">-</span><span class="identifier">nonimperative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ... |						==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain"> + </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">WR</span><span class="plain">[1]) - </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">&lt;</span><span class="identifier">past</span><span class="plain">-</span><span class="identifier">tense</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ... |																==&gt; </span>&lt;<span class="cwebmacro">Issue PM_NonPresentTense problem</span> <span class="cwebmacronumber">19.1</span>&gt;
         <span class="plain">&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; ...																	==&gt; </span>&lt;<span class="cwebmacro">Issue PM_NegatedVerb1 problem</span> <span class="cwebmacronumber">19.2</span>&gt;
 </pre>
@@ -814,13 +800,12 @@ Problem message than the one they will otherwise receive later on.
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Logging verb numbers. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::VPs::log</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">verb_number</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">verb_number</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ASSERT_VB</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"ASSERT_VB"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"SPECIAL_MEANING_VB"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(number %d)"</span><span class="plain">, </span><span class="identifier">verb_number</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ASSERT_VB:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"ASSERT_VB"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SPECIAL_MEANING_VB:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"SPECIAL_MEANING_VB"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(number %d)"</span><span class="plain">, </span><span class="identifier">verb_number</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -830,7 +815,6 @@ Problem message than the one they will otherwise receive later on.
 <p class="endnote">The function Sentences::VPs::log is used in 1/cm (<a href="1-cm.html#SP5">&#167;5</a>, <a href="1-cm.html#SP6_6">&#167;6.6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b></p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">np</span><span class="plain">-</span><span class="identifier">relative</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">implicit</span><span class="plain">&gt; ::=</span>
@@ -852,7 +836,7 @@ Problem message than the one they will otherwise receive later on.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_wearing</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_wearing</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 
@@ -870,7 +854,7 @@ Problem message than the one they will otherwise receive later on.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_carrying</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_carrying</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 
@@ -888,7 +872,7 @@ Problem message than the one they will otherwise receive later on.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_carrying</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R_carrying</span><span class="plain">, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 
@@ -906,7 +890,7 @@ Problem message than the one they will otherwise receive later on.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = 0; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">PARENTAGE_HERE_RELN</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="plain">*</span><span class="identifier">X</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">NounPhrases::PN_rel</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">PARENTAGE_HERE_RELN</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
 

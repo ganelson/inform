@@ -76,11 +76,10 @@ together, the enumerative ones, and so on. A lower priority number puts you
 higher up, but kinds with priority 0 do not appear in the index at all.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Index::index_kinds</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pass</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
             <span class="identifier">tabulating_kinds_index</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">HTML::begin_wide_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -90,17 +89,17 @@ higher up, but kinds with priority 0 do not appear in the index at all.
             &lt;<span class="cwebmacro">Add the rubric below the chart of kinds</span> <span class="cwebmacronumber">1.6</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> = 1; </span><span class="identifier">priority</span><span class="plain"> &lt;= </span><span class="identifier">LOWEST_INDEX_PRIORITY</span><span class="plain">; </span><span class="identifier">priority</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">priority</span><span class="plain"> &lt;= </span><span class="identifier">LOWEST_INDEX_PRIORITY</span><span class="plain">; </span><span class="identifier">priority</span><span class="plain">++) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> == </span><span class="identifier">Kinds::Behaviour::get_index_priority</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">priority</span><span class="plain"> == 8) || (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) {</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">8</span><span class="plain">) || (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))) {</span>
                         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain">) {</span>
-                            <span class="reserved">case</span><span class="plain"> 1: </span>&lt;<span class="cwebmacro">Write table row for this kind</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="reserved">case</span><span class="plain"> 2:</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span>&lt;<span class="cwebmacro">Write table row for this kind</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
                                 &lt;<span class="cwebmacro">Write heading for the detailed index entry for this kind</span> <span class="cwebmacronumber">1.7</span>&gt;<span class="plain">;</span>
-                                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"tight"</span><span class="plain">);</span>
+                                <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
                                 &lt;<span class="cwebmacro">Index kinds of kinds matched by this kind</span> <span class="cwebmacronumber">1.9</span>&gt;<span class="plain">;</span>
                                 &lt;<span class="cwebmacro">Index explanatory text supplied for a kind</span> <span class="cwebmacronumber">1.11</span>&gt;<span class="plain">;</span>
                                 &lt;<span class="cwebmacro">Index literal patterns which can specify this kind</span> <span class="cwebmacronumber">1.8</span>&gt;<span class="plain">;</span>
@@ -111,10 +110,10 @@ higher up, but kinds with priority 0 do not appear in the index at all.
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">priority</span><span class="plain"> == 1) || (</span><span class="identifier">priority</span><span class="plain"> == 6) || (</span><span class="identifier">priority</span><span class="plain"> == 7)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 1) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">6</span><span class="plain">) || (</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">7</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Add a dotty row to the chart of kinds</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> == 7) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">7</span><span class="plain">) {</span>
                         &lt;<span class="cwebmacro">Add a second titling row to the chart of kinds</span> <span class="cwebmacronumber">1.3</span>&gt;<span class="plain">;</span>
                         &lt;<span class="cwebmacro">Add a dotty row to the chart of kinds</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
                     <span class="plain">}</span>
@@ -122,7 +121,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pass</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Add a dotty row to the chart of kinds</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
             <span class="identifier">HTML::end_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">tabulating_kinds_index</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -145,7 +144,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">Kinds::Compare::super</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">))</span>
-                <span class="functiontext">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, 2, (</span><span class="identifier">pass</span><span class="plain"> == 1)?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">);</span>
+                <span class="functiontext">Data::Objects::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, (</span><span class="identifier">pass</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -162,7 +161,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0, </span><span class="string">"#e0e0e0"</span><span class="plain">);</span>
+        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="string">"#e0e0e0"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;basic kinds&lt;/b&gt;"</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind_col_head</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"default value"</span><span class="plain">, </span><span class="string">"default"</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind_col_head</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"repeat"</span><span class="plain">, </span><span class="string">"repeat"</span><span class="plain">);</span>
@@ -185,7 +184,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0, </span><span class="string">"#e0e0e0"</span><span class="plain">);</span>
+        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="string">"#e0e0e0"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;making new kinds from old&lt;/b&gt;"</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind_col_head</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"default value"</span><span class="plain">, </span><span class="string">"default"</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind_col_head</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">""</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
@@ -208,8 +207,8 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"bgcolor=\</span><span class="plain">"</span><span class="string">#888\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"height=\</span><span class="plain">"</span><span class="string">1\</span><span class="plain">"</span><span class="string"> colspan=\</span><span class="plain">"</span><span class="string">5\</span><span class="plain">"</span><span class="string"> cellpadding=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"bgcolor=\"#888\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"height=\"1\" colspan=\"5\" cellpadding=\"0\""</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
 </pre>
@@ -230,7 +229,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 <pre class="displaydefn">
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">repeat</span><span class="plain"> = </span><span class="string">"cross"</span><span class="plain">, *</span><span class="identifier">props</span><span class="plain"> = </span><span class="string">"cross"</span><span class="plain">, *</span><span class="identifier">under</span><span class="plain"> = </span><span class="string">"cross"</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">shaded</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::get_highest_valid_value_as_integer</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == 0) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Behaviour::get_highest_valid_value_as_integer</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Kinds::Behaviour::indexed_grey_if_empty</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)))</span>
                 <span class="identifier">shaded</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::compile_domain_possible</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="identifier">repeat</span><span class="plain"> = </span><span class="string">"tick"</span><span class="plain">;</span>
@@ -238,7 +237,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::offers_I6_GPR</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="identifier">under</span><span class="plain"> = </span><span class="string">"tick"</span><span class="plain">;</span>
         <span class="functiontext">Kinds::Index::begin_chart_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind_name_cell</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">shaded</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> == 8) { </span><span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">props</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">under</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">priority</span><span class="plain"> == </span><span class="constant">8</span><span class="plain">) { </span><span class="identifier">repeat</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">props</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">under</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; }</span>
         <span class="functiontext">Kinds::Index::end_chart_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">shaded</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">repeat</span><span class="plain">, </span><span class="identifier">props</span><span class="plain">, </span><span class="identifier">under</span><span class="plain">);</span>
 </pre>
 
@@ -257,8 +256,8 @@ row.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">display:none\</span><span class="plain">"</span><span class="string"> id=\</span><span class="plain">"</span><span class="string">default\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">5\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\"display:none\" id=\"default\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"5\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"The &lt;b&gt;default value&lt;/b&gt; is used when we make something like "</span>
             <span class="string">"a variable but don't tell Inform what its value is. For instance, if "</span>
             <span class="string">"we write 'Zero hour is a time that varies', but don't tell Inform "</span>
@@ -270,8 +269,8 @@ row.
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">display:none\</span><span class="plain">"</span><span class="string"> id=\</span><span class="plain">"</span><span class="string">repeat\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">5\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\"display:none\" id=\"repeat\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"5\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"A tick for &lt;b&gt;repeat&lt;/b&gt; means that it's possible to "</span>
             <span class="string">"repeat through values of this kind. For instance, 'repeat with T "</span>
             <span class="string">"running through times:' is allowed, but 'repeat with N running "</span>
@@ -281,8 +280,8 @@ row.
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">display:none\</span><span class="plain">"</span><span class="string"> id=\</span><span class="plain">"</span><span class="string">props\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">5\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\"display:none\" id=\"props\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"5\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"A tick for &lt;b&gt;props&lt;/b&gt; means that values of this "</span>
             <span class="string">"kind can have properties. For instance, 'A scene can be thrilling or "</span>
             <span class="string">"dull.' makes an either/or property of a scene, but 'A number can be "</span>
@@ -293,12 +292,12 @@ row.
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">display:none\</span><span class="plain">"</span><span class="string"> id=\</span><span class="plain">"</span><span class="string">under\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">5\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"style=\"display:none\" id=\"under\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"5\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"A tick for &lt;b&gt;under&lt;/b&gt; means that it's possible "</span>
-            <span class="string">"to understand values of this kind. For instance, 'Understand \</span><span class="plain">"</span><span class="string">award "</span>
-            <span class="string">"[number]\</span><span class="plain">"</span><span class="string"> as awarding.' might be allowed, if awarding were an action "</span>
-            <span class="string">"applying to a number, but 'Understand \</span><span class="plain">"</span><span class="string">run [rule]\</span><span class="plain">"</span><span class="string"> as rule-running.' "</span>
+            <span class="string">"to understand values of this kind. For instance, 'Understand \"award "</span>
+            <span class="string">"[number]\" as awarding.' might be allowed, if awarding were an action "</span>
+            <span class="string">"applying to a number, but 'Understand \"run [rule]\" as rule-running.' "</span>
             <span class="string">"is not allowed - there are so many rules with such long names that "</span>
             <span class="string">"Inform doesn't add them to its vocabulary during play."</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
@@ -320,28 +319,28 @@ row.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"halftight"</span><span class="plain">);</span>
-        <span class="identifier">Index::anchor_numbered</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)-&gt;</span><span class="identifier">allocation_id</span><span class="plain">); </span>    <span class="comment">...the anchor to which the grey icon in the table led</span>
+        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"halftight"</span><span class="plain">);</span>
+        <span class="identifier">Index::anchor_numbered</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)-&gt;</span><span class="identifier">allocation_id</span><span class="plain">); </span><span class="comment">...the anchor to which the grey icon in the table led</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;"</span><span class="plain">); </span><span class="functiontext">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/b&gt;"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (&lt;i&gt;plural&lt;/i&gt; "</span><span class="plain">); </span><span class="functiontext">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
-            <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)); </span>    <span class="comment">blue help icon, if any</span>
+            <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)); </span><span class="comment">blue help icon, if any</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"tight"</span><span class="plain">);</span>
+            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">a</span><span class="plain"> = </span><span class="identifier">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == 2) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), 0) ==</span>
-                    <span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), 1)))</span>
-                <span class="identifier">a</span><span class="plain"> = 1;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">0</span><span class="plain">) ==</span>
+                    <span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">1</span><span class="plain">)))</span>
+                <span class="identifier">a</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;"</span><span class="plain">);</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">a</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">) &gt; 0)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Constructors::variance</span><span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"covariant"</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"contravariant"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> &gt; 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" in %c"</span><span class="plain">, </span><span class="character">'K'</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" in %c"</span><span class="plain">, </span><span class="character">'K'</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
             <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=#contra&gt;"</span><span class="plain">);</span>
@@ -414,7 +413,7 @@ is made, so that the following sentence can't have an empty list in it.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_an_enumeration</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
-            <span class="functiontext">Data::Objects::index_instances</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, 1);</span>
+            <span class="functiontext">Data::Objects::index_instances</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -433,7 +432,7 @@ is made, so that the following sentence can't have an empty list in it.
 
 <pre class="displaydefn">
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_specification_text</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">explanation</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -452,7 +451,7 @@ is made, so that the following sentence can't have an empty list in it.
 <pre class="displaydefn">
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"name=contra"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">smaller\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"smaller\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;Covariance&lt;/b&gt; means that if K is a kind of L, then something "</span>
             <span class="string">"you make from K can be used as the same thing made from L. For example, "</span>
             <span class="string">"a list of doors can be used as a list of things, because 'list of K' is "</span>
@@ -471,13 +470,12 @@ is made, so that the following sentence can't have an empty list in it.
 link is to the part of the rubric explaining what goes into the column.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Index::index_kind_col_head</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">anchor</span><span class="plain">) {</span>
-        <span class="identifier">HTML::next_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::next_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;%s&lt;/i&gt;&amp;nbsp;"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">anchor</span><span class="plain">) {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onClick=\</span><span class="plain">"</span><span class="string">showBasic('%s');\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">anchor</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"#\" onClick=\"showBasic('%s');\""</span><span class="plain">, </span><span class="identifier">anchor</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/shelp.png"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -492,14 +490,13 @@ link is to the part of the rubric explaining what goes into the column.
 is called &mdash;
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">striper</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Index::begin_chart_row</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">col</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">striper</span><span class="plain">) </span><span class="identifier">col</span><span class="plain"> = </span><span class="string">"#f0f0ff"</span><span class="plain">;</span>
-        <span class="identifier">striper</span><span class="plain"> = </span><span class="identifier">striper</span><span class="plain">?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0, </span><span class="identifier">col</span><span class="plain">);</span>
+        <span class="identifier">striper</span><span class="plain"> = </span><span class="identifier">striper</span><span class="plain">?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
+        <span class="identifier">HTML::first_html_column_nowrap</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -518,22 +515,21 @@ a kind which can have enumerated values but doesn't at the moment &mdash;
 for instance, the sound effects row is shaded if there are none.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Index::index_kind_name_cell</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">shaded</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
         <span class="functiontext">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::is_quasinumerical</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">Kinds.html?segment2\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"Kinds.html?segment2\""</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/calc1.png"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
             <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::Behaviour::get_documentation_reference</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-        <span class="identifier">Index::below_link_numbered</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)-&gt;</span><span class="identifier">allocation_id</span><span class="plain">); </span>    <span class="comment">a grey see below icon leading to an anchor on pass 2</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="identifier">Index::below_link_numbered</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)-&gt;</span><span class="identifier">allocation_id</span><span class="plain">); </span><span class="comment">a grey see below icon leading to an anchor on pass 2</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shaded</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -547,30 +543,29 @@ for instance, the sound effects row is shaded if there are none.
 whole row.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Index::end_chart_row</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">shaded</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tick1</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tick2</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tick3</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick1</span><span class="plain">) </span><span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">HTML::next_html_column_spanning</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0, 4);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick1</span><span class="plain">) </span><span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">HTML::next_html_column_spanning</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Index the default value entry in the kind chart</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shaded</span><span class="plain">) </span><span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick1</span><span class="plain">) {</span>
-            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick1</span><span class="plain">)</span>
                 <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">,</span>
-                    <span class="string">"border=0 alt=\</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string"> src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
+                    <span class="string">"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
                     <span class="identifier">tick1</span><span class="plain">, </span><span class="identifier">shaded</span><span class="plain">?</span><span class="string">"grey"</span><span class="plain">:</span><span class="string">""</span><span class="plain">, </span><span class="identifier">tick1</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick2</span><span class="plain">)</span>
                 <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">,</span>
-                    <span class="string">"border=0 alt=\</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string"> src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
+                    <span class="string">"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
                     <span class="identifier">tick2</span><span class="plain">, </span><span class="identifier">shaded</span><span class="plain">?</span><span class="string">"grey"</span><span class="plain">:</span><span class="string">""</span><span class="plain">, </span><span class="identifier">tick2</span><span class="plain">);</span>
-            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+            <span class="identifier">HTML::next_html_column_centred</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tick3</span><span class="plain">)</span>
                 <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">,</span>
-                    <span class="string">"border=0 alt=\</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string"> src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
+                    <span class="string">"border=0 alt=\"%s\" src=inform:/doc_images/%s%s.png"</span><span class="plain">,</span>
                     <span class="identifier">tick3</span><span class="plain">, </span><span class="identifier">shaded</span><span class="plain">?</span><span class="string">"grey"</span><span class="plain">:</span><span class="string">""</span><span class="plain">, </span><span class="identifier">tick3</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -622,7 +617,7 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">))</span>
             <span class="functiontext">LiteralPatterns::index_value</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">,</span>
-                <span class="functiontext">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), 0);</span>
+                <span class="functiontext">LiteralPatterns::list_of_literal_forms</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="constant">0</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"--"</span><span class="plain">);</span>
 </pre>
@@ -632,7 +627,6 @@ as "0 kg", "0 hectares", or whatever is appropriate.
 <p class="endnote">This code is used in <a href="#SP5_1">&#167;5.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Indexing kind names. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Index::index_kind</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">with_links</span><span class="plain">) {</span>
@@ -672,8 +666,8 @@ as "0 kg", "0 hectares", or whatever is appropriate.
                 <span class="identifier">last_stroke</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> = 0, </span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">length</span><span class="plain">-1;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_stroke</span><span class="plain"> &gt;= 0) </span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">last_stroke</span><span class="plain">+1; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">tinted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">to</span><span class="plain"> = </span><span class="identifier">length</span><span class="plain">-1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_stroke</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">last_stroke</span><span class="plain">+1; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">tinted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tinted</span><span class="plain">) </span><span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">from</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">to</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">untinted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>

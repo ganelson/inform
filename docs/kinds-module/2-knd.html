@@ -72,7 +72,6 @@ constructions in a row:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(nothing) --&gt; text</span>
         <span class="plain">(nothing) --&gt; time</span>
@@ -89,7 +88,7 @@ is the "arity" of the construction. These four steps have arities 0, 0, 1, 2.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Inform stores the possible constructions in <code class="display"><span class="extract">kind_constructor</span></code> structures;
 about 40 of these are used to provide the built-in range of kinds, and come
@@ -107,7 +106,6 @@ creates a new kind. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">(nothing) --&gt; weight</span>
@@ -134,7 +132,6 @@ being used; so the kind "number" is represented by a single leaf node:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">number</span>
 </pre>
@@ -144,7 +141,6 @@ four nodes like so:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">relation of K to L</span>
@@ -179,7 +175,6 @@ around that by using "punctuation nodes" in the tree. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">function K -&gt; L</span>
@@ -242,7 +237,6 @@ holds the whole thing, like "number";
 </li><li>(b) those where instances are stored as pointers to larger blocks of data on the
 heap, like "stored action".
 </li></ul>
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_word_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -260,10 +254,9 @@ or truth states, which are stored as 0 and 1 not 1 and 2. In particular, it
 isn't the same thing as having a finite range in the Kinds index.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_arithmetic_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_real_arithmetic_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">those using real, not integer, arithmetic</span>
+    <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_real_arithmetic_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">those using real, not integer, arithmetic</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_enumerated_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
@@ -277,7 +270,6 @@ Thus we store (A, B, C) as
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">CON_TUPLE_ENTRY(A, CON_TUPLE_ENTRY(B, CON_TUPLE_ENTRY(C, CON_NIL)))</span>
@@ -299,7 +291,6 @@ by the constructor <code class="display"><span class="extract">CON_combination</
 subtree. You might guess that an ordered pair of a text and a time would be
 represented by the <code class="display"><span class="extract">CON_TUPLE_ENTRY</span></code> constructor on its own, but it isn't.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_nil</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">CON_NIL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -316,7 +307,6 @@ kind tree might represent "area divided by time squared", say, and it must
 be annotated to show exactly which intermediate kind is meant.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">CON_INTERMEDIATE</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -332,7 +322,6 @@ might result in a kind node labelled as L, which can be any kind matching
 "arithmetic value".)
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -342,7 +331,6 @@ might result in a kind node labelled as L, which can be any kind matching
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>So much for the exotica: back onto familiar ground for anyone who uses
 Inform. Some standard kinds:
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_action_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -383,7 +371,6 @@ kind shouldn't be used for storage, it's hidden from the user.
 constant value specification of this kind stores a <code class="display"><span class="extract">grammar_verb *</span></code> pointer.
 It's an untidy internal device which may well be removed later.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_rulebook_outcome</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K_understanding</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -393,7 +380,6 @@ It's an untidy internal device which may well be removed later.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Finally, the constructors used by Inform authors:
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">CON_list_of</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -414,13 +400,12 @@ It's an untidy internal device which may well be removed later.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>Finally, then, it's time to define what a kind node looks like:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">construct</span><span class="plain">; </span>    <span class="comment">which can never be <code class="display"><span class="extract">NULL</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_variable_number</span><span class="plain">; </span>    <span class="comment">only used if construct is <code class="display"><span class="extract">CON_KIND_VARIABLE</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">intermediate_result</span><span class="plain">; </span>    <span class="comment">only used if construct is <code class="display"><span class="extract">CON_INTERMEDIATE</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kc_args</span><span class="plain">[</span><span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain">]; </span>    <span class="comment">used if arity positive, or for <code class="display"><span class="extract">CON_KIND_VARIABLE</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">construct</span><span class="plain">; </span><span class="comment">which can never be <code class="display"><span class="extract">NULL</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_variable_number</span><span class="plain">; </span><span class="comment">only used if construct is <code class="display"><span class="extract">CON_KIND_VARIABLE</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">intermediate_result</span><span class="plain">; </span><span class="comment">only used if construct is <code class="display"><span class="extract">CON_INTERMEDIATE</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">kc_args</span><span class="plain">[</span><span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain">]; </span><span class="comment">used if arity positive, or for <code class="display"><span class="extract">CON_KIND_VARIABLE</span></code></span>
     <span class="plain">} </span><span class="reserved">kind</span><span class="plain">;</span>
 </pre>
 
@@ -431,11 +416,10 @@ It's an untidy internal device which may well be removed later.
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>We keep some statistics for tracking memory usage:
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_base_kinds_created</span><span class="plain"> = 0;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_intermediate_kinds_created</span><span class="plain"> = 0;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_constructed_kinds_created</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_base_kinds_created</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_intermediate_kinds_created</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_constructed_kinds_created</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -447,23 +431,22 @@ only on the first request, and cache the pointer to it with the constructor;
 we can then use that same pointer on all subsequent requests.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::base_construction</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"impossible construction"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) || (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"forbidden construction"</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> 1:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_list_of</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">kind</span><span class="plain"> **</span><span class="identifier">cache</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::cache_location</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cache</span><span class="plain">) { </span><span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">cache</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> *</span><span class="identifier">cache</span><span class="plain">; }</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Create a raw kind structure</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cache</span><span class="plain">) *</span><span class="identifier">cache</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">no_base_kinds_created</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
@@ -484,15 +467,14 @@ evanescent kinds are given the special constructor <code class="display"><span c
 These are needed relatively seldom and are not cached.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::intermediate_construction</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain"> *</span><span class="identifier">ik</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ik</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"made unknown as Kinds::intermediate_construction"</span><span class="plain">);</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Create a raw kind structure</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain">);</span>
-        <span class="plain">*(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain">) = *</span><span class="identifier">ik</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">unit_sequence</span><span class="plain">);</span>
+        <span class="plain">*(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain">) = *</span><span class="identifier">ik</span><span class="plain">;</span>
         <span class="identifier">no_intermediate_kinds_created</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -509,15 +491,14 @@ might be marked as being an arithmetical kind of value. See "Kind
 Checking.w".
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::variable_construction</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">declaration</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">N</span><span class="plain"> == 0) || (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">MAX_KIND_VARIABLES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad kind variable"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">N</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">MAX_KIND_VARIABLES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad kind variable"</span><span class="plain">);</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Create a raw kind structure</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kind_variable_number</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0] = </span><span class="identifier">declaration</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kind_variable_number</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0] = </span><span class="identifier">declaration</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -532,7 +513,6 @@ using the following. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Kinds::unary_construction(CON_list_of, K_number)</span>
 </pre>
@@ -543,28 +523,27 @@ in memory of the same structure. Profiling shows that little memory is in
 practice wasted.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) != 1) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad unary construction"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad unary construction"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Create a raw kind structure</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0] = </span><span class="identifier">X</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0] = </span><span class="identifier">X</span><span class="plain">;</span>
         <span class="identifier">no_constructed_kinds_created</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">Y</span><span class="plain">) {</span>
         <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) != 2) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad binary construction"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) != </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad binary construction"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Create a raw kind structure</span> <span class="cwebmacronumber">18.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0] = </span><span class="identifier">X</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[1] = </span><span class="identifier">Y</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0] = </span><span class="identifier">X</span><span class="plain">; </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[1] = </span><span class="identifier">Y</span><span class="plain">;</span>
         <span class="identifier">no_constructed_kinds_created</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_phrase</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">X</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">Y</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad function kind"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">X</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">X</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0] == </span><span class="identifier">K_nil</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">X</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0] == </span><span class="identifier">K_nil</span><span class="plain">))</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"nil nil"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bizarre"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bizarre"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -588,11 +567,11 @@ following initialisation:
 
 <pre class="displaydefn">
         <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;intermediate_result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kind_variable_number</span><span class="plain"> = 0;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">intermediate_result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kind_variable_number</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -608,7 +587,6 @@ one argument, comes out as:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">CON_phrase</span>
         <span class="plain">	CON_TUPLE_ENTRY</span>
@@ -622,7 +600,6 @@ one argument, comes out as:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">CON_phrase</span>
         <span class="plain">	X</span>
@@ -631,7 +608,6 @@ one argument, comes out as:
 
 <p class="inwebparagraph">(It's more convenient to have a predictable form than to save on kind nodes.)
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::function_kind</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_args</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> **</span><span class="identifier">args</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">return_K</span><span class="plain">) {</span>
@@ -650,7 +626,6 @@ one argument, comes out as:
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Constructing kinds for pairs. </b>Similarly, but more simply, here is the kind for an ordered pair of values:
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::pair_kind</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">Y</span><span class="plain">) {</span>
@@ -681,7 +656,6 @@ this would be unsuitable as the kind of any data, but is convenient for
 drawing up the index, and so on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::first_base_k</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">;</span>
@@ -693,7 +667,7 @@ drawing up the index, and so on.
 
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::next_base_k</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">;</span>
+        <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">;</span>
         <span class="reserved">do</span><span class="plain"> {</span>
             <span class="identifier">con</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">) || (</span><span class="identifier">con</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">));</span>
@@ -711,10 +685,9 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Annotations of kinds. </b>Most of the time, the only annotation of a kind node is the constructor used:
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="functiontext">Kinds::get_construct</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -726,20 +699,19 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>But for the benefit of intermediate and variable kind nodes, we also need:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::is_intermediate</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_INTERMEDIATE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::get_variable_number</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kind_variable_number</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kind_variable_number</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::get_variable_stipulation</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0];</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_KIND_VARIABLE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0];</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -755,16 +727,15 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Two convenient wrappers for talking about the constructor used:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -777,11 +748,10 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>Given, say, "list of numbers", the following returns "number":
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::unary_construction_material</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0];</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">kc_args</span><span class="plain">[0];</span>
     <span class="plain">}</span>
 </pre>
 
@@ -792,15 +762,14 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>More awkwardly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction_material</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> **</span><span class="identifier">X</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> **</span><span class="identifier">Y</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 2) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">2</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain">) *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">) *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain">) *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[0];</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">) *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[1];</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain">) *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[0];</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Y</span><span class="plain">) *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[1];</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -812,14 +781,13 @@ drawing up the index, and so on.
 <p class="inwebparagraph"><a id="SP28"></a><b>&#167;28. Traversing the tree. </b>Here we look through a kind tree in search of a given constructor at any node.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::contains</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">con</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">con</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MAX_KIND_CONSTRUCTION_ARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::contains</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">con</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::contains</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">kc_args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">con</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -844,12 +812,11 @@ we return a different structure imitating the shape of the original.
 assuming that it was originally <code class="display"><span class="extract">FALSE</span></code> before the first use of this function.
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::substitute</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> **</span><span class="identifier">meanings</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">changed</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meanings</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">meanings</span><span class="plain"> = </span><span class="identifier">values_of_kind_variables</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Kinds::get_variable_number</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="plain">*</span><span class="identifier">changed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">meanings</span><span class="plain">[</span><span class="identifier">N</span><span class="plain">];</span>
         <span class="plain">}</span>
@@ -857,12 +824,12 @@ assuming that it was originally <code class="display"><span class="extract">FALS
             <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">X_after</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y_after</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tx</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">ty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> = </span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">X_after</span><span class="plain"> = </span><span class="functiontext">Kinds::substitute</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">meanings</span><span class="plain">, &amp;</span><span class="identifier">tx</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tx</span><span class="plain">) {</span>
                     <span class="plain">*</span><span class="identifier">changed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="identifier">X_after</span><span class="plain">);</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="identifier">X_after</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
@@ -870,7 +837,7 @@ assuming that it was originally <code class="display"><span class="extract">FALS
                 <span class="identifier">Y_after</span><span class="plain"> = </span><span class="functiontext">Kinds::substitute</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">, </span><span class="identifier">meanings</span><span class="plain">, &amp;</span><span class="identifier">ty</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">tx</span><span class="plain">) || (</span><span class="identifier">ty</span><span class="plain">)) {</span>
                     <span class="plain">*</span><span class="identifier">changed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="identifier">X_after</span><span class="plain">, </span><span class="identifier">Y_after</span><span class="plain">);</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="identifier">X_after</span><span class="plain">, </span><span class="identifier">Y_after</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -886,18 +853,17 @@ assuming that it was originally <code class="display"><span class="extract">FALS
 subkind of "object" is replaced by "object".
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> = </span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">));</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">), </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">));</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">), </span><span class="functiontext">Kinds::weaken</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_object</span><span class="plain">;</span>
@@ -914,21 +880,20 @@ subkind of "object" is replaced by "object".
 referring to their values, and these have different kinds. So:
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::dereference_properties</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain"> == </span><span class="identifier">CON_property</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain"> == </span><span class="identifier">CON_property</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> = </span><span class="functiontext">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">a</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="identifier">X</span><span class="plain"> = </span><span class="functiontext">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">,</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::unary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">,</span>
                     <span class="functiontext">Kinds::dereference_properties</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">,</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">,</span>
                     <span class="functiontext">Kinds::dereference_properties</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">), </span><span class="functiontext">Kinds::dereference_properties</span><span class="plain">(</span><span class="identifier">Y</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -944,7 +909,6 @@ referring to their values, and these have different kinds. So:
 each natural language whose bundle it can find. "Grammatical gender" is used
 as a kind whose name coincides with a property.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">linguistic</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt; ::=</span>
@@ -971,9 +935,8 @@ following is called in response to sentences like:
 is the super-kind ("value", "thing").
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_kinds_of_object</span><span class="plain"> = 1;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_kinds_of_object</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::new_base</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">super</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PROTECTED_MODEL_PROCEDURE</span>
         <span class="identifier">PROTECTED_MODEL_PROCEDURE</span><span class="plain">;</span>
@@ -991,14 +954,14 @@ is the super-kind ("value", "thing").
         &lt;<span class="cwebmacro">Use the source-text name to attach a noun to the constructor</span> <span class="cwebmacronumber">33.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">linguistic</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="functiontext">Kinds::Constructors::mark_as_linguistic</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::Constructors::mark_as_linguistic</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">K_inform_language</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">K_inform_language</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NATURAL_LANGUAGES_PRESENT</span>
                     <span class="identifier">NaturalLanguages::stock_nl_kind</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">K_grammatical_gender</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">K_grammatical_gender</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
@@ -1015,7 +978,7 @@ is the super-kind ("value", "thing").
         <span class="identifier">Plugins::Call::new_base_kind_notify</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="identifier">latest_base_kind_of_value</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Created base kind $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Created base kind $u\n"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1042,7 +1005,7 @@ matched up with the inference subject already existing.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">Plugins::Call::name_to_early_infs</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;</span><span class="identifier">revised</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">revised</span><span class="plain">) {</span>
             <span class="identifier">InferenceSubjects::renew</span><span class="plain">(</span><span class="identifier">revised</span><span class="plain">,</span>
-                <span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">), </span><span class="identifier">KIND_SUB</span><span class="plain">, </span><span class="identifier">STORE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">), </span><span class="identifier">LIKELY_CE</span><span class="plain">);</span>
+                <span class="identifier">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">), </span><span class="identifier">KIND_SUB</span><span class="plain">, </span><span class="identifier">STORE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">), </span><span class="identifier">LIKELY_CE</span><span class="plain">);</span>
             <span class="identifier">Kinds::Knowledge::set_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">revised</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">endif</span>
@@ -1063,10 +1026,10 @@ matched up with the inference subject already existing.
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">Nouns::new_common_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain"> + </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> +</span>
             <span class="identifier">REGISTER_PLURAL_NTOPT</span><span class="plain"> + </span><span class="identifier">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain">,</span>
-            <span class="constant">KIND_SLOW_MC</span><span class="plain">, </span><span class="identifier">STORE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">));</span>
+            <span class="constant">KIND_SLOW_MC</span><span class="plain">, </span><span class="identifier">STORE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">super</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))</span>
             <span class="identifier">Nouns::set_range_number</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">no_kinds_of_object</span><span class="plain">++);</span>
-        <span class="functiontext">Kinds::Constructors::attach_noun</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">, </span><span class="identifier">nt</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::Constructors::attach_noun</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">, </span><span class="identifier">nt</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1154,7 +1117,6 @@ it is. There is no need for speed here.
 
 <p class="inwebparagraph"><a id="SP35"></a><b>&#167;35. Annotating vocabulary. </b></p>
 
-
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::read_kind_marking_from_vocabulary</span><span class="plain">(</span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ve</span><span class="plain">-&gt;</span><span class="identifier">means</span><span class="plain">.</span><span class="identifier">one_word_kind</span><span class="plain">;</span>
@@ -1178,7 +1140,6 @@ so we need the client to help us. <code class="display"><span class="extract">v<
 <code class="display"><span class="extract">NULL</span></code> means there is no current meaning; so if the client provides no
 function to tell us, then all variables are permanently unset.
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::variable_from_context</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">) {</span>
@@ -1215,7 +1176,6 @@ texts in HTML. So the client is allowed to define <code class="display"><span cl
 to some routine of her own, gazumping this one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">KINDS_PROBLEM_HANDLER</span>
@@ -1225,34 +1185,34 @@ to some routine of her own, gazumping this one.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">));</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DimensionRedundant_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionRedundant_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"multiplication rule given twice: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DimensionNotBaseKOV_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionNotBaseKOV_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"multiplication rule too complex: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NonDimensional_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NonDimensional_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"multiplication rule quotes non-numerical kinds: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnitSequenceOverflow_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnitSequenceOverflow_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"multiplication rule far too complex: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DimensionsInconsistent_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionsInconsistent_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"multiplication rule creates inconsistency: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KindUnalterable_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindUnalterable_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"making this subkind would lead to a contradiction: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KindsCircular_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindsCircular_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"making this subkind would lead to a circularity: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LPCantScaleYet_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleYet_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"tries to scale a value with no point of reference: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LPCantScaleTwice_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleTwice_KINDERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"tries to scale a value which has already been scaled: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented problem message"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented problem message"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>

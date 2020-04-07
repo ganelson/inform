@@ -87,15 +87,14 @@ explicit, though nameless, I7 rule:
 structure to hold details of their specific meanings:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">definition</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">definition_node</span><span class="plain">; </span>    <span class="comment">current sentence: where the word "Definition" is</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">node</span><span class="plain">; </span>    <span class="comment">where the actual definition is</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">format</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">+1</span></code> to go by condition, <code class="display"><span class="extract">-1</span></code> to negate it, <code class="display"><span class="extract">0</span></code> to use routine</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">condition_to_match</span><span class="plain">; </span>    <span class="comment">text of condition to match, if <code class="display"><span class="extract">+1</span></code> or <code class="display"><span class="extract">-1</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">domain_calling</span><span class="plain">; </span>    <span class="comment">what if anything the term is called</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am_of_def</span><span class="plain">; </span>    <span class="comment">which adjective meaning</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">definition_node</span><span class="plain">; </span><span class="comment">current sentence: where the word "Definition" is</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">node</span><span class="plain">; </span><span class="comment">where the actual definition is</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">format</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">+1</span></code> to go by condition, <code class="display"><span class="extract">-1</span></code> to negate it, <code class="display"><span class="extract">0</span></code> to use routine</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">condition_to_match</span><span class="plain">; </span><span class="comment">text of condition to match, if <code class="display"><span class="extract">+1</span></code> or <code class="display"><span class="extract">-1</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">domain_calling</span><span class="plain">; </span><span class="comment">what if anything the term is called</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">am_of_def</span><span class="plain">; </span><span class="comment">which adjective meaning</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">definition</span><span class="plain">;</span>
 </pre>
@@ -116,7 +115,6 @@ example:
 <p class="inwebparagraph">we recognise this as a definition because its preamble consists just of
 that one word:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">definition</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt; ::=</span>
@@ -167,7 +165,6 @@ binary predicates, so it seems odd to have it for unary predicates, and
 the doubled use of colons is unfortunate.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt; </span><span class="identifier">is</span><span class="plain">/</span><span class="identifier">are</span><span class="plain"> &lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt; </span><span class="reserved">if</span><span class="plain"> ... |		==&gt; </span><span class="constant">DEFINED_POSITIVELY</span>
@@ -175,13 +172,13 @@ the doubled use of colons is unfortunate.)
         <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt; </span><span class="identifier">is</span><span class="plain">/</span><span class="identifier">are</span><span class="plain"> &lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt;				==&gt; </span><span class="constant">DEFINED_PHRASALLY</span>
 
     <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... ( </span><span class="identifier">called</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> ... ) |		==&gt; 0; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
-        <span class="plain">... ( </span><span class="identifier">called</span><span class="plain"> ... ) |			==&gt; 0; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
-        <span class="plain">...								==&gt; 0; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">FALSE</span>
+        <span class="plain">... ( </span><span class="identifier">called</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> ... ) |		==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
+        <span class="plain">... ( </span><span class="identifier">called</span><span class="plain"> ... ) |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
+        <span class="plain">...								==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt; = </span><span class="identifier">FALSE</span>
 
     <span class="plain">&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... </span><span class="identifier">rather</span><span class="plain"> </span><span class="identifier">than</span><span class="plain"> ... |			==&gt; 0; &lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
-        <span class="plain">...								==&gt; 0; &lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt; = </span><span class="identifier">FALSE</span>
+        <span class="plain">... </span><span class="identifier">rather</span><span class="plain"> </span><span class="identifier">than</span><span class="plain"> ... |			==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt; = </span><span class="identifier">TRUE</span>
+        <span class="plain">...								==&gt; </span><span class="constant">0</span><span class="plain">; &lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt; = </span><span class="identifier">FALSE</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -191,9 +188,9 @@ the doubled use of colons is unfortunate.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">DEFINED_POSITIVELY</span><span class="plain"> 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DEFINED_POSITIVELY</span><span class="plain"> </span><span class="constant">1</span>
     <span class="definitionkeyword">define</span> <span class="constant">DEFINED_NEGATIVELY</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DEFINED_PHRASALLY</span><span class="plain"> 0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DEFINED_PHRASALLY</span><span class="plain"> </span><span class="constant">0</span>
     <span class="definitionkeyword">define</span> <span class="constant">DEFINED_IN_SOME_WAY_NOT_YET_KNOWN</span><span class="plain"> -2</span>
 </pre>
 
@@ -207,21 +204,21 @@ the doubled use of colons is unfortunate.)
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">definition</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) {</span>
                 <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
                 <span class="functiontext">Modules::set_current</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">)?(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">)?(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Futz with the parse tree, trying right not down</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
 
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">DNW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">domain name</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CALLW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">calling</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">adjective name</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">negation name</span>
-                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CONW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span>    <span class="comment">condition text</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">DNW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">domain name</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CALLW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">calling</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">adjective name</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">negation name</span>
+                <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CONW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">; </span><span class="comment">condition text</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">the_format</span><span class="plain"> = </span><span class="constant">DEFINED_IN_SOME_WAY_NOT_YET_KNOWN</span><span class="plain">;</span>
 
                 &lt;<span class="cwebmacro">Parse the Q-node as an adjective definition</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Perform sanity checks on the result</span> <span class="cwebmacronumber">5.3</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Register the resulting adjective</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
 
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_format</span><span class="plain"> != </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">)  </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_format</span><span class="plain"> != </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">)  </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
                 <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">cm</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -245,14 +242,14 @@ is defined by routine or not.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">)) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">BelievedImpossible</span><span class="plain">),</span>
                 <span class="string">"don't leave me in suspense"</span><span class="plain">,</span>
                 <span class="string">"write a definition after 'Definition:'!"</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">q</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">; </span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -267,12 +264,12 @@ is defined by routine or not.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">q</span><span class="plain">))) {</span>
             <span class="identifier">the_format</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-            <span class="identifier">DNW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt;, 1);</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt;) </span><span class="identifier">CALLW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt;, 2);</span>
-            <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt;, 1);</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt;) </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt;, 2);</span>
+            <span class="identifier">DNW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">calling</span><span class="plain">&gt;&gt;) </span><span class="identifier">CALLW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">domain</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
+            <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">antonym</span><span class="plain">&gt;&gt;) </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="identifier">wording</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">the_format</span><span class="plain"> != </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">)</span>
-                <span class="identifier">CONW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;, 1);</span>
+                <span class="identifier">CONW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">adjective</span><span class="plain">-</span><span class="reserved">definition</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -287,8 +284,8 @@ is defined by routine or not.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">the_format</span><span class="plain"> == </span><span class="constant">DEFINED_IN_SOME_WAY_NOT_YET_KNOWN</span><span class="plain">) ||</span>
-            <span class="plain">((</span><span class="identifier">the_format</span><span class="plain"> == </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree (%d):\</span><span class="plain">n</span><span class="string">$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">the_format</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">);</span>
+            <span class="plain">((</span><span class="identifier">the_format</span><span class="plain"> == </span><span class="constant">DEFINED_PHRASALLY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">q</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree (%d):\n$T\n"</span><span class="plain">, </span><span class="identifier">the_format</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefinitionWithoutCondition</span><span class="plain">),</span>
                 <span class="identifier">q</span><span class="plain">, </span><span class="string">"a definition must take the form 'Definition: a ... is ... if/unless "</span>
                 <span class="string">"...' or else 'Definition: a ... is ...: ...'"</span><span class="plain">,</span>
@@ -297,7 +294,7 @@ is defined by routine or not.
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::mismatched_brackets</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)) ||</span>
             <span class="plain">((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Wordings::mismatched_brackets</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)))) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree:\</span><span class="plain">n</span><span class="string">$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Definition tree:\n$T\n"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::definition_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BracketedAdjective</span><span class="plain">),</span>
                 <span class="identifier">q</span><span class="plain">, </span><span class="string">"this definition seems to involve unexpected brackets in the name of "</span>
                 <span class="string">"the adjective being defined"</span><span class="plain">,</span>
@@ -326,7 +323,7 @@ offer the new adjective around and see if anybody claims it.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">)) {</span>
             <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="identifier">neg</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::negate</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">);</span>
-            <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">, 5);</span>
+            <span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">neg</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">, </span><span class="constant">5</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -351,7 +348,7 @@ offer the new adjective around and see if anybody claims it.
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">unsuitable</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_AdjectivePunctuated</span><span class="plain">));</span>
@@ -376,15 +373,14 @@ offer the new adjective around and see if anybody claims it.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Which leaves only:
 </p>
 
-
 <pre class="display">
     <span class="reserved">definition</span><span class="plain"> *</span><span class="functiontext">Phrases::Adjectives::def_new</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">) {</span>
         <span class="reserved">definition</span><span class="plain"> *</span><span class="identifier">def</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">definition</span><span class="plain">);</span>
-        <span class="identifier">def</span><span class="plain">-</span><span class="element">&gt;node</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
-        <span class="identifier">def</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> = 0;</span>
-        <span class="identifier">def</span><span class="plain">-</span><span class="element">&gt;condition_to_match</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">def</span><span class="plain">-</span><span class="element">&gt;domain_calling</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="identifier">def</span><span class="plain">-</span><span class="element">&gt;definition_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">def</span><span class="plain">-&gt;</span><span class="element">node</span><span class="plain"> = </span><span class="identifier">q</span><span class="plain">;</span>
+        <span class="identifier">def</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">def</span><span class="plain">-&gt;</span><span class="element">condition_to_match</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">def</span><span class="plain">-&gt;</span><span class="element">domain_calling</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">def</span><span class="plain">-&gt;</span><span class="element">definition_node</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">def</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

@@ -122,24 +122,24 @@ defined.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">LP_SCALED_UP</span><span class="plain"> 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LP_SCALED_UP</span><span class="plain"> </span><span class="constant">1</span>
     <span class="definitionkeyword">define</span> <span class="constant">LP_SCALED_DOWN</span><span class="plain"> -1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LP_SCALED_AT</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LP_SCALED_AT</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">scaling_transformation</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_integer_scaling</span><span class="plain">; </span>    <span class="comment">or if not, use real</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_integer_scaling</span><span class="plain">; </span><span class="comment">or if not, use real</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_O</span><span class="plain">; </span>    <span class="comment">the O value described above, if integers used</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_M</span><span class="plain">; </span>    <span class="comment">the M value described above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_O</span><span class="plain">; </span><span class="comment">the O value described above, if integers used</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_M</span><span class="plain">; </span><span class="comment">the M value described above</span>
 
-        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_O</span><span class="plain">; </span>    <span class="comment">the O value described above, if real numbers used</span>
-        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_M</span><span class="plain">; </span>    <span class="comment">the M value described above</span>
+        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_O</span><span class="plain">; </span><span class="comment">the O value described above, if real numbers used</span>
+        <span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_M</span><span class="plain">; </span><span class="comment">the M value described above</span>
 
         <span class="comment">used only in the definition process</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scaling_mode</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">LP_SCALED_*</span></code> constants</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_scalar</span><span class="plain">; </span>    <span class="comment">whichever of these is relevant according to the integer/real mode</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scaling_mode</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">LP_SCALED_*</span></code> constants</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_scalar</span><span class="plain">; </span><span class="comment">whichever of these is relevant according to the integer/real mode</span>
         <span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_scalar</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">scaling_transformation</span><span class="plain">;</span>
 </pre>
@@ -150,21 +150,20 @@ defined.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::describe</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"scaling: x units --&gt; "</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d x + %x stored at runtime (int)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">)</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d x + %x stored at runtime (int)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%g x + %g stored at runtime (real)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.scaling_mode</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LP_SCALED_UP</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as benchmark * "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LP_SCALED_DOWN</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as benchmark / "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LP_SCALED_AT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as scaled at "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%g x + %g stored at runtime (real)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">);</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="identifier">scaling_mode</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LP_SCALED_UP:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as benchmark * "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LP_SCALED_DOWN:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as benchmark / "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LP_SCALED_AT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" (defined as scaled at "</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_scalar</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%g)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.real_scalar</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_scalar</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%g)"</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_scalar</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -177,18 +176,17 @@ relative to the benchmark. At initial definition time, we don't calculate <code 
 we just take notes for later.
 </p>
 
-
 <pre class="display">
     <span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">integer_valued</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scaled</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">int_s</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_s</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">offset</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">real_offset</span><span class="plain">) {</span>
         <span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain"> = </span><span class="identifier">integer_valued</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="element">.int_O</span><span class="plain"> = 0; </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain"> = 0.0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">integer_valued</span><span class="plain">) </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain"> = </span><span class="identifier">offset</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">real_offset</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> = 1; </span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> = 1.0;</span>
-        <span class="identifier">sc</span><span class="element">.scaling_mode</span><span class="plain"> = </span><span class="identifier">scaled</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="element">.int_scalar</span><span class="plain"> = </span><span class="identifier">int_s</span><span class="plain">;</span>
-        <span class="identifier">sc</span><span class="element">.real_scalar</span><span class="plain"> = </span><span class="identifier">real_s</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain"> = </span><span class="identifier">integer_valued</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">.0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">integer_valued</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain"> = </span><span class="identifier">offset</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">real_offset</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">.0;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">scaling_mode</span><span class="plain"> = </span><span class="identifier">scaled</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">int_scalar</span><span class="plain"> = </span><span class="identifier">int_s</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">.</span><span class="element">real_scalar</span><span class="plain"> = </span><span class="identifier">real_s</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -201,14 +199,13 @@ we just take notes for later.
 all, even though we previously expected it to use integers. So:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::convert_to_real</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain">) {</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_O</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_O</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_O</span><span class="plain"> = 0;</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain"> = 1;</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain"> = 1;</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_O</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_O</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_O</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain"> = (</span><span class="reserved">double</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain">; </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -225,12 +222,11 @@ It returns a value which is either <code class="display"><span class="extract">-
 to increase the <code class="display"><span class="extract">M</span></code> values of everything else in the list.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::determine_M</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> *</span><span class="identifier">sc</span><span class="plain">,</span>
         <span class="reserved">scaling_transformation</span><span class="plain"> *</span><span class="identifier">benchmark_sc</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">equiv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">alt</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rescale_the_others_by_this</span><span class="plain"> = 1; </span>    <span class="comment">in effect, don't</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rescale_the_others_by_this</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">in effect, don't</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first</span><span class="plain">) </span>&lt;<span class="cwebmacro">Determine M for the first scaling of the list</span> <span class="cwebmacronumber">9.1</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Determine M for a subsequent scaling of the list</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rescale_the_others_by_this</span><span class="plain">;</span>
@@ -264,13 +260,13 @@ some existing notation, in which case the <code class="display"><span class="ext
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain"> != 1) || (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain"> != 1.0)) &amp;&amp;</span>
-            <span class="plain">((</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_UP</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_DOWN</span><span class="plain">) ||</span>
+        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">int_scalar</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">.0)) &amp;&amp;</span>
+            <span class="plain">((</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_UP</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_DOWN</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">equiv</span><span class="plain">) ||</span>
-            <span class="plain">((</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_AT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))))</span>
+            <span class="plain">((</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_AT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))))</span>
             <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">LPCantScaleYet_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain">;</span>
+        <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -290,8 +286,8 @@ scalings (metric units such as mm, km, etc.) already have their <code class="dis
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain"> != 1) || (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain"> != 1.0)) &amp;&amp;</span>
-            <span class="plain">((</span><span class="identifier">alt</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_AT</span><span class="plain">)))</span>
+        <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="identifier">int_scalar</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">.0)) &amp;&amp;</span>
+            <span class="plain">((</span><span class="identifier">alt</span><span class="plain">) &amp;&amp; (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_AT</span><span class="plain">)))</span>
             <span class="functiontext">Kinds::problem_handler</span><span class="plain">(</span><span class="constant">LPCantScaleTwice_KINDERROR</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">equiv</span><span class="plain">)</span>
@@ -324,10 +320,10 @@ which then becomes <code class="display"><span class="extract">M</span></code>.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain">)</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain">)</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain">;</span>
         <span class="reserved">else</span>
-            <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -352,7 +348,6 @@ example, where <code class="display"><span class="extract">k</span></code> is 10
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">k / gcd(B, k)</span>
 </pre>
@@ -361,7 +356,6 @@ example, where <code class="display"><span class="extract">k</span></code> is 10
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Bk / gcd(B, k)</span>
@@ -373,7 +367,6 @@ That means that the new value of <code class="display"><span class="extract">B</
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">B / gcd(B, k)</span>
@@ -390,27 +383,27 @@ That means that the new value of <code class="display"><span class="extract">B</
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">benchmark_sc</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no benchmark for comparison"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_DOWN</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain">;</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_DOWN</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain">;</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::gcd</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
-                <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">/</span><span class="identifier">g</span><span class="plain">;</span>
+                <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">/</span><span class="identifier">g</span><span class="plain">;</span>
                 <span class="identifier">rescale_the_others_by_this</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">/</span><span class="identifier">g</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain">;</span>
-                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain">;</span>
-                <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">/</span><span class="identifier">k</span><span class="plain">;</span>
+                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain">;</span>
+                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain">;</span>
+                <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">/</span><span class="identifier">k</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_UP</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;use_integer_scaling</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain">;</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_scalar</span><span class="plain">;</span>
-                <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;int_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">*</span><span class="identifier">k</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">scaling_mode</span><span class="plain"> == </span><span class="constant">LP_SCALED_UP</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_scalar</span><span class="plain">;</span>
+                <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">int_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">*</span><span class="identifier">k</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain">;</span>
-                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_scalar</span><span class="plain">;</span>
-                <span class="identifier">sc</span><span class="plain">-</span><span class="element">&gt;real_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">*</span><span class="identifier">k</span><span class="plain">;</span>
+                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">benchmark_sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain">;</span>
+                <span class="reserved">double</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_scalar</span><span class="plain">;</span>
+                <span class="identifier">sc</span><span class="plain">-&gt;</span><span class="element">real_M</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">*</span><span class="identifier">k</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -428,13 +421,12 @@ so that the value "1 deciC" (or whatever) is 273.1 degrees, not 27.4.
 this seldom arises.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::enlarge</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
-            <span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> *= </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+            <span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> *= </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> *= </span><span class="identifier">F</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> *= </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -442,11 +434,11 @@ this seldom arises.)
     <span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::contract</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">loses_accuracy</span><span class="plain">) {</span>
         <span class="plain">*</span><span class="identifier">loses_accuracy</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> % </span><span class="identifier">F</span><span class="plain"> != 0) *</span><span class="identifier">loses_accuracy</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> /= </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> % </span><span class="identifier">F</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) *</span><span class="identifier">loses_accuracy</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> /= </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> /= </span><span class="identifier">F</span><span class="plain">;</span>
+            <span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> /= </span><span class="identifier">F</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -462,23 +454,22 @@ this seldom arises.)
 out of two; it's used for sorting scalings into ascending order of magnitude.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compare</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.use_integer_scaling</span><span class="plain"> != </span><span class="identifier">B</span><span class="element">.use_integer_scaling</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain"> != </span><span class="identifier">B</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"scalings incomparable"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.int_M</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="element">.int_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.int_M</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="element">.int_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.int_O</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="element">.int_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.int_O</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="element">.int_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">int_O</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">int_O</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.real_M</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="element">.real_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.real_M</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="element">.real_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.real_O</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="element">.real_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="element">.real_O</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="element">.real_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">real_O</span><span class="plain"> &gt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">.</span><span class="element">real_O</span><span class="plain"> &lt; </span><span class="identifier">B</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -490,10 +481,9 @@ out of two; it's used for sorting scalings into ascending order of magnitude.
 returns 1.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::get_integer_multiplier</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">.</span><span class="identifier">int_M</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -504,11 +494,10 @@ returns 1.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Finally, this simply detects the presence of a scale factor, real or integer:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::involves_scale_change</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> != 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> != 1.0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">.0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -522,14 +511,13 @@ for example, for kilometers, it's the run-time value which "1 km" translates
 into.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::quantum</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="functiontext">Kinds::Scalings::quanta_to_value</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, 1);</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="functiontext">Kinds::Scalings::quanta_to_value</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">double</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::real_quantum</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::real_quanta_to_value</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, 1.0);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::real_quanta_to_value</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="constant">1</span><span class="plain">.0);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -543,14 +531,13 @@ into.
 the run-time value that stores as:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::quanta_to_value</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">*</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> + </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">*</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> + </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">double</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::real_quanta_to_value</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">*</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> + </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">q</span><span class="plain">*</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> + </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -574,16 +561,15 @@ scaling is for "1 m", with offset 0 and multiplier 1000, then the value
 <p class="inwebparagraph">In real arithmetic, on the other hand, the inverse straightforwardly exists.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::value_to_quanta</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">, </span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">r</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inversion unimplemented"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain">) *</span><span class="identifier">r</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">) % (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">) *</span><span class="identifier">q</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">) / (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"inversion unimplemented"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain">) *</span><span class="identifier">r</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">) % (</span><span class="identifier">sc</span><span class="plain">.</span><span class="identifier">int_M</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">q</span><span class="plain">) *</span><span class="identifier">q</span><span class="plain"> = (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">) / (</span><span class="identifier">sc</span><span class="plain">.</span><span class="identifier">int_M</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">double</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::real_value_to_quanta</span><span class="plain">(</span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">, </span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">) / (</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> - </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">) / (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -598,34 +584,33 @@ same operations: quanta to value, value to quanta and remainder. The
 value is held in the I6 variable named <code class="display"><span class="extract">V_var</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_quanta_to_value</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">,</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
             <span class="functiontext">Kinds::Scalings::compile_scale_and_add</span><span class="plain">(</span>
-                <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">V_var</span><span class="plain">), </span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">, </span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
+                <span class="identifier">InterNames::to_symbol</span><span class="plain">(</span><span class="identifier">V_var</span><span class="plain">), </span><span class="identifier">sgn_var</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">, </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">, </span><span class="identifier">x_var</span><span class="plain">, </span><span class="identifier">label</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> != 1.0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">.0) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain"> != 0.0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">.0) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_PLUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
@@ -658,7 +643,6 @@ for other calculations too. This performs the operation
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">v --&gt; kv + l</span>
 </pre>
@@ -675,20 +659,19 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 2147483648 will overflow in the positive domain, but not the negative.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_scale_and_add</span><span class="plain">(</span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sgn_var</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scale_factor</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_add</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">var_to_add</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">label</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scale_factor</span><span class="plain"> &gt; 1) {</span>
-            <span class="reserved">long</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = 2147483647</span><span class="identifier">LL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">max</span><span class="plain"> = 32767</span><span class="identifier">LL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scale_factor</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
+            <span class="reserved">long</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain"> = </span><span class="constant">2147483647</span><span class="identifier">LL</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="identifier">Task::vm</span><span class="plain">())) </span><span class="identifier">max</span><span class="plain"> = </span><span class="constant">32767</span><span class="identifier">LL</span><span class="plain">;</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sgn_var</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_object</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -777,24 +760,23 @@ twos-complement arithmetic, this increases the maxima by 1. Thus 32768 or
 is ignored, since the division can be performed "exactly".
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_value_to_quanta</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">,</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_var</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain"> != 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">MINUS_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="element">.int_O</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_O</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> != 1) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R_var</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -802,7 +784,7 @@ is ignored, since the division can be performed "exactly".
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">MODULO_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
@@ -812,30 +794,30 @@ is ignored, since the division can be performed "exactly".
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain"> != 0.0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">int_M</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">.0) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_MINUS_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="element">.real_O</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_O</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain"> != 1.0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">.0) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="element">.real_M</span><span class="plain">);</span>
+                        <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">sc</span><span class="plain">.</span><span class="element">real_M</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
@@ -854,14 +836,13 @@ quantum for the scaling. <code class="display"><span class="extract">op</span></
 operator to use: say, <code class="display"><span class="extract">"&gt;="</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_threshold_test</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">,</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">op</span><span class="plain">) {</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">op</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_ABS_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
@@ -876,7 +857,7 @@ operator to use: say, <code class="display"><span class="extract">"&gt;="</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_real</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Kinds::Scalings::real_quantum</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">));</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
     <span class="plain">}</span>
@@ -893,7 +874,6 @@ do this: <code class="display"><span class="extract">R_var</span></code>, which 
 and <code class="display"><span class="extract">S_var</span></code>, which is a scratch variable used as a form of loop counter.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::compile_print_in_quanta</span><span class="plain">(</span><span class="reserved">scaling_transformation</span><span class="plain"> </span><span class="identifier">sc</span><span class="plain">,</span>
@@ -901,7 +881,7 @@ and <code class="display"><span class="extract">S_var</span></code>, which is a 
 
         <span class="functiontext">Kinds::Scalings::compile_value_to_quanta</span><span class="plain">(</span><span class="identifier">sc</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="element">.use_integer_scaling</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sc</span><span class="plain">.</span><span class="element">use_integer_scaling</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINTNUMBER_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">V_var</span><span class="plain">);</span>
@@ -912,7 +892,7 @@ and <code class="display"><span class="extract">S_var</span></code>, which is a 
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -956,15 +936,15 @@ recurring decimals. If it can't, then we must approximate.
             <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"."</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="element">.int_M</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cl10M</span><span class="plain"> = 1; </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain"> &gt; </span><span class="identifier">cl10M</span><span class="plain">) </span><span class="identifier">cl10M</span><span class="plain"> = </span><span class="identifier">cl10M</span><span class="plain">*10;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">sc</span><span class="plain">.</span><span class="identifier">int_M</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cl10M</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain"> &gt; </span><span class="identifier">cl10M</span><span class="plain">) </span><span class="identifier">cl10M</span><span class="plain"> = </span><span class="identifier">cl10M</span><span class="plain">*10;</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"M = %d, ceiling(log_10(M)) = %d"</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">, </span><span class="identifier">cl10M</span><span class="plain">);</span>
         <span class="identifier">Emit::code_comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl10M</span><span class="plain"> % </span><span class="identifier">M</span><span class="plain"> == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl10M</span><span class="plain"> % </span><span class="identifier">M</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Use an exact method, since the multiplier divides a power of 10</span> <span class="cwebmacronumber">21.1.1</span>&gt;
         <span class="reserved">else</span>
             &lt;<span class="cwebmacro">Use an approximate method, since we can't have an exact one in all cases</span> <span class="cwebmacronumber">21.1.2</span>&gt;<span class="character">;</span>
@@ -979,7 +959,6 @@ recurring decimals. If it can't, then we must approximate.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">M = cl10M / t</span>
 </pre>
@@ -988,7 +967,6 @@ recurring decimals. If it can't, then we must approximate.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">26t/Mt = 26t / cl10M</span>
@@ -1006,7 +984,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">cl10M</span><span class="plain">/</span><span class="identifier">M</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
@@ -1033,14 +1011,14 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">MODULO_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">GT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1051,7 +1029,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">R_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
@@ -1060,7 +1038,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">S_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1074,7 +1052,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">S_var</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1089,7 +1067,7 @@ be; print that many zeroes; and then print <code class="display"><span class="ex
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">DIVIDE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">S_var</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -1117,7 +1095,7 @@ digit after the decimal point should be <code class="display"><span class="extra
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain"> = 1;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">&lt;=</span><span class="identifier">M</span><span class="plain">) {</span>
             <span class="identifier">R</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">*10;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="functiontext">Kinds::Dimensions::gcd</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
@@ -1138,11 +1116,11 @@ digit after the decimal point should be <code class="display"><span class="extra
                                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="identifier">M</span><span class="plain">/</span><span class="identifier">g</span><span class="plain">));</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
@@ -1155,11 +1133,10 @@ digit after the decimal point should be <code class="display"><span class="extra
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>And finally:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Scalings::I6_real_literal</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">double</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"$"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"+"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"+"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%g"</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

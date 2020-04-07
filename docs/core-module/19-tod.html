@@ -100,7 +100,6 @@ name, meaning as yet unknown).
 <p class="inwebparagraph">The subject must match:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">defined</span><span class="plain">-</span><span class="identifier">by</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
         <span class="identifier">kind</span><span class="plain">/</span><span class="identifier">kinds</span><span class="plain"> </span><span class="identifier">of</span><span class="plain"> &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">type</span><span class="plain">-</span><span class="identifier">expression</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -146,7 +145,6 @@ name, meaning as yet unknown).
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>And the object, which in fact is required to be a table name value:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">defined</span><span class="plain">-</span><span class="identifier">by</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">-</span><span class="identifier">inner</span><span class="plain">&gt; ::=</span>
@@ -214,7 +212,6 @@ whatever is named in column 1.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>So this handles the special meaning "X is defined by Y".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">defined</span><span class="plain">-</span><span class="identifier">by</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="identifier">defined</span><span class="plain"> </span><span class="identifier">by</span><span class="plain"> &lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;			==&gt; </span><span class="identifier">TRUE</span><span class="plain">; *</span><span class="identifier">XP</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[1]</span>
@@ -224,26 +221,25 @@ whatever is named in column 1.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tables::Defining::defined_by_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"The colours are defined by Table 1."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"The colours are defined by Table 1."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">defined</span><span class="plain">-</span><span class="identifier">by</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">examine_for_ofs_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">O</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">O</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE1_SMFT</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE2_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
                 <span class="functiontext">Tables::Defining::kind_defined_by_table</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -261,26 +257,25 @@ which is called on "defined by" sentences, and thus is never called in
 connection with ordinary tables.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Defining::kind_defined_by_table</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">LTW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SPW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Traverse %d: I now want to define &lt;%W&gt; by table &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">LTW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SPW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"Traverse %d: I now want to define &lt;%W&gt; by table &lt;%W&gt;\n"</span><span class="plain">,</span>
             <span class="identifier">traverse</span><span class="plain">, </span><span class="identifier">SPW</span><span class="plain">, </span><span class="identifier">LTW</span><span class="plain">);</span>
 
         <span class="plain">&lt;</span><span class="identifier">defined</span><span class="plain">-</span><span class="identifier">by</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">-</span><span class="identifier">inner</span><span class="plain">&gt;(</span><span class="identifier">LTW</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_table</span><span class="plain">(&lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">abstract</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Decide whether this will be an abstract or a concrete creation</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Check that this is a kind where it makes sense to enumerate new values</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">Kinds::weaken</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) </span><span class="functiontext">Tables::Defining::set_defined_by_table</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-            <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;kind_defined_in_this_table</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[0]</span><span class="element">.column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">kind_defined_in_this_table</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+            <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[0].</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
 
             &lt;<span class="cwebmacro">Create values for this kind as enumerated by names in the first column</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -305,10 +300,10 @@ connection with ordinary tables.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="identifier">abstract</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">abstract</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;contains_property_values_at_run_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;fill_in_blanks</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;preserve_row_order_at_run_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;disable_block_constant_correction</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">contains_property_values_at_run_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">fill_in_blanks</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">preserve_row_order_at_run_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">disable_block_constant_correction</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::object_exactly_described_if_any</span><span class="plain">(</span><span class="identifier">what</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Issue PM_TableDefiningObject problem</span> <span class="cwebmacronumber">6.1.1</span>&gt;
@@ -322,7 +317,7 @@ connection with ordinary tables.
             &lt;<span class="cwebmacro">Actually issue PM_TableDefiningTheImpossible problem</span> <span class="cwebmacronumber">1.1.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;has_been_amended</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">t</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">has_been_amended</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableCantDefineAndAmend</span><span class="plain">),</span>
                 <span class="string">"you can't use 'defined by' to define objects using a table "</span>
                 <span class="string">"which is amended by another table"</span><span class="plain">,</span>
@@ -330,8 +325,8 @@ connection with ordinary tables.
                 <span class="string">"the property values are."</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;first_column_by_definition</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;where_used_to_define</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">first_column_by_definition</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">where_used_to_define</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -363,7 +358,7 @@ connection with ordinary tables.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Kinds::Behaviour::has_named_constant_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"K is $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"K is $u\n"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableOfBuiltInKind</span><span class="plain">));</span>
@@ -453,11 +448,11 @@ have occurred, but if it does then the creation has worked.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">name_entry</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objections</span><span class="plain"> = 0, </span><span class="identifier">blank_objections</span><span class="plain"> = 0, </span><span class="identifier">row_count</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[0]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">row_count</span><span class="plain"> = 1; </span><span class="identifier">name_entry</span><span class="plain">;</span>
-            <span class="identifier">name_entry</span><span class="plain">=</span><span class="identifier">name_entry</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">row_count</span><span class="plain">++) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objections</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">blank_objections</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">row_count</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[0].</span><span class="element">entries</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">row_count</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">name_entry</span><span class="plain">;</span>
+            <span class="identifier">name_entry</span><span class="plain">=</span><span class="identifier">name_entry</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">row_count</span><span class="plain">++) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">);</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"So I want to create: &lt;%W&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TABLES</span><span class="plain">, </span><span class="string">"So I want to create: &lt;%W&gt;\n"</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">cell</span><span class="plain">-</span><span class="identifier">blank</span><span class="plain">&gt;(</span><span class="identifier">NW</span><span class="plain">))</span>
                 &lt;<span class="cwebmacro">Issue a problem for trying to create a blank name</span> <span class="cwebmacronumber">6.3.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">evaluation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -471,8 +466,8 @@ have occurred, but if it does then the creation has worked.
 
             <span class="functiontext">Assertions::Creator::tabular_definitions</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">);</span>
             <span class="identifier">NounPhrases::annotate_by_articles</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">);</span>
-            <span class="identifier">Problems::Buffer::redirect_problem_sentence</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-            <span class="functiontext">Assertions::Copular::make_assertion</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="identifier">Problems::Buffer::redirect_problem_sentence</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+            <span class="functiontext">Assertions::Copular::make_assertion</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
             <span class="identifier">Problems::Buffer::redirect_problem_sentence</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">);</span>
             <span class="identifier">evaluation</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -486,7 +481,7 @@ have occurred, but if it does then the creation has worked.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem to say that the creation failed</span> <span class="cwebmacronumber">6.3.4</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">objections</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">objections</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -504,7 +499,7 @@ lots of rows, so we issue the problem just once.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blank_objections</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blank_objections</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_number</span><span class="plain">(4, &amp;</span><span class="identifier">row_count</span><span class="plain">);</span>
             <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableWithBlankNames</span><span class="plain">),</span>
                 <span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">name_entry</span><span class="plain">,</span>
@@ -550,7 +545,7 @@ of the contents.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Existing meaning was: $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">evaluation</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Existing meaning was: $P\n"</span><span class="plain">, </span><span class="identifier">evaluation</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">name_entry</span><span class="plain">);</span>
         <span class="functiontext">Problems::quote_kind_of</span><span class="plain">(3, </span><span class="identifier">evaluation</span><span class="plain">);</span>
@@ -575,7 +570,7 @@ of the contents.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Eval is $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">evaluation</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Eval is $P\n"</span><span class="plain">, </span><span class="identifier">evaluation</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(4, </span><span class="identifier">name_entry</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_number</span><span class="plain">(5, &amp;</span><span class="identifier">row_count</span><span class="plain">);</span>
         <span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TableDefiningNothing</span><span class="plain">),</span>
@@ -605,15 +600,15 @@ table: do they get permission as well? We're going to say that they do.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;no_columns</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">no_columns</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Ensure that a property with the same name as the column name exists</span> <span class="cwebmacronumber">6.4.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
                 <span class="functiontext">Calculus::Propositions::Assert::assert_true_about</span><span class="plain">(</span>
                     <span class="functiontext">Calculus::Propositions::Abstract::to_provide_property</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">),</span>
-                    <span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;kind_defined_in_this_table</span><span class="plain">),</span>
+                    <span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">kind_defined_in_this_table</span><span class="plain">),</span>
                     <span class="identifier">prevailing_mood</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;contains_property_values_at_run_time</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">contains_property_values_at_run_time</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Passively allow the column to become the property values</span> <span class="cwebmacronumber">6.4.2</span>&gt;
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Actively assert the column entries as property values</span> <span class="cwebmacronumber">6.4.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -636,10 +631,10 @@ table-stocking the column will have a kind for its entries.
 
 
 <pre class="displaydefn">
-        <span class="plain">&lt;</span><span class="identifier">unfortunate</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">&gt;(</span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
-        <span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+        <span class="plain">&lt;</span><span class="identifier">unfortunate</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">&gt;(</span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
+        <span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">column_identity</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">);</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">CK</span><span class="plain"> = </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">column_identity</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">CK</span><span class="plain">) == </span><span class="identifier">CON_rule</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">CK</span><span class="plain">) == </span><span class="identifier">CON_rulebook</span><span class="plain">)) {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">K2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -647,7 +642,7 @@ table-stocking the column will have a kind for its entries.
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">)) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">))) {</span>
                     <span class="identifier">CK</span><span class="plain"> = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span>
                         <span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">CK</span><span class="plain">), </span><span class="identifier">K_action_name</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">);</span>
-                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">);</span>
+                    <span class="functiontext">Tables::Columns::set_kind</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">column_identity</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">CK</span><span class="plain">) </span><span class="functiontext">Properties::Valued::set_kind</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">CK</span><span class="plain">);</span>
@@ -662,7 +657,6 @@ table-stocking the column will have a kind for its entries.
 becomes the name of a new property. To avoid confusion, though, there are
 some misleading names we don't want to allow for these properties.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">unfortunate</span><span class="plain">-</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">column</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">&gt; ::=</span>
@@ -709,8 +703,8 @@ following immediately after a permission grant.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1)</span>
-            <span class="functiontext">Properties::OfValues::pp_set_table_storage</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.tcu_iname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
+            <span class="functiontext">Properties::OfValues::pp_set_table_storage</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">tcu_iname</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -729,11 +723,11 @@ assertion handler, simulating sentences like "The P of X is Y".
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">name_entry</span><span class="plain">, *</span><span class="identifier">data_entry</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[0]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">,</span>
-                <span class="identifier">data_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.entries</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[0].</span><span class="element">entries</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">,</span>
+                <span class="identifier">data_entry</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">columns</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">entries</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
             <span class="identifier">name_entry</span><span class="plain"> &amp;&amp; </span><span class="identifier">data_entry</span><span class="plain">;</span>
-            <span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">name_entry</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">,</span>
-                <span class="identifier">data_entry</span><span class="plain"> = </span><span class="identifier">data_entry</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+            <span class="identifier">name_entry</span><span class="plain"> = </span><span class="identifier">name_entry</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">,</span>
+                <span class="identifier">data_entry</span><span class="plain"> = </span><span class="identifier">data_entry</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="identifier">Problems::Buffer::redirect_problem_sentence</span><span class="plain">(</span><span class="identifier">current_sentence</span><span class="plain">, </span><span class="identifier">name_entry</span><span class="plain">, </span><span class="identifier">data_entry</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Make an assertion that this name has that property</span> <span class="cwebmacronumber">6.4.3.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -758,12 +752,12 @@ also ordinary sentences about the property value, and the former won't.
 
 <pre class="displaydefn">
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">name_entry</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 2) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">data_entry</span><span class="plain">))) &amp;&amp;</span>
                 <span class="plain">(&lt;</span><span class="reserved">table</span><span class="plain">-</span><span class="identifier">cell</span><span class="plain">-</span><span class="identifier">blank</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">data_entry</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">data_entry</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">, </span><span class="constant">UNKNOWN_NT</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"misevaluated cell"</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"misevaluated cell"</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="functiontext">Assertions::Refiner::noun_from_value</span><span class="plain">(</span><span class="identifier">data_entry</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
                     <span class="functiontext">Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs</span><span class="plain">(</span>
@@ -779,16 +773,15 @@ also ordinary sentences about the property value, and the former won't.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">table</span><span class="plain"> *</span><span class="functiontext">Tables::Defining::defined_by_table</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">named_values_created_with_table</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="identifier">named_values_created_with_table</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tables::Defining::set_defined_by_table</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such kind"</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">named_values_created_with_table</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">named_values_created_with_table</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

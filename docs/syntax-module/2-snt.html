@@ -67,10 +67,9 @@
 position.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 0; </span>    <span class="comment">0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after</span>
-    <span class="constant">node_type_t</span><span class="plain"> </span><span class="identifier">ssnt</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">0: not an extension; 1: before "begins here"; 2: before "ends here"; 3: after</span>
+    <span class="constant">node_type_t</span><span class="plain"> </span><span class="identifier">ssnt</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -149,7 +148,6 @@ which was used to end it. Each call to this routine represents one cycle of our
 finite state machine.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::break</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="functiontext">Sentences::break_inner</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
@@ -178,11 +176,11 @@ finite state machine.
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stop_character</span><span class="plain">;</span>
 
                 &lt;<span class="cwebmacro">Look for a sentence break, finding the number of stop words and the stop character</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_stop_words</span><span class="plain"> &gt; 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_stop_words</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">position</span><span class="plain">-1), </span><span class="identifier">stop_character</span><span class="plain">);</span>
-                    <span class="identifier">position</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + </span><span class="identifier">no_stop_words</span><span class="plain"> - 1;</span>
+                    <span class="identifier">position</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + </span><span class="identifier">no_stop_words</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">back_up_one_word</span><span class="plain">) </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + 1;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sentence_start</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
 
                     &lt;<span class="cwebmacro">Go into table sentence mode if necessary</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
@@ -228,8 +226,8 @@ that is why these are global variables rather than locals in <code class="displa
         <span class="identifier">sfsm_inside_rule_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
         <span class="identifier">sfsm_copy</span><span class="plain"> = </span><span class="identifier">from_copy</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">is_extension</span><span class="plain">) </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 1;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">is_extension</span><span class="plain">) </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">sfsm_extension_position</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -289,7 +287,6 @@ write paragraphs like this:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Before going north:</span>
         <span class="plain">    say "Northward ho!";</span>
@@ -329,7 +326,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">position</span><span class="plain">;</span>
-        <span class="identifier">no_stop_words</span><span class="plain"> = 0; </span><span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'?'</span><span class="plain">; </span><span class="identifier">back_up_one_word</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">no_stop_words</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'?'</span><span class="plain">; </span><span class="identifier">back_up_one_word</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> &lt; </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stopped</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
@@ -354,11 +351,11 @@ sentence divisions. The other cases are more complicated: see below.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stopped</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="identifier">no_stop_words</span><span class="plain">++; </span><span class="identifier">at</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">'X'</span><span class="plain">) { </span>    <span class="comment">X breaks are like full stops, but there is no stop word to skip over</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">'X'</span><span class="plain">) { </span><span class="comment">X breaks are like full stops, but there is no stop word to skip over</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'.'</span><span class="plain">; </span><span class="identifier">back_up_one_word</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_stop_words</span><span class="plain"> &gt; 0)</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Stop character '%c', no_stop_words %d, sentence_break %d, position %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_stop_words</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">LEXICAL_OUTPUT</span><span class="plain">, </span><span class="string">"Stop character '%c', no_stop_words %d, sentence_break %d, position %d\n"</span><span class="plain">,</span>
                 <span class="identifier">stop_character</span><span class="plain">, </span><span class="identifier">no_stop_words</span><span class="plain">, </span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">position</span><span class="plain">);</span>
 </pre>
 
@@ -372,7 +369,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">-1), </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -385,7 +382,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -398,7 +395,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -411,7 +408,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -424,7 +421,7 @@ sentence divisions. The other cases are more complicated: see below.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+        <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">sentence_start</span><span class="plain">, </span><span class="identifier">at</span><span class="plain">), </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -458,10 +455,10 @@ before and the word after the current position.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">) == </span><span class="identifier">COLON_V</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">-1) == </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">no_stop_words</span><span class="plain"> == 0) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">no_stop_words</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">((</span><span class="identifier">Characters::isdigit</span><span class="plain">(*(</span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">-1))) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">Characters::isdigit</span><span class="plain">(*(</span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">+1))) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
-                <span class="plain">(</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">+1) &gt; 0))) {</span>
+                <span class="plain">(</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">+1) &gt; </span><span class="constant">0</span><span class="plain">))) {</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">':'</span><span class="plain">; </span><span class="identifier">stopped</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -503,11 +500,11 @@ table would be no different if it were not there.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stopped</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; </span>    <span class="comment">only look if we are not already at a division</span>
-            <span class="plain">(</span><span class="identifier">no_stop_words</span><span class="plain"> == 0) &amp;&amp; </span>    <span class="comment">be sure not to elide two such texts in a row</span>
-            <span class="plain">(</span><span class="identifier">sfsm_in_tabbed_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; </span>    <span class="comment">check that we are not scanning the body of a table</span>
-            <span class="plain">(</span><span class="identifier">isupper</span><span class="plain">(*(</span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)))) &amp;&amp; </span>    <span class="comment">and the current word begins with a capital letter</span>
-            <span class="plain">(</span><span class="identifier">Word::text_ending_sentence</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">-1))) { </span>    <span class="comment">and the preceding one was quoted text ending in punctuation</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">stopped</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; </span><span class="comment">only look if we are not already at a division</span>
+            <span class="plain">(</span><span class="identifier">no_stop_words</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; </span><span class="comment">be sure not to elide two such texts in a row</span>
+            <span class="plain">(</span><span class="identifier">sfsm_in_tabbed_mode</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; </span><span class="comment">check that we are not scanning the body of a table</span>
+            <span class="plain">(</span><span class="identifier">isupper</span><span class="plain">(*(</span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)))) &amp;&amp; </span><span class="comment">and the current word begins with a capital letter</span>
+            <span class="plain">(</span><span class="identifier">Word::text_ending_sentence</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">-1))) { </span><span class="comment">and the preceding one was quoted text ending in punctuation</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'X'</span><span class="plain">; </span><span class="identifier">stopped</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -535,26 +532,25 @@ reaching the "... ends here." sentence (if we are reading an extension),
 or until reaching the end of the text: whichever comes first.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="reserved">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stop_character</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_level</span><span class="plain"> = 0, </span><span class="identifier">begins_or_ends</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_level</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">begins_or_ends</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">parse_node</span><span class="plain"> *</span><span class="identifier">new</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"empty sentence generated"</span><span class="plain">);</span>
 
-        <span class="identifier">Vocabulary::identify_word_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">); </span>    <span class="comment">a precaution to catch any late unidentified text</span>
+        <span class="identifier">Vocabulary::identify_word_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">); </span><span class="comment">a precaution to catch any late unidentified text</span>
 
         &lt;<span class="cwebmacro">Detect a change of source file, and declare it as an implicit heading</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Detect a dividing sentence</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">begins_or_ends</span><span class="plain"> == -1) ||</span>
-            <span class="plain">((</span><span class="identifier">heading_level</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">heading_level</span><span class="plain"> &lt;= </span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain">)))</span>
+            <span class="plain">((</span><span class="identifier">heading_level</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">heading_level</span><span class="plain"> &lt;= </span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain">)))</span>
             <span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> = -1;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_skipping_material_at_level</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_level</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_level</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Issue a problem message if the heading incorporates a line break</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Issue a problem message if the heading does not end with a line break</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Make a new HEADING node, possibly beginning to skip material</span> <span class="cwebmacronumber">6.6</span>&gt;<span class="plain">;</span>
@@ -586,7 +582,7 @@ is declared as if it were a super-heading in the text.
             <span class="reserved">parse_node</span><span class="plain"> *</span><span class="identifier">implicit_heading</span><span class="plain"> = </span><span class="functiontext">ParseTree::new</span><span class="plain">(</span><span class="constant">HEADING_NT</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="constant">heading_level_ANNOT</span><span class="plain">, 0);</span>
+            <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">implicit_heading</span><span class="plain">, </span><span class="constant">heading_level_ANNOT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::insert_sentence</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">implicit_heading</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_HEADING_HANDLER</span>
             <span class="identifier">NEW_HEADING_HANDLER</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">implicit_heading</span><span class="plain">);</span>
@@ -606,9 +602,9 @@ is declared as if it were a super-heading in the text.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_extension_position</span><span class="plain"> == 3) &amp;&amp; (</span><span class="identifier">begins_or_ends</span><span class="plain"> == 0)) {</span>
-            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
-            <span class="identifier">sfsm_extension_position</span><span class="plain"> = 4; </span>    <span class="comment">to avoid multiply issuing this</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sfsm_extension_position</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) &amp;&amp; (</span><span class="identifier">begins_or_ends</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) {</span>
+            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">sfsm_extension_position</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">to avoid multiply issuing this</span>
         <span class="plain">}</span>
 </pre>
 
@@ -631,12 +627,12 @@ important), or <code class="display"><span class="extract">-1</span></code> to m
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">dividing</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="reserved">switch</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;) {</span>
-                <span class="reserved">case</span><span class="plain"> -1: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain"> &gt; 0) </span><span class="identifier">begins_or_ends</span><span class="plain"> = 1;</span>
+                <span class="reserved">case</span><span class="plain"> -1: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">begins_or_ends</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">case</span><span class="plain"> -2:</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain"> &gt; 0) </span><span class="identifier">begins_or_ends</span><span class="plain"> = -1;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">begins_or_ends</span><span class="plain"> = -1;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">:</span>
+                <span class="identifier">default:</span>
                     <span class="identifier">heading_level</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -665,7 +661,7 @@ continuing regardless.
 <pre class="displaydefn">
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) &gt; 0)) {</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) == </span><span class="character">'\n'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
                     <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -690,10 +686,10 @@ newlines automatically added at the end of the feed of any source file.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1) != </span><span class="character">'\n'</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1;</span>
-                <span class="plain">(</span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+8) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">lexer_wordcount</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">);</span>
+                <span class="plain">(</span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+8) &amp;&amp; (</span><span class="identifier">k</span><span class="plain">&lt;</span><span class="identifier">lexer_wordcount</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">) != </span><span class="character">'\n'</span><span class="plain">);</span>
                 <span class="identifier">k</span><span class="plain">++) ;</span>
             <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -741,9 +737,9 @@ from an extension, we need to make sure we saw both beginning and end:
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sfsm_extension_position</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -794,11 +790,10 @@ substitutions. For instance,
 sentences and options-file sentences may have been read already.)
 </p>
 
-
 <pre class="display">
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">start</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">source</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">start</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">source</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">w1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">w1</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">w1</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w1</span><span class="plain"> == </span><span class="identifier">sfsm_main_source_start_wn</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">w1</span><span class="plain">-1, </span><span class="identifier">PARBREAK_V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">w1</span><span class="plain">--;</span>
@@ -822,7 +817,7 @@ sentences and options-file sentences may have been read already.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sfsm_inside_rule_mode</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Convert to a COMMAND node and exit rule mode unless a semicolon implies further commands</span> <span class="cwebmacronumber">6.9.6</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stop_character</span><span class="plain"> == </span><span class="character">';'</span><span class="plain">) {</span>
-            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, 0);</span>
+            <span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">sfsm_copy</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="identifier">stop_character</span><span class="plain"> = </span><span class="character">'.'</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -868,7 +863,6 @@ sentence becomes a rule. For example:
 
 </blockquote>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">divisible</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt; ::=</span>
         <span class="identifier">instead</span><span class="plain"> </span><span class="identifier">of</span><span class="plain"> ... |</span>
@@ -894,7 +888,6 @@ which divides rule from preamble:
 
 <p class="inwebparagraph">The following is used to detect "or" in such lists.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt; ::=</span>
@@ -936,12 +929,12 @@ will make a <code class="display"><span class="extract">INVOCATION_LIST_NT</span
         &lt;<span class="cwebmacro">Set earliest comma to position after the or, if there is one</span> <span class="cwebmacronumber">6.9.3.1.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">earliest_comma_position</span><span class="plain">))) {</span>
-            <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, 1);</span>
-            <span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, 2);</span>
+            <span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">comma</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)) {</span>
-            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)), </span><span class="character">':'</span><span class="plain">); </span>    <span class="comment">rule preamble stopped with a colon</span>
-            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">BW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">); </span>    <span class="comment">rule body with one sentence, stopped with a stop</span>
+            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">)), </span><span class="character">':'</span><span class="plain">); </span><span class="comment">rule preamble stopped with a colon</span>
+            <span class="functiontext">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">BW</span><span class="plain">, </span><span class="character">'.'</span><span class="plain">); </span><span class="comment">rule body with one sentence, stopped with a stop</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -957,7 +950,7 @@ will make a <code class="display"><span class="extract">INVOCATION_LIST_NT</span
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, 2);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">BW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">list</span><span class="plain">-</span><span class="identifier">or</span><span class="plain">-</span><span class="identifier">division</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">);</span>
             <span class="identifier">earliest_comma_position</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">BW</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -1024,7 +1017,6 @@ between:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">To do one thing: something here;</span>
@@ -1101,7 +1093,7 @@ semicolon to appear indicates an end of the rule.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">begins_or_ends</span><span class="plain"> == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">begins_or_ends</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="functiontext">ParseTree::set_type</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">BEGINHERE_NT</span><span class="plain">);</span>
             <span class="functiontext">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">Wordings::trim_last_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_BEGINEND_HANDLER</span>
@@ -1137,7 +1129,7 @@ it would be too late.
 <pre class="displaydefn">
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">new</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">NEW_LANGUAGE_HANDLER</span>
-        <span class="identifier">NEW_LANGUAGE_HANDLER</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">modifying</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;, 1));</span>
+        <span class="identifier">NEW_LANGUAGE_HANDLER</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">modifying</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">));</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">language_element_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -1158,7 +1150,7 @@ it would be too late.
 
 <pre class="displaydefn">
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">new</span><span class="plain">;</span>
-        <span class="identifier">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">modifying</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;, 1), </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="identifier">Preform::parse_preform</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">language</span><span class="plain">-</span><span class="identifier">modifying</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="functiontext">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">, </span><span class="constant">sentence_unparsed_ANNOT</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
 </pre>
 
@@ -1172,7 +1164,6 @@ texts in HTML. So the client is allowed to define <code class="display"><span cl
 to some routine of her own, gazumping this one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::syntax_problem</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ref</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">SYNTAX_PROBLEM_HANDLER</span>
@@ -1182,37 +1173,37 @@ to some routine of her own, gazumping this one.
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UnexpectedSemicolon_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnexpectedSemicolon_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"unexpected semicolon in sentence: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ParaEndsInColon_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ParaEndsInColon_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SentenceEndsInColon_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInColon_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and full stop: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SentenceEndsInSemicolon_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SentenceEndsInSemicolon_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a semicolon and full stop: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SemicolonAfterColon_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterColon_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a colon and semicolon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SemicolonAfterStop_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SemicolonAfterStop_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"paragraph ends with a full stop and semicolon: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtNoBeginsHere_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoBeginsHere_SYNERROR:</span>
                 <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"extension has no beginning"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtNoEndsHere_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtNoEndsHere_SYNERROR:</span>
                 <span class="identifier">Errors::nowhere</span><span class="plain">(</span><span class="string">"extension has no end"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ExtSpuriouslyContinues_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ExtSpuriouslyContinues_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"extension continues after end: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingOverLine_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingOverLine_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"heading contains a line break: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">HeadingStopsBeforeEndOfLine_SYNERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">HeadingStopsBeforeEndOfLine_SYNERROR:</span>
                 <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"heading stops before end of line: %S"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>

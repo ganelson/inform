@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -63,7 +63,6 @@ offset and <code class="display"><span class="extract">C--&gt;3</span></code> up
 "Tables.w" in the NI source, and the values must agree.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_REAL</span><span class="plain">        </span><span class="constant">$8000</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_SIGNED</span><span class="plain">      </span><span class="constant">$4000</span><span class="plain">;</span>
@@ -72,9 +71,9 @@ offset and <code class="display"><span class="extract">C--&gt;3</span></code> up
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_NOBLANKBITS</span><span class="plain"> </span><span class="constant">$0800</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_CANEXCHANGE</span><span class="plain"> </span><span class="constant">$0400</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain">   </span><span class="constant">$0200</span><span class="plain">;</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_NUMBER</span><span class="plain">      </span><span class="constant">$01ff</span><span class="plain">; </span><span class="comment">! Mask to remove upper bit flags</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TB_COLUMN_NUMBER</span><span class="plain">      </span><span class="constant">$01ff</span><span class="plain">; </span><span class="comment">Mask to remove upper bit flags</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">COL_HSIZE</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! Column header size: two words (ID/flags, blank bits)</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">COL_HSIZE</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; </span><span class="comment">Column header size: two words (ID/flags, blank bits)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -91,7 +90,6 @@ a very large work, so we will probably one day revise the above to make
 use of the larger word-size in Glulx and so raise this limit. But so far
 nobody has got even close to it.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableFindCol</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">no_cols</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
@@ -110,11 +108,10 @@ number of rows): thus the number of rows in <code class="display"><span class="e
 looking at column 1, thus...
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableRows</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">first_col</span><span class="plain">;</span>
         <span class="identifier">first_col</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;1; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_col</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">first_col</span><span class="plain">--&gt;0) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">COL_HSIZE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">first_col</span><span class="plain">--&gt;0) - </span><span class="identifier">COL_HSIZE</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -176,7 +173,6 @@ we need to check that we haven't got a false negative. (The more improbable
 check the blanks bitmap for a non-blank entry.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TABLE_NOVALUE</span><span class="plain"> = </span><span class="identifier">IMPROBABLE_VALUE</span><span class="plain">;</span>
 </pre>
@@ -189,10 +185,9 @@ I6 provides no very useful operators here, whereas memory lookup is cheap,
 so we use two arrays of bitmaps:
 </p>
 
-
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">CheckTableEntryIsBlank_LU</span>
-        <span class="constant">-</span><span class="plain">&gt;	</span><span class="constant">$$00000001</span>
+        <span class="plain">-&gt;	</span><span class="constant">$$00000001</span>
             <span class="constant">$$00000010</span>
             <span class="constant">$$00000100</span>
             <span class="constant">$$00001000</span>
@@ -201,7 +196,7 @@ so we use two arrays of bitmaps:
             <span class="constant">$$01000000</span>
             <span class="constant">$$10000000</span><span class="plain">;</span>
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">CheckTableEntryIsNonBlank_LU</span>
-        <span class="constant">-</span><span class="plain">&gt;	</span><span class="constant">$$11111110</span>
+        <span class="plain">-&gt;	</span><span class="constant">$$11111110</span>
             <span class="constant">$$11111101</span>
             <span class="constant">$$11111011</span>
             <span class="constant">$$11110111</span>
@@ -226,7 +221,6 @@ rows which isn't a multiple of 8, the spare bits at the end of the last byte
 in the blanks bitmap are wasted, but this is an acceptable overhead in
 practice.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CheckTableEntryIsBlank</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">;</span>
@@ -260,7 +254,6 @@ of a memory block, which is convenient here. (The value 0 means "no memory
 block allocated yet".)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ForceTableEntryBlank</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">oldv</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> &gt;= </span><span class="constant">100</span><span class="plain">) </span><span class="identifier">col</span><span class="plain"> = </span><span class="identifier">TableFindCol</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">);</span>
@@ -289,7 +282,6 @@ that whoever calls this routine is just about to write a new entry anyway.
 memory block, where we create a suitable initialised but uninteresting
 memory block for the KOV in question, and set the entry to that.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ForceTableEntryNonBlank</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">oldv</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain">;</span>
@@ -320,7 +312,6 @@ any of its columns have blanks bitmaps, then the relevant bits in them
 need to be swapped to match, and the following routine performs this operation
 for two rows in a given column.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableSwapBlankBits</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">row1</span><span class="plain"> </span><span class="identifier">row2</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">at1</span><span class="plain"> </span><span class="identifier">at2</span><span class="plain"> </span><span class="identifier">bit1</span><span class="plain"> </span><span class="identifier">bit2</span><span class="plain">;</span>
@@ -359,18 +350,17 @@ continually to the blanks bitmaps. The following operation is useful for
 keeping the blanks bitmaps up to date when blank rows are moved down.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableMoveBlankBitsDown</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">row1</span><span class="plain"> </span><span class="identifier">row2</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">atp1</span><span class="plain"> </span><span class="identifier">bit</span><span class="plain"> </span><span class="identifier">rx</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> &gt;= </span><span class="constant">100</span><span class="plain">) </span><span class="identifier">col</span><span class="plain">=</span><span class="identifier">TableFindCol</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_NOBLANKBITS</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">row1</span><span class="plain">--; </span><span class="identifier">row2</span><span class="plain">--;</span>
-        <span class="comment">! Read blank bit for row1:</span>
+        <span class="comment">Read blank bit for row1:</span>
         <span class="identifier">at</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;2) + (</span><span class="identifier">row1</span><span class="plain">/8);</span>
         <span class="identifier">bit</span><span class="plain"> = ((</span><span class="identifier">TB_Blanks</span><span class="plain">-&gt;</span><span class="identifier">at</span><span class="plain">) &amp; (</span><span class="identifier">CheckTableEntryIsBlank_LU</span><span class="plain">-&gt;(</span><span class="identifier">row1</span><span class="plain">%8)));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bit</span><span class="plain">) </span><span class="identifier">bit</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-        <span class="comment">! Loop through, setting each blank bit to the next:</span>
+        <span class="comment">Loop through, setting each blank bit to the next:</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">rx</span><span class="plain">=</span><span class="identifier">row1</span><span class="plain">:</span><span class="identifier">rx</span><span class="plain">&lt;</span><span class="identifier">row2</span><span class="plain">:</span><span class="identifier">rx</span><span class="plain">++) {</span>
             <span class="identifier">atp1</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;2) + ((</span><span class="identifier">rx</span><span class="plain">+1)/8);</span>
             <span class="identifier">at</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;2) + (</span><span class="identifier">rx</span><span class="plain">/8);</span>
@@ -382,7 +372,7 @@ keeping the blanks bitmaps up to date when blank rows are moved down.
                     <span class="plain">= (</span><span class="identifier">TB_Blanks</span><span class="plain">-&gt;</span><span class="identifier">at</span><span class="plain">) &amp; (</span><span class="identifier">CheckTableEntryIsNonBlank_LU</span><span class="plain">-&gt;(</span><span class="identifier">rx</span><span class="plain">%8));</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="comment">! Write bit to blank bit for row2:</span>
+        <span class="comment">Write bit to blank bit for row2:</span>
         <span class="identifier">at</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;2) + (</span><span class="identifier">row2</span><span class="plain">/8);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bit</span><span class="plain">) {</span>
             <span class="plain">(</span><span class="identifier">TB_Blanks</span><span class="plain">-&gt;</span><span class="identifier">at</span><span class="plain">)</span>
@@ -406,12 +396,11 @@ is a topic, then we match the entry as a snippet against the value as a
 general parsing routine.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableRowCorr</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">lookup_value</span><span class="plain"> </span><span class="identifier">lookup_col</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> &gt;= </span><span class="constant">100</span><span class="plain">) </span><span class="identifier">col</span><span class="plain">=</span><span class="identifier">TableFindCol</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
         <span class="identifier">lookup_col</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">;</span>
-        <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">lookup_col</span><span class="plain">--&gt;0 </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">COL_HSIZE</span><span class="plain">;</span>
+        <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">lookup_col</span><span class="plain">--&gt;0 - </span><span class="identifier">COL_HSIZE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain">) </span><span class="identifier">f</span><span class="plain">=1;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain">) {</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1:</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">j</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -447,7 +436,7 @@ general parsing routine.
                 <span class="reserved">default</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">entry</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="comment">! print "Giving up^";</span>
+        <span class="comment">print "Giving up^";</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -463,7 +452,6 @@ value in <code class="display"><span class="extract">C1</span></code>.
 <p class="inwebparagraph"><code class="display"><span class="extract">ExistsTableLookUpCorr(T, C1, C2, V)</span></code> returns <code class="display"><span class="extract">true</span></code> if the operation
 <code class="display"><span class="extract">TableLookUpCorr(T, C1, C2, V)</span></code> can be done, <code class="display"><span class="extract">false</span></code> otherwise.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableLookUpCorr</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col1</span><span class="plain"> </span><span class="identifier">col2</span><span class="plain"> </span><span class="identifier">lookup_value</span><span class="plain"> </span><span class="identifier">write_flag</span><span class="plain"> </span><span class="identifier">write_value</span><span class="plain"> </span><span class="identifier">cola1</span><span class="plain"> </span><span class="identifier">cola2</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
@@ -492,7 +480,7 @@ value in <code class="display"><span class="extract">C1</span></code>.
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">write_flag</span><span class="plain">) {</span>
                     <span class="constant">1</span><span class="plain">: </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">write_value</span><span class="plain">;</span>
                     <span class="constant">2</span><span class="plain">: </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> + </span><span class="identifier">write_value</span><span class="plain">;</span>
-                    <span class="constant">3</span><span class="plain">: </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">write_value</span><span class="plain">;</span>
+                    <span class="constant">3</span><span class="plain">: </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> - </span><span class="identifier">write_value</span><span class="plain">;</span>
                     <span class="constant">5</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">cola1</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">rfalse</span><span class="plain">;</span>
@@ -540,7 +528,6 @@ an error if that doesn't exist.
 <code class="display"><span class="extract">C</span></code>, row <code class="display"><span class="extract">R</span></code>, false otherwise.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableLookUpEntry</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">index</span><span class="plain"> </span><span class="identifier">write_flag</span><span class="plain"> </span><span class="identifier">write_value</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tab</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_NOTABLE2</span><span class="plain">);</span>
@@ -557,7 +544,7 @@ an error if that doesn't exist.
                         <span class="plain">((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">index</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">)) + </span><span class="identifier">write_value</span><span class="plain">;</span>
                 <span class="constant">3</span><span class="plain">:	</span><span class="identifier">ForceTableEntryNonBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">,</span><span class="identifier">col</span><span class="plain">,</span><span class="identifier">index</span><span class="plain">);</span>
                     <span class="plain">(</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">index</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">) =</span>
-                        <span class="plain">((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">index</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">)) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">write_value</span><span class="plain">;</span>
+                        <span class="plain">((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">index</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">)) - </span><span class="identifier">write_value</span><span class="plain">;</span>
                 <span class="constant">4</span><span class="plain">:	</span><span class="identifier">ForceTableEntryBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">,</span><span class="identifier">col</span><span class="plain">,</span><span class="identifier">index</span><span class="plain">);</span>
                 <span class="constant">5</span><span class="plain">:	</span><span class="identifier">ForceTableEntryNonBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">,</span><span class="identifier">col</span><span class="plain">,</span><span class="identifier">index</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">index</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">));</span>
@@ -601,7 +588,6 @@ a legal row number.)
 <p class="inwebparagraph"><code class="display"><span class="extract">TableBlankRow(T)</span></code> finds the first blank row in <code class="display"><span class="extract">T</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableRowIsBlank</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain">=1:</span><span class="identifier">k</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0:</span><span class="identifier">k</span><span class="plain">++) {</span>
@@ -632,15 +618,15 @@ a legal row number.)
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">TableBlankRows</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">); </span><span class="comment">!print i, " rows^";</span>
+        <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">); </span><span class="comment">rint i, " rows^";</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=1:</span><span class="identifier">j</span><span class="plain">&lt;=</span><span class="identifier">i</span><span class="plain">:</span><span class="identifier">j</span><span class="plain">++)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TableRowIsBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain">++;</span>
-        <span class="comment">!print c, " blank^";</span>
+        <span class="comment">rint c, " blank^";</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">TableFilledRows</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">TableBlankRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">) - </span><span class="identifier">TableBlankRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">);</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">TableBlankRow</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
@@ -656,7 +642,6 @@ a legal row number.)
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Random Row. </b><code class="display"><span class="extract">TableRandomRow(T)</span></code> chooses a random non-blank row in <code class="display"><span class="extract">T</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableRandomRow</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
@@ -675,7 +660,6 @@ a legal row number.)
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Swap Rows. </b><code class="display"><span class="extract">TableSwapRows(T, R1, R2)</span></code> exchanges rows <code class="display"><span class="extract">R1</span></code> and <code class="display"><span class="extract">R2</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableSwapRows</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> </span><span class="identifier">v2</span><span class="plain">;</span>
@@ -710,7 +694,6 @@ blank row is always placed after a row in which the entry in C is blank but
 where other entries are not.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableCompareRows</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">row1</span><span class="plain"> </span><span class="identifier">row2</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain"> </span><span class="identifier">val2</span><span class="plain"> </span><span class="identifier">bl1</span><span class="plain"> </span><span class="identifier">bl2</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain"> &gt;= </span><span class="constant">100</span><span class="plain">) </span><span class="identifier">col</span><span class="plain">=</span><span class="identifier">TableFindCol</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">, </span><span class="reserved">false</span><span class="plain">);</span>
@@ -721,29 +704,29 @@ where other entries are not.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">val1</span><span class="plain"> == </span><span class="identifier">val2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">bl1</span><span class="plain"> == </span><span class="identifier">bl2</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val1</span><span class="plain"> ~= </span><span class="identifier">TABLE_NOVALUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl1</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="comment">! The two entries are both blank:</span>
+            <span class="comment">The two entries are both blank:</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TableRowIsBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">row1</span><span class="plain">)) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TableRowIsBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">row2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">*</span><span class="identifier">dir</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain"> -1*</span><span class="identifier">dir</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TableRowIsBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">row2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">*</span><span class="identifier">dir</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bl2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1*</span><span class="identifier">dir</span><span class="plain">;</span>
         <span class="identifier">f</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> &amp; </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueCompare</span><span class="plain">(</span><span class="identifier">val2</span><span class="plain">, </span><span class="identifier">val1</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> &amp; </span><span class="identifier">TB_COLUMN_REAL</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">REAL_NUMBER_TY_Compare</span><span class="plain">(</span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> &amp; </span><span class="identifier">TB_COLUMN_SIGNED</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val1</span><span class="plain"> &gt; </span><span class="identifier">val2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">UnsignedCompare</span><span class="plain">(</span><span class="identifier">val1</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
 </pre>
@@ -751,7 +734,6 @@ where other entries are not.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Move Row Down. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableMoveRowDown</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">r1</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> </span><span class="identifier">rx</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
@@ -777,7 +759,6 @@ where other entries are not.
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Shuffle. </b><code class="display"><span class="extract">TableShuffle(T)</span></code> sorts <code class="display"><span class="extract">T</span></code> into random row order.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableShuffle</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">to</span><span class="plain">;</span>
         <span class="identifier">TableMoveBlanksToBack</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">));</span>
@@ -802,14 +783,12 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">for (R=TableNextRow(T,C,0,D): R : R=TableNextRow(T,C,R,D)) ...</span>
 </pre>
 
 <p class="inwebparagraph">will perform a loop of valid row numbers in order of column <code class="display"><span class="extract">C</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableNextRow</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">dv</span><span class="plain"> </span><span class="identifier">min_dv</span><span class="plain"> </span><span class="identifier">min_at</span><span class="plain"> </span><span class="identifier">signed_arithmetic</span><span class="plain"> </span><span class="identifier">f</span><span class="plain"> </span><span class="identifier">blk</span><span class="plain"> </span><span class="identifier">z</span><span class="plain">;</span>
@@ -826,7 +805,7 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> = (</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">row</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">signed_arithmetic</span><span class="plain">) </span><span class="identifier">min_dv</span><span class="plain"> = </span><span class="constant">$7fff</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">min_dv</span><span class="plain"> = </span><span class="constant">$ffff</span><span class="plain">;</span>
-        <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">! WORDSIZE == 4</span>
+        <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">WORDSIZE == 4</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">signed_arithmetic</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">val</span><span class="plain"> = </span><span class="constant">$80000000</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">val</span><span class="plain"> = </span><span class="constant">$7fffffff</span><span class="plain">;</span>
@@ -865,7 +844,7 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
                     <span class="reserved">continue</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blk</span><span class="plain">) {</span>
                     <span class="identifier">dv</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">z</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">z</span><span class="plain"> = </span><span class="identifier">BlkValueCompare</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">z</span><span class="plain"> = -1; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">z</span><span class="plain"> = </span><span class="identifier">BlkValueCompare</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">);</span>
                     <span class="identifier">f</span><span class="plain"> = (((</span><span class="identifier">z</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || ((</span><span class="identifier">z</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">row</span><span class="plain">))) &amp;&amp;</span>
                         <span class="plain">((</span><span class="identifier">min_at</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">BlkValueCompare</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">min_dv</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)));</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -888,7 +867,6 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Move Blanks to Back. </b></p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableMoveBlanksToBack</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">fromrow</span><span class="plain"> </span><span class="identifier">torow</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">fbl</span><span class="plain"> </span><span class="identifier">lnbl</span><span class="plain"> </span><span class="identifier">blc</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">torow</span><span class="plain"> &lt; </span><span class="identifier">fromrow</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -901,10 +879,10 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
                 <span class="identifier">lnbl</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">fbl</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">lnbl</span><span class="plain">&gt;0) &amp;&amp; (</span><span class="identifier">fbl</span><span class="plain"> &lt; </span><span class="identifier">lnbl</span><span class="plain">)) {</span>
-            <span class="identifier">TableMoveRowDown</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">fbl</span><span class="plain">, </span><span class="identifier">lnbl</span><span class="plain">); </span><span class="comment">! Move first blank just past last nonblank</span>
+            <span class="identifier">TableMoveRowDown</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">fbl</span><span class="plain">, </span><span class="identifier">lnbl</span><span class="plain">); </span><span class="comment">Move first blank just past last nonblank</span>
             <span class="identifier">TableMoveBlanksToBack</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">fbl</span><span class="plain">, </span><span class="identifier">lnbl</span><span class="plain">-1);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">torow</span><span class="plain">-</span><span class="identifier">blc</span><span class="plain">; </span><span class="comment">! Final non-blank row</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">torow</span><span class="plain">-</span><span class="identifier">blc</span><span class="plain">; </span><span class="comment">Final non-blank row</span>
     <span class="plain">];</span>
 </pre>
 
@@ -913,11 +891,10 @@ Rows with blank entries in <code class="display"><span class="extract">C</span><
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Sort. </b>This is really only a front-end: it calls the sorting code at "Sort.i6t".
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableSort</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">dir</span><span class="plain"> </span><span class="identifier">algorithm</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1:</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0:</span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="comment">! Address of column table</span>
+            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="comment">Address of column table</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">j</span><span class="plain">--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_DONTSORTME</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_CANTSORT</span><span class="plain">, </span><span class="identifier">tab</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -938,34 +915,33 @@ stream will be an external file rather than the screen when this routine
 is called.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TablePrint</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1:</span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0:</span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="comment">! Address of column table</span>
+            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; </span><span class="comment">Address of column table</span>
             <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">j</span><span class="plain">--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_CANEXCHANGE</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">rtrue</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">);</span>
         <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">TableMoveBlanksToBack</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">);</span>
-        <span class="reserved">print</span><span class="plain"> </span><span class="string">"! "</span><span class="plain">, (</span><span class="identifier">PrintTableName</span><span class="plain">) </span><span class="identifier">tab</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="string">")^"</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain">=1:</span><span class="identifier">row</span><span class="plain">&lt;=</span><span class="identifier">k</span><span class="plain">:</span><span class="identifier">row</span><span class="plain">++) {</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain">=1:</span><span class="identifier">col</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0:</span><span class="identifier">col</span><span class="plain">++) {</span>
-                <span class="identifier">tc</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_NUMBER</span><span class="plain">;</span>
-                <span class="identifier">kov</span><span class="plain"> = </span><span class="identifier">KindAtomic</span><span class="plain">(</span><span class="identifier">TC_KOV</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kov</span><span class="plain"> == </span><span class="identifier">UNKNOWN_TY</span><span class="plain">) </span><span class="identifier">kov</span><span class="plain"> = </span><span class="identifier">NUMBER_TY</span><span class="plain">;</span>
-                <span class="identifier">v</span><span class="plain"> = (</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;(</span><span class="identifier">row</span><span class="plain">+</span><span class="identifier">COL_HSIZE</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain"> == </span><span class="identifier">TABLE_NOVALUE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">CheckTableEntryIsBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">,</span><span class="identifier">col</span><span class="plain">,</span><span class="identifier">row</span><span class="plain">)))</span>
-                    <span class="reserved">print</span><span class="plain"> </span><span class="string">"-- "</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueWriteToFile</span><span class="plain">(</span><span class="identifier">v</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">;</span>
-                    <span class="reserved">print</span><span class="plain"> </span><span class="string">" "</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="reserved">print</span><span class="plain"> </span><span class="string">"^"</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">rfalse</span><span class="plain">;</span>
-    <span class="plain">];</span>
+        <span class="reserved">print</span><span class="plain"> </span><span class="string">"</span><span class="comment">", (PrintTableName) tab, " (", k, ")^";</span>
+        <span class="string">for (row=1:row&lt;=k:row++) {</span>
+            <span class="string">for (col=1:col&lt;=tab--&gt;0:col++) {</span>
+                <span class="string">tc = ((tab--&gt;col)--&gt;1) &amp; TB_COLUMN_NUMBER;</span>
+                <span class="string">kov = KindAtomic(TC_KOV(tc));</span>
+                <span class="string">if (kov == UNKNOWN_TY) kov = NUMBER_TY;</span>
+                <span class="string">v = (tab--&gt;col)--&gt;(row+COL_HSIZE);</span>
+                <span class="string">if ((v == TABLE_NOVALUE) &amp;&amp; (CheckTableEntryIsBlank(tab,col,row)))</span>
+                    <span class="string">print "</span><span class="plain">-- </span><span class="string">";</span>
+                <span class="string">else {</span>
+                    <span class="string">if (BlkValueWriteToFile(v, kov) == false) print v;</span>
+                    <span class="string">print "</span><span class="plain"> </span><span class="string">";</span>
+                <span class="string">}</span>
+            <span class="string">}</span>
+            <span class="string">print "</span><span class="plain">^</span><span class="string">";</span>
+        <span class="string">}</span>
+        <span class="string">rfalse;</span>
+    <span class="string">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -973,93 +949,91 @@ is called.
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Read Table from File. </b>And this is how we unserialise again. It makes sense only on Glulx.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_GLULX</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">TableRead</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">auxf</span><span class="plain"> </span><span class="identifier">row</span><span class="plain"> </span><span class="identifier">maxrow</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">sgn</span><span class="plain"> </span><span class="identifier">dg</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain">=1:</span><span class="identifier">col</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0:</span><span class="identifier">col</span><span class="plain">++) {</span>
-            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">; </span><span class="comment">! Address of column table</span>
+            <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">; </span><span class="comment">Address of column table</span>
             <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">j</span><span class="plain">--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_CANEXCHANGE</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_CANTSAVE</span><span class="plain">, </span><span class="identifier">tab</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">maxrow</span><span class="plain"> = </span><span class="identifier">TableRows</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">);</span>
-        <span class="comment">!print maxrow, " rows available.^";</span>
+        <span class="comment">rint maxrow, " rows available.^";</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain">=1: </span><span class="identifier">row</span><span class="plain">&lt;=</span><span class="identifier">maxrow</span><span class="plain">: </span><span class="identifier">row</span><span class="plain">++) {</span>
             <span class="identifier">TableBlankOutRow</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">row</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">row</span><span class="plain">=1: </span><span class="identifier">row</span><span class="plain">&lt;=</span><span class="identifier">maxrow</span><span class="plain">: </span><span class="identifier">row</span><span class="plain">++) {</span>
-            <span class="comment">!print "Reading row ", row, "^";</span>
+            <span class="comment">rint "Reading row ", row, "^";</span>
             <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'!'</span><span class="plain">) {</span>
-                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-            <span class="plain">}</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">col</span><span class="plain">=1: </span><span class="identifier">col</span><span class="plain">&lt;=</span><span class="identifier">tab</span><span class="plain">--&gt;0: </span><span class="identifier">col</span><span class="plain">++) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) { </span><span class="identifier">row</span><span class="plain">++; </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">NoMore</span><span class="plain">; }</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="identifier">tc</span><span class="plain"> = ((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_NUMBER</span><span class="plain">;</span>
-                <span class="identifier">kov</span><span class="plain"> = </span><span class="identifier">KindAtomic</span><span class="plain">(</span><span class="identifier">TC_KOV</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kov</span><span class="plain"> == </span><span class="identifier">UNKNOWN_TY</span><span class="plain">) </span><span class="identifier">kov</span><span class="plain"> = </span><span class="identifier">NUMBER_TY</span><span class="plain">;</span>
-                <span class="comment">!print "tc = ", tc, " kov = ", kov, "^";</span>
-                <span class="identifier">sgn</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) {</span>
-                    <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">NotTable</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">); </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">EntryDone</span><span class="plain">; }</span>
-                    <span class="identifier">sgn</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain">)</span>
-                    <span class="identifier">ForceTableEntryNonBlank</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">, </span><span class="identifier">row</span><span class="plain">);</span>
-                <span class="comment">!print "A";</span>
-                <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueReadFromFile</span><span class="plain">(0, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain">)</span>
-                        <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueReadFromFile</span><span class="plain">(</span><span class="identifier">TableLookUpEntry</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">, </span><span class="identifier">row</span><span class="plain">),</span>
-                            <span class="identifier">auxf</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">);</span>
-                    <span class="reserved">else</span>
-                        <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">BlkValueReadFromFile</span><span class="plain">(0, </span><span class="identifier">auxf</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">);</span>
-                    <span class="identifier">ch</span><span class="plain"> = </span><span class="constant">32</span><span class="plain">;</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">dg</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dg</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">dg</span><span class="plain"> &gt; </span><span class="constant">9</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">NotTable</span><span class="plain">;</span>
-                    <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">dg</span><span class="plain">;</span>
-                    <span class="reserved">for</span><span class="plain"> (::) {</span>
-                        <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-                        <span class="identifier">dg</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dg</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">dg</span><span class="plain"> &gt; </span><span class="constant">9</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="identifier">v</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">*</span><span class="identifier">v</span><span class="plain"> + </span><span class="identifier">dg</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">*</span><span class="identifier">sgn</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="comment">!print "v=", v, " ";</span>
-                <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">tab</span><span class="plain">--&gt;</span><span class="identifier">col</span><span class="plain">)--&gt;1) &amp; </span><span class="identifier">TB_COLUMN_ALLOCATED</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
-                    <span class="identifier">TableLookUpEntry</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">, </span><span class="identifier">col</span><span class="plain">, </span><span class="identifier">row</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">);</span>
-                <span class="plain">.</span><span class="identifier">EntryDone</span><span class="plain">;</span>
-                <span class="comment">!print "First nd is ", ch, "^";</span>
-                <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">9</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-            <span class="plain">}</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">-1</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="character">'-'</span><span class="plain">) &amp;&amp; (((</span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'0'</span><span class="plain">)&lt;0) || ((</span><span class="identifier">ch</span><span class="plain">-</span><span class="character">'0'</span><span class="plain">)&gt;9))) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">NotTable</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">9</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">WontFit</span><span class="plain">;</span>
-                <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="plain">.</span><span class="identifier">NoMore</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">9</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">.</span><span class="identifier">WontFit</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_WONTFIT</span><span class="plain">, </span><span class="identifier">tab</span><span class="plain">);</span>
-        <span class="plain">.</span><span class="identifier">NotTable</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TABLE_BADFILE</span><span class="plain">, </span><span class="identifier">tab</span><span class="plain">);</span>
-    <span class="plain">];</span>
-    <span class="plain">#</span><span class="identifier">ENDIF</span><span class="plain">; </span><span class="comment">! TARGET_GLULX</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'</span><span class="comment">) {</span>
+                <span class="character">while (ch ~= -1 or 10 or 13) ch = FileIO_GetC(auxf);</span>
+                <span class="character">while (ch == 10 or 13) ch = FileIO_GetC(auxf);</span>
+            <span class="character">}</span>
+            <span class="character">for (col=1: col&lt;=tab--&gt;0: col++) {</span>
+                <span class="character">if (ch == -1) { row++; jump NoMore; }</span>
+                <span class="character">if (ch == 10 or 13) break;</span>
+                <span class="character">tc = ((tab--&gt;col)--&gt;1) &amp; TB_COLUMN_NUMBER;</span>
+                <span class="character">kov = KindAtomic(TC_KOV(tc));</span>
+                <span class="character">if (kov == UNKNOWN_TY) kov = NUMBER_TY;</span>
+                <span class="comment">rint "tc = ", tc, " kov = ", kov, "^";</span>
+                <span class="character">sgn = 1;</span>
+                <span class="character">if (ch == '</span><span class="plain">-</span><span class="character">') {</span>
+                    <span class="character">ch = FileIO_GetC(auxf);</span>
+                    <span class="character">if (ch == -1) jump NotTable;</span>
+                    <span class="character">if (ch == '</span><span class="plain">-</span><span class="character">') { ch = FileIO_GetC(auxf); jump EntryDone; }</span>
+                    <span class="character">sgn = -1;</span>
+                <span class="character">}</span>
+                <span class="character">if (((tab--&gt;col)--&gt;1) &amp; TB_COLUMN_ALLOCATED)</span>
+                    <span class="character">ForceTableEntryNonBlank(tab, col, row);</span>
+                <span class="comment">rint "A";</span>
+                <span class="character">v = BlkValueReadFromFile(0, 0, -1, kov);</span>
+                <span class="character">if (v) {</span>
+                    <span class="character">if (((tab--&gt;col)--&gt;1) &amp; TB_COLUMN_ALLOCATED)</span>
+                        <span class="character">v = BlkValueReadFromFile(TableLookUpEntry(tab, col, row),</span>
+                            <span class="character">auxf, ch, kov);</span>
+                    <span class="character">else</span>
+                        <span class="character">v = BlkValueReadFromFile(0, auxf, ch, kov);</span>
+                    <span class="character">ch = 32;</span>
+                <span class="character">} else {</span>
+                    <span class="character">dg = ch - '</span><span class="constant">0</span><span class="character">';</span>
+                    <span class="character">if ((dg &lt; 0) || (dg &gt; 9)) jump NotTable;</span>
+                    <span class="character">v = dg;</span>
+                    <span class="character">for (::) {</span>
+                        <span class="character">ch = FileIO_GetC(auxf);</span>
+                        <span class="character">dg = ch - '</span><span class="constant">0</span><span class="character">';</span>
+                        <span class="character">if ((dg &lt; 0) || (dg &gt; 9)) break;</span>
+                        <span class="character">v = 10*v + dg;</span>
+                    <span class="character">}</span>
+                    <span class="character">v = v*sgn;</span>
+                <span class="character">}</span>
+                <span class="comment">rint "v=", v, " ";</span>
+                <span class="character">if (((tab--&gt;col)--&gt;1) &amp; TB_COLUMN_ALLOCATED == 0)</span>
+                    <span class="character">TableLookUpEntry(tab, col, row, true, v);</span>
+                <span class="character">.EntryDone;</span>
+                <span class="comment">rint "First nd is ", ch, "^";</span>
+                <span class="character">while (ch == 9 or 32) ch = FileIO_GetC(auxf);</span>
+            <span class="character">}</span>
+            <span class="character">while (ch ~= -1 or 10 or 13) {</span>
+                <span class="character">if ((ch ~= '</span><span class="plain">-</span><span class="character">') &amp;&amp; (((ch-'</span><span class="plain">0</span><span class="character">')&lt;0) || ((ch-'</span><span class="plain">0</span><span class="character">')&gt;9))) jump NotTable;</span>
+                <span class="character">if (ch ~= 9 or 32) jump WontFit;</span>
+                <span class="character">ch = FileIO_GetC(auxf);</span>
+            <span class="character">}</span>
+        <span class="character">}</span>
+        <span class="character">.NoMore;</span>
+        <span class="character">while (ch == 9 or 32 or 10 or 13) ch = FileIO_GetC(auxf);</span>
+        <span class="character">if (ch == -1) return;</span>
+        <span class="character">.WontFit;</span>
+        <span class="character">return RunTimeProblem(RTP_TABLE_WONTFIT, tab);</span>
+        <span class="character">.NotTable;</span>
+        <span class="character">return RunTimeProblem(RTP_TABLE_BADFILE, tab);</span>
+    <span class="character">];</span>
+    <span class="character">#ENDIF; </span><span class="comment">TARGET_GLULX</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25. Debugging. </b>Routines to print the state of a table, for debugging purposes only.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TableColumnDebug</span><span class="plain"> </span><span class="identifier">tab</span><span class="plain"> </span><span class="identifier">col</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">tc</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain">;</span>

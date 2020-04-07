@@ -65,7 +65,6 @@
 when Inform starts up.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_create_initial_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
@@ -99,7 +98,6 @@ than" because it is unclear just how much taller than Big Bird we would have
 to make C. J.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_create_second_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
@@ -118,7 +116,7 @@ to make C. J.)
                     <span class="functiontext">Calculus::Schemas::new</span><span class="plain">(</span><span class="string">"*1.%n == *2.%n"</span><span class="plain">, </span><span class="identifier">i6_pname</span><span class="plain">, </span><span class="identifier">i6_pname</span><span class="plain">),</span>
                     <span class="identifier">WordAssemblages::lit_1</span><span class="plain">(</span><span class="identifier">rel_name</span><span class="plain">));</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">relname</span><span class="plain">);</span>
-                <span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;same_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
+                <span class="identifier">bp</span><span class="plain">-&gt;</span><span class="element">same_property</span><span class="plain"> = </span><span class="identifier">prn</span><span class="plain">;</span>
                 <span class="functiontext">Properties::SameRelations::register_same_property_as</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="functiontext">Properties::get_name</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -130,7 +128,7 @@ to make C. J.)
         <span class="identifier">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain"> = </span><span class="identifier">VerbMeanings::new</span><span class="plain">(</span><span class="identifier">root</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain"> =</span>
             <span class="identifier">Prepositions::make</span><span class="plain">(</span>
-                <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">same</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, 0,</span>
+                <span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">same</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">construction</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                     <span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)), </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">Verbs::add_form</span><span class="plain">(</span><span class="identifier">copular_verb</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">vm</span><span class="plain">, </span><span class="identifier">SVO_FS_BIT</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -180,7 +178,7 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">i7_name</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">i7_name</span><span class="plain">, </span><span class="string">"same-%&lt;W-as"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">i7_name</span><span class="plain">, </span><span class="string">"same-%&lt;W-as"</span><span class="plain">, </span><span class="identifier">prn</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">i7_name</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">' '</span><span class="plain">) </span><span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="character">'-'</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">I7W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream_expanding_strings</span><span class="plain">(</span><span class="identifier">i7_name</span><span class="plain">);</span>
@@ -195,7 +193,6 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Typechecking. </b>We just let the standard machinery do its work.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_typecheck</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
             <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_of_terms</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_required</span><span class="plain">, </span><span class="reserved">tc_problem_kit</span><span class="plain"> *</span><span class="identifier">tck</span><span class="plain">) {</span>
@@ -208,7 +205,6 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 <p class="endnote">The function Properties::SameRelations::REL_typecheck is used in 6/bp (<a href="6-bp.html#SP47">&#167;47</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Assertion. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_assert</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
@@ -225,7 +221,6 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Compilation. </b>Again we need do nothing special.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_compile</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">,</span>
         <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">annotated_i6_schema</span><span class="plain"> *</span><span class="identifier">asch</span><span class="plain">) {</span>
@@ -239,10 +234,9 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">property</span><span class="plain"> *</span><span class="functiontext">Properties::SameRelations::bp_get_same_as_property</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">-</span><span class="element">&gt;same_property</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bp</span><span class="plain">-&gt;</span><span class="identifier">same_property</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -251,7 +245,6 @@ truncate to a reasonable length, ensuring that the result doesn't exceed
 <p class="endnote">The function Properties::SameRelations::bp_get_same_as_property appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Problem message text. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Properties::SameRelations::REL_describe_for_problems</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>

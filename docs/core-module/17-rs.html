@@ -68,18 +68,17 @@ occurring inside the body of rules, and marked out (A), (B), (C), ... within
 that rule. This enables them to be manipulated or changed.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">response_message</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">responding_rule</span><span class="plain">; </span>    <span class="comment">named rule in which this response occurs</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">response_marker</span><span class="plain">; </span>    <span class="comment">0 for A, 1 for B, and so on up</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">responding_rule</span><span class="plain">; </span><span class="comment">named rule in which this response occurs</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">response_marker</span><span class="plain">; </span><span class="comment">0 for A, 1 for B, and so on up</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">original_text</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">original_stack_frame</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">resp_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">constant_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">resp_package</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">launcher_compiled</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">via_I6</span><span class="plain">; </span>    <span class="comment">if responding to a rule defined by I6 code, not source text</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">via_I6</span><span class="plain">; </span><span class="comment">if responding to a rule defined by I6 code, not source text</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">via_I6_routine_compiled</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">response_message</span><span class="plain">;</span>
@@ -93,10 +92,9 @@ that rule. This enables them to be manipulated or changed.
 is the "launcher" routine for a response:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Strings::response_launcher_iname</span><span class="plain">(</span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -108,13 +106,12 @@ is the "launcher" routine for a response:
 its name in the output code:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">) {</span>
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">RM</span><span class="plain"> = </span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RM</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RM</span><span class="plain">-</span><span class="element">&gt;constant_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no response value"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RM</span><span class="plain">-</span><span class="element">&gt;constant_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">RM</span><span class="plain">-&gt;</span><span class="element">constant_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no response value"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RM</span><span class="plain">-&gt;</span><span class="identifier">constant_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -147,21 +144,20 @@ need to remember the stack frame for later.
 but also (in most cases) a <code class="display"><span class="extract">TX_S_*</span></code> text substitution routine.
 </p>
 
-
 <pre class="display">
     <span class="reserved">response_message</span><span class="plain"> *</span><span class="functiontext">Strings::response_cue</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">,</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">via_I6</span><span class="plain">) {</span>
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">response_message</span><span class="plain">);</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain"> = </span><span class="identifier">marker</span><span class="plain">;</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_text</span><span class="plain"> = </span><span class="functiontext">Strings::TextSubstitutions::new_text_substitution</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">, </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;launcher_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;via_I6</span><span class="plain"> = </span><span class="identifier">via_I6</span><span class="plain">;</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;via_I6_routine_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">RESPONSES_HAP</span><span class="plain">, </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">));</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">AS_BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_package</span><span class="plain">);</span>
-        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;constant_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">AS_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_package</span><span class="plain">);</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">response_marker</span><span class="plain"> = </span><span class="identifier">marker</span><span class="plain">;</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_text</span><span class="plain"> = </span><span class="functiontext">Strings::TextSubstitutions::new_text_substitution</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">, </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">));</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">launcher_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">via_I6</span><span class="plain"> = </span><span class="identifier">via_I6</span><span class="plain">;</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">via_I6_routine_compiled</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">RESPONSES_HAP</span><span class="plain">, </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain">));</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">AS_BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_package</span><span class="plain">);</span>
+        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">constant_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">AS_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_package</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VH</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Strings::response_launcher_iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">));</span>
@@ -181,15 +177,14 @@ doesn't matter, since so little is done and the response count can't be
 enormous.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::compile_response_launchers</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;launcher_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;launcher_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="identifier">launcher_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+                <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">launcher_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Compile the actual launcher</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;via_I6</span><span class="plain">) &amp;&amp; (</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;via_I6_routine_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="identifier">via_I6</span><span class="plain">) &amp;&amp; (</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">via_I6_routine_compiled</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                     &lt;<span class="cwebmacro">If the response is via I6, compile the necessary routine for this rule</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -211,13 +206,13 @@ a call to an activity based on that value:
 
 
 <pre class="displaydefn">
-        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_package</span><span class="plain">;</span>
+        <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_package</span><span class="plain">;</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">launcher</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LAUNCHER_HL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
 
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span>
-            <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">);</span>
+            <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">response_marker</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RESPONSEVIAACTIVITY_HL</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">rname</span><span class="plain">);</span>
@@ -227,7 +222,7 @@ a call to an activity based on that value:
 
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">resp_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">launcher</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -253,7 +248,6 @@ calls
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">HACK_MODE_ON_RM('A');</span>
 </pre>
@@ -262,7 +256,6 @@ calls
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">HACK_MODE_ON_RM('a');</span>
@@ -279,7 +272,7 @@ essence here.
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">responder_iname</span><span class="plain"> = </span><span class="functiontext">Rules::get_handler_definition</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">);</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">responder_iname</span><span class="plain"> = </span><span class="functiontext">Rules::get_handler_definition</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">responder_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">code_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"code"</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">val_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"val"</span><span class="plain">);</span>
@@ -310,7 +303,7 @@ essence here.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">f_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -362,20 +355,20 @@ essence here.
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">r2</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">r2</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r2</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain"> == </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r2</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain"> == </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="identifier">responding_rule</span><span class="plain">) {</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">CASE_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">r2</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">));</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">r2</span><span class="plain">-&gt;</span><span class="element">response_marker</span><span class="plain">));</span>
                             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                     <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">str_s</span><span class="plain">);</span>
-                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">r2</span><span class="plain">-</span><span class="element">&gt;resp_iname</span><span class="plain">);</span>
+                                    <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">r2</span><span class="plain">-&gt;</span><span class="element">resp_iname</span><span class="plain">);</span>
                                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">r2</span><span class="plain">-</span><span class="element">&gt;via_I6_routine_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                        <span class="identifier">r2</span><span class="plain">-&gt;</span><span class="element">via_I6_routine_compiled</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -389,7 +382,7 @@ essence here.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">f_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -434,7 +427,6 @@ and some run-time tables which will enable the I6 template code to keep
 track of the content of each response.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::compile_responses</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Compile the array holding the current text of each response</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
@@ -462,16 +454,16 @@ text for the response than the one we first created.
         <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> = 0; </span><span class="identifier">marker</span><span class="plain"> &lt; 26; </span><span class="identifier">marker</span><span class="plain">++) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">marker</span><span class="plain"> &lt; </span><span class="constant">26</span><span class="plain">; </span><span class="identifier">marker</span><span class="plain">++) {</span>
                 <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain"> = </span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resp</span><span class="plain">) {</span>
-                    <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain"> = </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_text</span><span class="plain">;</span>
+                    <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain"> = </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_text</span><span class="plain">;</span>
                     <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Rules::get_response_value</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span>    <span class="comment">i.e., if the rule gives us a better text</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span><span class="comment">i.e., if the rule gives us a better text</span>
                         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">Rules::get_response_sentence</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">);</span>
                         <span class="identifier">ts</span><span class="plain"> = </span><span class="functiontext">Strings::TextSubstitutions::new_text_substitution</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">,</span>
                             <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">, </span><span class="functiontext">Rules::package</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
-                        <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_text</span><span class="plain">-</span><span class="element">&gt;dont_need_after_all</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                        <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_text</span><span class="plain">-&gt;</span><span class="element">dont_need_after_all</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ts_iname</span><span class="plain"> = </span><span class="functiontext">Strings::TextSubstitutions::text_substitution_iname</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">);</span>
                     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rc_iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">);</span>
@@ -502,8 +494,8 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">R_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"R"</span><span class="plain">);</span>
         <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain">) {</span>
-            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">,</span>
-                <span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">);</span>
+            <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Strings::response_constant_iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain">,</span>
+                <span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">response_marker</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -515,7 +507,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">RULEPRINTINGRULE_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;responding_rule</span><span class="plain">));</span>
+                        <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Rules::iname</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">responding_rule</span><span class="plain">));</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -523,7 +515,7 @@ say <code class="display"><span class="extract">R_14_RESP_B</span></code>, we pr
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINTCHAR_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;response_marker</span><span class="plain">));</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">response_marker</span><span class="plain">));</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -575,13 +567,13 @@ divided up by the extensions containing the rules which produce them.
 
 <pre class="displaydefn">
         <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tally</span><span class="plain"> = 0, </span><span class="identifier">contiguous_match</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">no_cms</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tally</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">contiguous_match</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">no_cms</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = 0; </span><span class="identifier">marker</span><span class="plain"> &lt; 26; </span><span class="identifier">marker</span><span class="plain">++)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">marker</span><span class="plain"> &lt; </span><span class="constant">26</span><span class="plain">; </span><span class="identifier">marker</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">marker</span><span class="plain">)) {</span>
                     <span class="identifier">tally</span><span class="plain">++;</span>
                     <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span>
-                        <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">)));</span>
+                        <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">)));</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">group_E</span><span class="plain">) </span>&lt;<span class="cwebmacro">Start a possible run of matches</span> <span class="cwebmacronumber">7.3.1.1</span>&gt;
                     <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">End a possible run of matches</span> <span class="cwebmacronumber">7.3.1.2</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
@@ -600,7 +592,7 @@ divided up by the extensions containing the rules which produce them.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">contiguous_match</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">contiguous_match</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_cms</span><span class="plain">++ == 0) &amp;&amp; (</span><span class="identifier">E</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_cms</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">E</span><span class="plain">)) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">QT</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">QT</span><span class="plain">, </span><span class="string">"%&lt;X"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">);</span>
                 <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">QT</span><span class="plain">);</span>
@@ -633,11 +625,10 @@ divided up by the extensions containing the rules which produce them.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="functiontext">Strings::frame_for_response</span><span class="plain">(</span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_stack_frame</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_stack_frame</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -648,7 +639,6 @@ divided up by the extensions containing the rules which produce them.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>As mentioned above, assertions in the source text can change the text of
 a given response even at compile time. But the rules code looks after that:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::assert_response_value</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -664,26 +654,25 @@ a given response even at compile time. But the rules code looks after that:
 text to assert a change:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::index_response</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">, </span><span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">,</span>
-            <span class="string">"style=\</span><span class="plain">"</span><span class="string">color: #ffffff; "</span>
-            <span class="string">"font-family: 'Courier New', Courier, monospace; background-color: #8080ff;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="string">"style=\"color: #ffffff; "</span>
+            <span class="string">"font-family: 'Courier New', Courier, monospace; background-color: #8080ff;\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;%c&amp;nbsp;&amp;nbsp; "</span><span class="plain">, </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">marker</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">color: #000066;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-</span><span class="element">&gt;original_text</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"style=\"color: #000066;\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">-&gt;</span><span class="element">original_text</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%+W response (%c)"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">marker</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%+W response (%c)"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">, </span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">marker</span><span class="plain">);</span>
         <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&lt;i&gt;name&lt;/i&gt;"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
         <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"The %+W response (%c) is \</span><span class="plain">"</span><span class="string">New text.\</span><span class="plain">"</span><span class="string">."</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"The %+W response (%c) is \"New text.\"."</span><span class="plain">);</span>
         <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&lt;i&gt;set&lt;/i&gt;"</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
@@ -696,12 +685,11 @@ text to assert a change:
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Strings::get_marker_from_response_spec</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">rs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">rs</span><span class="plain">, </span><span class="identifier">K_response</span><span class="plain">)) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">rs</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) &gt;= 2) &amp;&amp; (&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt;(</span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">)-1))))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) &gt;= </span><span class="constant">2</span><span class="plain">) &amp;&amp; (&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt;(</span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">)-1))))</span>
                 <span class="reserved">return</span><span class="plain"> &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
@@ -728,7 +716,6 @@ I6 "box" statement, which needs it to be formed in an eccentric way.
 but to something like an XML description of its metadata, where again the
 text needs to be printed in a particular way.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::compile_general</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">);</span>
@@ -760,7 +747,6 @@ text needs to be printed in a particular way.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">"blah blah blah" ( letter )</span>
 </pre>
@@ -775,7 +761,7 @@ text needs to be printed in a particular way.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) &gt;= 2) &amp;&amp; (&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt;(</span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">)-1))))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">) &gt;= </span><span class="constant">2</span><span class="plain">) &amp;&amp; (&lt;</span><span class="identifier">response</span><span class="plain">-</span><span class="identifier">letter</span><span class="plain">&gt;(</span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">)-1))))</span>
             &lt;<span class="cwebmacro">This is a response</span> <span class="cwebmacronumber">12.1.1</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">This isn't a response</span> <span class="cwebmacronumber">12.1.2</span>&gt;<span class="character">;</span>
 </pre>
@@ -812,7 +798,7 @@ text needs to be printed in a particular way.
                 <span class="functiontext">Strings::response_cue</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">rule_being_compiled</span><span class="plain">, </span><span class="identifier">code</span><span class="plain">, </span><span class="identifier">SW</span><span class="plain">,</span>
                     <span class="functiontext">Frames::boxed_frame</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">), </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="functiontext">Rules::now_rule_defines_response</span><span class="plain">(</span><span class="identifier">rule_being_compiled</span><span class="plain">, </span><span class="identifier">code</span><span class="plain">, </span><span class="identifier">resp</span><span class="plain">);</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">downs</span><span class="plain">--; }</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">downs</span><span class="plain">--; }</span>
         <span class="plain">}</span>
 </pre>
 

@@ -68,7 +68,6 @@ value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">runtime_kind_structure</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_described</span><span class="plain">;</span>
@@ -91,7 +90,6 @@ class number; the whole text is the classname. These are used only for those
 kinds being compiled to an I6 <code class="display"><span class="extract">Class</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -101,7 +99,7 @@ kinds being compiled to an I6 <code class="display"><span class="extract">Class<
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::I6_classnumber</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_noun</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::range_number</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -125,12 +123,11 @@ never say what its value is to be, Inform tries to initialise it to the
 chosen), but no problem message has been issued about this, or
 </li><li>(c) <code class="display"><span class="extract">NOT_APPLICABLE</span></code> if it failed and issued a specific problem message.
 </li></ul>
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_default_value</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">storage_name</span><span class="plain">) {</span>
         <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">INTER_DATA_VHMODE</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::compile_default_value_vh</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">storage_name</span><span class="plain">);</span>
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">Holsters::unholster_pair</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">, &amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_generic_entry</span><span class="plain">(</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -165,7 +162,7 @@ chosen), but no problem message has been issued about this, or
                 <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_in_enclosure</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANTS_HAP</span><span class="plain">);</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
                 <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-                <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K_stored_action</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 6);</span>
+                <span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">K_stored_action</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">6</span><span class="plain">);</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">PL::Actions::double_sharp</span><span class="plain">(</span><span class="identifier">PL::Actions::Wait</span><span class="plain">()));</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
                 <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
@@ -212,9 +209,9 @@ chosen), but no problem message has been issued about this, or
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = 0, </span><span class="identifier">v2</span><span class="plain"> = 0;</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">Kinds::RunTime::get_default_value</span><span class="plain">(&amp;</span><span class="identifier">v1</span><span class="plain">, &amp;</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v1</span><span class="plain"> != 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">v1</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">)) {</span>
                 <span class="identifier">Holsters::holster_pair</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">v2</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -334,13 +331,12 @@ I6 story file; this effectively suppresses problem messages which the
 absence of rooms would otherwise result in.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::get_default_value</span><span class="plain">(</span><span class="identifier">inter_t</span><span class="plain"> *</span><span class="identifier">v1</span><span class="plain">, </span><span class="identifier">inter_t</span><span class="plain"> *</span><span class="identifier">v2</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">stored_as</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">stored_as</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">stored_as</span><span class="plain">) </span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">stored_as</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 0; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
 
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) {</span>
@@ -351,7 +347,7 @@ absence of rooms would otherwise result in.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">)) {</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 0; </span><span class="reserved">return</span><span class="plain">; } </span>    <span class="comment">see above</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Task::wraps_existing_storyfile</span><span class="plain">()) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; } </span><span class="comment">see above</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -387,11 +383,11 @@ absence of rooms would otherwise result in.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">default_value</span><span class="plain">;</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">default_value</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain"> = 0, </span><span class="identifier">val2</span><span class="plain"> = 0;</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">val1</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">val2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Inter::Types::read_I6_decimal</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, &amp;</span><span class="identifier">val1</span><span class="plain">, &amp;</span><span class="identifier">val2</span><span class="plain">) == </span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="plain">*</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">val1</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = </span><span class="identifier">val2</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -402,8 +398,8 @@ absence of rooms would otherwise result in.
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"true"</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 1; </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"false"</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = 0; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"true"</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"false"</span><span class="plain">)) { *</span><span class="identifier">v1</span><span class="plain"> = </span><span class="identifier">LITERAL_IVAL</span><span class="plain">; *</span><span class="identifier">v2</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">; }</span>
 
         <span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Emit::holding_symbol</span><span class="plain">(</span><span class="identifier">Produce::main_scope</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()), </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -445,20 +441,19 @@ similarly, we must assign by transferring the contents of the blocks of
 data, not merely the pointer to them, which is a "deep copy".
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::interpret_test_equality</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">right</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Interpreting equality test of kinds $u, $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Interpreting equality test of kinds $u, $u\n"</span><span class="plain">, </span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">K_truth_state</span><span class="plain">)) || (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">right</span><span class="plain">, </span><span class="identifier">K_truth_state</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"(*1 &amp;&amp; true) == (*2 &amp;&amp; true)"</span><span class="plain">;</span>
 
         <span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right</span><span class="plain">)) { </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">; </span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right</span><span class="plain">)) { </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">; </span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">; }</span>
 
         <span class="identifier">kind_constructor_comparison_schema</span><span class="plain"> *</span><span class="identifier">dtcs</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dtcs</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">first_comparison_schema</span><span class="plain">; </span><span class="identifier">dtcs</span><span class="plain">; </span><span class="identifier">dtcs</span><span class="plain"> = </span><span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">next_comparison_schema</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">comparator_unparsed</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">comparator_unparsed</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">comparator</span><span class="plain"> = </span><span class="identifier">Kinds::Constructors::parse</span><span class="plain">(</span><span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">comparator_unparsed</span><span class="plain">);</span>
                 <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="identifier">comparator_unparsed</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -475,7 +470,7 @@ data, not merely the pointer to them, which is a "deep copy".
         <span class="plain">}</span>
 
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::get_comparison_routine</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">) == 0) ||</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"signed"</span><span class="plain">)) ||</span>
             <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"UnsignedCompare"</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"*=-*1 == *2"</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"*=- *_1(*1, *2) == 0"</span><span class="plain">;</span>
@@ -488,11 +483,10 @@ data, not merely the pointer to them, which is a "deep copy".
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Casts at runtime. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::cast_call</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::cast_possible</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -515,7 +509,7 @@ data, not merely the pointer to them, which is a "deep copy".
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_cast_call</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">down</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::cast_possible</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">Kinds::Behaviour::get_name_in_template_code</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">)) == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">)) &amp;&amp;</span>
@@ -583,7 +577,7 @@ like variables. That's what makes them intermediate.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">UNKNOWN_WEAK_ID</span><span class="plain"> 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNKNOWN_WEAK_ID</span><span class="plain"> </span><span class="constant">1</span>
 </pre>
 
 <pre class="display">
@@ -601,13 +595,12 @@ like variables. That's what makes them intermediate.)
 which might occupy up to 31 characters, the maximum length of an I6 identifier:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_weak_id</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"UNKNOWN_TY"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain"> = </span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">sn</span><span class="plain"> = </span><span class="identifier">Kinds::Constructors::name_in_template_code</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sn</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">sn</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sn</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">sn</span><span class="plain">); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -672,7 +665,6 @@ strong ID into a weak one:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if ((strong &gt;= 0) &amp;&amp; (strong &lt; BASE_KIND_HWM)) weak = strong;</span>
         <span class="plain">else weak = strong--&gt;0;</span>
@@ -687,12 +679,11 @@ ensure that we always point to the same array every time the same construction
 turns up. This means remembering everything we've seen, using a new structure:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">) {</span>
-            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_iname</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -701,7 +692,7 @@ turns up. This means remembering everything we've seen, using a new structure:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">) {</span>
-            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">);</span>
+            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_iname</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Kinds::RunTime::emit_weak_id_as_val</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -727,7 +718,6 @@ tuple subtrees into flat arrays. Recall that <code class="display"><span class="
 here except as a result of recursion.
 </p>
 
-
 <pre class="display">
     <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">divert</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::stored_as</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -735,16 +725,16 @@ here except as a result of recursion.
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="identifier">Kinds::arity_of_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">)</span>
                     &lt;<span class="cwebmacro">Find or make a runtime kind structure for the kind</span> <span class="cwebmacronumber">13.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> 1: {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: {</span>
                         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                         <span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
-                    <span class="reserved">case</span><span class="plain"> 2: {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: {</span>
                         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">l</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">k</span><span class="plain">, &amp;</span><span class="identifier">l</span><span class="plain">);</span>
                         <span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">);</span>
@@ -777,7 +767,7 @@ is the root of all evil, I'm leaving it quadratic.
 
 <pre class="displaydefn">
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">, </span><span class="reserved">runtime_kind_structure</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;kind_described</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">kind_described</span><span class="plain">))</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Create a new runtime kind ID structure</span> <span class="cwebmacronumber">13.1.1</span>&gt;<span class="plain">;</span>
 </pre>
@@ -799,16 +789,16 @@ compile under Inform 6.
 
 <pre class="displaydefn">
         <span class="identifier">rks</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">runtime_kind_structure</span><span class="plain">);</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;kind_described</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">kind_described</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">make_default</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">default_requested_here</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::package</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">KIND_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_with_memo</span><span class="plain">(</span><span class="constant">KIND_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_dv_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFAULT_VALUE_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_dv_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">DEFAULT_VALUE_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -819,20 +809,19 @@ compile under Inform 6.
 values for kinds, since both involve tracking constructions uniquely.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::compile_default_value_inner</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="functiontext">Kinds::RunTime::precompile_default_value</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_dv_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_dv_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::precompile_default_value</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::get_rks</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">make_default</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">default_requested_here</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">default_requested_here</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -845,7 +834,6 @@ values for kinds, since both involve tracking constructions uniquely.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Convenient storage for some names.
 </p>
-
 
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::get_kind_GPR_iname</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -888,14 +876,13 @@ recursively scanned through for us, so that if we have seen a construction
 K, we have also seen its bases.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_structures</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">, </span><span class="reserved">runtime_kind_structure</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;kind_described</span><span class="plain">;</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">kind_described</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile the runtime ID structure for this kind</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile a constructed default value for this kind</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">make_default</span><span class="plain">) </span>&lt;<span class="cwebmacro">Compile a constructed default value for this kind</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Compile the default value finder</span> <span class="cwebmacronumber">16.3</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -911,7 +898,7 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compile the list of strong IDs for the bases</span> <span class="cwebmacronumber">16.1.1</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
@@ -955,12 +942,12 @@ K, we have also seen its bases.
 <pre class="displaydefn">
         <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">arity</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> 2: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: {</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
                 <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">);</span>
@@ -1004,8 +991,8 @@ K, we have also seen its bases.
 
 
 <pre class="displaydefn">
-        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_dv_iname</span><span class="plain">;</span>
-        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;default_requested_here</span><span class="plain">;</span>
+        <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_dv_iname</span><span class="plain">;</span>
+        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">default_requested_here</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_phrase</span><span class="plain">) {</span>
             <span class="functiontext">Phrases::Constants::compile_default_closure</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">) {</span>
@@ -1038,8 +1025,8 @@ K, we have also seen its bases.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">runtime_kind_structure</span><span class="plain"> *</span><span class="identifier">rks</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">rks</span><span class="plain">, </span><span class="reserved">runtime_kind_structure</span><span class="plain">) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;kind_described</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;make_default</span><span class="plain">) {</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">kind_described</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">make_default</span><span class="plain">) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -1051,7 +1038,7 @@ K, we have also seen its bases.
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-</span><span class="element">&gt;rks_dv_iname</span><span class="plain">);</span>
+                            <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rks</span><span class="plain">-&gt;</span><span class="element">rks_dv_iname</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1059,7 +1046,7 @@ K, we have also seen its bases.
         <span class="plain">}</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
@@ -1078,12 +1065,11 @@ run-time storage called "the heap".
 how the job is done.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_heap_allocation</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_heap_allocation</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::ensure_basic_heap_present</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">total_heap_allocation</span><span class="plain"> += 256; </span>    <span class="comment">enough for the initial free-space block</span>
+        <span class="identifier">total_heap_allocation</span><span class="plain"> += </span><span class="constant">256</span><span class="plain">; </span><span class="comment">enough for the initial free-space block</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1095,7 +1081,6 @@ how the job is done.
 data on the heap for any permanent storage objects (global variables,
 property values, table entries, list items) of pointer-value kinds:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::compile_heap_allocator</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1124,15 +1109,15 @@ has essentially no memory constraints compared with the Z-machine.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_heap</span><span class="plain"> = 1;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_heap</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total_heap_allocation</span><span class="plain"> &lt; </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">())</span>
             <span class="identifier">total_heap_allocation</span><span class="plain"> = </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">();</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">max_heap</span><span class="plain"> &lt; </span><span class="identifier">total_heap_allocation</span><span class="plain">) </span><span class="identifier">max_heap</span><span class="plain"> = </span><span class="identifier">max_heap</span><span class="plain">*2;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))</span>
             <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">), </span><span class="identifier">max_heap</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">), 4*</span><span class="identifier">max_heap</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Providing for a total heap of %d, given requirement of %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="functiontext">Kinds::RunTime::compile_nnci</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">MEMORY_HEAP_SIZE_HL</span><span class="plain">), </span><span class="constant">4</span><span class="plain">*</span><span class="identifier">max_heap</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Providing for a total heap of %d, given requirement of %d\n"</span><span class="plain">,</span>
             <span class="identifier">max_heap</span><span class="plain">, </span><span class="identifier">total_heap_allocation</span><span class="plain">);</span>
 </pre>
 
@@ -1151,7 +1136,6 @@ flexible.
 list of 20 texts. For the cases above, it's always 1.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">heap_allocation</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">allocated_kind</span><span class="plain">;</span>
@@ -1162,33 +1146,33 @@ list of 20 texts. For the cases above, it's always 1.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stack_offset</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to allocate heap storage for this kind of value"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no heap storage estimate for this kind of value"</span><span class="plain">);</span>
 
-        <span class="identifier">total_heap_allocation</span><span class="plain"> += (</span><span class="identifier">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) + 8)*</span><span class="identifier">multiplier</span><span class="plain">;</span>
+        <span class="identifier">total_heap_allocation</span><span class="plain"> += (</span><span class="identifier">Kinds::Behaviour::get_heap_size_estimate</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) + </span><span class="constant">8</span><span class="plain">)*</span><span class="identifier">multiplier</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">)</span>
             <span class="functiontext">Kinds::RunTime::precompile_default_value</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
 
         <span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">;</span>
-        <span class="identifier">ha</span><span class="element">.allocated_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain"> = </span><span class="identifier">stack_offset</span><span class="plain">;</span>
+        <span class="identifier">ha</span><span class="plain">.</span><span class="element">allocated_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">ha</span><span class="plain">.</span><span class="element">stack_offset</span><span class="plain"> = </span><span class="identifier">stack_offset</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_heap_allocation</span><span class="plain">(</span><span class="reserved">heap_allocation</span><span class="plain"> </span><span class="identifier">ha</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain"> &gt;= 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ha</span><span class="plain">.</span><span class="element">stack_offset</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATEONSTACK_HL</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ha</span><span class="element">.stack_offset</span><span class="plain">);</span>
-            <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">ha</span><span class="element">.allocated_kind</span><span class="plain">);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">ha</span><span class="plain">.</span><span class="element">stack_offset</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">ha</span><span class="plain">.</span><span class="element">allocated_kind</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">BLKVALUECREATE_HL</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">iname</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-            <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">ha</span><span class="element">.allocated_kind</span><span class="plain">);</span>
+            <span class="functiontext">Kinds::RunTime::emit_strong_id_as_val</span><span class="plain">(</span><span class="identifier">ha</span><span class="plain">.</span><span class="element">allocated_kind</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -1206,26 +1190,26 @@ list of 20 texts. For the cases above, it's always 1.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_MULTIPLE</span><span class="plain"> 0</span><span class="identifier">x00000001</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_16_BIT</span><span class="plain">   0</span><span class="identifier">x00000002</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_WORD</span><span class="plain">     0</span><span class="identifier">x00000004</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_RESIDENT</span><span class="plain"> 0</span><span class="identifier">x00000008</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_TRUNCMULT</span><span class="plain"> 0</span><span class="identifier">x00000010</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_MULTIPLE</span><span class="plain"> </span><span class="constant">0x00000001</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_16_BIT</span><span class="plain">   </span><span class="constant">0x00000002</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_WORD</span><span class="plain">     </span><span class="constant">0x00000004</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_RESIDENT</span><span class="plain"> </span><span class="constant">0x00000008</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLK_FLAG_TRUNCMULT</span><span class="plain"> </span><span class="constant">0x00000010</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit_block_value_header</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">individual</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">individual</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">(0);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0, </span><span class="identifier">c</span><span class="plain"> = 1, </span><span class="identifier">w</span><span class="plain"> = 4;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) </span><span class="identifier">w</span><span class="plain"> = 2;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; (</span><span class="identifier">size</span><span class="plain"> + 3)*</span><span class="identifier">w</span><span class="plain">) { </span><span class="identifier">n</span><span class="plain">++; </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">*2; }</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">w</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">())) </span><span class="identifier">w</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; (</span><span class="identifier">size</span><span class="plain"> + </span><span class="constant">3</span><span class="plain">)*</span><span class="identifier">w</span><span class="plain">) { </span><span class="identifier">n</span><span class="plain">++; </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">*2; }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain"> = </span><span class="constant">BLK_FLAG_RESIDENT</span><span class="plain"> + </span><span class="constant">BLK_FLAG_WORD</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_list_of</span><span class="plain">) </span><span class="identifier">flags</span><span class="plain"> += </span><span class="constant">BLK_FLAG_TRUNCMULT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">) </span><span class="identifier">flags</span><span class="plain"> += </span><span class="constant">BLK_FLAG_MULTIPLE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TargetVMs::is_16_bit</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()))</span>
-            <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (0</span><span class="identifier">x100</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + </span><span class="identifier">flags</span><span class="plain">));</span>
+            <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="constant">0x100</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + </span><span class="identifier">flags</span><span class="plain">));</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (0</span><span class="identifier">x1000000</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + 0</span><span class="identifier">x10000</span><span class="plain">*</span><span class="identifier">flags</span><span class="plain">));</span>
+            <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) (</span><span class="constant">0x1000000</span><span class="plain">*</span><span class="identifier">n</span><span class="plain"> + </span><span class="constant">0x10000</span><span class="plain">*</span><span class="identifier">flags</span><span class="plain">));</span>
         <span class="functiontext">Kinds::RunTime::emit_weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
 
         <span class="functiontext">Emit::array_MPN_entry</span><span class="plain">();</span>
@@ -1239,7 +1223,6 @@ list of 20 texts. For the cases above, it's always 1.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Run-time support for units and enumerations. </b>The following generates a small suite of I6 routines associated with
 each such kind, and needed at run-time.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::base_represented_in_inter</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -1266,7 +1249,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_ARITY</span><span class="plain"> 32</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_ARITY</span><span class="plain"> </span><span class="constant">32</span>
 </pre>
 
 <pre class="display">
@@ -1274,15 +1257,15 @@ each such kind, and needed at run-time.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::base_represented_in_inter</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">kind_interaction</span><span class="plain"> *</span><span class="identifier">KI</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">KI</span><span class="plain">, </span><span class="reserved">kind_interaction</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">KI</span><span class="plain">-</span><span class="element">&gt;noted_kind</span><span class="plain">))</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">KI</span><span class="plain">-</span><span class="element">&gt;noted_iname</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">KI</span><span class="plain">-&gt;</span><span class="element">noted_kind</span><span class="plain">))</span>
+                    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">KI</span><span class="plain">-&gt;</span><span class="identifier">noted_iname</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Kinds::RunTime::iname_inner</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::base_represented_in_inter</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="reserved">kind_interaction</span><span class="plain"> *</span><span class="identifier">KI</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_interaction</span><span class="plain">);</span>
-            <span class="identifier">KI</span><span class="plain">-</span><span class="element">&gt;noted_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-            <span class="identifier">KI</span><span class="plain">-</span><span class="element">&gt;noted_iname</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = 0;</span>
+            <span class="identifier">KI</span><span class="plain">-&gt;</span><span class="element">noted_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+            <span class="identifier">KI</span><span class="plain">-&gt;</span><span class="element">noted_iname</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">operands</span><span class="plain">[</span><span class="constant">MAX_KIND_ARITY</span><span class="plain">];</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">icon</span><span class="plain"> = -1;</span>
             <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">idt</span><span class="plain"> = </span><span class="identifier">ROUTINE_IDT</span><span class="plain">;</span>
@@ -1294,10 +1277,10 @@ each such kind, and needed at run-time.
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_table_column</span><span class="plain">) </span>&lt;<span class="cwebmacro">Run out inter kind for column</span> <span class="cwebmacronumber">22.3</span>&gt;
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">CON_relation</span><span class="plain">) </span>&lt;<span class="cwebmacro">Run out inter kind for relation</span> <span class="cwebmacronumber">22.4</span>&gt;
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Unfortunate kind is: $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Unfortunate kind is: $u\n"</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to represent kind in inter"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">icon</span><span class="plain"> &lt; 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"icon unset"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">icon</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"icon unset"</span><span class="plain">);</span>
             <span class="functiontext">Emit::kind</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">idt</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">icon</span><span class="plain">, </span><span class="identifier">arity</span><span class="plain">, </span><span class="identifier">operands</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">;</span>
@@ -1314,7 +1297,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 1;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">operands</span><span class="plain">[0] = </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">icon</span><span class="plain"> = </span><span class="identifier">LIST_ICON</span><span class="plain">;</span>
         <span class="identifier">idt</span><span class="plain"> = </span><span class="identifier">LIST_IDT</span><span class="plain">;</span>
@@ -1330,7 +1313,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 1;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">operands</span><span class="plain">[0] = </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">icon</span><span class="plain"> = </span><span class="identifier">DESCRIPTION_ICON</span><span class="plain">;</span>
 </pre>
@@ -1345,7 +1328,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 1;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">operands</span><span class="plain">[0] = </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
         <span class="identifier">icon</span><span class="plain"> = </span><span class="identifier">COLUMN_ICON</span><span class="plain">;</span>
 </pre>
@@ -1360,7 +1343,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 2;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">operands</span><span class="plain">[0], &amp;</span><span class="identifier">operands</span><span class="plain">[1]);</span>
         <span class="identifier">icon</span><span class="plain"> = </span><span class="identifier">RELATION_ICON</span><span class="plain">;</span>
 </pre>
@@ -1383,8 +1366,8 @@ each such kind, and needed at run-time.
             <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">A</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">);</span>
             <span class="identifier">operands</span><span class="plain">[</span><span class="identifier">arity</span><span class="plain">++] = </span><span class="identifier">A</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> == 0) {</span>
-            <span class="identifier">operands</span><span class="plain">[</span><span class="identifier">arity</span><span class="plain">++] = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">void arguments</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arity</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">operands</span><span class="plain">[</span><span class="identifier">arity</span><span class="plain">++] = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">void arguments</span>
         <span class="plain">}</span>
         <span class="identifier">operands</span><span class="plain">[</span><span class="identifier">arity</span><span class="plain">++] = </span><span class="identifier">result</span><span class="plain">;</span>
 </pre>
@@ -1399,7 +1382,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 2;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">operands</span><span class="plain">[0], &amp;</span><span class="identifier">operands</span><span class="plain">[1]);</span>
         <span class="identifier">icon</span><span class="plain"> = </span><span class="identifier">RULE_ICON</span><span class="plain">;</span>
 </pre>
@@ -1414,7 +1397,7 @@ each such kind, and needed at run-time.
 
 
 <pre class="displaydefn">
-        <span class="identifier">arity</span><span class="plain"> = 1;</span>
+        <span class="identifier">arity</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">Y</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">X</span><span class="plain">, &amp;</span><span class="identifier">Y</span><span class="plain">);</span>
         <span class="identifier">operands</span><span class="plain">[0] = </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_phrase</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">, </span><span class="identifier">Y</span><span class="plain">);</span>
@@ -1427,9 +1410,8 @@ each such kind, and needed at run-time.
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b></p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">object_kind_count</span><span class="plain"> = 1;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">object_kind_count</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Kinds::RunTime::iname_inner</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::is_proper_constructor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::constructed_kind_name</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -1473,7 +1455,6 @@ each such kind, and needed at run-time.
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::emit</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to emit null kind"</span><span class="plain">);</span>
@@ -1489,7 +1470,7 @@ each such kind, and needed at run-time.
             <span class="functiontext">Kinds::RunTime::emit</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">dt</span><span class="plain"> = </span><span class="identifier">ENUM_IDT</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Emit::kind</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">dt</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">?</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">BASE_ICON</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Emit::kind</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">dt</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">?</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">BASE_ICON</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">K_object</span><span class="plain">) {</span>
             <span class="identifier">Produce::change_translation</span><span class="plain">(</span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"K0_kind"</span><span class="plain">);</span>
             <span class="functiontext">Hierarchy::make_available</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Kinds::RunTime::iname</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
@@ -1497,7 +1478,7 @@ each such kind, and needed at run-time.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::kind_declarations</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">; </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+        <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">; </span><span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_BASE_KINDS</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::base_represented_in_inter</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) {</span>
                 <span class="functiontext">Kinds::RunTime::emit</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">);</span>
@@ -1519,7 +1500,7 @@ each such kind, and needed at run-time.
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">, </span><span class="string">"ICOUNT_"</span><span class="plain">);</span>
                 <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
-                <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">, 31);</span>
+                <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">ICN</span><span class="plain">, </span><span class="constant">31</span><span class="plain">);</span>
                 <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">ICN</span><span class="plain">) {</span>
                     <span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">Characters::toupper</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)));</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isalnum</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">Str::put</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
@@ -1600,7 +1581,7 @@ compilation errors.
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">printing_rule_name</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">value_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"value"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"! weak kind ID: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"! weak kind ID: %d\n"</span><span class="plain">, </span><span class="functiontext">Kinds::RunTime::weak_id</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
@@ -1679,7 +1660,7 @@ but at present this can't happen.
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
-                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">DEFAULT_BIP</span><span class="plain">); </span>    <span class="comment">this default case should never be needed, unless the user has blundered at the I6 level:</span>
+                <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">DEFAULT_BIP</span><span class="plain">); </span><span class="comment">this default case should never be needed, unless the user has blundered at the I6 level:</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1728,7 +1709,7 @@ to <code class="display"><span class="extract">A_T1_colour(v)</span></code>.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">instance_count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">instance_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) </span><span class="identifier">instance_count</span><span class="plain">++;</span>
 
@@ -1763,7 +1744,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &lt;= 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Emit::cast</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
@@ -1778,7 +1759,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">instance_count</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
@@ -1805,7 +1786,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &lt;= 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Emit::cast</span><span class="plain">(</span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
@@ -1815,7 +1796,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">MODULO_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &gt; 2) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">instance_count</span><span class="plain"> &gt; </span><span class="constant">2</span><span class="plain">) {</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PLUS_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="functiontext">Emit::cast</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_number</span><span class="plain">);</span>
@@ -1833,7 +1814,7 @@ first routine implemented by emitting Inter code, on 12 November 2017.
 
                         <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">instance_count</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
@@ -1875,12 +1856,12 @@ and <code class="display"><span class="extract">b</span></code> inclusive.
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">a_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">b_s</span><span class="plain">);</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1968,7 +1949,7 @@ and <code class="display"><span class="extract">b</span></code> inclusive.
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">larger</span><span class="plain">);</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">smaller</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2086,7 +2067,7 @@ which have to be given some type-safe value to start out at.
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">dvok_iname</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">sk_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"sk"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">k_s</span><span class="plain">);</span>
@@ -2134,7 +2115,7 @@ which have to be given some type-safe value to start out at.
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2169,7 +2150,7 @@ unless the two values are genuinely equal.
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">kcf_iname</span><span class="plain">);</span>
         <span class="functiontext">LocalVariables::add_named_call</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">k_s</span><span class="plain">);</span>
@@ -2211,7 +2192,7 @@ unless the two values are genuinely equal.
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2235,7 +2216,7 @@ unless the two values are genuinely equal.
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">kds_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">KOVDOMAINSIZE_HL</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">kds_iname</span><span class="plain">);</span>
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"k"</span><span class="plain">, </span><span class="string">"weak kind ID"</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">k_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">k_s</span><span class="plain">);</span>
@@ -2276,7 +2257,7 @@ unless the two values are genuinely equal.
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -2422,7 +2403,6 @@ making it a routine rather than using an array saves a few bytes of precious
 Z-machine array space.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::RunTime::I7_Kind_Name_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">I7_KIND_NAME_HL</span><span class="plain">);</span>
@@ -2460,7 +2440,6 @@ Z-machine array space.
 <p class="endnote">The function Kinds::RunTime::I7_Kind_Name_routine is used in 1/htc (<a href="1-htc.html#SP2_8">&#167;2.8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">VM_non_support_problem_issued</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>

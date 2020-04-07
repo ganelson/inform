@@ -102,7 +102,6 @@ with building that grammar are skipped unless the relevant language element
 is active.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compiler_booted_up</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
@@ -125,8 +124,8 @@ is active.
         <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">FINISHED_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Ccmplete"</span><span class="plain">, -1);</span>
         <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cpu_time_used</span><span class="plain"> = ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">end</span><span class="plain"> - </span><span class="identifier">start</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Compile CPU time: %d centiseconds\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cpu_time_used</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Compile CPU time: %d centiseconds\n"</span><span class="plain">, </span><span class="identifier">cpu_time_used</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -154,19 +153,19 @@ as possible.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">routine</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">now</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
             <span class="identifier">routine</span><span class="plain">();</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain"> = ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">now</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt; 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">".... "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">"() took %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">".... "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">"() took %dcs\n"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
     <span class="definitionkeyword">define</span> <span class="identifier">BENCH_IF</span><span class="plain">(</span><span class="reserved">plugin</span><span class="plain">, </span><span class="identifier">routine</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == 0) &amp;&amp; (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="reserved">plugin</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="reserved">plugin</span><span class="plain">))) {</span>
             <span class="identifier">clock_t</span><span class="plain"> </span><span class="identifier">now</span><span class="plain"> = </span><span class="identifier">clock</span><span class="plain">();</span>
             <span class="identifier">routine</span><span class="plain">();</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain"> = ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">clock</span><span class="plain">() - </span><span class="identifier">now</span><span class="plain">)) / (</span><span class="identifier">CLOCKS_PER_SEC</span><span class="plain">/100);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt; 0) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">".... "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">"() took %dcs\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">".... "</span><span class="plain"> #</span><span class="identifier">routine</span><span class="plain"> </span><span class="string">"() took %dcs\n"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -235,7 +234,7 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">ASSERTIONS_PASS_1_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"First pass through assertions"</span><span class="plain">, 2);</span>
+        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">ASSERTIONS_PASS_1_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"First pass through assertions"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Assertions::Traverse::traverse1</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Tables::traverse_to_stock</span><span class="plain">)</span>
         <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">ASSERTIONS_PASS_2_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Second pass through assertions"</span><span class="plain">, -1);</span>
@@ -297,7 +296,7 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">PHRASES_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Phrases and rules"</span><span class="plain">, 3);</span>
+        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">PHRASES_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Phrases and rules"</span><span class="plain">, </span><span class="constant">3</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">LiteralPatterns::define_named_phrases</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Phrases::Manager::traverse</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">Phrases::Manager::register_meanings</span><span class="plain">)</span>
@@ -321,7 +320,7 @@ most of these worker functions are in the <code class="display"><span class="ext
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">INTER_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Generating inter"</span><span class="plain">, 4);</span>
+        <span class="functiontext">Task::advance_stage_to</span><span class="plain">(</span><span class="constant">INTER_CSEQ</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Generating inter"</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">UseOptions::compile_icl_commands</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="functiontext">FundamentalConstants::emit_build_number</span><span class="plain">)</span>
         <span class="identifier">BENCH</span><span class="plain">(</span><span class="identifier">PL::Bibliographic::compile_constants</span><span class="plain">)</span>

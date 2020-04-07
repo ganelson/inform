@@ -80,16 +80,15 @@ above example), one for "text" and so on.
 are drawn about them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">dt_knowledge</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">construct</span><span class="plain">-&gt;</span><span class="identifier">dt_knowledge</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::set_subject</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">-&gt;</span><span class="identifier">dt_knowledge</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">-&gt;</span><span class="identifier">dt_knowledge</span><span class="plain"> = </span><span class="identifier">infs</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Kinds::Knowledge::create_for_constructor</span><span class="plain">(</span><span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
@@ -109,7 +108,6 @@ are drawn about them.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>This is one of Inform's sets of inference subjects, and here are the
 routines to support them:
 </p>
-
 
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::get_name_text</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -151,7 +149,6 @@ routines to support them:
 concerning our kind.
 </p>
 
-
 <pre class="display">
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::new_permission_granted</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">STORE_POINTER_property_of_value_storage</span><span class="plain">(</span>
@@ -167,7 +164,6 @@ concerning our kind.
 "green" out of a range of possible colour nouns &mdash; the following is called.
 We simply pass the request along to the appropriate code.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::make_adj_const_domain</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,</span>
@@ -190,7 +186,6 @@ beginning with object and working downwards through the tree of its subkinds.
 After that, we call it for all other kinds able to have properties, in no
 particular order.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::emit_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -299,17 +294,17 @@ kinds:
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Knowledge::kinds_problem_handler</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">err_no</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K2</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">err_no</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionRedundant_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionRedundant_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionRedundant</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only be given once"</span><span class="plain">,</span>
                     <span class="string">"and this combination is already established."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionNotBaseKOV_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionNotBaseKOV_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionNotBaseKOV</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only involve simple kinds of value"</span><span class="plain">,</span>
                     <span class="string">"rather than complicated ones such as lists of other values."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NonDimensional_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NonDimensional_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonDimensional</span><span class="plain">),</span>
                     <span class="string">"multiplication rules can only be given between kinds of "</span>
                     <span class="string">"value which are known to be numerical"</span><span class="plain">,</span>
@@ -319,7 +314,7 @@ kinds:
                     <span class="string">"to add something like '100 Pa specifies a pressure.' before "</span>
                     <span class="string">"Inform will realise."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnitSequenceOverflow_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UnitSequenceOverflow_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnitSequenceOverflow</span><span class="plain">),</span>
                     <span class="string">"reading that sentence led me into calculating such a complicated "</span>
                     <span class="string">"kind of value that I ran out of memory"</span><span class="plain">,</span>
@@ -328,13 +323,13 @@ kinds:
                     <span class="string">"then specified how they multiply so that one of them became "</span>
                     <span class="string">"weirdly tricky. Can you simplify?"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionsInconsistent_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DimensionsInconsistent_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DimensionsInconsistent</span><span class="plain">),</span>
                     <span class="string">"this is inconsistent with what is already known about those kinds of value"</span><span class="plain">,</span>
                     <span class="string">"all three of which already have well-established relationships - see the "</span>
                     <span class="string">"Kinds index for more."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindUnalterable_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindUnalterable_KINDERROR:</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">pn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">K1</span><span class="plain">);</span>
@@ -346,7 +341,7 @@ kinds:
                     <span class="string">"there'd be no problem, but they aren't.)"</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindsCircular_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KindsCircular_KINDERROR:</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">pn</span><span class="plain">);</span>
                 <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">K1</span><span class="plain">);</span>
@@ -358,19 +353,19 @@ kinds:
                     <span class="string">"other."</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleYet_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleYet_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleYet</span><span class="plain">),</span>
                     <span class="string">"this tries to scale up or down a value which so far has no point of "</span>
                     <span class="string">"reference to scale from"</span><span class="plain">,</span>
                     <span class="string">"which is impossible."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleTwice_KINDERROR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LPCantScaleTwice_KINDERROR:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_LPCantScaleTwice</span><span class="plain">),</span>
                     <span class="string">"this tries to specify the scaling for a kind of value whose "</span>
                     <span class="string">"scaling is already established"</span><span class="plain">,</span>
                     <span class="string">"which is impossible."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented problem message"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unimplemented problem message"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>

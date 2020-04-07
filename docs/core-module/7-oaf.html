@@ -83,7 +83,6 @@ almost certainly made some spurious noun phrase subtrees like this one:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">X_OF_Y_NT "worn patch of carpet"</span>
         <span class="plain">    PROPER_NOUN_NT "carpet"</span>
@@ -120,7 +119,6 @@ names; at the same time look for "X of Y" phrases where the "of" should
 not be treated as a possessive, and expunge them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Rearrangement::further_material</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Sentences::Rearrangement::tidy_up_ofs_and_froms</span><span class="plain">();</span>
@@ -146,13 +144,13 @@ remember direction names.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_DIRECTIONS</span><span class="plain"> 100 </span>    <span class="comment">the Standard Rules define only 12, so this is plenty</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_DIRECTIONS</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="comment">the Standard Rules define only 12, so this is plenty</span>
 </pre>
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">directions_noticed</span><span class="plain">[</span><span class="constant">MAX_DIRECTIONS</span><span class="plain">];</span>
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">direction_relations_noticed</span><span class="plain">[</span><span class="constant">MAX_DIRECTIONS</span><span class="plain">];</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_directions_noticed</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_directions_noticed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -165,7 +163,6 @@ property declarations.
 to span the width of the tree: otherwise our stack usage goes through the
 roof, since it might need to recurse thousands of function calls deep.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Rearrangement::traverse_for_property_names</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
@@ -181,19 +178,18 @@ roof, since it might need to recurse thousands of function calls deep.
 <p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>Directions are detected in sentences having the form "D is a direction."
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Rearrangement::check_sentence_for_direction_creation</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) != </span><span class="identifier">SENTENCE_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) != </span><span class="identifier">AVERB_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) != </span><span class="identifier">AVERB_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) != </span><span class="identifier">PROPER_NOUN_NT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">;</span>
-        <span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)))</span>
-                <span class="plain">&amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == 0))) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">pn</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">map</span><span class="plain">-</span><span class="identifier">kinds</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)))</span>
+                <span class="plain">&amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="constant">0</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_directions_noticed</span><span class="plain"> &gt;= </span><span class="constant">MAX_DIRECTIONS</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::limit_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TooManyDirections</span><span class="plain">),</span>
                 <span class="string">"different directions"</span><span class="plain">, </span><span class="constant">MAX_DIRECTIONS</span><span class="plain">);</span>
@@ -212,7 +208,6 @@ roof, since it might need to recurse thousands of function calls deep.
 
 <p class="inwebparagraph"><a id="SP5_2"></a><b>&#167;5.2.  </b>And to extract that sketchy BP later, for completion when possible:
 </p>
-
 
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="functiontext">Sentences::Rearrangement::relation_noticed</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">) {</span>
@@ -236,7 +231,6 @@ form without being property declarations &mdash; with one exception: see below.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">SENTENCE_NT "A container has a number called volume"</span>
         <span class="plain">    AVERB_NT "has"</span>
@@ -259,24 +253,24 @@ the new property.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">) == </span><span class="constant">ASSERT_VB</span><span class="plain">)</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="identifier">possessive_verb_ANNOT</span><span class="plain">))</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) == </span><span class="identifier">CALLED_NT</span><span class="plain">)</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">)</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">apparent_subject</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) == </span><span class="identifier">CALLED_NT</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">apparent_subject</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">apparent_subject</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) {</span>
-                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">));</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">apparent_subject</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
-                        <span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">s1</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">apparent_subject</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) {</span>
+                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">));</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">apparent_subject</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
+                        <span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">s1</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">apparent_subject</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)));</span>
                     <span class="reserved">else</span>
                         <span class="identifier">SW</span><span class="plain"> = </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">s1</span><span class="plain">, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">SW</span><span class="plain">));</span>
                 <span class="plain">}</span>
 
             <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">prohibited</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">owners</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-                <span class="plain">&lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">-</span><span class="identifier">called</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">));</span>
+                <span class="plain">&lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">-</span><span class="identifier">called</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -298,11 +292,10 @@ syntax used for action, activity and rulebook variables. For instance:
 of such owners have a distinctive look to them:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">prohibited</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">owners</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; |</span>
-        <span class="reserved">&lt;activity</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; |</span>
+        <span class="plain">&lt;</span><span class="reserved">activity</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; |</span>
         <span class="plain">&lt;</span><span class="reserved">rulebook</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt;</span>
 </pre>
 
@@ -313,13 +306,12 @@ For instance, if we want to talk about the "taking" action in abstract as
 a noun, we write it in the formal way "taking action".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">action</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="identifier">action</span>
 
-    <span class="reserved">&lt;activity</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; ::=</span>
-        <span class="plain">...</span><span class="element"> activity</span>
+    <span class="plain">&lt;</span><span class="reserved">activity</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; ::=</span>
+        <span class="plain">... </span><span class="reserved">activity</span>
 
     <span class="plain">&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="identifier">relation</span>
@@ -347,7 +339,6 @@ grammar is applied to sentences in the form:
 property names before they can do any damage.)
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">-</span><span class="identifier">called</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; &lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |</span>
@@ -358,8 +349,8 @@ property names before they can do any damage.)
         <span class="plain">{</span><span class="identifier">_</span><span class="plain">,/</span><span class="identifier">and</span><span class="plain">} &lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="identifier">properties</span><span class="plain">-</span><span class="identifier">called</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;</span>
 
     <span class="plain">&lt;</span><span class="identifier">has</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
-        <span class="plain">&lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">&gt; |					==&gt; 0</span>
-        <span class="plain">...												==&gt; 0; </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="plain">&lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">&gt; |					==&gt; </span><span class="constant">0</span>
+        <span class="plain">...												==&gt; </span><span class="constant">0</span><span class="plain">; </span><span class="functiontext">Properties::Valued::obtain</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
 
     <span class="plain">&lt;</span><span class="identifier">bad</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">diagnosis</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">article</span><span class="plain">&gt; |										==&gt; </span>&lt;<span class="cwebmacro">Issue PM_PropertyCalledArticle problem</span> <span class="cwebmacronumber">8.1</span>&gt;
@@ -450,7 +441,6 @@ We could with some more work avoid this, but it causes no nuisance and
 wastes only a negligible amount of memory.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">needing</span><span class="plain">-</span><span class="identifier">second</span><span class="plain">-</span><span class="identifier">look</span><span class="plain">&gt; ::=</span>
         <span class="plain">*** &lt;</span><span class="identifier">ambiguous</span><span class="plain">-</span><span class="reserved">property</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ***</span>
@@ -461,17 +451,16 @@ wastes only a negligible amount of memory.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>And this code effects it:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Sentences::Rearrangement::traverse_for_nonbreaking_ofs</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) == </span><span class="identifier">SENTENCE_NT</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) == </span><span class="identifier">AVERB_NT</span><span class="plain">)) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vn</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">vn</span><span class="plain"> == </span><span class="constant">ASSERT_VB</span><span class="plain">) || (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">examine_for_ofs_ANNOT</span><span class="plain">))) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">AVERB_NT</span><span class="plain">)) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vn</span><span class="plain"> = </span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">vn</span><span class="plain"> == </span><span class="constant">ASSERT_VB</span><span class="plain">) || (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">examine_for_ofs_ANNOT</span><span class="plain">))) &amp;&amp;</span>
                 <span class="plain">(&lt;</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">needing</span><span class="plain">-</span><span class="identifier">second</span><span class="plain">-</span><span class="identifier">look</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">)))) {</span>
-                <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">; </span>    <span class="comment">(just in case any problem messages are issued)</span>
-                <span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">thus cutting off and forgetting its former subtree</span>
-                <span class="functiontext">Sentences::VPs::seek</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">); </span>    <span class="comment">...in order to make a new one</span>
+                <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">; </span><span class="comment">(just in case any problem messages are issued)</span>
+                <span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">thus cutting off and forgetting its former subtree</span>
+                <span class="functiontext">Sentences::VPs::seek</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">); </span><span class="comment">...in order to make a new one</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

@@ -92,14 +92,13 @@ the result in the <code class="display"><span class="extract">term_checked_as_ki
 to work it out once.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">variable</span><span class="plain">; </span>    <span class="comment">0 to 25, or <code class="display"><span class="extract">-1</span></code> for "not a variable"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">constant</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> for "not a constant"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_func</span><span class="plain"> *</span><span class="identifier">function</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> for "not a function of another term"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cinder</span><span class="plain">; </span>    <span class="comment">complicated, this: used to worry about scope of I6 local variables</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">term_checked_as_kind</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> if unchecked</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">variable</span><span class="plain">; </span><span class="comment">0 to 25, or <code class="display"><span class="extract">-1</span></code> for "not a variable"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">constant</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> for "not a constant"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_func</span><span class="plain"> *</span><span class="identifier">function</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> for "not a function of another term"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cinder</span><span class="plain">; </span><span class="comment">complicated, this: used to worry about scope of I6 local variables</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">term_checked_as_kind</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> if unchecked</span>
     <span class="plain">} </span><span class="reserved">pcalc_term</span><span class="plain">;</span>
 </pre>
 
@@ -125,12 +124,11 @@ field is
 field is
 </li><li>(7) A <code class="display"><span class="extract">pcalc_term</span></code> structure which has a <code class="display"><span class="extract">variable</span></code> field set to 0 (which is x).
 </li></ul>
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_func</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">; </span>    <span class="comment">the predicate B such that this is f_B(t)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">fn_of</span><span class="plain">; </span>    <span class="comment">the term t such that this is f_B(t)</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_term</span><span class="plain">; </span>    <span class="comment">whether t is term 0 or 1 of B</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">; </span><span class="comment">the predicate B such that this is f_B(t)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">fn_of</span><span class="plain">; </span><span class="comment">the term t such that this is f_B(t)</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_term</span><span class="plain">; </span><span class="comment">whether t is term 0 or 1 of B</span>
     <span class="plain">} </span><span class="reserved">pcalc_func</span><span class="plain">;</span>
 </pre>
 
@@ -140,26 +138,25 @@ field is
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creating new terms. </b></p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::new_variable</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">) {</span>
         <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">; </span>&lt;<span class="cwebmacro">Make new blank term structure pt</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain"> &lt; 0) || (</span><span class="identifier">v</span><span class="plain"> &gt;= 26)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad variable term created"</span><span class="plain">);</span>
-        <span class="identifier">pt</span><span class="element">.variable</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">v</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">v</span><span class="plain"> &gt;= </span><span class="constant">26</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad variable term created"</span><span class="plain">);</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">variable</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::new_constant</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">; </span>&lt;<span class="cwebmacro">Make new blank term structure pt</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">pt</span><span class="element">.constant</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::new_function</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">ptof</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">; </span>&lt;<span class="cwebmacro">Make new blank term structure pt</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">pcalc_func</span><span class="plain"> *</span><span class="identifier">pf</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">pcalc_func</span><span class="plain">);</span>
-        <span class="identifier">pf</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">; </span><span class="identifier">pf</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain"> = </span><span class="identifier">ptof</span><span class="plain">; </span><span class="identifier">pf</span><span class="plain">-</span><span class="element">&gt;from_term</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
-        <span class="identifier">pt</span><span class="element">.function</span><span class="plain"> = </span><span class="identifier">pf</span><span class="plain">;</span>
+        <span class="identifier">pf</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain"> = </span><span class="identifier">bp</span><span class="plain">; </span><span class="identifier">pf</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain"> = </span><span class="identifier">ptof</span><span class="plain">; </span><span class="identifier">pf</span><span class="plain">-&gt;</span><span class="element">from_term</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain"> = </span><span class="identifier">pf</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -182,11 +179,11 @@ field is
 
 
 <pre class="displaydefn">
-        <span class="identifier">pt</span><span class="element">.variable</span><span class="plain"> = -1;</span>
-        <span class="identifier">pt</span><span class="element">.constant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">pt</span><span class="element">.function</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">pt</span><span class="element">.cinder</span><span class="plain"> = -1; </span>    <span class="comment">that is, no cinder</span>
-        <span class="identifier">pt</span><span class="element">.term_checked_as_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">variable</span><span class="plain"> = -1;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">cinder</span><span class="plain"> = -1; </span><span class="comment">that is, no cinder</span>
+        <span class="identifier">pt</span><span class="plain">.</span><span class="element">term_checked_as_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -195,12 +192,11 @@ field is
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Copying. </b></p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::copy</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">) </span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">) </span><span class="identifier">pt</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_function</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain">,</span>
-            <span class="functiontext">Calculus::Terms::copy</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">), </span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;from_term</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">) </span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">) </span><span class="identifier">pt</span><span class="plain"> = </span><span class="functiontext">Calculus::Terms::new_function</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain">,</span>
+            <span class="functiontext">Calculus::Terms::copy</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">), </span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">from_term</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -229,7 +225,6 @@ at run-time in any remotely plausible length of time. So although the
 restriction, and it greatly simplifies the code.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">pcalc_vars</span><span class="plain"> = </span><span class="string">"xyzabcdefghijklmnopqrstuvw"</span><span class="plain">;</span>
 </pre>
@@ -240,19 +235,18 @@ restriction, and it greatly simplifies the code.
 at the bottom of which is a constant C; and similarly for variables.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Calculus::Terms::constant_underlying</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null term"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;constant</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;constant</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::constant_underlying</span><span class="plain">(&amp;(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">constant</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">constant</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::constant_underlying</span><span class="plain">(&amp;(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::variable_underlying</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null term"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;variable</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;variable</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::variable_underlying</span><span class="plain">(&amp;(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">variable</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">variable</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::variable_underlying</span><span class="plain">(&amp;(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">}</span>
 </pre>
@@ -274,7 +268,6 @@ adjectival form of such an adjective into its noun form, and back
 again.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pcalc_term</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::adj_to_noun_conversion</span><span class="plain">(</span><span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="identifier">tr</span><span class="plain">) {</span>
         <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain"> = </span><span class="identifier">AdjectiveUsages::get_aph</span><span class="plain">(</span><span class="identifier">tr</span><span class="plain">);</span>
@@ -293,12 +286,11 @@ again.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And conversely:
 </p>
 
-
 <pre class="display">
     <span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="functiontext">Calculus::Terms::noun_to_adj_conversion</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
         <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">aph</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">K</span><span class="plain"> = </span><span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -335,36 +327,35 @@ as parameter.
 value, because this might not yet have been checked otherwise.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::emit</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.variable</span><span class="plain"> &gt;= 0) {</span>
-            <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::find_pcalc_var</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.variable</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">variable</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::find_pcalc_var</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">variable</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"var is %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pt</span><span class="element">.variable</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"var is %d\n"</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">.</span><span class="element">variable</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"absent calculus variable"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+            <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.cinder</span><span class="plain"> &gt;= 0) {</span>
-                <span class="functiontext">Calculus::Deferrals::Cinders::emit</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.cinder</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">cinder</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="functiontext">Calculus::Deferrals::Cinders::emit</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">cinder</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_phrasal</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">))</span>
-                    <span class="functiontext">Dash::check_value</span><span class="plain">(</span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-                <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt</span><span class="element">.constant</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">ParseTreeUsage::is_phrasal</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">))</span>
+                    <span class="functiontext">Dash::check_value</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">.</span><span class="element">constant</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">) {</span>
             <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">;</span>
-            <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = (</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">)-</span><span class="element">&gt;bp</span><span class="plain">;</span>
-            <span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 0);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 1);</span>
+            <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = (</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">)-&gt;</span><span class="element">bp</span><span class="plain">;</span>
+            <span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Function of non-functional predicate"</span><span class="plain">);</span>
-            <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="element">.function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="functiontext">Calculus::Schemas::emit_expand_from_terms</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="plain">.</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Broken pcalc term"</span><span class="plain">);</span>
@@ -380,32 +371,31 @@ we don't much care about the constant terms, and want to display them
 concisely and without fuss.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Terms::log</span><span class="plain">(</span><span class="reserved">pcalc_term</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-term&gt;"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;constant</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;constant</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;cinder</span><span class="plain"> &gt;= 0) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"const_%d"</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;cinder</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">constant</span><span class="plain">) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">constant</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">cinder</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"const_%d"</span><span class="plain">, </span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">cinder</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">))) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"'%W'"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)); </span><span class="reserved">return</span><span class="plain">; }</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">CONSTANT_NT</span><span class="plain">)) {</span>
                 <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_object_instance</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$O"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
             <span class="plain">}</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$P"</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">) {</span>
-            <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">-</span><span class="element">&gt;bp</span><span class="plain">;</span>
-            <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 0);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, 1);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">) {</span>
+            <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">bp</span><span class="plain">;</span>
+            <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">fn</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::get_term_as_function_of_other</span><span class="plain">(</span><span class="identifier">bp</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Function of non-functional predicate"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Streams::I6_escapes_enabled</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">)) {</span>
-                <span class="functiontext">Calculus::Schemas::log_applied</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">));</span>
+                <span class="functiontext">Calculus::Schemas::log_applied</span><span class="plain">(</span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">));</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"{$i:$0}"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;function</span><span class="plain">-</span><span class="element">&gt;fn_of</span><span class="plain">));</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"{$i:$0}"</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, &amp;(</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">function</span><span class="plain">-&gt;</span><span class="element">fn_of</span><span class="plain">));</span>
             <span class="plain">}</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;variable</span><span class="plain"> &gt;= 0) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-</span><span class="element">&gt;variable</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">variable</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">pt</span><span class="plain">-&gt;</span><span class="element">variable</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">&lt;26) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%c"</span><span class="plain">, </span><span class="identifier">pcalc_vars</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]); </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;bad-var=%d&gt;"</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;bad-term&gt;"</span><span class="plain">);</span>

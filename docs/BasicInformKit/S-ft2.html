@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -79,7 +79,6 @@ behave differently.
 to the compiler.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_HEADER_N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_HEADER_FLAGS</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
@@ -106,7 +105,6 @@ the data in a text
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">"But now I worship a celestiall Sunne"</span>
 </pre>
@@ -115,7 +113,6 @@ the data in a text
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">NULL &lt;-- BN: "But now I wor" &lt;--&gt; BN2: "ship a celestiall Sunne" --&gt; NULL</span>
@@ -146,13 +143,12 @@ data section is deferred, and so for a multiple-block data begins at the
 byte offset <code class="display"><span class="extract">BLK_DATA_MULTI_OFFSET</span></code> rather than <code class="display"><span class="extract">BLK_DATA_OFFSET</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain"> = </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">WORDSIZE</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_NEXT</span><span class="plain"> </span><span class="constant">3</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLK_PREV</span><span class="plain"> </span><span class="constant">4</span><span class="plain">;</span>
 
-    <span class="comment">! Constant BLKVALUE_TRACE = 1; ! Uncomment this for debugging purposes</span>
+    <span class="plain">! </span><span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">BLKVALUE_TRACE</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">Uncomment this for debugging purposes</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -208,9 +204,8 @@ smaller blocks are needed, and to rejoin from the back when blocks are
 freed and added to the free space object.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Flex_Heap</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; (</span><span class="identifier">MEMORY_HEAP_SIZE</span><span class="plain"> + </span><span class="constant">16</span><span class="plain">); </span><span class="comment">! Plus 16 to allow room for head-free-block</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">Flex_Heap</span><span class="plain"> -&gt; (</span><span class="identifier">MEMORY_HEAP_SIZE</span><span class="plain"> + </span><span class="constant">16</span><span class="plain">); </span><span class="comment">Plus 16 to allow room for head-free-block</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -221,7 +216,6 @@ bytes available to us, and we format these as a free space list of two
 blocks: the 2^4-sized "head-free-block" described above followed by
 a 2^n-sized block exactly containing the whole of the rest of the heap.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">HeapInitialise</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">bsize</span><span class="plain"> </span><span class="identifier">blk2</span><span class="plain">;</span>
@@ -252,13 +246,12 @@ is multiple-block data (with a larger header and therefore less room for
 data) or single-block data (smaller header, more room).
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">HeapNetFreeSpace</span><span class="plain"> </span><span class="identifier">multiple</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">txb</span><span class="plain">=</span><span class="identifier">Flex_Heap</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">: </span><span class="identifier">txb</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">: </span><span class="identifier">txb</span><span class="plain">=</span><span class="identifier">txb</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
             <span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> + </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple</span><span class="plain">) </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple</span><span class="plain">) </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -287,9 +280,8 @@ besides, running out of memory tends to be something you don't do only once.
 which handles non-multiple blocks better.)
 </p>
 
-
 <pre class="display">
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SMALLEST_BLK_WORTH_ALLOCATING</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">; </span><span class="comment">! i.e. 2^12 = 4096 bytes</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">SMALLEST_BLK_WORTH_ALLOCATING</span><span class="plain"> = </span><span class="constant">12</span><span class="plain">; </span><span class="comment">i.e. 2^12 = 4096 bytes</span>
 
     <span class="plain">[ </span><span class="identifier">HeapMakeSpace</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">multiple</span><span class="plain">  </span><span class="identifier">newblocksize</span><span class="plain"> </span><span class="identifier">newblock</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (::) {</span>
@@ -330,8 +322,8 @@ which handles non-multiple blocks better.)
         <span class="identifier">best</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">txb</span><span class="plain">=</span><span class="identifier">Flex_Heap</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">: </span><span class="identifier">txb</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">: </span><span class="identifier">txb</span><span class="plain">=</span><span class="identifier">txb</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
             <span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple</span><span class="plain">) </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multiple</span><span class="plain">) </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">asize</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">asize</span><span class="plain"> &gt; </span><span class="identifier">best</span><span class="plain">) </span><span class="identifier">best</span><span class="plain"> = </span><span class="identifier">asize</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">best</span><span class="plain">;</span>
@@ -381,36 +373,35 @@ this is like a subtraction with repeated carries:
  10000000_2 - 00001000_2 = 01111000_2 
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexAllocate</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain"> </span><span class="identifier">flags</span>
         <span class="identifier">dsize</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">free_block</span><span class="plain"> </span><span class="identifier">min_m</span><span class="plain"> </span><span class="identifier">max_m</span><span class="plain"> </span><span class="identifier">smallest_oversized_block</span><span class="plain"> </span><span class="identifier">secondhalf</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">hsize</span><span class="plain"> </span><span class="identifier">head</span><span class="plain"> </span><span class="identifier">tail</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">HeapMakeSpace</span><span class="plain">(</span><span class="identifier">size</span><span class="plain">, </span><span class="identifier">flags</span><span class="plain"> &amp; </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">FlexError</span><span class="plain">(</span><span class="string">"ran out"</span><span class="plain">);</span>
 
-        <span class="comment">! Calculate the header size for a block of this KOV</span>
+        <span class="comment">Calculate the header size for a block of this KOV</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flags</span><span class="plain"> &amp; </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain">) </span><span class="identifier">hsize</span><span class="plain"> = </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">hsize</span><span class="plain"> = </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
-        <span class="comment">! Calculate the data size</span>
+        <span class="comment">Calculate the data size</span>
         <span class="identifier">n</span><span class="plain">=0; </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dsize</span><span class="plain">=1: ((</span><span class="identifier">dsize</span><span class="plain"> &lt; </span><span class="identifier">hsize</span><span class="plain">+</span><span class="identifier">size</span><span class="plain">) || (</span><span class="identifier">n</span><span class="plain">&lt;3+(</span><span class="identifier">WORDSIZE</span><span class="plain">/2))): </span><span class="identifier">dsize</span><span class="plain">=</span><span class="identifier">dsize</span><span class="plain">*2) </span><span class="identifier">n</span><span class="plain">++;</span>
 
-        <span class="comment">! Seek a free block closest to the correct size, but starting from the</span>
-        <span class="comment">! block after the fixed head-free-block, which we can't touch</span>
+        <span class="comment">Seek a free block closest to the correct size, but starting from the</span>
+        <span class="comment">block after the fixed head-free-block, which we can't touch</span>
         <span class="identifier">min_m</span><span class="plain"> = </span><span class="constant">10000</span><span class="plain">; </span><span class="identifier">max_m</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">free_block</span><span class="plain"> = </span><span class="identifier">Flex_Heap</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">:</span>
             <span class="identifier">free_block</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">:</span>
             <span class="identifier">free_block</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
             <span class="identifier">m</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">;</span>
-            <span class="comment">! Current block the ideal size</span>
+            <span class="comment">Current block the ideal size</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="identifier">n</span><span class="plain">) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">CorrectSizeFound</span><span class="plain">;</span>
-            <span class="comment">! Current block too large: find the smallest which is larger than needed</span>
+            <span class="comment">Current block too large: find the smallest which is larger than needed</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> &gt; </span><span class="identifier">n</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min_m</span><span class="plain"> &gt; </span><span class="identifier">m</span><span class="plain">) {</span>
                     <span class="identifier">min_m</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
                     <span class="identifier">smallest_oversized_block</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
-            <span class="comment">! Current block too small: find the largest which is smaller than needed</span>
+            <span class="comment">Current block too small: find the largest which is smaller than needed</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> &lt; </span><span class="identifier">n</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">max_m</span><span class="plain"> &lt; </span><span class="identifier">m</span><span class="plain">) {</span>
                     <span class="identifier">max_m</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
@@ -419,12 +410,12 @@ this is like a subtraction with repeated carries:
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min_m</span><span class="plain"> == </span><span class="constant">10000</span><span class="plain">) {</span>
-            <span class="comment">! Case I: No block is large enough to hold the entire size</span>
+            <span class="comment">Case I: No block is large enough to hold the entire size</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flags</span><span class="plain"> &amp; </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">FlexError</span><span class="plain">(</span><span class="string">"too fragmented"</span><span class="plain">);</span>
-            <span class="comment">! Set dsize to the size in bytes if the largest block available</span>
+            <span class="comment">Set dsize to the size in bytes if the largest block available</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dsize</span><span class="plain">=1: </span><span class="identifier">max_m</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">dsize</span><span class="plain">=</span><span class="identifier">dsize</span><span class="plain">*2) </span><span class="identifier">max_m</span><span class="plain">--;</span>
-            <span class="comment">! Split as a head (dsize-hsize), which we can be sure fits into one block,</span>
-            <span class="comment">! plus a tail (size-(dsize-hsize), which might be a list of blocks</span>
+            <span class="comment">Split as a head (dsize-hsize), which we can be sure fits into one block,</span>
+            <span class="comment">plus a tail (size-(dsize-hsize), which might be a list of blocks</span>
             <span class="identifier">head</span><span class="plain"> = </span><span class="identifier">FlexAllocate</span><span class="plain">(</span><span class="identifier">dsize</span><span class="plain">-</span><span class="identifier">hsize</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">, </span><span class="identifier">flags</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">head</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">FlexError</span><span class="plain">(</span><span class="string">"for head block not available"</span><span class="plain">);</span>
             <span class="identifier">tail</span><span class="plain"> = </span><span class="identifier">FlexAllocate</span><span class="plain">(</span><span class="identifier">size</span><span class="plain">-(</span><span class="identifier">dsize</span><span class="plain">-</span><span class="identifier">hsize</span><span class="plain">), </span><span class="identifier">kov</span><span class="plain">, </span><span class="identifier">flags</span><span class="plain">);</span>
@@ -434,22 +425,22 @@ this is like a subtraction with repeated carries:
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">head</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="comment">! Case II: No block is the right size, but some exist which are too big</span>
-        <span class="comment">! Set dsize to the size in bytes of the smallest oversized block</span>
+        <span class="comment">Case II: No block is the right size, but some exist which are too big</span>
+        <span class="comment">Set dsize to the size in bytes of the smallest oversized block</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dsize</span><span class="plain">=1,</span><span class="identifier">m</span><span class="plain">=1: </span><span class="identifier">m</span><span class="plain">&lt;=</span><span class="identifier">min_m</span><span class="plain">: </span><span class="identifier">dsize</span><span class="plain">=</span><span class="identifier">dsize</span><span class="plain">*2) </span><span class="identifier">m</span><span class="plain">++;</span>
         <span class="identifier">free_block</span><span class="plain"> = </span><span class="identifier">smallest_oversized_block</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">min_m</span><span class="plain"> &gt; </span><span class="identifier">n</span><span class="plain">) {</span>
-            <span class="comment">! Repeatedly halve free_block at the front until the two smallest</span>
-            <span class="comment">! fragments left are the correct size: then take the frontmost</span>
+            <span class="comment">Repeatedly halve free_block at the front until the two smallest</span>
+            <span class="comment">fragments left are the correct size: then take the frontmost</span>
             <span class="identifier">dsize</span><span class="plain"> = </span><span class="identifier">dsize</span><span class="plain">/2;</span>
-            <span class="comment">! print "Halving size to ", dsize, "^";</span>
+            <span class="comment">print "Halving size to ", dsize, "^";</span>
             <span class="identifier">secondhalf</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain"> + </span><span class="identifier">dsize</span><span class="plain">;</span>
             <span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">)</span>
                 <span class="plain">(</span><span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">)--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain"> = </span><span class="identifier">secondhalf</span><span class="plain">;</span>
             <span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">;</span>
             <span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">secondhalf</span><span class="plain">;</span>
-            <span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain"> = (</span><span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain"> = (</span><span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">;</span>
             <span class="identifier">secondhalf</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">;</span>
             <span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_KOV</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_KOV</span><span class="plain">;</span>
             <span class="identifier">secondhalf</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_RCOUNT</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -457,18 +448,18 @@ this is like a subtraction with repeated carries:
             <span class="identifier">min_m</span><span class="plain">--;</span>
         <span class="plain">}</span>
 
-        <span class="comment">! Once that is done, free_block points to a block which is exactly the</span>
-        <span class="comment">! right size, so we can fall into...</span>
+        <span class="comment">Once that is done, free_block points to a block which is exactly the</span>
+        <span class="comment">right size, so we can fall into...</span>
 
-        <span class="comment">! Case III: There is a free block which has the correct size.</span>
+        <span class="comment">Case III: There is a free block which has the correct size.</span>
         <span class="plain">.</span><span class="identifier">CorrectSizeFound</span><span class="plain">;</span>
-        <span class="comment">! Delete the free block from the double linked list of free blocks: note</span>
-        <span class="comment">! that it cannot be the head of this list, which is fixed</span>
+        <span class="comment">Delete the free block from the double linked list of free blocks: note</span>
+        <span class="comment">that it cannot be the head of this list, which is fixed</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="comment">! We remove final block, so previous is now final</span>
+            <span class="comment">We remove final block, so previous is now final</span>
             <span class="plain">(</span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain">)--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="comment">! We remove a middle block, so join previous to next</span>
+            <span class="comment">We remove a middle block, so join previous to next</span>
             <span class="plain">(</span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain">)--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
             <span class="plain">(</span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">)--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain"> = </span><span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -480,7 +471,7 @@ this is like a subtraction with repeated carries:
             <span class="identifier">free_block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-        <span class="comment">! Zero out the data bytes in the memory allocated</span>
+        <span class="comment">Zero out the data bytes in the memory allocated</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">hsize</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">dsize</span><span class="plain">:</span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">free_block</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain">=0;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">free_block</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -492,7 +483,6 @@ this is like a subtraction with repeated carries:
 to survive, so the following is provided as a standardised way to halt
 the virtual machine.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexError</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">;</span>
@@ -508,7 +498,6 @@ the virtual machine.
 which contains it, and then call <code class="display"><span class="extract">FlexRecutInternal</span></code> to recut it to conform to
 invariant (b) above.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexMergeInternal</span><span class="plain"> </span><span class="identifier">block</span><span class="plain"> </span><span class="identifier">first</span><span class="plain"> </span><span class="identifier">last</span><span class="plain"> </span><span class="identifier">pv</span><span class="plain"> </span><span class="identifier">nx</span><span class="plain">;</span>
@@ -539,14 +528,13 @@ repeatedly cut the largest 2^m-sized chunk off the back end until it is all
 used up.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexRecutInternal</span><span class="plain"> </span><span class="identifier">first</span><span class="plain"> </span><span class="identifier">last</span><span class="plain"> </span><span class="identifier">tsize</span><span class="plain"> </span><span class="identifier">backsize</span><span class="plain"> </span><span class="identifier">mfrom</span><span class="plain"> </span><span class="identifier">mto</span><span class="plain"> </span><span class="identifier">bnext</span><span class="plain"> </span><span class="identifier">backend</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">dsize</span><span class="plain"> </span><span class="identifier">fine_so_far</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first</span><span class="plain"> == </span><span class="identifier">last</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="identifier">mfrom</span><span class="plain"> = </span><span class="identifier">first</span><span class="plain">; </span><span class="identifier">mto</span><span class="plain"> = </span><span class="identifier">last</span><span class="plain"> + </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">last</span><span class="plain">);</span>
         <span class="identifier">bnext</span><span class="plain"> = </span><span class="identifier">last</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">;</span>
         <span class="identifier">fine_so_far</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (:</span><span class="identifier">mto</span><span class="plain">&gt;</span><span class="identifier">mfrom</span><span class="plain">: </span><span class="identifier">mto</span><span class="plain"> = </span><span class="identifier">mto</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">backsize</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (:</span><span class="identifier">mto</span><span class="plain">&gt;</span><span class="identifier">mfrom</span><span class="plain">: </span><span class="identifier">mto</span><span class="plain"> = </span><span class="identifier">mto</span><span class="plain"> - </span><span class="identifier">backsize</span><span class="plain">) {</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">=0, </span><span class="identifier">backsize</span><span class="plain">=1: </span><span class="identifier">backsize</span><span class="plain">*2 &lt;= </span><span class="identifier">mto</span><span class="plain">-</span><span class="identifier">mfrom</span><span class="plain">: </span><span class="identifier">n</span><span class="plain">++) </span><span class="identifier">backsize</span><span class="plain">=</span><span class="identifier">backsize</span><span class="plain">*2;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">fine_so_far</span><span class="plain">) &amp;&amp; (</span><span class="identifier">backsize</span><span class="plain"> == </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">last</span><span class="plain">))) {</span>
                 <span class="identifier">bnext</span><span class="plain"> = </span><span class="identifier">last</span><span class="plain">; </span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">last</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain">;</span>
@@ -554,8 +542,8 @@ used up.
                 <span class="identifier">last</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">bnext</span><span class="plain">;</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">fine_so_far</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="comment">! From this point, "last" is meaningless</span>
-            <span class="identifier">backend</span><span class="plain"> = </span><span class="identifier">mto</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">backsize</span><span class="plain">;</span>
+            <span class="identifier">fine_so_far</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">; </span><span class="comment">From this point, "last" is meaningless</span>
+            <span class="identifier">backend</span><span class="plain"> = </span><span class="identifier">mto</span><span class="plain"> - </span><span class="identifier">backsize</span><span class="plain">;</span>
             <span class="identifier">backend</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
             <span class="identifier">backend</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_KOV</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">backend</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_RCOUNT</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -594,12 +582,11 @@ I6 arrays fill up memory from the bottom.)
 that is, are indestructible. This enables Inform to compile constant values.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexFree</span><span class="plain"> </span><span class="identifier">block</span><span class="plain"> </span><span class="identifier">fromtxb</span><span class="plain"> </span><span class="identifier">ptxb</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_FLAGS</span><span class="plain">) &amp; </span><span class="identifier">BLK_FLAG_RESIDENT</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">) &amp; </span><span class="constant">$80</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">! not a flexible block at all</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">) &amp; </span><span class="constant">$80</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">not a flexible block at all</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_FLAGS</span><span class="plain">) &amp; </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">) (</span><span class="identifier">block</span><span class="plain">--&gt;</span><span class="identifier">BLK_PREV</span><span class="plain">)--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">fromtxb</span><span class="plain"> = </span><span class="identifier">block</span><span class="plain">;</span>
@@ -652,7 +639,6 @@ efficient block division, but it minimises the churn of blocks being
 allocated and freed, which is probably good.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexResize</span><span class="plain"> </span><span class="identifier">block</span><span class="plain"> </span><span class="identifier">req</span><span class="plain"> </span><span class="identifier">newsize</span><span class="plain"> </span><span class="identifier">dsize</span><span class="plain"> </span><span class="identifier">newblk</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">otxb</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">FlexError</span><span class="plain">(</span><span class="string">"failed resizing null block"</span><span class="plain">);</span>
@@ -664,8 +650,8 @@ allocated and freed, which is probably good.
         <span class="reserved">for</span><span class="plain"> (:: </span><span class="identifier">block</span><span class="plain"> = </span><span class="identifier">block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
             <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">block</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">dsize</span><span class="plain">=1: </span><span class="identifier">n</span><span class="plain">&gt;0: </span><span class="identifier">n</span><span class="plain">--) </span><span class="identifier">dsize</span><span class="plain"> = </span><span class="identifier">dsize</span><span class="plain">*2;</span>
-            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">dsize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
-            <span class="identifier">newsize</span><span class="plain"> = </span><span class="identifier">newsize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">dsize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
+            <span class="identifier">newsize</span><span class="plain"> = </span><span class="identifier">newsize</span><span class="plain"> - </span><span class="identifier">i</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newsize</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">block</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain"> ~= </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">newblk</span><span class="plain"> = </span><span class="identifier">FlexAllocate</span><span class="plain">(</span><span class="identifier">newsize</span><span class="plain">, </span><span class="identifier">kov</span><span class="plain">, </span><span class="identifier">flags</span><span class="plain">);</span>
@@ -689,20 +675,19 @@ allocated and freed, which is probably good.
 only.
 </p>
 
-
 <pre class="display">
-    <span class="plain">[ </span><span class="identifier">FlexSize</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">bsize</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="comment">! Size of an individual block, including header</span>
+    <span class="plain">[ </span><span class="identifier">FlexSize</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">bsize</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="comment">Size of an individual block, including header</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txb</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">bsize</span><span class="plain">=1: </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="identifier">txb</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">: </span><span class="identifier">bsize</span><span class="plain">=</span><span class="identifier">bsize</span><span class="plain">*2) </span><span class="identifier">n</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">bsize</span><span class="plain">;</span>
     <span class="plain">];</span>
 
-    <span class="plain">[ </span><span class="identifier">FlexTotalSize</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">; </span><span class="comment">! Combined size of multiple-blocks for a value</span>
+    <span class="plain">[ </span><span class="identifier">FlexTotalSize</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">; </span><span class="comment">Combined size of multiple-blocks for a value</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txb</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">txb</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_FLAGS</span><span class="plain">) &amp; </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">) - </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (:</span><span class="identifier">txb</span><span class="plain">~=</span><span class="identifier">NULL</span><span class="plain">:</span><span class="identifier">txb</span><span class="plain">=</span><span class="identifier">txb</span><span class="plain">--&gt;</span><span class="identifier">BLK_NEXT</span><span class="plain">) {</span>
-            <span class="identifier">size_in_bytes</span><span class="plain"> = </span><span class="identifier">size_in_bytes</span><span class="plain"> + </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">) </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
+            <span class="identifier">size_in_bytes</span><span class="plain"> = </span><span class="identifier">size_in_bytes</span><span class="plain"> + </span><span class="identifier">FlexSize</span><span class="plain">(</span><span class="identifier">txb</span><span class="plain">) - </span><span class="identifier">BLK_DATA_MULTI_OFFSET</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -712,7 +697,6 @@ only.
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Debugging Routines. </b>These two routines are purely for testing the above code.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FlexDebug</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">bsize</span><span class="plain"> </span><span class="identifier">tot</span><span class="plain"> </span><span class="identifier">dtot</span><span class="plain"> </span><span class="identifier">kov</span><span class="plain">;</span>
@@ -725,7 +709,7 @@ only.
                 <span class="reserved">print</span><span class="plain"> </span><span class="string">"*Wrong kov="</span><span class="plain">, </span><span class="identifier">txb</span><span class="plain">--&gt;</span><span class="identifier">BLK_HEADER_KOV</span><span class="plain">, </span><span class="string">"* "</span><span class="plain">;</span>
             <span class="identifier">n</span><span class="plain"> = </span><span class="identifier">txb</span><span class="plain">-&gt;</span><span class="identifier">BLK_HEADER_N</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">bsize</span><span class="plain">=1:</span><span class="identifier">n</span><span class="plain">&gt;0:</span><span class="identifier">n</span><span class="plain">--) </span><span class="identifier">bsize</span><span class="plain">=</span><span class="identifier">bsize</span><span class="plain">*2;</span>
-            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">bsize</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
+            <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">bsize</span><span class="plain"> - </span><span class="identifier">BLK_DATA_OFFSET</span><span class="plain">;</span>
             <span class="identifier">dtot</span><span class="plain"> = </span><span class="identifier">dtot</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">;</span>
             <span class="identifier">tot</span><span class="plain"> = </span><span class="identifier">tot</span><span class="plain">+</span><span class="identifier">bsize</span><span class="plain">;</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="identifier">txb</span><span class="plain">, </span><span class="string">"("</span><span class="plain">, </span><span class="identifier">bsize</span><span class="plain">, </span><span class="string">") &gt; "</span><span class="plain">;</span>

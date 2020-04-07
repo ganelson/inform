@@ -70,9 +70,8 @@ rule. So we keep track of this. Note that one phrase definition cannot
 contain another, so there is never any need to recursively compile phrases.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">phrase_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">phrase whose definition is being compiled</span>
+    <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">phrase_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">phrase whose definition is being compiled</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -92,25 +91,24 @@ it was a number. The form needed is included in the request <code class="display
 should always be supplied for "To..." phrases, but left null for rules.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::Compile::routine</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">,</span>
         <span class="reserved">stacked_variable_owner_list</span><span class="plain"> *</span><span class="identifier">legible</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">,</span>
         <span class="reserved">applicability_condition</span><span class="plain"> *</span><span class="identifier">acl</span><span class="plain">) {</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">) ||</span>
-            <span class="plain">(</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">))))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">) != </span><span class="identifier">ROUTINE_NT</span><span class="plain">) ||</span>
+            <span class="plain">(</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">))))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to compile phrase with bad ROUTINE node"</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_COMPILATION</span><span class="plain">, </span><span class="string">"Compiling phrase:\</span><span class="plain">n</span><span class="string">$T"</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_COMPILATION</span><span class="plain">, </span><span class="string">"Compiling phrase:\n$T"</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">);</span>
 
-        <span class="functiontext">Modules::set_current</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
+        <span class="functiontext">Modules::set_current</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">);</span>
         <span class="identifier">phrase_being_compiled</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Set up the stack frame for this compilation request</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Compile some commentary about the routine to follow</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">));</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin_framed</span><span class="plain">(</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">), &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">));</span>
 
         &lt;<span class="cwebmacro">Compile the body of the routine</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
 
@@ -133,7 +131,7 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 <pre class="displaydefn">
         <span class="functiontext">Routines::ToPhrases::comment_on_request</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">);</span>
-        <span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+        <span class="functiontext">Phrases::Usage::write_I6_comment_describing</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -146,8 +144,8 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 
 <pre class="displaydefn">
-        <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;stack_frame</span><span class="plain">);</span>
-        <span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">);</span>
+        <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">stack_frame</span><span class="plain">);</span>
+        <span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">);</span>
         <span class="functiontext">Frames::make_current</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
 
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">version_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -161,8 +159,8 @@ should always be supplied for "To..." phrases, but left null for rules.
 
         <span class="functiontext">Frames::set_stvol</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">legible</span><span class="plain">);</span>
 
-        <span class="functiontext">LocalVariables::deallocate_all</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">); </span>    <span class="comment">in case any are left from an earlier compile</span>
-        <span class="functiontext">ExParser::warn_expression_cache</span><span class="plain">(); </span>    <span class="comment">that local variables may have changed</span>
+        <span class="functiontext">LocalVariables::deallocate_all</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">); </span><span class="comment">in case any are left from an earlier compile</span>
+        <span class="functiontext">ExParser::warn_expression_cache</span><span class="plain">(); </span><span class="comment">that local variables may have changed</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -175,14 +173,14 @@ should always be supplied for "To..." phrases, but left null for rules.
 
 
 <pre class="displaydefn">
-        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
+        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::Context::compile_test_head</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">acl</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">) {</span>
-                <span class="identifier">ParseTree::verify_structure</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
-                <span class="functiontext">Routines::Compile::code_block_outer</span><span class="plain">(1, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-                <span class="identifier">ParseTree::verify_structure</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">) {</span>
+                <span class="identifier">ParseTree::verify_structure</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">);</span>
+                <span class="functiontext">Routines::Compile::code_block_outer</span><span class="plain">(1, </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+                <span class="identifier">ParseTree::verify_structure</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
+            <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
             <span class="functiontext">Phrases::Context::compile_test_tail</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">acl</span><span class="plain">);</span>
 
             &lt;<span class="cwebmacro">Compile a terminal return statement</span> <span class="cwebmacronumber">3.3.1</span>&gt;<span class="plain">;</span>
@@ -215,10 +213,10 @@ to us, so we end our routine with code which certainly performs a return.
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_DefaultDecideFails</span><span class="plain">),</span>
                     <span class="string">"it's not possible to decide such a value"</span><span class="plain">,</span>
                     <span class="string">"so this can't be allowed."</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0); </span>    <span class="comment">that is, return "false"</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">); </span><span class="comment">that is, return "false"</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
@@ -232,10 +230,9 @@ request made for its compilation &mdash; this enables the text version of a
 phrase to be different from the number version, and so on.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Routines::Compile::iname</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">to_phrase_request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;req_iname</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">req_iname</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -245,7 +242,6 @@ phrase to be different from the number version, and so on.
 <p class="endnote">The function Routines::Compile::iname is used in <a href="#SP3">&#167;3</a>, 22/ph (<a href="22-ph.html#SP13">&#167;13</a>), 22/tp (<a href="22-tp.html#SP8">&#167;8</a>), 25/ciac (<a href="25-ciac.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">disallow_let_assignments</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -262,9 +258,9 @@ phrase to be different from the number version, and so on.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt;-&gt;</span><span class="identifier">multiplicitous</span><span class="plain">;</span>
             <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">value</span><span class="plain">-</span><span class="identifier">uncached</span><span class="plain">&gt;-&gt;</span><span class="identifier">multiplicitous</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">) != </span><span class="constant">CODE_BLOCK_NT</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"not a code block"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">top_level</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">top_level</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
                 <span class="identifier">disallow_let_assignments</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">pn</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
                 <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_line</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">disallow_let_assignments</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -278,7 +274,7 @@ phrase to be different from the number version, and so on.
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">to_compile</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ControlStructures::opens_block</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">)) {</span>
             <span class="functiontext">Frames::Blocks::beginning_block_phrase</span><span class="plain">(</span><span class="identifier">csp</span><span class="plain">);</span>
-            <span class="identifier">to_compile</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+            <span class="identifier">to_compile</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">statement_count</span><span class="plain">++;</span>
         &lt;<span class="cwebmacro">Compile a comment about this line</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
@@ -342,25 +338,25 @@ phrase to be different from the number version, and so on.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, *</span><span class="identifier">prev_sn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain">; </span><span class="identifier">prev_sn</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">, </span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, *</span><span class="identifier">prev_sn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain">; </span><span class="identifier">prev_sn</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">, </span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="functiontext">ExParser::parse_say_term</span><span class="plain">(</span><span class="identifier">say_node</span><span class="plain">);</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">say_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">say_node</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inv</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev_sn</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_say_verb</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) ||</span>
                         <span class="plain">(</span><span class="identifier">ParseTree::get_say_adjective</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) ||</span>
                         <span class="plain">((</span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">))) &amp;&amp;</span>
-                            <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-</span><span class="element">&gt;type_data.as_say.say_phrase_running_on</span><span class="plain">)))</span>
+                            <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_say</span><span class="plain">.</span><span class="element">say_phrase_running_on</span><span class="plain">)))</span>
                         <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">prev_sn</span><span class="plain">, </span><span class="constant">suppress_newlines_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">); </span>    <span class="comment">warn the paragraph breaker: this will print</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">); </span><span class="comment">warn the paragraph breaker: this will print</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
-            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+            <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-        <span class="functiontext">Routines::Compile::verify_say_node_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="functiontext">Routines::Compile::verify_say_node_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -418,12 +414,12 @@ henceforth to be true, so we simply compile empty code in that case.
 
 <pre class="displaydefn">
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">cs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">&gt;(</span><span class="identifier">XW</span><span class="plain">)) </span><span class="identifier">cs</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Now cond is $T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Now cond is $T\n"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Dash::check_condition</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"After Dash, it's $T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"After Dash, it's $T\n"</span><span class="plain">, </span><span class="identifier">cs</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">, </span><span class="constant">TEST_PROPOSITION_NT</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != </span><span class="identifier">NEVER_MATCH</span><span class="plain">) {</span>
@@ -492,7 +488,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$T\n"</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">cs</span><span class="plain">));</span>
         <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(...));</span>
@@ -533,7 +529,7 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
         <span class="reserved">named_rulebook_outcome</span><span class="plain"> *</span><span class="identifier">nrbo</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phrase_being_compiled</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ram</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ram</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_effect</span><span class="plain">(&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ram</span><span class="plain"> != </span><span class="constant">RULE_IN_RULEBOOK_EFF</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ram</span><span class="plain"> != </span><span class="constant">RULE_NOT_IN_RULEBOOK_EFF</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
@@ -550,7 +546,7 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rb</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">to_compile</span><span class="plain">));</span>
-            <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">rb</span><span class="plain">-</span><span class="element">&gt;primary_name</span><span class="plain">);</span>
+            <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">rb</span><span class="plain">-&gt;</span><span class="element">primary_name</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_MisplacedRulebookOutcome</span><span class="plain">));</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"You wrote %1, but this is a rulebook outcome which can only be used "</span>
@@ -571,7 +567,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">to_compile</span><span class="plain">;</span>
@@ -580,13 +576,13 @@ henceforth to be true, so we simply compile empty code in that case.
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">();</span>
-                <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+                <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Frames::Blocks::divide_code_block</span><span class="plain">();</span>
-                <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
             <span class="plain">}</span>
                 <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -616,14 +612,14 @@ henceforth to be true, so we simply compile empty code in that case.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::uses_pointer_values</span><span class="plain">(</span><span class="identifier">switch_kind</span><span class="plain">)) </span><span class="identifier">pointery</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Switch val is $T for kind $u pointery %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">pointery</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Switch val is $T for kind $u pointery %d\n"</span><span class="plain">, </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">pointery</span><span class="plain">);</span>
 
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
             <span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_switch_value</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">);</span>
-            <span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 7);</span>
+            <span class="identifier">sw_v</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">7</span><span class="plain">);</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">sw_v</span><span class="plain">);</span>
@@ -637,8 +633,8 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ow_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">; </span><span class="identifier">ow_node</span><span class="plain">; </span><span class="identifier">ow_node</span><span class="plain"> = </span><span class="identifier">ow_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ow_node</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="identifier">ow_node</span><span class="plain">; </span><span class="identifier">ow_node</span><span class="plain"> = </span><span class="identifier">ow_node</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">++) {</span>
                     <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ow_node</span><span class="plain">;</span>
                     <span class="functiontext">Frames::Blocks::divide_code_block</span><span class="plain">();</span>
 
@@ -654,7 +650,7 @@ henceforth to be true, so we simply compile empty code in that case.
                                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">case_kind</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">case_spec</span><span class="plain">);</span>
                                 <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_object_instance</span><span class="plain">(</span><span class="identifier">case_spec</span><span class="plain">);</span>
                                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) </span><span class="identifier">case_kind</span><span class="plain"> = </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-                                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"(h.3) switch kind is $u, case kind is $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">case_kind</span><span class="plain">);</span>
+                                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"(h.3) switch kind is $u, case kind is $u\n"</span><span class="plain">, </span><span class="identifier">switch_kind</span><span class="plain">, </span><span class="identifier">case_kind</span><span class="plain">);</span>
                                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">case_spec</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
                                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                                     <span class="functiontext">Problems::quote_kind</span><span class="plain">(2, </span><span class="identifier">switch_kind</span><span class="plain">);</span>
@@ -685,7 +681,7 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointery</span><span class="plain">) {</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain">-- &gt; 0) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain">-- &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -693,10 +689,10 @@ henceforth to be true, so we simply compile empty code in that case.
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">; </span><span class="identifier">A</span><span class="plain">; </span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="identifier">A</span><span class="plain">; </span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dup</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">; </span><span class="identifier">B</span><span class="plain">; </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="identifier">B</span><span class="plain">; </span><span class="identifier">B</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::compare_CONSTANT</span><span class="plain">(</span>
                         <span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">), </span><span class="identifier">ParseTree::get_evaluation</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">)))</span>
                             <span class="identifier">dup</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -762,7 +758,7 @@ henceforth to be true, so we simply compile empty code in that case.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ow_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ow_node</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">final_flag</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">final_flag</span><span class="plain">) </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
@@ -781,7 +777,7 @@ henceforth to be true, so we simply compile empty code in that case.
                 <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
-        <span class="identifier">downs</span><span class="plain"> += 2;</span>
+        <span class="identifier">downs</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -945,7 +941,7 @@ inline definitions for "say if" and similar.
 
 <pre class="displaydefn">
         <span class="functiontext">Frames::Blocks::open_code_block</span><span class="plain">();</span>
-        <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">statement_count</span><span class="plain"> = </span><span class="functiontext">Routines::Compile::code_block</span><span class="plain">(</span><span class="identifier">statement_count</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()) &gt; </span><span class="identifier">L</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Frames::Blocks::close_code_block</span><span class="plain">();</span>
 </pre>
@@ -958,22 +954,21 @@ inline definitions for "say if" and similar.
 type-checks it, and finally, all being well, compiles it.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">void_phrase_please</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">instructions for the typechecker</span>
+    <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">void_phrase_please</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">instructions for the typechecker</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::Compile::line</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">already_parsed</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">vhm</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">initial_problem_count</span><span class="plain"> = </span><span class="identifier">problem_count</span><span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">-- -- Evaluating &lt;%W&gt; -- --\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"\n-- -- Evaluating &lt;%W&gt; -- --\n"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(a) Parsing:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(a) Parsing:\n"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">already_parsed</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain"> = </span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">inv</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">))) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-</span><span class="element">&gt;type_data.as_say.say_control_structure</span><span class="plain"> == </span><span class="constant">NO_SAY_CS</span><span class="plain">)) {</span>
+                <span class="plain">(</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_say</span><span class="plain">.</span><span class="element">say_control_structure</span><span class="plain"> == </span><span class="constant">NO_SAY_CS</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">PARACONTENT_HL</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -981,21 +976,21 @@ type-checks it, and finally, all being well, compiles it.
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">initial_problem_count</span><span class="plain"> == </span><span class="identifier">problem_count</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(b) Type checking:\</span><span class="plain">n</span><span class="string">$E"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(b) Type checking:\n$E"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="functiontext">Dash::check_invl</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">initial_problem_count</span><span class="plain"> == </span><span class="identifier">problem_count</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(c) Compilation:\</span><span class="plain">n</span><span class="string">$E"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"(c) Compilation:\n$E"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="identifier">value_holster</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain"> = </span><span class="identifier">Holsters::new</span><span class="plain">(</span><span class="identifier">vhm</span><span class="plain">);</span>
             <span class="functiontext">Invocations::Compiler::compile_invocation_list</span><span class="plain">(&amp;</span><span class="identifier">VH</span><span class="plain">,</span>
-                <span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
+                <span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">initial_problem_count</span><span class="plain"> == </span><span class="identifier">problem_count</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"-- -- Completed -- --\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"-- -- Completed -- --\n"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"-- -- Failed -- --\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">EXPRESSIONS</span><span class="plain">, </span><span class="string">"-- -- Failed -- --\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -1006,7 +1001,6 @@ type-checks it, and finally, all being well, compiles it.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>And this is where we are:
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Routines::Compile::line_being_compiled</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1060,13 +1054,13 @@ and lastly "[at random]" (an end). SSPs can even be nested, within limits:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_COMPLEX_SAY_DEPTH</span><span class="plain"> 32 </span>    <span class="comment">and it would be terrible coding style to approach this</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_COMPLEX_SAY_DEPTH</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="comment">and it would be terrible coding style to approach this</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Routines::Compile::verify_say_node_list</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">say_node_list</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">problem_issued</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_invocations_found</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_invocations_found</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Check that say control structures have been used in a correct sequence</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">say_invocations_found</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1102,14 +1096,14 @@ the "[if...]".
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">it_was_not_worth_adding</span><span class="plain"> = </span><span class="identifier">it_is_not_worth_adding</span><span class="plain">;</span>
         <span class="identifier">it_is_not_worth_adding</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SSP_sp</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SSP_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="constant">MAX_COMPLEX_SAY_DEPTH</span><span class="plain">];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">SSP_stack_otherwised</span><span class="plain">[</span><span class="constant">MAX_COMPLEX_SAY_DEPTH</span><span class="plain">];</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="constant">MAX_COMPLEX_SAY_DEPTH</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_if_nesting</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_if_nesting</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node_list</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">invl</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node_list</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain">; </span><span class="identifier">say_node</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">invl</span><span class="plain"> = </span><span class="identifier">say_node</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">invl</span><span class="plain">) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">;</span>
                 <span class="identifier">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">invl</span><span class="plain">) {</span>
@@ -1117,7 +1111,7 @@ the "[if...]".
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) &amp;&amp;</span>
                         <span class="plain">(</span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">))) {</span>
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_cs</span><span class="plain">, </span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="identifier">ssp_ctok</span><span class="plain">, </span><span class="identifier">ssp_pos</span><span class="plain">;</span>
-                        <span class="functiontext">Phrases::TypeData::get_say_data</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_say</span><span class="plain">),</span>
+                        <span class="functiontext">Phrases::TypeData::get_say_data</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_say</span><span class="plain">),</span>
                             <span class="plain">&amp;</span><span class="identifier">say_cs</span><span class="plain">, &amp;</span><span class="identifier">ssp_tok</span><span class="plain">, &amp;</span><span class="identifier">ssp_ctok</span><span class="plain">, &amp;</span><span class="identifier">ssp_pos</span><span class="plain">);</span>
 
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ssp_pos</span><span class="plain"> == </span><span class="constant">SSP_START</span><span class="plain">) </span>&lt;<span class="cwebmacro">This starts a complex SSP</span> <span class="cwebmacronumber">8.1.1</span>&gt;<span class="plain">;</span>
@@ -1134,8 +1128,8 @@ the "[if...]".
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; 0) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> == 1) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[0] == -1)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[0] == -1)) {</span>
                 <span class="comment">an if without an end if, which uniquely is legal</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 &lt;<span class="cwebmacro">Issue a problem message for an SSP without end</span> <span class="cwebmacronumber">8.1.7</span>&gt;<span class="plain">;</span>
@@ -1173,7 +1167,7 @@ the "[if...]".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">compare_words</span><span class="plain">(</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="identifier">ssp_tok</span><span class="plain">))) {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="constant">ssp_segment_count_ANNOT</span><span class="plain">,</span>
                 <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="constant">ssp_segment_count_ANNOT</span><span class="plain">)+1);</span>
@@ -1192,7 +1186,7 @@ the "[if...]".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">compare_words</span><span class="plain">(</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="identifier">ssp_tok</span><span class="plain">))) {</span>
             <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="constant">ssp_segment_count_ANNOT</span><span class="plain">,</span>
                 <span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1], </span><span class="constant">ssp_segment_count_ANNOT</span><span class="plain">)+1);</span>
@@ -1213,7 +1207,7 @@ the "[if...]".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">say_if_nesting</span><span class="plain">++;</span>
             <span class="identifier">SSP_invocations</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">] = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">SSP_stack_otherwised</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">] = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1231,9 +1225,9 @@ the "[if...]".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Issue a problem message for say otherwise without say if</span> <span class="cwebmacronumber">8.1.5.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1)</span>
                 &lt;<span class="cwebmacro">Issue a problem message for say otherwise interleaved with another construction</span> <span class="cwebmacronumber">8.1.5.2</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">SSP_stack_otherwised</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1])</span>
@@ -1252,8 +1246,8 @@ the "[if...]".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == 0) </span>&lt;<span class="cwebmacro">Issue a problem message for say end if without say if</span> <span class="cwebmacronumber">8.1.6.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say_if_nesting</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Issue a problem message for say end if without say if</span> <span class="cwebmacronumber">8.1.6.1</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">SSP_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">SSP_stack</span><span class="plain">[</span><span class="identifier">SSP_sp</span><span class="plain">-1] != -1))</span>
             &lt;<span class="cwebmacro">Issue a problem message for say end if interleaved with another construction</span> <span class="cwebmacronumber">8.1.6.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">say_if_nesting</span><span class="plain">--;</span>
@@ -1405,7 +1399,7 @@ the "[if...]".
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_issued</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TwoSayOtherwises</span><span class="plain">),</span>
-                <span class="string">"there's already an (unconditional) \</span><span class="plain">"</span><span class="string">[otherwise]\</span><span class="plain">"</span><span class="string"> or \</span><span class="plain">"</span><span class="string">[else]\</span><span class="plain">"</span><span class="string"> "</span>
+                <span class="string">"there's already an (unconditional) \"[otherwise]\" or \"[else]\" "</span>
                 <span class="string">"in this text substitution"</span><span class="plain">,</span>
                 <span class="string">"so it doesn't make sense to follow that with a further one."</span><span class="plain">);</span>
             <span class="identifier">problem_issued</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -1479,7 +1473,7 @@ the "[if...]".
                 <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                     <span class="string">"In the text at %1, the text substitution '[%2]' seems to start a "</span>
                     <span class="string">"complicated say construction, but it doesn't have a matching end."</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ssp_tok</span><span class="plain"> &gt;= 0) </span><span class="functiontext">Routines::Compile::add_say_construction_to_error</span><span class="plain">(</span><span class="identifier">ssp_tok</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ssp_tok</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Routines::Compile::add_say_construction_to_error</span><span class="plain">(</span><span class="identifier">ssp_tok</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
                 <span class="identifier">problem_issued</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -1491,7 +1485,6 @@ the "[if...]".
 <p class="endnote">This code is used in <a href="#SP8_1">&#167;8.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Problem messages for complex say constructions. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::Compile::add_say_construction_to_error</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ssp_tok</span><span class="plain">) {</span>
@@ -1505,12 +1498,12 @@ the "[if...]".
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Routines::Compile::add_scte_list</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_pos</span><span class="plain">) {</span>
-        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ct</span><span class="plain"> = 0;</span>
+        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ct</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::TypeData::ssp_matches</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">), </span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="identifier">list_pos</span><span class="plain">, &amp;</span><span class="identifier">W</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Phrases::TypeData::ssp_matches</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">), </span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="identifier">list_pos</span><span class="plain">, &amp;</span><span class="identifier">W</span><span class="plain">)) {</span>
                 <span class="identifier">Problems::quote_wording</span><span class="plain">(3, </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ct</span><span class="plain">++ == 0) </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"[%3]"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ct</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"[%3]"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"/[%3]"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>

@@ -88,7 +88,6 @@ abstract. The syntax is:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind NAME CONTENT</span>
 </pre>
@@ -129,7 +128,6 @@ not all have to have the same kind;
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind k_boolean int2</span>
         <span class="plain">kind k_list_of_bool list of k_boolean</span>
@@ -163,7 +161,6 @@ also accepted for a <code class="display"><span class="extract">struct</span></c
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }</span>
@@ -216,7 +213,6 @@ but which should be compiled on two lines with the comment in between:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">1, 2, ! predictable start</span>
         <span class="plain">3721, -11706</span>
@@ -251,7 +247,6 @@ For example, the default <code class="display"><span class="extract">int32</span
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">defaultvalue K_boolean = 0</span>
 </pre>
@@ -268,7 +263,6 @@ is represented in textual inter by a different name.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind K_grammatical_tense enum</span>
         <span class="plain">instance I_present_tense K_grammatical_tense</span>
@@ -279,7 +273,6 @@ is represented in textual inter by a different name.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">instance I_present_tense K_grammatical_tense = 1</span>
@@ -293,7 +286,6 @@ Enum values must fit into an <code class="display"><span class="extract">int16</
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">kind K_object enum</span>
@@ -312,7 +304,6 @@ and must be created before use with:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">property NAME KIND</span>
 </pre>
@@ -324,7 +315,6 @@ have to give one or more "permissions", in the form
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">permission NAME KIND</span>
 </pre>
@@ -333,7 +323,6 @@ have to give one or more "permissions", in the form
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">propertyvalue NAME OWNER = VALUE</span>
@@ -355,7 +344,6 @@ another value (of the same kind).
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind K_object enum</span>
         <span class="plain">kind K_text text</span>
@@ -374,7 +362,6 @@ used, it evaluates to this value. The syntax is:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">constant NAME KIND = VALUE</span>
 </pre>
@@ -390,7 +377,6 @@ has an <code class="display"><span class="extract">unchecked</span></code> kind,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind K_number int32</span>
         <span class="plain">constant favourite_prime K_number = 16339</span>
@@ -401,7 +387,6 @@ does not make them instances. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">kind K_colour enum</span>
@@ -420,7 +405,6 @@ that's what code packages are. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">kind K_number int32</span>
@@ -442,7 +426,6 @@ who the owner is. Variables must be declared as:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">variable NAME KIND = VALUE</span>
 </pre>
@@ -452,7 +435,6 @@ another value (of the same kind). For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">variable V_score K_number = 10</span>
@@ -465,7 +447,6 @@ an instance: it's a piece of text. This can be set with:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">response NAME MARKER FUNCTION = VALUE</span>
@@ -486,7 +467,6 @@ dictionary of textual key-value pairs, specified by:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">metadata KEY: VALUE</span>
 </pre>
@@ -496,7 +476,6 @@ dictionary of textual key-value pairs, specified by:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">metadata `name: "blue book"</span>
@@ -524,7 +503,6 @@ For example, the I7 source text:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">append K4_door " has door, \n"</span>
 </pre>
@@ -536,7 +514,6 @@ to make an alteration to the Inform 6 code inside the I6T template file
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""</span>

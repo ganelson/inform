@@ -67,19 +67,18 @@
 whether it's to appear at the front, middle, or back of the rulebook:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">booking</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">next_rule</span><span class="plain">; </span>    <span class="comment">in the linked list of pages for the rulebook</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">next_rule</span><span class="plain">; </span><span class="comment">in the linked list of pages for the rulebook</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">rule_being_booked</span><span class="plain">; </span>    <span class="comment">what appears on this page</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">placement</span><span class="plain">; </span>    <span class="comment">one of three placement values: see below</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">automatic_placement</span><span class="plain">; </span>    <span class="comment">should this be inserted automatically?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">rule_being_booked</span><span class="plain">; </span><span class="comment">what appears on this page</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">placement</span><span class="plain">; </span><span class="comment">one of three placement values: see below</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">automatic_placement</span><span class="plain">; </span><span class="comment">should this be inserted automatically?</span>
 
         <span class="comment">used only to show how the page was added to its rulebook, for the index:</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_rule_specificity</span><span class="plain">; </span>    <span class="comment">1 more specific than following, 0 equal, -1 less</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">next_rule_specificity_law</span><span class="plain">; </span>    <span class="comment">description of reason</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">next_rule_specificity_lawname</span><span class="plain">; </span>    <span class="comment">name of Law used to sort</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_rule_specificity</span><span class="plain">; </span><span class="comment">1 more specific than following, 0 equal, -1 less</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">next_rule_specificity_law</span><span class="plain">; </span><span class="comment">description of reason</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">next_rule_specificity_lawname</span><span class="plain">; </span><span class="comment">name of Law used to sort</span>
 
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">booking</span><span class="plain">;</span>
@@ -105,25 +104,24 @@ back, e.g.:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MIDDLE_PLACEMENT</span><span class="plain"> 0 </span>    <span class="comment">most rules are somewhere in the middle</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FIRST_PLACEMENT</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LAST_PLACEMENT</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MIDDLE_PLACEMENT</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">most rules are somewhere in the middle</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FIRST_PLACEMENT</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LAST_PLACEMENT</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">booking</span><span class="plain"> *</span><span class="functiontext">Rules::Bookings::new</span><span class="plain">(</span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain">);</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> = </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">;</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;automatic_placement</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> = </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">automatic_placement</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = 0;</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_lawname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_lawname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">br</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -135,18 +133,17 @@ back, e.g.:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Here's a rather arcane notation used in the debugging log:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::log</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"BR:&lt;null-booked-rule&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"BR%d"</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"m"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"f"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"l"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"?"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"m"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FIRST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"f"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"l"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"?"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Rules::log</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">);</span>
+        <span class="functiontext">Rules::log</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -157,11 +154,10 @@ back, e.g.:
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this is the only externally useful information in a booking:
 </p>
 
-
 <pre class="display">
     <span class="reserved">rule</span><span class="plain"> *</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">rule_being_booked</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -191,10 +187,9 @@ not immediately insert it into a rulebook: instead it marks the booking
 for "automatic placement" later on.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::request_automatic_placement</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">) {</span>
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;automatic_placement</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">automatic_placement</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -208,18 +203,17 @@ on when it can see no other justification for placing one rule either side
 of another.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::make_automatic_placements</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;automatic_placement</span><span class="plain">) {</span>
-                <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">automatic_placement</span><span class="plain">) {</span>
+                <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) {</span>
-                    <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;declaration_node</span><span class="plain">;</span>
-                    <span class="functiontext">Rules::Bookings::place</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">), </span><span class="identifier">br</span><span class="plain">);</span>
-                    <span class="functiontext">Rules::set_kind_from</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">,</span>
-                        <span class="functiontext">Phrases::Usage::get_rulebook</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">)));</span>
+                    <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">declaration_node</span><span class="plain">;</span>
+                    <span class="functiontext">Rules::Bookings::place</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">), </span><span class="identifier">br</span><span class="plain">);</span>
+                    <span class="functiontext">Rules::set_kind_from</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">,</span>
+                        <span class="functiontext">Phrases::Usage::get_rulebook</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">)));</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
@@ -234,7 +228,6 @@ of another.
 we finally get the opportunity to do this. The BR supplied must be the one
 generated from the PHUD elsewhere.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::place</span><span class="plain">(</span><span class="reserved">ph_usage_data</span><span class="plain"> *</span><span class="identifier">phud</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">) {</span>
@@ -262,13 +255,13 @@ generated from the PHUD elsewhere.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">original_owner</span><span class="plain"> == </span><span class="identifier">built_in_rulebooks</span><span class="plain">[</span><span class="constant">CARRY_OUT_RB</span><span class="plain">]) </span><span class="identifier">waiver</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">original_owner</span><span class="plain"> == </span><span class="identifier">built_in_rulebooks</span><span class="plain">[</span><span class="constant">REPORT_RB</span><span class="plain">]) </span><span class="identifier">waiver</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"BR is: $b\</span><span class="plain">n</span><span class="string"> AN is: $l\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">an</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"BR is: $b\n AN is: $l\n"</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">an</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">an</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">waiver</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
                     <span class="identifier">an</span><span class="plain"> = </span><span class="identifier">PL::Actions::longest_null</span><span class="plain">(</span><span class="identifier">PW</span><span class="plain">, </span><span class="identifier">IS_TENSE</span><span class="plain">, &amp;</span><span class="identifier">x</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">an</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">waiver</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
-                    <span class="identifier">NotSingleAction</span><span class="plain">:</span>
+                    <span class="identifier">NotSingleAction:</span>
                     <span class="functiontext">Phrases::Usage::log</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
                     <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">PW</span><span class="plain">);</span>
@@ -301,13 +294,13 @@ generated from the PHUD elsewhere.
                     <span class="plain">}</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">original_owner</span><span class="plain"> != </span><span class="functiontext">Phrases::Usage::get_rulebook</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">))</span>
-                        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Rerouting $b to $K\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">,</span>
+                        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Rerouting $b to $K\n"</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">,</span>
                             <span class="functiontext">Phrases::Usage::get_rulebook</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">));</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             <span class="functiontext">Rulebooks::attach_rule</span><span class="plain">(</span><span class="functiontext">Phrases::Usage::get_rulebook</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">), </span><span class="identifier">br</span><span class="plain">,</span>
-                <span class="functiontext">Phrases::Usage::get_rulebook_placement</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">), 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="functiontext">Phrases::Usage::get_rulebook_placement</span><span class="plain">(</span><span class="identifier">phud</span><span class="plain">), </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -323,13 +316,12 @@ more specific description than A. This is transitive, and intended to be
 used in sorting algorithms.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::compare_specificity_of_br</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br1</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">log</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">br1</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">br2</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"compared null specificity"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">log</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Comparing specificity of rules:\</span><span class="plain">n</span><span class="string">(1) $b\</span><span class="plain">n</span><span class="string">(2) $b\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">br1</span><span class="plain">, </span><span class="identifier">br2</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">log</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Comparing specificity of rules:\n(1) $b\n(2) $b\n"</span><span class="plain">, </span><span class="identifier">br1</span><span class="plain">, </span><span class="identifier">br2</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Rules::compare_specificity</span><span class="plain">(</span>
-            <span class="identifier">br1</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">, </span><span class="identifier">br2</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">, </span><span class="identifier">log</span><span class="plain">);</span>
+            <span class="identifier">br1</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">, </span><span class="identifier">br2</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">, </span><span class="identifier">log</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -367,7 +359,6 @@ whose rules are equal, in the sense of <code class="display"><span class="extrac
 </li></ul>
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>A new list is a dummy header (see (a) above):
 </p>
-
 
 <pre class="display">
     <span class="reserved">booking</span><span class="plain"> *</span><span class="functiontext">Rules::Bookings::list_new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -439,10 +430,10 @@ awkward noises rule".
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">BEFORE_SIDE</span><span class="plain"> -1 </span>    <span class="comment">before a reference rule</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IN_SIDE</span><span class="plain"> 0 </span>    <span class="comment">without reference to any other rule</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AFTER_SIDE</span><span class="plain"> 1 </span>    <span class="comment">after a reference rule</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INSTEAD_SIDE</span><span class="plain"> 2 </span>    <span class="comment">in place of reference rule</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BEFORE_SIDE</span><span class="plain"> -1 </span><span class="comment">before a reference rule</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IN_SIDE</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">without reference to any other rule</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AFTER_SIDE</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">after a reference rule</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INSTEAD_SIDE</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">in place of reference rule</span>
 </pre>
 
 <pre class="display">
@@ -476,11 +467,11 @@ awkward noises rule".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to add rule to null list"</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">placing</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">: </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Placed first\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">: </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Placed last\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Invalid placing %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">placing</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FIRST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Placed first\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Placed last\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Invalid placing %d\n"</span><span class="plain">, </span><span class="identifier">placing</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"invalid placing of rule"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -496,15 +487,15 @@ awkward noises rule".
 
 <pre class="displaydefn">
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">),</span>
                 <span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">new_rule</span><span class="plain">))) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">side</span><span class="plain"> == </span><span class="constant">IN_SIDE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">placing</span><span class="plain"> == </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">))</span>
-                    <span class="reserved">return</span><span class="plain">; </span>    <span class="comment">rule is already in rulebook: do nothing</span>
-                <span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
-                <span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Removing previous entry from rulebook\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-                <span class="reserved">break</span><span class="plain">; </span>    <span class="comment">rule can only appear once, so no need to keep checking</span>
+                    <span class="reserved">return</span><span class="plain">; </span><span class="comment">rule is already in rulebook: do nothing</span>
+                <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
+                <span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">RULE_ATTACHMENTS</span><span class="plain">, </span><span class="string">"Removing previous entry from rulebook\n"</span><span class="plain">);</span>
+                <span class="reserved">break</span><span class="plain">; </span><span class="comment">rule can only appear once, so no need to keep checking</span>
             <span class="plain">}</span>
 </pre>
 
@@ -520,11 +511,11 @@ awkward noises rule".
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">side</span><span class="plain"> == </span><span class="constant">INSTEAD_SIDE</span><span class="plain">) {</span>
             <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">), </span><span class="identifier">ref_rule</span><span class="plain">)) {</span>
-                    <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">; </span>    <span class="comment">replace with same placement</span>
-                    <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
-                    <span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
+                    <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">; </span><span class="comment">replace with same placement</span>
+                    <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
+                    <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -540,11 +531,11 @@ awkward noises rule".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">placing</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">) { </span>    <span class="comment">first in valid interval (must be whole list)</span>
-            <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
-            <span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">subseq</span><span class="plain">; </span>    <span class="comment">pushes any existing first rule forward</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> = </span><span class="identifier">placing</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">placing</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">) { </span><span class="comment">first in valid interval (must be whole list)</span>
+            <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
+            <span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain"> = </span><span class="identifier">subseq</span><span class="plain">; </span><span class="comment">pushes any existing first rule forward</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> = </span><span class="identifier">placing</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -559,12 +550,12 @@ awkward noises rule".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">placing</span><span class="plain"> == </span><span class="constant">LAST_PLACEMENT</span><span class="plain">) { </span>    <span class="comment">last in valid interval (must be whole list)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">placing</span><span class="plain"> == </span><span class="constant">LAST_PLACEMENT</span><span class="plain">) { </span><span class="comment">last in valid interval (must be whole list)</span>
             <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
-            <span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">; </span>    <span class="comment">pushes any existing last rule backward</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> = </span><span class="identifier">placing</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
+            <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">; </span><span class="comment">pushes any existing last rule backward</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> = </span><span class="identifier">placing</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -579,15 +570,15 @@ awkward noises rule".
 
 
 <pre class="displaydefn">
-        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">start_rule</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span>    <span class="comment">valid interval begins after this rule</span>
-        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">end_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">valid interval ends before this rule, or runs to end if <code class="display"><span class="extract">NULL</span></code></span>
+        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">start_rule</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="comment">valid interval begins after this rule</span>
+        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">end_rule</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">valid interval ends before this rule, or runs to end if <code class="display"><span class="extract">NULL</span></code></span>
         &lt;<span class="cwebmacro">Adjust the valid interval to take care of BEFORE and AFTER side requirements</span> <span class="cwebmacronumber">14.6.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Check that the valid interval is indeed as advertised</span> <span class="cwebmacronumber">14.6.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">start_rule</span><span class="plain">; </span>    <span class="comment">insertion point is after this</span>
+        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">start_rule</span><span class="plain">; </span><span class="comment">insertion point is after this</span>
         &lt;<span class="cwebmacro">Find insertion point, keeping the valid interval in specificity order</span> <span class="cwebmacronumber">14.6.3</span>&gt;<span class="plain">;</span>
-        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
-        <span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
-        <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">subseq</span><span class="plain">;</span>
+        <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">subseq</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
+        <span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">new_rule</span><span class="plain">;</span>
+        <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain"> = </span><span class="identifier">subseq</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Set the placement for the new rule booking</span> <span class="cwebmacronumber">14.6.4</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -603,16 +594,16 @@ awkward noises rule".
 <pre class="displaydefn">
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">side</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BEFORE_SIDE</span><span class="plain">:</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BEFORE_SIDE:</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">), </span><span class="identifier">ref_rule</span><span class="plain">))</span>
-                        <span class="identifier">end_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span>    <span class="comment">insert before: so valid interval ends here</span>
+                        <span class="identifier">end_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span><span class="comment">insert before: so valid interval ends here</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end_rule</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't find end rule"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AFTER_SIDE</span><span class="plain">:</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AFTER_SIDE:</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">=</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">), </span><span class="identifier">ref_rule</span><span class="plain">))</span>
-                        <span class="identifier">start_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span>    <span class="comment">insert after: so valid interval begins here</span>
+                        <span class="identifier">start_rule</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span><span class="comment">insert after: so valid interval begins here</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">start_rule</span><span class="plain"> == </span><span class="identifier">list_head</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't find start rule"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -628,12 +619,12 @@ awkward noises rule".
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0, </span><span class="identifier">t</span><span class="plain"> = 2;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end_rule</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">t</span><span class="plain"> = 1;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">end_rule</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">start_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> == 0)) </span><span class="identifier">i</span><span class="plain"> = 1;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">end_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> == 1)) </span><span class="identifier">i</span><span class="plain"> = 2;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">start_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">end_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)) </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">t</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"valid rule interval isn't"</span><span class="plain">);</span>
 </pre>
@@ -651,16 +642,16 @@ awkward noises rule".
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">log</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">SPECIFICITIES_DA</span><span class="plain">)) </span><span class="identifier">log</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="comment">move forward to final valid first rule (if any exist)</span>
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> != </span><span class="identifier">end_rule</span><span class="plain">)</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">))</span>
-            <span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> != </span><span class="identifier">end_rule</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">))</span>
+            <span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
 
         <span class="comment">move forward past other middle rules if they are not less specific</span>
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> != </span><span class="identifier">end_rule</span><span class="plain">) </span>    <span class="comment">stop before p leaves valid range</span>
-            <span class="plain">&amp;&amp; (</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> != </span><span class="constant">LAST_PLACEMENT</span><span class="plain">) </span>    <span class="comment">or reaches a last rule</span>
-            <span class="plain">&amp;&amp; (</span><span class="functiontext">Rules::Bookings::compare_specificity_of_br</span><span class="plain">(</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">new_rule</span><span class="plain">,</span>
-                <span class="identifier">log</span><span class="plain">) &gt;= 0)) </span>    <span class="comment">or a rule less specific than the new one</span>
-            <span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
+        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> != </span><span class="identifier">end_rule</span><span class="plain">) </span><span class="comment">stop before p leaves valid range</span>
+            <span class="plain">&amp;&amp; (</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> != </span><span class="constant">LAST_PLACEMENT</span><span class="plain">) </span><span class="comment">or reaches a last rule</span>
+            <span class="plain">&amp;&amp; (</span><span class="functiontext">Rules::Bookings::compare_specificity_of_br</span><span class="plain">(</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">new_rule</span><span class="plain">,</span>
+                <span class="identifier">log</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">)) </span><span class="comment">or a rule less specific than the new one</span>
+            <span class="identifier">insert_after</span><span class="plain"> = </span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -683,16 +674,16 @@ BEFORE a FIRST one.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> = </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">;</span>
+        <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> = </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">insert_after</span><span class="plain"> != </span><span class="identifier">list_head</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">insert_after</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> == </span><span class="constant">LAST_PLACEMENT</span><span class="plain">))</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> =</span>
-                <span class="constant">LAST_PLACEMENT</span><span class="plain">; </span>    <span class="comment">happens if valid interval is after a last rule</span>
+            <span class="plain">(</span><span class="identifier">insert_after</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> == </span><span class="constant">LAST_PLACEMENT</span><span class="plain">))</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> =</span>
+                <span class="constant">LAST_PLACEMENT</span><span class="plain">; </span><span class="comment">happens if valid interval is after a last rule</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">subseq</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">subseq</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">))</span>
-            <span class="identifier">new_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> =</span>
-                <span class="constant">FIRST_PLACEMENT</span><span class="plain">; </span>    <span class="comment">happens if valid interval is before a first rule</span>
+            <span class="plain">(</span><span class="identifier">subseq</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> == </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">))</span>
+            <span class="identifier">new_rule</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain"> =</span>
+                <span class="constant">FIRST_PLACEMENT</span><span class="plain">; </span><span class="comment">happens if valid interval is before a first rule</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -702,13 +693,12 @@ BEFORE a FIRST one.)
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>That leaves only the removal operation, which is much simpler:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_remove</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">ref_rule</span><span class="plain">) {</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">, *</span><span class="identifier">pr</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">), </span><span class="identifier">ref_rule</span><span class="plain">)) {</span>
-                <span class="identifier">pr</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
+                <span class="identifier">pr</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -721,15 +711,14 @@ BEFORE a FIRST one.)
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Logging lists. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_log</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-booked-rule-list&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-booked-rule-list&gt;\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::no_rules_in_list</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == 0) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;empty-booked-rule-list&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;empty-booked-rule-list&gt;\n"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain"> = 1; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">++)</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  %d/%d. $b\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ++</span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">++)</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  %d/%d. $b\n"</span><span class="plain">, ++</span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -741,20 +730,19 @@ BEFORE a FIRST one.)
 has no head, but we treat it as if it were the empty list:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::no_rules_in_list</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">++;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">;</span>
     <span class="plain">}</span>
 
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_is_empty</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">, </span><span class="reserved">rule_context</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-            <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+            <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rulebooks::phrase_fits_rule_context</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">rc</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -762,15 +750,15 @@ has no head, but we treat it as if it were the empty list:
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_is_empty_of_i7_rules</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">rule_being_booked</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_contains</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">to_find</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::eq</span><span class="plain">(</span><span class="functiontext">Rules::Bookings::get_rule</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">), </span><span class="identifier">to_find</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -778,8 +766,8 @@ has no head, but we treat it as if it were the empty list:
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_contains_ph</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph_to_find</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">) == </span><span class="identifier">ph_to_find</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">rule_being_booked</span><span class="plain">) == </span><span class="identifier">ph_to_find</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -802,22 +790,21 @@ show the linkage between them, while the actual content for each rule is
 handled in the "Rules" section.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">, </span><span class="reserved">rule_context</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">billing</span><span class="plain">, </span><span class="reserved">rulebook</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">resp_count</span><span class="plain">) {</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-            <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+            <span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) {</span>
-                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">);</span>
+                <span class="reserved">ph_runtime_context_data</span><span class="plain"> *</span><span class="identifier">phrcd</span><span class="plain"> = &amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">);</span>
                 <span class="identifier">scene</span><span class="plain"> *</span><span class="identifier">during_scene</span><span class="plain"> = </span><span class="functiontext">Phrases::Context::get_scene</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rc</span><span class="element">.scene_context</span><span class="plain">) &amp;&amp; (</span><span class="identifier">during_scene</span><span class="plain"> != </span><span class="identifier">rc</span><span class="element">.scene_context</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rc</span><span class="element">.action_context</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="functiontext">Phrases::Context::within_action_context</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">, </span><span class="identifier">rc</span><span class="element">.action_context</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rc</span><span class="plain">.</span><span class="element">scene_context</span><span class="plain">) &amp;&amp; (</span><span class="identifier">during_scene</span><span class="plain"> != </span><span class="identifier">rc</span><span class="plain">.</span><span class="element">scene_context</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rc</span><span class="plain">.</span><span class="element">action_context</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="functiontext">Phrases::Context::within_action_context</span><span class="plain">(</span><span class="identifier">phrcd</span><span class="plain">, </span><span class="identifier">rc</span><span class="plain">.</span><span class="element">action_context</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                     <span class="reserved">continue</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="plain">#</span><span class="identifier">endif</span>
@@ -838,7 +825,6 @@ the order of precedence of rules in the list. On some index pages we don't
 want this, so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">show_index_links</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
@@ -851,11 +837,11 @@ want this, so:
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::br_start_index_line</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">billing</span><span class="plain">) {</span>
-        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"hanging"</span><span class="plain">);</span>
+        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"hanging"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">billing</span><span class="plain">[0]) &amp;&amp; (</span><span class="identifier">show_index_links</span><span class="plain">)) </span><span class="functiontext">Rules::Bookings::br_show_linkage_icon</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">billing</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">billing</span><span class="plain">[0] == 0) &amp;&amp; (</span><span class="identifier">show_index_links</span><span class="plain">)) </span><span class="functiontext">Rules::Bookings::br_show_linkage_icon</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">billing</span><span class="plain">[0] == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">show_index_links</span><span class="plain">)) </span><span class="functiontext">Rules::Bookings::br_show_linkage_icon</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -870,22 +856,21 @@ want this, so:
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>And here's how the index links (if wanted) are chosen and plotted:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::br_show_linkage_icon</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">redundant assignment to appease <code class="display"><span class="extract">gcc -O2</span></code></span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
             <span class="identifier">HTMLFiles::html_icon_with_tooltip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"rulenone.png"</span><span class="plain">, </span><span class="string">"start of rulebook"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain">) {</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> -1: </span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="string">"ruleless.png"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="string">"ruleequal.png"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="string">"rulemore.png"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown rule specificity"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="string">"ruleequal.png"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">icon_name</span><span class="plain"> = </span><span class="string">"rulemore.png"</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown rule specificity"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">HTMLFiles::html_icon_with_tooltip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">icon_name</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain">,</span>
-            <span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_lawname</span><span class="plain">);</span>
+        <span class="identifier">HTMLFiles::html_icon_with_tooltip</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">icon_name</span><span class="plain">, </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain">,</span>
+            <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_lawname</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -898,20 +883,19 @@ together. They're not a historical record of what was done: they're a
 measurement of the final outcome.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_judge_ordering</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">) {</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_head</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> != </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> != </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">)</span>
                     &lt;<span class="cwebmacro">Calculate specificities when placements differ</span> <span class="cwebmacronumber">21.1</span>&gt;
                 <span class="reserved">else</span>
                     &lt;<span class="cwebmacro">Calculate specificities when placements are the same</span> <span class="cwebmacronumber">21.2</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = 0;</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -927,40 +911,40 @@ measurement of the final outcome.
 
 
 <pre class="displaydefn">
-        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = 1;</span>
-        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">:</span>
-                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">:</span>
-                        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FIRST_PLACEMENT:</span>
+                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span>
+                        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                             <span class="string">"the rule above was listed as 'first' so precedes this "</span>
                             <span class="string">"one, which wasn't"</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">:</span>
-                        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span>
+                        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                             <span class="string">"the rule above was listed as 'first' so precedes this "</span>
                             <span class="string">"one, which was listed as 'last'"</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">default</span><span class="plain">:</span>
+                    <span class="identifier">default:</span>
                         <span class="functiontext">Rules::Bookings::list_log</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
                         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"booking list invariant broken"</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">:</span>
-                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">:</span>
-                        <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span>
+                <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span>
+                        <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                             <span class="string">"the rule below was listed as 'last' so comes after the "</span>
                             <span class="string">"rule above, which wasn't"</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">default</span><span class="plain">:</span>
+                    <span class="identifier">default:</span>
                         <span class="functiontext">Rules::Bookings::list_log</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
                         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"booking list invariant broken"</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
+            <span class="identifier">default:</span>
                 <span class="functiontext">Rules::Bookings::list_log</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"booking list invariant broken"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -978,29 +962,29 @@ measurement of the final outcome.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">:</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = 0;</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">placement</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FIRST_PLACEMENT:</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                     <span class="string">"these rules were both listed as 'first', so they appear in "</span>
                     <span class="string">"reverse order of listing"</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">:</span>
-                <span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::compare_specificity_of_br</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> == 0) </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span>
+                <span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::compare_specificity_of_br</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">, </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                     <span class="string">"these rules are equally ranked, so their order is determined by "</span>
                     <span class="string">"which was defined first (or by explicit 'listed in' sentences)"</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+                    <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                     <span class="string">"the arrow points from a more specific rule to a more general one, "</span>
                     <span class="string">"as decided by Law"</span><span class="plain">;</span>
-                    <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_lawname</span><span class="plain"> = </span><span class="identifier">c_s_stage_law</span><span class="plain">;</span>
+                    <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_lawname</span><span class="plain"> = </span><span class="identifier">c_s_stage_law</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">:</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain"> = 0;</span>
-                <span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_law</span><span class="plain"> =</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_law</span><span class="plain"> =</span>
                     <span class="string">"these rules were both listed as 'last', so they appear in order "</span>
                     <span class="string">"of listing"</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -1016,7 +1000,6 @@ in rulebook order to make the I6 source more legible, and for the same
 reason we add plenty of commentary.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::list_compile_rule_phrases</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">list_head</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">i</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_i</span><span class="plain">) {</span>
@@ -1024,25 +1007,25 @@ reason we add plenty of commentary.
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::no_rules_in_list</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain"> = 1; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">++) {</span>
-            <span class="functiontext">Rules::compile_comment</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">++) {</span>
+            <span class="functiontext">Rules::compile_comment</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain"> != </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain"> != </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">) {</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"--- now the "</span><span class="plain">);</span>
-                    <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">-</span><span class="element">&gt;placement</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIRST_PLACEMENT</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"first-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">MIDDLE_PLACEMENT</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"mid-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LAST_PLACEMENT</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"last-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain">-&gt;</span><span class="element">placement</span><span class="plain">) {</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FIRST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"first-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MIDDLE_PLACEMENT:</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"mid-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LAST_PLACEMENT:</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"last-placed rules"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">" ---"</span><span class="plain">);</span>
                     <span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">law</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity_lawname</span><span class="plain">;</span>
-                    <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule_specificity</span><span class="plain">) {</span>
+                    <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">law</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule_specificity_lawname</span><span class="plain">;</span>
+                    <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="identifier">next_rule_specificity</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> -1: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"  &lt;&lt;&lt; %s &lt;&lt;&lt;"</span><span class="plain">, </span><span class="identifier">law</span><span class="plain">); </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> 0: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"  === equally specific with ==="</span><span class="plain">); </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> 1: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"  &gt;&gt;&gt; %s &gt;&gt;&gt;"</span><span class="plain">, </span><span class="identifier">law</span><span class="plain">); </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"  === equally specific with ==="</span><span class="plain">); </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"  &gt;&gt;&gt; %s &gt;&gt;&gt;"</span><span class="plain">, </span><span class="identifier">law</span><span class="plain">); </span><span class="identifier">Produce::comment</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">C</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
@@ -1059,7 +1042,6 @@ reason we add plenty of commentary.
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Compilation of I6-format rulebook. </b>The following can generate both old-style array rulebooks and routine rulebooks,
 which were introduced in December 2010.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Rules::Bookings::start_list_compilation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1080,10 +1062,10 @@ which were introduced in December 2010.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ARRAY_RBF</span><span class="plain"> 1 </span>    <span class="comment">format as an array simply listing the rules</span>
-    <span class="definitionkeyword">define</span> <span class="constant">GROUPED_ARRAY_RBF</span><span class="plain"> 2 </span>    <span class="comment">format as a grouped array, for quicker action testing</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ROUTINE_RBF</span><span class="plain"> 3 </span>    <span class="comment">format as a routine which runs the rulebook</span>
-    <span class="definitionkeyword">define</span> <span class="constant">RULE_OPTIMISATION_THRESHOLD</span><span class="plain"> 20 </span>    <span class="comment">group arrays when larger than this number of rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ARRAY_RBF</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">format as an array simply listing the rules</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GROUPED_ARRAY_RBF</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">format as a grouped array, for quicker action testing</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ROUTINE_RBF</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">format as a routine which runs the rulebook</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RULE_OPTIMISATION_THRESHOLD</span><span class="plain"> </span><span class="constant">20</span><span class="plain"> </span><span class="comment">group arrays when larger than this number of rules</span>
 </pre>
 
 <pre class="display">
@@ -1093,7 +1075,7 @@ which were introduced in December 2010.
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">rb_symb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">countup</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::no_rules_in_list</span><span class="plain">(</span><span class="identifier">list_head</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">rb_symb</span><span class="plain"> = </span><span class="functiontext">Emit::named_iname_constant</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">,</span>
                 <span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">EMPTY_RULEBOOK_INAME_HL</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -1121,10 +1103,10 @@ than once for each rule.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">group_cap</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">group_cap</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GROUPED_ARRAY_RBF</span><span class="plain">: </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">group_cap</span><span class="plain"> = 31; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">: </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">group_cap</span><span class="plain"> = 2000000000; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GROUPED_ARRAY_RBF:</span><span class="plain"> </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">group_cap</span><span class="plain"> = </span><span class="constant">31</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span><span class="plain"> </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="identifier">group_cap</span><span class="plain"> = </span><span class="constant">2000000000</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_based</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">grouping</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
@@ -1132,26 +1114,26 @@ than once for each rule.
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Emit::unused_packaging_state</span><span class="plain">();</span>
 
         &lt;<span class="cwebmacro">Open the rulebook compilation</span> <span class="cwebmacronumber">24.1.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">group_size</span><span class="plain"> = 0, </span><span class="identifier">group_started</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">entry_count</span><span class="plain"> = 0, </span><span class="identifier">action_group_open</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">group_size</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">group_started</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">entry_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">action_group_open</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_rule</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">list_head</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">; </span><span class="identifier">br</span><span class="plain">; </span><span class="identifier">br</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">next_rule</span><span class="plain">) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Rvalues::from_rule</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">grouping</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_size</span><span class="plain"> == 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_size</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_started</span><span class="plain">) </span>&lt;<span class="cwebmacro">End an action group in the rulebook</span> <span class="cwebmacronumber">24.1.4</span>&gt;<span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                     <span class="identifier">action_name</span><span class="plain"> *</span><span class="identifier">an</span><span class="plain"> = </span><span class="functiontext">Rules::Bookings::br_required_action</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">);</span>
                     <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">;</span>
                     <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">brg</span><span class="plain">) &amp;&amp; (</span><span class="identifier">an</span><span class="plain"> == </span><span class="functiontext">Rules::Bookings::br_required_action</span><span class="plain">(</span><span class="identifier">brg</span><span class="plain">))) {</span>
                         <span class="identifier">group_size</span><span class="plain">++;</span>
-                        <span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">brg</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
+                        <span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">brg</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                     <span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">br</span><span class="plain">;</span>
                     <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">brg</span><span class="plain">) {</span>
                         <span class="identifier">group_size</span><span class="plain">++;</span>
-                        <span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">brg</span><span class="plain">-</span><span class="element">&gt;next_rule</span><span class="plain">;</span>
+                        <span class="identifier">brg</span><span class="plain"> = </span><span class="identifier">brg</span><span class="plain">-&gt;</span><span class="identifier">next_rule</span><span class="plain">;</span>
                     <span class="plain">}</span>
                     <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_size</span><span class="plain"> &gt; </span><span class="identifier">group_cap</span><span class="plain">) </span><span class="identifier">group_size</span><span class="plain"> = </span><span class="identifier">group_cap</span><span class="plain">;</span>
@@ -1179,18 +1161,18 @@ than once for each rule.
 <pre class="displaydefn">
         <span class="identifier">rb_symb</span><span class="plain"> = </span><span class="identifier">identifier</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARRAY_RBF</span><span class="plain">: </span><span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GROUPED_ARRAY_RBF</span><span class="plain">: </span><span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">); </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) -2); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ARRAY_RBF:</span><span class="plain"> </span><span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GROUPED_ARRAY_RBF:</span><span class="plain"> </span><span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">); </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) -2); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span><span class="plain"> {</span>
                 <span class="identifier">save_array</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
                 <span class="identifier">forbid_breaks_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"forbid_breaks"</span><span class="plain">);</span>
                 <span class="identifier">rv_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"rv"</span><span class="plain">, </span><span class="string">"return value"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> &gt; 1)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)</span>
                     <span class="identifier">original_deadflag_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"original_deadflag"</span><span class="plain">, </span><span class="string">"saved state"</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parameter_based</span><span class="plain">)</span>
                     <span class="identifier">p_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_internal_local_c_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"rulebook parameter"</span><span class="plain">);</span>
 
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> &gt; 1) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">countup</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::ref_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">original_deadflag_s</span><span class="plain">);</span>
@@ -1220,15 +1202,15 @@ than once for each rule.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GROUPED_ARRAY_RBF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GROUPED_ARRAY_RBF:</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">) </span><span class="functiontext">Emit::array_action_entry</span><span class="plain">(</span><span class="identifier">an</span><span class="plain">); </span><span class="reserved">else</span>
                 <span class="plain">#</span><span class="identifier">endif</span>
                     <span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) -2);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_size</span><span class="plain"> &gt; 1) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">group_size</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group_size</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="functiontext">Emit::array_numeric_entry</span><span class="plain">((</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">group_size</span><span class="plain">);</span>
                 <span class="identifier">action_group_open</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">an</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
@@ -1259,12 +1241,12 @@ than once for each rule.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARRAY_RBF</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GROUPED_ARRAY_RBF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ARRAY_RBF:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GROUPED_ARRAY_RBF:</span>
                 <span class="functiontext">Specifications::Compiler::emit</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry_count</span><span class="plain"> &gt; 0) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">NE_BIP</span><span class="plain">);</span>
@@ -1276,7 +1258,7 @@ than once for each rule.
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1308,7 +1290,7 @@ than once for each rule.
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">rv_s</span><span class="plain">);</span>
-                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 2);</span>
+                                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1331,9 +1313,9 @@ than once for each rule.
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">LOOKUPREF_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LATEST_RULE_RESULT_HL</span><span class="plain">));</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1351,7 +1333,7 @@ than once for each rule.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_group_open</span><span class="plain">) {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -1375,15 +1357,15 @@ than once for each rule.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ARRAY_RBF</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GROUPED_ARRAY_RBF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ARRAY_RBF:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GROUPED_ARRAY_RBF:</span>
                 <span class="functiontext">Emit::array_null_entry</span><span class="plain">();</span>
                 <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save_array</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ROUTINE_RBF</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ROUTINE_RBF:</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">RETURN_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save_array</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -1400,7 +1382,7 @@ than once for each rule.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry_count</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">entry_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">SAY__P_HL</span><span class="plain">));</span>
@@ -1423,12 +1405,11 @@ than once for each rule.
 its rule requires:
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
     <span class="identifier">action_name</span><span class="plain"> *</span><span class="functiontext">Rules::Bookings::br_required_action</span><span class="plain">(</span><span class="reserved">booking</span><span class="plain"> *</span><span class="identifier">br</span><span class="plain">) {</span>
-        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-</span><span class="element">&gt;rule_being_booked</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Context::required_action</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;runtime_context_data</span><span class="plain">));</span>
+        <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Rules::get_I7_definition</span><span class="plain">(</span><span class="identifier">br</span><span class="plain">-&gt;</span><span class="element">rule_being_booked</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Phrases::Context::required_action</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">runtime_context_data</span><span class="plain">));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>

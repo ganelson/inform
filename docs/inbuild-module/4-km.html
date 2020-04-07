@@ -71,7 +71,6 @@ are compatible, and use edges to extensions or other kits as laid out in
 the metadata file.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">kit_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"kit"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
@@ -84,7 +83,7 @@ the metadata file.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::write_work</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -97,11 +96,10 @@ the metadata file.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Kits live in the <code class="display"><span class="extract">Inter</span></code> subdirectory of a nest:
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">KitManager::path_within_nest</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no nest"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Inter"</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Inter"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -113,11 +111,10 @@ the metadata file.
 which stores data about extensions used by the Inform compiler.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_kit</span><span class="plain"> *</span><span class="functiontext">KitManager::from_copy</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> == </span><span class="identifier">kit_genre</span><span class="plain">)) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_inform_kit</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;content</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain"> == </span><span class="identifier">kit_genre</span><span class="plain">)) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_inform_kit</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">content</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -160,13 +157,12 @@ not a file, false if we know the reverse, and otherwise not applicable.
 a valid metadata file.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::claim_as_copy</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> **</span><span class="identifier">C</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ext</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">directory_status</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">directory_status</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kitpos</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) - 3;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kitpos</span><span class="plain"> &gt;= 0) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">kitpos</span><span class="plain">) == </span><span class="character">'K'</span><span class="plain">) &amp;&amp;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kitpos</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) - </span><span class="constant">3</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">kitpos</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">kitpos</span><span class="plain">) == </span><span class="character">'K'</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">kitpos</span><span class="plain">+1) == </span><span class="character">'i'</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">kitpos</span><span class="plain">+2) == </span><span class="character">'t'</span><span class="plain">)) {</span>
             <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
@@ -178,7 +174,7 @@ a valid metadata file.
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">canary</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kit_metadata.txt"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">canary</span><span class="plain">)) {</span>
             <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">KitManager::new_copy</span><span class="plain">(</span><span class="identifier">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">);</span>
-            <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
+            <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -195,11 +191,10 @@ a valid metadata file.
 requirements.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::search_nest_for</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">,</span>
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">search_results</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain">) &amp;&amp; (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> != </span><span class="identifier">kit_genre</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain">) &amp;&amp; (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain"> != </span><span class="identifier">kit_genre</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">KitManager::path_within_nest</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
         <span class="identifier">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Directories::open</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">) {</span>
@@ -209,7 +204,7 @@ requirements.
                     <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">LEAFNAME</span><span class="plain">);</span>
                     <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">Q</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">LEAFNAME</span><span class="plain">);</span>
                     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">KitManager::claim_folder_as_copy</span><span class="plain">(</span><span class="identifier">Q</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Requirements::meets</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">))) {</span>
+                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Requirements::meets</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">))) {</span>
                         <span class="functiontext">Nests::add_search_result</span><span class="plain">(</span><span class="identifier">search_results</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
@@ -228,7 +223,6 @@ requirements.
 we need to <code class="display"><span class="extract">rsync</span></code> it.
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">KitManager::pathname_in_nest</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
@@ -240,32 +234,32 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::copy_to_nest</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">syncing</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">meth</span><span class="plain">) {</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">dest_kit</span><span class="plain"> = </span><span class="functiontext">KitManager::pathname_in_nest</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">);</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">dest_kit</span><span class="plain"> = </span><span class="functiontext">KitManager::pathname_in_nest</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">);</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">dest_kit_metadata</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">dest_kit</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"kit_metadata.txt"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::exists</span><span class="plain">(</span><span class="identifier">dest_kit_metadata</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">syncing</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) { </span><span class="functiontext">Copies::overwrite_error</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meth</span><span class="plain">-</span><span class="element">&gt;methodology</span><span class="plain"> == </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meth</span><span class="plain">-&gt;</span><span class="identifier">methodology</span><span class="plain"> == </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"mkdir -p "</span><span class="plain">);</span>
                 <span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">dest_kit</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"%S\n"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">);</span>
+                <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">);</span>
                 <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="functiontext">KitManager::path_within_nest</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">));</span>
                 <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">dest_kit</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meth</span><span class="plain">-</span><span class="element">&gt;methodology</span><span class="plain"> == </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">meth</span><span class="plain">-&gt;</span><span class="identifier">methodology</span><span class="plain"> == </span><span class="constant">DRY_RUN_METHODOLOGY</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"rsync -a --delete "</span><span class="plain">);</span>
-            <span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">);</span>
+            <span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">);</span>
             <span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">dest_kit</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"%S\n"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">Pathnames::rsync</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">, </span><span class="identifier">dest_kit</span><span class="plain">);</span>
+            <span class="identifier">Pathnames::rsync</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">, </span><span class="identifier">dest_kit</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -278,10 +272,9 @@ we need to <code class="display"><span class="extract">rsync</span></code> it.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Build graph. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::building_soon</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain"> **</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;vertex</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">vertex</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">KitManager::construct_graph</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>

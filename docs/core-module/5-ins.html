@@ -91,22 +91,21 @@ will eventually make them instances of the subkind "thing" unless other
 evidence turns up to suggest otherwise).
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">instance_package</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">instance_iname</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">instance_emitted</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">creating_sentence</span><span class="plain">; </span>    <span class="comment">sentence creating the instance</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">instance_of_set_at</span><span class="plain">; </span>    <span class="comment">and identifying its kind</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">creating_sentence</span><span class="plain">; </span><span class="comment">sentence creating the instance</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">instance_of_set_at</span><span class="plain">; </span><span class="comment">and identifying its kind</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">as_subject</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">enumeration_index</span><span class="plain">; </span>    <span class="comment">within each kind, named constants are counted from 1</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">connection</span><span class="plain">; </span>    <span class="comment">to the data structure for a constant of a kind significant to Inform</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">usage_as_aph</span><span class="plain">; </span>    <span class="comment">if this is a noun used adjectivally, like "red"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">enumeration_index</span><span class="plain">; </span><span class="comment">within each kind, named constants are counted from 1</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">connection</span><span class="plain">; </span><span class="comment">to the data structure for a constant of a kind significant to Inform</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="identifier">usage_as_aph</span><span class="plain">; </span><span class="comment">if this is a noun used adjectivally, like "red"</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_appearances</span><span class="plain">; </span>    <span class="comment">how many times have I appeared thus far in the World index?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_appearances</span><span class="plain">; </span><span class="comment">how many times have I appeared thus far in the World index?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance_usage</span><span class="plain"> *</span><span class="identifier">first_noted_usage</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance_usage</span><span class="plain"> *</span><span class="identifier">last_noted_usage</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -119,7 +118,6 @@ evidence turns up to suggest otherwise).
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>We are going to record uses of these in the index, so:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">instance_usage</span><span class="plain"> {</span>
@@ -135,7 +133,6 @@ evidence turns up to suggest otherwise).
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>We record the one most recently made:
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">latest_instance</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -147,11 +144,11 @@ evidence turns up to suggest otherwise).
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_GRAMMATICAL_GENDERS</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_GRAMMATICAL_GENDERS</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_ggs_recorded</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_ggs_recorded</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">grammatical_genders</span><span class="plain">[</span><span class="constant">NO_GRAMMATICAL_GENDERS</span><span class="plain">];</span>
 </pre>
 
@@ -169,7 +166,6 @@ ensures that we don't accidentally break the rule that the model world is
 fully specified by the propositions concerning it.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">Instances::new</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="constant">PROTECTED_MODEL_PROCEDURE</span><span class="plain">;</span>
@@ -182,12 +178,12 @@ fully specified by the propositions concerning it.)
         &lt;<span class="cwebmacro">Add the new instance to its enumeration</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="identifier">latest_instance</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_CREATIONS</span><span class="plain">, </span><span class="string">"Created instance: $O (kind $u) (inter %n)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">OBJECT_CREATIONS</span><span class="plain">, </span><span class="string">"Created instance: $O (kind $u) (inter %n)\n"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">, </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="functiontext">Plugins::Call::new_named_instance_notify</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_grammatical_gender</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">no_ggs_recorded</span><span class="plain"> &lt; </span><span class="constant">NO_GRAMMATICAL_GENDERS</span><span class="plain">))</span>
             <span class="identifier">grammatical_genders</span><span class="plain">[</span><span class="identifier">no_ggs_recorded</span><span class="plain">++] = </span><span class="identifier">I</span><span class="plain">;</span>
-        <span class="functiontext">Assertions::Assemblies::satisfies_generalisations</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain">);</span>
+        <span class="functiontext">Assertions::Assemblies::satisfies_generalisations</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">as_subject</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -222,18 +218,18 @@ later on.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_emitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;creating_sentence</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;usage_as_aph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain"> = 0;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connection</span><span class="plain"> = </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;index_appearances</span><span class="plain"> = 0;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;first_noted_usage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::new</span><span class="plain">(</span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">),</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_emitted</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">creating_sentence</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_of_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">usage_as_aph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">enumeration_index</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">connection</span><span class="plain"> = </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">index_appearances</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">first_noted_usage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">as_subject</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::new</span><span class="plain">(</span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">),</span>
             <span class="constant">INST_SUB</span><span class="plain">, </span><span class="identifier">STORE_POINTER_instance</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">CERTAIN_CE</span><span class="plain">);</span>
 </pre>
 
@@ -274,17 +270,17 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">any_parsing</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exact_parsing</span><span class="plain">)</span>
-                <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain"> =</span>
+                <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain"> =</span>
                     <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
                         <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain"> + </span><span class="identifier">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain">,</span>
                         <span class="constant">NAMED_CONSTANT_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_instance</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
             <span class="reserved">else</span>
-                <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain"> =</span>
+                <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain"> =</span>
                     <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
                         <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain">,</span>
                         <span class="identifier">NOUN_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_instance</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
                 <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain"> + </span><span class="identifier">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain">,</span>
                 <span class="identifier">NOUN_HAS_NO_MC</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -319,7 +315,7 @@ be done later on: see the "Instance Counts" plugin.
         <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_object</span><span class="plain">))) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::has_named_constant_values</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to make an instance value for impossible kind"</span><span class="plain">);</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">);</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">enumeration_index</span><span class="plain"> = </span><span class="identifier">Kinds::Behaviour::new_enumerated_value</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain">) </span><span class="functiontext">Instances::register_as_adjectival_constant</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">cp</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -330,11 +326,10 @@ be done later on: see the "Instance Counts" plugin.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Instances::get_creating_sentence</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;creating_sentence</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">creating_sentence</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -344,11 +339,10 @@ be done later on: see the "Instance Counts" plugin.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">source_file</span><span class="plain"> *</span><span class="functiontext">Instances::get_creating_file</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;creating_sentence</span><span class="plain">)));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">creating_sentence</span><span class="plain">)));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -367,7 +361,6 @@ be done later on: see the "Instance Counts" plugin.
 <p class="inwebparagraph">The third sentence causes the following to be called, for the kind "colour"
 and the property "colour", whose names coincide:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::make_kind_coincident</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -391,7 +384,6 @@ use of colour turns up subsequently, e.g., in response to:
     <p>A vehicle has a colour.</p>
 
 </blockquote>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::update_adjectival_forms</span><span class="plain">(</span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -419,7 +411,6 @@ turns up subsequently, e.g., in response to
 
 </blockquote>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::register_as_adjectival_constant</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">;</span>
@@ -436,12 +427,11 @@ turns up subsequently, e.g., in response to
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::log</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">== </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null instance&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Streams::I6_escapes_enabled</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"I%d"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-        <span class="identifier">Nouns::log</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">);</span>
+        <span class="identifier">Nouns::log</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">)))</span>
             <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"[$u]"</span><span class="plain">, </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
     <span class="plain">}</span>
@@ -454,15 +444,14 @@ turns up subsequently, e.g., in response to
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. As subjects. </b>Instances can be reasoned about, so they correspond to inference subjects.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::get_numerical_value</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">enumeration_index</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="functiontext">Instances::as_subject</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">as_subject</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -474,41 +463,40 @@ turns up subsequently, e.g., in response to
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. As mere names. </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Instances::get_name</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Instances::get_name_in_play</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::get_name_in_play</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">, </span><span class="identifier">Projects::get_language_of_play</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::get_name_in_play</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">, </span><span class="identifier">plural</span><span class="plain">, </span><span class="identifier">Projects::get_language_of_play</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">()));</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::full_name_includes</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">wd</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::full_name_includes</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">, </span><span class="identifier">wd</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Nouns::full_name_includes</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">, </span><span class="identifier">wd</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">noun</span><span class="plain"> *</span><span class="functiontext">Instances::get_noun</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">tag</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Instances::identifier</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="string">"nothing"</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">UseNouns::identifier</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">UseNouns::identifier</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">INSTANCES_HAP</span><span class="plain">);</span>
-            <span class="functiontext">UseNouns::noun_compose_identifier</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_package</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_iname</span><span class="plain"> = </span><span class="functiontext">UseNouns::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">);</span>
-            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_package</span><span class="plain">, </span><span class="constant">INSTANCE_NAME_HMD</span><span class="plain">, </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_package</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">INSTANCES_HAP</span><span class="plain">);</span>
+            <span class="functiontext">UseNouns::noun_compose_identifier</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_package</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_iname</span><span class="plain"> = </span><span class="functiontext">UseNouns::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">);</span>
+            <span class="functiontext">Hierarchy::markup_wording</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_package</span><span class="plain">, </span><span class="constant">INSTANCE_NAME_HMD</span><span class="plain">, </span><span class="identifier">Nouns::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">));</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">instance_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -528,22 +516,21 @@ turns up subsequently, e.g., in response to
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Writer. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::writer</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vI</span><span class="plain">) {</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = (</span><span class="reserved">instance</span><span class="plain"> *) </span><span class="identifier">vI</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"nothing"</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">format_string</span><span class="plain">[0]) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="character">'I'</span><span class="plain">: </span>    <span class="comment">bare <code class="display"><span class="extract">%I</span></code> means the same as <code class="display"><span class="extract">%+I</span></code>, so fall through to...</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="character">'I'</span><span class="plain">: </span><span class="comment">bare <code class="display"><span class="extract">%I</span></code> means the same as <code class="display"><span class="extract">%+I</span></code>, so fall through to...</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'+'</span><span class="plain">: </span>&lt;<span class="cwebmacro">Write the instance raw</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">: </span>&lt;<span class="cwebmacro">Write the instance with normalised casing</span> <span class="cwebmacronumber">15.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'~'</span><span class="plain">: {</span>
                 <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">) &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;tag</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">tag</span><span class="plain">-&gt;</span><span class="identifier">nt_I6_identifier</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%n"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad %I modifier"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad %I modifier"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -599,7 +586,6 @@ else. (We don't need to filter explicitly for the kind because only
 instances have excerpts registered under <code class="display"><span class="extract">NOUN_MC</span></code>.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> *</span><span class="functiontext">Instances::parse_object</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">;</span>
@@ -627,7 +613,6 @@ instances have excerpts registered under <code class="display"><span class="extr
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>The first internal matches only instances of kinds within the objects;
 the second matches the others; and the third all instances, of whatever kind.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">instance</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
@@ -675,11 +660,10 @@ that would be redundant. Inform already knows which subjects are more
 specialised than which other ones, and by making a call, we can find out.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">inherits_from</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain">);</span>
+        <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">inherits_from</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">as_subject</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">InferenceSubjects::as_kind</span><span class="plain">(</span><span class="identifier">inherits_from</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -701,27 +685,26 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
 (e.g., by changing a "supporter" to a "container").
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::set_kind</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">new</span><span class="plain">) {</span>
         <span class="constant">PROTECTED_MODEL_PROCEDURE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to set kind to $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to set kind to $u\n"</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Tried to set the kind of a null object"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">existing</span><span class="plain"> = </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = </span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain"> == </span><span class="identifier">NEVER_MATCH</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to set kind of $O (existing $u) to $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">existing</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Tried to set kind of $O (existing $u) to $u\n"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">existing</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Issue a problem message for a contradictory change of kind</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Plugins::Call::set_kind_notify</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
-        <span class="functiontext">InferenceSubjects::falls_within</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain">, </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">));</span>
-        <span class="functiontext">Assertions::Assemblies::satisfies_generalisations</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;as_subject</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHANGES</span><span class="plain">, </span><span class="string">"Setting kind of $O to $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
+        <span class="functiontext">InferenceSubjects::falls_within</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">as_subject</span><span class="plain">, </span><span class="functiontext">Kinds::Knowledge::as_subject</span><span class="plain">(</span><span class="identifier">new</span><span class="plain">));</span>
+        <span class="functiontext">Assertions::Assemblies::satisfies_generalisations</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">as_subject</span><span class="plain">);</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_of_set_at</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHANGES</span><span class="plain">, </span><span class="string">"Setting kind of $O to $u\n"</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">new</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -735,9 +718,9 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain"> != </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_sentence</span><span class="plain"> != </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_of_set_at</span><span class="plain">) {</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain">);</span>
+            <span class="identifier">Problems::quote_source</span><span class="plain">(2, </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_of_set_at</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(3, </span><span class="identifier">new</span><span class="plain">);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">existing</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_KindsIncompatible</span><span class="plain">));</span>
@@ -767,10 +750,9 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Instances::get_kind_set_sentence</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_of_set_at</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">instance_of_set_at</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -794,10 +776,9 @@ are allowed to refine it. Such revisions are allowed to specialise the kind
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>The number of instances of a given kind makes a neat example:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
@@ -820,14 +801,13 @@ single pointer to another data structure.
 kinds, including "object", the connection is always blank.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::set_connection</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connection</span><span class="plain"> = </span><span class="identifier">gp</span><span class="plain">;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">connection</span><span class="plain"> = </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">Instances::get_connection</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;connection</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">connection</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -840,14 +820,13 @@ kinds, including "object", the connection is always blank.
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Indexing count. </b>This simply avoids repetitions in the World index.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::increment_indexing_count</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;index_appearances</span><span class="plain">++;</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">index_appearances</span><span class="plain">++;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::indexed_yet</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;index_appearances</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">index_appearances</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -860,7 +839,6 @@ kinds, including "object", the connection is always blank.
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Not every instance has a name, which is a nuisance for the index:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::index_name</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
@@ -885,42 +863,41 @@ kinds, including "object", the connection is always blank.
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::note_usage</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">NB</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NB</span><span class="plain"> == </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain">-</span><span class="element">&gt;where_instance_used</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NB</span><span class="plain"> == </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain">-&gt;</span><span class="element">where_instance_used</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">instance_usage</span><span class="plain"> *</span><span class="identifier">IU</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">instance_usage</span><span class="plain">);</span>
-        <span class="identifier">IU</span><span class="plain">-</span><span class="element">&gt;where_instance_used</span><span class="plain"> = </span><span class="identifier">NB</span><span class="plain">;</span>
-        <span class="identifier">IU</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;first_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
+        <span class="identifier">IU</span><span class="plain">-&gt;</span><span class="element">where_instance_used</span><span class="plain"> = </span><span class="identifier">NB</span><span class="plain">;</span>
+        <span class="identifier">IU</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">first_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;last_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">last_noted_usage</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::index_usages</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = 0;</span>
-        <span class="reserved">instance_usage</span><span class="plain"> *</span><span class="identifier">IU</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;first_noted_usage</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">IU</span><span class="plain">; </span><span class="identifier">IU</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">-</span><span class="element">&gt;where_instance_used</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">instance_usage</span><span class="plain"> *</span><span class="identifier">IU</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">first_noted_usage</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">IU</span><span class="plain">; </span><span class="identifier">IU</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain"> = </span><span class="identifier">IU</span><span class="plain">-&gt;</span><span class="element">where_instance_used</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain">) {</span>
                 <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)));</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Projects::draws_from_source_file</span><span class="plain">(</span><span class="functiontext">Task::project</span><span class="plain">(), </span><span class="identifier">sf</span><span class="plain">)) {</span>
                     <span class="identifier">k</span><span class="plain">++;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == 1) {</span>
-                        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="string">"tight"</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+                        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;mentioned in rules:&lt;/i&gt; "</span><span class="plain">);</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"; "</span><span class="plain">);</span>
                     <span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">)));</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; 0) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -932,7 +909,6 @@ kinds, including "object", the connection is always blank.
 
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27. As subjects. </b>Some methods for instances as inference subjects:
 </p>
-
 
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_get_name_text</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -965,7 +941,6 @@ kinds, including "object", the connection is always blank.
 <p class="inwebparagraph"><a id="SP28"></a><b>&#167;28.  </b>See below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_make_adj_const_domain</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">,</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
@@ -980,7 +955,6 @@ kinds, including "object", the connection is always blank.
 <p class="inwebparagraph"><a id="SP29"></a><b>&#167;29.  </b>Since all instances are single values, testing for inclusion under such a
 subject is very simple:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_emit_element_of_condition</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">t0_s</span><span class="plain">) {</span>
@@ -1011,7 +985,6 @@ and then send the objects, in turn, via <code class="display"><span class="extra
 <p class="inwebparagraph">They are stored as a linked list with the links in an array indexed by the
 allocation IDs of the objects.
 </p>
-
 
 <pre class="display">
     <span class="reserved">instance</span><span class="plain"> **</span><span class="identifier">objects_in_compilation_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -1048,7 +1021,6 @@ allocation IDs of the objects.
 Note that only instances, not kinds, appear.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::place_objects_in_definition_sequence</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Instances::begin_sequencing_objects</span><span class="plain">();</span>
@@ -1080,7 +1052,6 @@ the object instances, then compile the non-object ones (all just constant
 declarations) and finally return <code class="display"><span class="extract">TRUE</span></code> to indicate that the task is finished.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_compile_all</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">;</span>
@@ -1103,7 +1074,6 @@ declarations) and finally return <code class="display"><span class="extract">TRU
 <p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>Either way, the actual compilation happens here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::SUBJ_compile</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_nc</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
@@ -1115,16 +1085,16 @@ declarations) and finally return <code class="display"><span class="extract">TRU
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Instances::emitted_iname</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_emitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_emitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="functiontext">Emit::instance</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_emitted</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">instance_emitted</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="functiontext">Emit::instance</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">enumeration_index</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Instances::package</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span>    <span class="comment">Thus forcing this to exist...</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;instance_package</span><span class="plain">;</span>
+        <span class="functiontext">Instances::iname</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">); </span><span class="comment">Thus forcing this to exist...</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">instance_package</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1150,10 +1120,9 @@ property, but we don't go there in Inform.)
 <p class="inwebparagraph">These adjectives are easy to handle:
 </p>
 
-
 <pre class="display">
     <span class="identifier">adjectival_phrase</span><span class="plain"> *</span><span class="functiontext">Instances::get_adjectival_phrase</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;usage_as_aph</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="identifier">usage_as_aph</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">adjective_meaning</span><span class="plain"> *</span><span class="functiontext">Instances::ADJ_parse</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">pn</span><span class="plain">,</span>
@@ -1185,7 +1154,6 @@ the falseness of such an adjective since it's unclear what to infer from, e.g.,
 good basis for choosing which.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::ADJ_assert</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs_to_assert_on</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val_to_assert_on</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parity</span><span class="plain">) {</span>
@@ -1204,7 +1172,6 @@ good basis for choosing which.
 <p class="inwebparagraph"><a id="SP37"></a><b>&#167;37.  </b>Some pretty-printing for the index, and we're done.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Instances::ADJ_index</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">));</span>
@@ -1212,11 +1179,11 @@ good basis for choosing which.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::permission_list</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">)) {</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(of "</span><span class="plain">); </span><span class="functiontext">World::Permissions::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">") "</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"having this %+W"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"having this %+W"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a condition which is otherwise "</span><span class="plain">);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Instances::to_kind</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_alts</span><span class="plain"> = </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) - 1, </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_alts</span><span class="plain"> = </span><span class="functiontext">Instances::count</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) - </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">alt</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER_INSTANCES</span><span class="plain">(</span><span class="identifier">alt</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">alt</span><span class="plain"> != </span><span class="identifier">I</span><span class="plain">) {</span>
@@ -1247,7 +1214,6 @@ following routine: twice with the domain <code class="display"><span class="extr
 scene), once with <code class="display"><span class="extract">set</span></code> being null and <code class="display"><span class="extract">singleton</span></code> being an instance
 (the litmus paper).
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Instances::make_adj_const_domain</span><span class="plain">(</span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">,</span>
@@ -1288,7 +1254,7 @@ scene), once with <code class="display"><span class="extract">set</span></code> 
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="functiontext">Instances::get_name</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">am</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::new</span><span class="plain">(</span><span class="constant">ENUMERATIVE_KADJ</span><span class="plain">,</span>
             <span class="identifier">STORE_POINTER_instance</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">NW</span><span class="plain">);</span>
-        <span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;usage_as_aph</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">, 4);</span>
+        <span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">usage_as_aph</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::declare</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">NW</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">singleton</span><span class="plain">) </span><span class="functiontext">Adjectives::Meanings::set_domain_from_instance</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">singleton</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">set</span><span class="plain">) </span><span class="functiontext">Adjectives::Meanings::set_domain_from_kind</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="identifier">set</span><span class="plain">);</span>
 </pre>
@@ -1306,11 +1272,11 @@ scene), once with <code class="display"><span class="extract">set</span></code> 
         <span class="reserved">i6_schema</span><span class="plain"> *</span><span class="identifier">sch</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::set_i6_schema</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="constant">TEST_ADJECTIVE_TASK</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">,</span>
             <span class="string">"GProperty(%k, *1, %n) == %d"</span><span class="plain">,</span>
-                <span class="identifier">D</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain">);</span>
+                <span class="identifier">D</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">enumeration_index</span><span class="plain">);</span>
         <span class="identifier">sch</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::set_i6_schema</span><span class="plain">(</span><span class="identifier">am</span><span class="plain">, </span><span class="constant">NOW_ADJECTIVE_TRUE_TASK</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">sch</span><span class="plain">,</span>
             <span class="string">"WriteGProperty(%k, *1, %n, %d)"</span><span class="plain">,</span>
-                <span class="identifier">D</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;enumeration_index</span><span class="plain">);</span>
+                <span class="identifier">D</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">enumeration_index</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

@@ -109,19 +109,18 @@ This is the result of parsing "exactly three" doors or "exactly 17"
 containers, for instance, where the parameter is 3 or 17 respectively.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">quantifier</span><span class="plain"> {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">operator</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">operator_prim</span><span class="plain">; </span>    <span class="comment">inter opcode to compare successes against the threshold</span>
+        <span class="identifier">inter_t</span><span class="plain"> </span><span class="identifier">operator_prim</span><span class="plain">; </span><span class="comment">inter opcode to compare successes against the threshold</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">T_coefficient</span><span class="plain">; </span>    <span class="comment">see above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_complementary</span><span class="plain">; </span>    <span class="comment">tests the complement of the set, not the set of matches</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">can_be_used_in_now</span><span class="plain">; </span>    <span class="comment">can be asserted true or false using "now"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">can_be_used_in_assertions</span><span class="plain">; </span>    <span class="comment">can be used in assertion sentences</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">negated_quant</span><span class="plain">; </span>    <span class="comment">the logically converse determiner</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">log_text</span><span class="plain">; </span>    <span class="comment">to be used in the debugging log when logging propositions</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">T_coefficient</span><span class="plain">; </span><span class="comment">see above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_complementary</span><span class="plain">; </span><span class="comment">tests the complement of the set, not the set of matches</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">can_be_used_in_now</span><span class="plain">; </span><span class="comment">can be asserted true or false using "now"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">can_be_used_in_assertions</span><span class="plain">; </span><span class="comment">can be used in assertion sentences</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">negated_quant</span><span class="plain">; </span><span class="comment">the logically converse determiner</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">log_text</span><span class="plain">; </span><span class="comment">to be used in the debugging log when logging propositions</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">quantifier</span><span class="plain">;</span>
 </pre>
@@ -132,7 +131,6 @@ containers, for instance, where the parameter is 3 or 17 respectively.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The built-in set of 16 quantifiers, arranged in eight pairs, is as follows:
 </p>
-
 
 <pre class="display">
     <span class="reserved">quantifier</span>
@@ -168,14 +166,13 @@ are stored in the <code class="display"><span class="extract">determiner</span><
 <code class="display"><span class="extract">quantifier</span></code> structure which is its meaning.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">determiner</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allows_prefixed_not</span><span class="plain">; </span>    <span class="comment">can the word "not" come before this?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">text_of_det</span><span class="plain">; </span>    <span class="comment">which is allowed to be empty</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">takes_number</span><span class="plain">; </span>    <span class="comment">does a number follow? (e.g. for "at least N"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quantifier_meant</span><span class="plain">; </span>    <span class="comment">meaning of this quantifier</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">index_text</span><span class="plain">; </span>    <span class="comment">used in the Phrasebook index lexicon</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allows_prefixed_not</span><span class="plain">; </span><span class="comment">can the word "not" come before this?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">text_of_det</span><span class="plain">; </span><span class="comment">which is allowed to be empty</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">takes_number</span><span class="plain">; </span><span class="comment">does a number follow? (e.g. for "at least N"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quantifier_meant</span><span class="plain">; </span><span class="comment">meaning of this quantifier</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">index_text</span><span class="plain">; </span><span class="comment">used in the Phrasebook index lexicon</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">determiner</span><span class="plain">;</span>
 </pre>
@@ -189,27 +186,26 @@ new quantifiers from the source text or the template files, but what follows
 is written so that it would be fairly easy to add this ability.
 </p>
 
-
 <pre class="display">
     <span class="reserved">quantifier</span><span class="plain"> *</span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">op</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_comp</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain">);</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">EQ_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"~="</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">NE_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;="</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">GE_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">GT_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;="</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">LE_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;"</span><span class="plain">) == 0) </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> = </span><span class="identifier">LT_BIP</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfamiliar operator"</span><span class="plain">);</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain"> = </span><span class="identifier">EQ_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"~="</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain"> = </span><span class="identifier">NE_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;="</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain"> = </span><span class="identifier">GE_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">operator_prim</span><span class="plain"> = </span><span class="identifier">GT_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;="</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain"> = </span><span class="identifier">LE_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">op</span><span class="plain">, </span><span class="string">"&lt;"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">operator_prim</span><span class="plain"> = </span><span class="identifier">LT_BIP</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">operator_prim</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unfamiliar operator"</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">endif</span>
 
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;T_coefficient</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">; </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;is_complementary</span><span class="plain"> = </span><span class="identifier">is_comp</span><span class="plain">;</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;negated_quant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;log_text</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">T_coefficient</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">; </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">is_complementary</span><span class="plain"> = </span><span class="identifier">is_comp</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">negated_quant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">log_text</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -231,7 +227,6 @@ closed", and so on. Thus
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Not ( ForAll x: P(x) )| is equivalent to |Exists x: Not(P(x))</span>
 </pre>
@@ -241,7 +236,6 @@ negation in our sense, then:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Not ( Q x: P(x) )| is equivalent to |NQ x: P(x)</span>
@@ -257,7 +251,6 @@ possible. Consider what effect de Morgan's laws have if we simplify:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Not ( ForAll x: closed(x) and locked(x) and lockable(x) )</span>
 </pre>
@@ -266,7 +259,6 @@ possible. Consider what effect de Morgan's laws have if we simplify:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))</span>
@@ -279,7 +271,6 @@ something much easier to handle:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">NotAll x: closed(x) and locked(x) and lockable(x)</span>
 </pre>
@@ -289,13 +280,12 @@ the negations of <code class="display"><span class="extract">ForAll</span></code
 puzzlingly redundant from a traditional logic point of view.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">qx</span><span class="plain">, </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">qy</span><span class="plain">) {</span>
-        <span class="identifier">qx</span><span class="plain">-</span><span class="element">&gt;negated_quant</span><span class="plain"> = </span><span class="identifier">qy</span><span class="plain">; </span><span class="identifier">qy</span><span class="plain">-</span><span class="element">&gt;negated_quant</span><span class="plain"> = </span><span class="identifier">qx</span><span class="plain">;</span>
+        <span class="identifier">qx</span><span class="plain">-&gt;</span><span class="element">negated_quant</span><span class="plain"> = </span><span class="identifier">qy</span><span class="plain">; </span><span class="identifier">qy</span><span class="plain">-&gt;</span><span class="element">negated_quant</span><span class="plain"> = </span><span class="identifier">qx</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">quantifier</span><span class="plain"> *</span><span class="functiontext">Quantifiers::get_negation</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;negated_quant</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">negated_quant</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -308,11 +298,10 @@ puzzlingly redundant from a traditional logic point of view.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Logging a quantifier:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Quantifiers::log</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;NULL-QUANTIFIER&gt;"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;log_text</span><span class="plain">, </span><span class="identifier">parameter</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">log_text</span><span class="plain">, </span><span class="identifier">parameter</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -346,7 +335,6 @@ the quantifier is <code class="display"><span class="extract">Proportion&gt;50%<
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">qcy_0 &gt; 5*qcn_0/10</span>
 </pre>
@@ -357,31 +345,30 @@ I6 will fold that out in eventual code generation. When the proportion is
 the resulting I6 is more legible.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Quantifiers::compile_test</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">index</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quantification_parameter</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">TC</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;T_coefficient</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">TC</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">T_coefficient</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">TC</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> -1:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;is_complementary</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">is_complementary</span><span class="plain">)</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s qcn_%d-%d"</span><span class="plain">,</span>
-                        <span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quantification_parameter</span><span class="plain">);</span>
+                        <span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quantification_parameter</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s %d"</span><span class="plain">,</span>
-                        <span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="identifier">quantification_parameter</span><span class="plain">);</span>
+                        <span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="identifier">quantification_parameter</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 10:</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s qcn_%d"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">10</span><span class="plain">:</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s qcn_%d"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 0:</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s 0"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s 0"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) != 0)</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d*10 %s %d*qcn_%d"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="identifier">TC</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
+            <span class="identifier">default:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="string">"=="</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">)</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d*10 %s %d*qcn_%d"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="identifier">TC</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
                 <span class="reserved">else</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s %d*qcn_%d/10"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator</span><span class="plain">, </span><span class="identifier">TC</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"qcy_%d %s %d*qcn_%d/10"</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">, </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator</span><span class="plain">, </span><span class="identifier">TC</span><span class="plain">, </span><span class="identifier">index</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -390,13 +377,13 @@ the resulting I6 is more legible.)
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Quantifiers::emit_test</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">quantification_parameter</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">qcy</span><span class="plain">, </span><span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">qcn</span><span class="plain">) {</span>
 
-        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain">);</span>
+        <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">operator_prim</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">TC</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;T_coefficient</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">TC</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">T_coefficient</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">TC</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> -1:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;is_complementary</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">is_complementary</span><span class="plain">) {</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy</span><span class="plain">);</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">MINUS_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -408,20 +395,20 @@ the resulting I6 is more legible.)
                     <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">quantification_parameter</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 10:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">10</span><span class="plain">:</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy</span><span class="plain">);</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcn</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 0:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
                 <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy</span><span class="plain">);</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;operator_prim</span><span class="plain"> != </span><span class="identifier">EQ_BIP</span><span class="plain">) {</span>
+            <span class="identifier">default:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="identifier">operator_prim</span><span class="plain"> != </span><span class="identifier">EQ_BIP</span><span class="plain">) {</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">TIMES_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcy</span><span class="plain">);</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">TIMES_BIP</span><span class="plain">);</span>
                     <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
@@ -437,7 +424,7 @@ the resulting I6 is more legible.)
                             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">TC</span><span class="plain">);</span>
                             <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">qcn</span><span class="plain">);</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 10);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -462,10 +449,9 @@ box" is fine, because there's no ambiguity. The <code class="display"><span clas
 a quantifier shows whether it can be asserted in "now" like this.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Quantifiers::is_now_assertable</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_now</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_now</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -479,10 +465,9 @@ every room is dark." gives Inform too little to act on. Which room(s)
 should it make lighted?
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Quantifiers::can_be_used_in_assertions</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_assertions</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">quant</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_assertions</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -496,41 +481,41 @@ options open.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ALL_DET_NAME</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EACH_DET_NAME</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EVERY_DET_NAME</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NO_DET_NAME</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NONE_DET_NAME</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SOME_DET_NAME</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ANY_DET_NAME</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ALL_BUT_DET_NAME</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ALL_EXCEPT_DET_NAME</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ALMOST_ALL_DET_NAME</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ALMOST_NO_DET_NAME</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MOST_DET_NAME</span><span class="plain"> 11</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNDER_HALF_DET_NAME</span><span class="plain"> 12</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AT_LEAST_DET_NAME</span><span class="plain"> 13</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AT_MOST_DET_NAME</span><span class="plain"> 14</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXACTLY_DET_NAME</span><span class="plain"> 15</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FEWER_THAN_DET_NAME</span><span class="plain"> 16</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LESS_THAN_DET_NAME</span><span class="plain"> 17</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MORE_THAN_DET_NAME</span><span class="plain"> 18</span>
-    <span class="definitionkeyword">define</span> <span class="constant">GREATER_THAN_DET_NAME</span><span class="plain"> 19</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OTHER_THAN_DET_NAME</span><span class="plain"> 20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ALL_DET_NAME</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EACH_DET_NAME</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EVERY_DET_NAME</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_DET_NAME</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NONE_DET_NAME</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SOME_DET_NAME</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ANY_DET_NAME</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ALL_BUT_DET_NAME</span><span class="plain"> </span><span class="constant">7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ALL_EXCEPT_DET_NAME</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ALMOST_ALL_DET_NAME</span><span class="plain"> </span><span class="constant">9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ALMOST_NO_DET_NAME</span><span class="plain"> </span><span class="constant">10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MOST_DET_NAME</span><span class="plain"> </span><span class="constant">11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNDER_HALF_DET_NAME</span><span class="plain"> </span><span class="constant">12</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AT_LEAST_DET_NAME</span><span class="plain"> </span><span class="constant">13</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AT_MOST_DET_NAME</span><span class="plain"> </span><span class="constant">14</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXACTLY_DET_NAME</span><span class="plain"> </span><span class="constant">15</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FEWER_THAN_DET_NAME</span><span class="plain"> </span><span class="constant">16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LESS_THAN_DET_NAME</span><span class="plain"> </span><span class="constant">17</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MORE_THAN_DET_NAME</span><span class="plain"> </span><span class="constant">18</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GREATER_THAN_DET_NAME</span><span class="plain"> </span><span class="constant">19</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OTHER_THAN_DET_NAME</span><span class="plain"> </span><span class="constant">20</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">determiner</span><span class="plain"> *</span><span class="functiontext">Quantifiers::det_new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">not</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">, </span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain"> &lt; 0) </span><span class="identifier">wa</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">wa</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::wording</span><span class="plain">(&lt;</span><span class="reserved">determiner</span><span class="plain">-</span><span class="identifier">names</span><span class="plain">&gt;, </span><span class="identifier">pr</span><span class="plain">);</span>
         <span class="reserved">determiner</span><span class="plain"> *</span><span class="identifier">det</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">determiner</span><span class="plain">);</span>
-        <span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;text_of_det</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
-        <span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;takes_number</span><span class="plain"> = </span><span class="identifier">num</span><span class="plain">;</span>
-        <span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;allows_prefixed_not</span><span class="plain"> = </span><span class="identifier">not</span><span class="plain">;</span>
-        <span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;quantifier_meant</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">;</span>
+        <span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">text_of_det</span><span class="plain"> = </span><span class="identifier">wa</span><span class="plain">;</span>
+        <span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">takes_number</span><span class="plain"> = </span><span class="identifier">num</span><span class="plain">;</span>
+        <span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">allows_prefixed_not</span><span class="plain"> = </span><span class="identifier">not</span><span class="plain">;</span>
+        <span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">quantifier_meant</span><span class="plain"> = </span><span class="identifier">quant</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"created meaningless quantifier"</span><span class="plain">);</span>
-        <span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;index_text</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
+        <span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">index_text</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">text</span><span class="plain">)</span>
             <span class="identifier">Index::Lexicon::new_entry_with_details</span><span class="plain">(</span>
@@ -550,7 +535,6 @@ structured set of twenty wordings. One of these doesn't appear below because
 it's empty of text: this is the determiner in "three blind mice", where
 no text appears in front of the number "three".
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="reserved">determiner</span><span class="plain">-</span><span class="identifier">names</span><span class="plain">&gt; ::=</span>
@@ -590,22 +574,21 @@ parameter value to <code class="display"><span class="extract">*which_P</span></
 are tried before "all".)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Quantifiers::parse_against_text</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">which_P</span><span class="plain">, </span><span class="reserved">quantifier</span><span class="plain"> **</span><span class="identifier">which_quant</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">excluded</span><span class="plain">-</span><span class="identifier">from</span><span class="plain">-</span><span class="identifier">determiners</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">not_flag</span><span class="plain"> = &lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_flag</span><span class="plain">) </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;, 1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_flag</span><span class="plain">) </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">negated</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
 
         <span class="plain">*</span><span class="identifier">which_P</span><span class="plain"> = -1; *</span><span class="identifier">which_quant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="reserved">determiner</span><span class="plain"> *</span><span class="identifier">det</span><span class="plain">;</span>
         <span class="identifier">LOOP_BACKWARDS_OVER</span><span class="plain">(</span><span class="identifier">det</span><span class="plain">, </span><span class="reserved">determiner</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">not_flag</span><span class="plain">) &amp;&amp; (</span><span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;allows_prefixed_not</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">not_flag</span><span class="plain">) &amp;&amp; (</span><span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">allows_prefixed_not</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Quantifiers::det_parse_against_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">det</span><span class="plain">, </span><span class="identifier">which_P</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_flag</span><span class="plain">) *</span><span class="identifier">which_quant</span><span class="plain"> = </span><span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;quantifier_meant</span><span class="plain">-</span><span class="element">&gt;negated_quant</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> *</span><span class="identifier">which_quant</span><span class="plain"> = </span><span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;quantifier_meant</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">not_flag</span><span class="plain">) *</span><span class="identifier">which_quant</span><span class="plain"> = </span><span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">quantifier_meant</span><span class="plain">-&gt;</span><span class="element">negated_quant</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> *</span><span class="identifier">which_quant</span><span class="plain"> = </span><span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">quantifier_meant</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">XW</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -639,7 +622,6 @@ It's legal to include "of the":
 names like "three of clubs", meaning a single playing card.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">determination</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">&gt; ::=</span>
         <span class="identifier">of</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> ... |		==&gt; </span><span class="identifier">TRUE</span>
@@ -667,7 +649,6 @@ to stop this reading, so that we can read "no one" as if it were "nobody".
 from determiner parsing:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">excluded</span><span class="plain">-</span><span class="identifier">from</span><span class="plain">-</span><span class="identifier">determiners</span><span class="plain">&gt; ::=</span>
         <span class="identifier">no</span><span class="plain"> </span><span class="identifier">one</span><span class="plain"> ***</span>
@@ -682,16 +663,15 @@ also (where appropriate) setting the number specified. For instance, for
 return the word "doors" and set <code class="display"><span class="extract">which_P</span></code> to 3.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Quantifiers::det_parse_against_text</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">determiner</span><span class="plain"> *</span><span class="identifier">det</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">which_P</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain"> = -1;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">WordAssemblages::parse_as_weakly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;text_of_det</span><span class="plain">),</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">WordAssemblages::parse_as_weakly_initial_text</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, &amp;(</span><span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">text_of_det</span><span class="plain">),</span>
             <span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">x</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::empty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">det</span><span class="plain">-</span><span class="element">&gt;takes_number</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">det</span><span class="plain">-&gt;</span><span class="element">takes_number</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">&gt;(</span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">)) == </span><span class="identifier">FALSE</span><span class="plain">) ||</span>
                 <span class="plain">(</span><span class="identifier">Word::unexpectedly_upper_case</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -699,7 +679,7 @@ return the word "doors" and set <code class="display"><span class="extract">whic
             <span class="identifier">parameter</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">determination</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">determination</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">&gt;, 1);</span>
+            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">determination</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="plain">*</span><span class="identifier">which_P</span><span class="plain"> = </span><span class="identifier">parameter</span><span class="plain">;</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Articles::remove_the</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
@@ -715,7 +695,6 @@ return the word "doors" and set <code class="display"><span class="extract">whic
 pairs, and also a higgledy-piggledy world of 20 English-language determiners
 referring to them. There are four broad families which we take in turn.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Quantifiers::make_built_in</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -782,14 +761,14 @@ respects "each" and "every" are synonymous in the S-parser.
 
 
 <pre class="displaydefn">
-        <span class="identifier">for_all_quantifier</span><span class="plain">     = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">, 10, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"ForAll"</span><span class="plain">);</span>
-        <span class="identifier">not_for_all_quantifier</span><span class="plain"> = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">, 10, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"NotAll"</span><span class="plain">);</span>
-        <span class="identifier">exists_quantifier</span><span class="plain">      = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">, 0, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Exists"</span><span class="plain">);</span>
-        <span class="identifier">not_exists_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">, 0, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"DoesNotExist"</span><span class="plain">);</span>
+        <span class="identifier">for_all_quantifier</span><span class="plain">     = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">, </span><span class="constant">10</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"ForAll"</span><span class="plain">);</span>
+        <span class="identifier">not_for_all_quantifier</span><span class="plain"> = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">, </span><span class="constant">10</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"NotAll"</span><span class="plain">);</span>
+        <span class="identifier">exists_quantifier</span><span class="plain">      = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Exists"</span><span class="plain">);</span>
+        <span class="identifier">not_exists_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"=="</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"DoesNotExist"</span><span class="plain">);</span>
 
-        <span class="identifier">for_all_quantifier</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">for_all_quantifier</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">not_exists_quantifier</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">for_all_quantifier</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">for_all_quantifier</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">not_exists_quantifier</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_now</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">for_all_quantifier</span><span class="plain">, </span><span class="identifier">not_for_all_quantifier</span><span class="plain">);</span>
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">exists_quantifier</span><span class="plain">, </span><span class="identifier">not_exists_quantifier</span><span class="plain">);</span>
@@ -859,10 +838,10 @@ because it's ambiguous as to whether it means exactly half or half-or-more.
 
 
 <pre class="displaydefn">
-        <span class="identifier">almost_all_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;="</span><span class="plain">, 8, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&gt;=80%%"</span><span class="plain">);</span>
-        <span class="identifier">almost_no_quantifier</span><span class="plain">   = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">,  2, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&lt;20%%"</span><span class="plain">);</span>
-        <span class="identifier">most_quantifier</span><span class="plain">        = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">,  5, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&gt;50%%"</span><span class="plain">);</span>
-        <span class="identifier">under_half_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;="</span><span class="plain">, 5, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&lt;=50%%"</span><span class="plain">);</span>
+        <span class="identifier">almost_all_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;="</span><span class="plain">, </span><span class="constant">8</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&gt;=80%%"</span><span class="plain">);</span>
+        <span class="identifier">almost_no_quantifier</span><span class="plain">   = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;"</span><span class="plain">,  </span><span class="constant">2</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&lt;20%%"</span><span class="plain">);</span>
+        <span class="identifier">most_quantifier</span><span class="plain">        = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">,  </span><span class="constant">5</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&gt;50%%"</span><span class="plain">);</span>
+        <span class="identifier">under_half_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&lt;="</span><span class="plain">, </span><span class="constant">5</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Proportion&lt;=50%%"</span><span class="plain">);</span>
 
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">almost_all_quantifier</span><span class="plain">, </span><span class="identifier">almost_no_quantifier</span><span class="plain">);</span>
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">most_quantifier</span><span class="plain">, </span><span class="identifier">under_half_quantifier</span><span class="plain">);</span>
@@ -921,7 +900,7 @@ the source text. One might be in an extension, for instance.)
         <span class="identifier">more_than_quantifier</span><span class="plain">   = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"&gt;"</span><span class="plain">,  -1, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Card&gt;%d"</span><span class="plain">);</span>
         <span class="identifier">other_than_quantifier</span><span class="plain">  = </span><span class="functiontext">Quantifiers::quant_new</span><span class="plain">(</span><span class="string">"~="</span><span class="plain">, -1, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"Card~=%d"</span><span class="plain">);</span>
 
-        <span class="identifier">at_least_quantifier</span><span class="plain">-</span><span class="element">&gt;can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">at_least_quantifier</span><span class="plain">-&gt;</span><span class="element">can_be_used_in_assertions</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">at_least_quantifier</span><span class="plain">, </span><span class="identifier">less_than_quantifier</span><span class="plain">);</span>
         <span class="functiontext">Quantifiers::quants_negate_each_other</span><span class="plain">(</span><span class="identifier">at_most_quantifier</span><span class="plain">, </span><span class="identifier">more_than_quantifier</span><span class="plain">);</span>
@@ -954,14 +933,13 @@ the source text. One might be in an extension, for instance.)
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>The following question is relevant when simplifying propositions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Quantifiers::quant_requires_at_least_one_true_case</span><span class="plain">(</span><span class="reserved">quantifier</span><span class="plain"> *</span><span class="identifier">quant</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">parameter</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">exists_quantifier</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">exactly_quantifier</span><span class="plain">) || (</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">at_least_quantifier</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">parameter</span><span class="plain"> &gt; 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">more_than_quantifier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parameter</span><span class="plain"> &gt;= 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">other_than_quantifier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parameter</span><span class="plain"> == 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="plain">(</span><span class="identifier">parameter</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">more_than_quantifier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parameter</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">quant</span><span class="plain"> == </span><span class="identifier">other_than_quantifier</span><span class="plain">) &amp;&amp; (</span><span class="identifier">parameter</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

@@ -92,7 +92,6 @@ wildcards and nonterminals are ignored.) For example, merging the production
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">fried ... tomatoes</span>
 </pre>
@@ -100,12 +99,11 @@ wildcards and nonterminals are ignored.) For example, merging the production
 <p class="inwebparagraph">with "orange" results in "fried orange tomatoes".
 </p>
 
-
 <pre class="display">
     <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="functiontext">Preform::Nonparsing::merge</span><span class="plain">(</span><span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pnum</span><span class="plain">, </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">ingredient</span><span class="plain">) {</span>
         <span class="identifier">production_list</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="identifier">first_production_list</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">next_production_list</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">production</span><span class="plain"> *</span><span class="identifier">pr</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">first_production</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">pr</span><span class="plain">-&gt;</span><span class="identifier">next_production</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> == </span><span class="identifier">pnum</span><span class="plain">) {</span>
@@ -123,7 +121,7 @@ wildcards and nonterminals are ignored.) For example, merging the production
                 <span class="identifier">N</span><span class="plain">++;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">(); </span>    <span class="comment">give up, in other words</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">(); </span><span class="comment">give up, in other words</span>
     <span class="plain">}</span>
 </pre>
 
@@ -134,7 +132,6 @@ wildcards and nonterminals are ignored.) For example, merging the production
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Thus we can simply extract the wording by performing a merge with the empty
 ingredient text:
 </p>
-
 
 <pre class="display">
     <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="functiontext">Preform::Nonparsing::wording</span><span class="plain">(</span><span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pnum</span><span class="plain">) {</span>
@@ -149,14 +146,13 @@ ingredient text:
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And here we take just one word:
 </p>
 
-
 <pre class="display">
     <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="functiontext">Preform::Nonparsing::word</span><span class="plain">(</span><span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pnum</span><span class="plain">) {</span>
         <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> = </span><span class="functiontext">Preform::Nonparsing::merge</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="identifier">pnum</span><span class="plain">, </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">());</span>
         <span class="identifier">vocabulary_entry</span><span class="plain"> **</span><span class="identifier">words</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">num_words</span><span class="plain">;</span>
         <span class="identifier">WordAssemblages::as_array</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">, &amp;</span><span class="identifier">words</span><span class="plain">, &amp;</span><span class="identifier">num_words</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num_words</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">words</span><span class="plain">[0];</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num_words</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">words</span><span class="plain">[0];</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -168,7 +164,6 @@ ingredient text:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. (b) Specifying replacements. </b>The following looks for a word in one nonterminal and replaces it with the
 corresponding word in another. If the word isn't found, it's left unchanged.
 </p>
-
 
 <pre class="display">
     <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="functiontext">Preform::Nonparsing::replace_word</span><span class="plain">(</span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain">,</span>
@@ -198,7 +193,7 @@ corresponding word in another. If the word isn't found, it's left unchanged.
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ve</span><span class="plain">; </span>    <span class="comment">no change, in other words</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ve</span><span class="plain">; </span><span class="comment">no change, in other words</span>
     <span class="plain">}</span>
 </pre>
 
@@ -208,7 +203,6 @@ corresponding word in another. If the word isn't found, it's left unchanged.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. (c) Lexicon entry. </b>This is only a convenience for putting particles into the Lexicon:
 </p>
-
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
@@ -245,7 +239,6 @@ But we are going to need to use these avinues frequently, so we cache them once
 created.
 </p>
 
-
 <pre class="display">
     <span class="identifier">match_avinue</span><span class="plain"> *</span><span class="functiontext">Preform::Nonparsing::define_trie</span><span class="plain">(</span><span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">nl</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nl</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">nl</span><span class="plain"> = </span><span class="identifier">English_language</span><span class="plain">;</span>
@@ -279,7 +272,7 @@ single avinue.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_grammar</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span>    <span class="comment">i.e., we don't know yet</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_grammar</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span><span class="comment">i.e., we don't know yet</span>
         <span class="identifier">production</span><span class="plain"> *</span><span class="identifier">pr</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">first_production</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain">; </span><span class="identifier">pr</span><span class="plain"> = </span><span class="identifier">pr</span><span class="plain">-&gt;</span><span class="identifier">next_production</span><span class="plain">) {</span>
             <span class="identifier">ptoken</span><span class="plain"> *</span><span class="identifier">first</span><span class="plain"> = </span><span class="identifier">pr</span><span class="plain">-&gt;</span><span class="identifier">first_ptoken</span><span class="plain">;</span>
@@ -302,7 +295,6 @@ the production:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">(1)   ... &lt;some-nonterminal&gt;</span>
@@ -382,8 +374,8 @@ override the normal convention.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ave</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">ave</span><span class="plain"> = </span><span class="identifier">next_mt</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">match_avinue</span><span class="plain"> *</span><span class="identifier">m</span><span class="plain"> = </span><span class="identifier">ave</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">) </span><span class="identifier">m</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-            <span class="identifier">m</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">next_mt</span><span class="plain">;</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">m</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">) </span><span class="identifier">m</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+            <span class="identifier">m</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">next_mt</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -411,7 +403,6 @@ override the normal convention.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following may be useful for debugging:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Preform::Nonparsing::log_avinues</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">;</span>
@@ -419,7 +410,7 @@ override the normal convention.
             <span class="identifier">production_list</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="identifier">first_production_list</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain">; </span><span class="identifier">pl</span><span class="plain"> = </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">next_production_list</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">as_avinue</span><span class="plain">) {</span>
-                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">%V ($J)\</span><span class="plain">n</span><span class="string">%a"</span><span class="plain">,</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n\n%V ($J)\n%a"</span><span class="plain">,</span>
                         <span class="identifier">nt</span><span class="plain">-&gt;</span><span class="identifier">nonterminal_id</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">definition_language</span><span class="plain">, </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">as_avinue</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>

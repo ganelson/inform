@@ -75,20 +75,19 @@ be reported at the right place.
 don't exist, and ignore them until they come up later.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_substitution</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">unsubstituted_text</span><span class="plain">; </span>    <span class="comment">including the substitutions in squares</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dont_need_after_all</span><span class="plain">; </span>    <span class="comment">in case replaced as a response</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tr_done_already</span><span class="plain">; </span>    <span class="comment">has been compiled</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">unsubstituted_text</span><span class="plain">; </span><span class="comment">including the substitutions in squares</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dont_need_after_all</span><span class="plain">; </span><span class="comment">in case replaced as a response</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tr_done_already</span><span class="plain">; </span><span class="comment">has been compiled</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">responding_to_rule</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">responding_to_marker</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence_using_this</span><span class="plain">; </span>    <span class="comment">where this occurs in source</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">local_names_existed_at_usage_time</span><span class="plain">; </span>    <span class="comment">remember in case of problems</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">parked_stack_frame</span><span class="plain">; </span>    <span class="comment">for cases where possible</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ts_iname</span><span class="plain">; </span>    <span class="comment">the I6 array for this</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ts_routine_iname</span><span class="plain">; </span>    <span class="comment">the routine to implement it</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ts_sb_needed</span><span class="plain">; </span>    <span class="comment">reference copy of small block needed as a constant?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">sentence_using_this</span><span class="plain">; </span><span class="comment">where this occurs in source</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">local_names_existed_at_usage_time</span><span class="plain">; </span><span class="comment">remember in case of problems</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">parked_stack_frame</span><span class="plain">; </span><span class="comment">for cases where possible</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ts_iname</span><span class="plain">; </span><span class="comment">the I6 array for this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ts_routine_iname</span><span class="plain">; </span><span class="comment">the routine to implement it</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ts_sb_needed</span><span class="plain">; </span><span class="comment">reference copy of small block needed as a constant?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">belongs_to_module</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">text_substitution</span><span class="plain">;</span>
@@ -101,7 +100,6 @@ don't exist, and ignore them until they come up later.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>We are only allowed to create new ones until the following is set:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_further_text_subs</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -112,9 +110,8 @@ don't exist, and ignore them until they come up later.
 a text routine, rather than some other routine, or free-standing objects.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compiling_text_routines_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">used for better problem messages</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">compiling_text_routines_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">used for better problem messages</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -140,35 +137,34 @@ stack frame; and we mustn't optimise by compiling identical text substitutions
 to the same routines to print them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="functiontext">Strings::TextSubstitutions::new_text_substitution</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">,</span>
         <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">, </span><span class="reserved">rule</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">, </span><span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">text_substitution</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_further_text_subs</span><span class="plain">) </span>&lt;<span class="cwebmacro">Panic, because it is really too late</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;sentence_using_this</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;local_names_existed_at_usage_time</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">sentence_using_this</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">local_names_existed_at_usage_time</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) {</span>
-            <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">parked_stack_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">ph_stack_frame</span><span class="plain"> </span><span class="identifier">new_frame</span><span class="plain"> = </span><span class="functiontext">Frames::new</span><span class="plain">();</span>
-            <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(&amp;</span><span class="identifier">new_frame</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">) </span><span class="functiontext">LocalVariables::copy</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain">, </span><span class="identifier">phsf</span><span class="plain">);</span>
+            <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">parked_stack_frame</span><span class="plain"> = </span><span class="functiontext">Frames::boxed_frame</span><span class="plain">(&amp;</span><span class="identifier">new_frame</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">) </span><span class="functiontext">LocalVariables::copy</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">parked_stack_frame</span><span class="plain">, </span><span class="identifier">phsf</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_rule</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_marker</span><span class="plain"> = </span><span class="identifier">marker</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;dont_need_after_all</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;tr_done_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_sb_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_rule</span><span class="plain"> = </span><span class="identifier">R</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_marker</span><span class="plain"> = </span><span class="identifier">marker</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">dont_need_after_all</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">tr_done_already</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_sb_needed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phrase_being_compiled</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">LocalVariables::count</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">()) &gt; 0))</span>
-            <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;local_names_existed_at_usage_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="plain">(</span><span class="functiontext">LocalVariables::count</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">()) &gt; </span><span class="constant">0</span><span class="plain">))</span>
+            <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">local_names_existed_at_usage_time</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">LITERALS_HAP</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TEXT_SUBSTITUTIONS</span><span class="plain">, </span><span class="string">"Requesting text routine %d %08x %W %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">TEXT_SUBSTITUTION_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">belongs_to_module</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TEXT_SUBSTITUTIONS</span><span class="plain">, </span><span class="string">"Requesting text routine %d %08x %W %08x\n"</span><span class="plain">,</span>
             <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ts</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -201,7 +197,6 @@ to do but panic.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The template layer calls the following when that midnight hour chimes:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::allow_no_further_text_subs</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">no_further_text_subs</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -216,11 +211,10 @@ to do but panic.
 <code class="display"><span class="extract">text_routine_1</span></code> and so on, but no longer:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Strings::TextSubstitutions::text_substitution_iname</span><span class="plain">(</span><span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain">) {</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_sb_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_iname</span><span class="plain">;</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_sb_needed</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="identifier">ts_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -241,7 +235,6 @@ substitution; for instance, when compiling
 that routine later. This appearance of the routine name is called the "cue".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::text_substitution_cue</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">adopted_rule_for_compilation</span><span class="plain">) {</span>
@@ -252,7 +245,7 @@ that routine later. This appearance of the routine name is called the "cue".
             &lt;<span class="cwebmacro">Write the actual cue</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Holsters::data_acceptable</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">)) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">downs</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">();</span>
                     <span class="identifier">downs</span><span class="plain"> = </span><span class="functiontext">LocalVariables::emit_storage</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">);</span>
@@ -270,7 +263,7 @@ that routine later. This appearance of the routine name is called the "cue".
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">tin</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">PERMIT_LOCALS_IN_TEXT_CMODE</span><span class="plain">)) {</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                    <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">downs</span><span class="plain">--; }</span>
+                    <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">downs</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">downs</span><span class="plain">--; }</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -294,7 +287,7 @@ that routine later. This appearance of the routine name is called the "cue".
             <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">BLOCK_CONSTANT_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
             <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_late_array_begin</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_routine_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">) </span><span class="functiontext">Emit::holster</span><span class="plain">(</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -313,16 +306,15 @@ that routine later. This appearance of the routine name is called the "cue".
 since it often confuses newcomers:
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">current_ts_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::append_text_substitution_proviso</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">it_is_not_worth_adding</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_ts_being_compiled</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">current_ts_being_compiled</span><span class="plain">-</span><span class="element">&gt;local_names_existed_at_usage_time</span><span class="plain">)) {</span>
+            <span class="plain">(</span><span class="identifier">current_ts_being_compiled</span><span class="plain">-&gt;</span><span class="element">local_names_existed_at_usage_time</span><span class="plain">)) {</span>
             <span class="functiontext">Frames::log</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">());</span>
-            <span class="identifier">Problems::quote_wording</span><span class="plain">(9, </span><span class="identifier">current_ts_being_compiled</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
+            <span class="identifier">Problems::quote_wording</span><span class="plain">(9, </span><span class="identifier">current_ts_being_compiled</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">" %PIt may be worth adding that this problem arose in text "</span>
                 <span class="string">"which both contains substitutions and is also being used as "</span>
@@ -355,12 +347,11 @@ add to its task, until everybody is done.)
 yet done, returning the number we compile.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">latest_ts_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::compilation_coroutine</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">in_response_mode</span><span class="plain">) {</span>
         <span class="functiontext">Strings::compile_response_launchers</span><span class="plain">();</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">compiling_text_routines_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain">;</span>
@@ -369,9 +360,9 @@ yet done, returning the number we compile.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="identifier">latest_ts_compiled</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">responding</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_rule</span><span class="plain">) </span><span class="identifier">responding</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;dont_need_after_all</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">responding</span><span class="plain"> == </span><span class="identifier">in_response_mode</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;tr_done_already</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_rule</span><span class="plain">) </span><span class="identifier">responding</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">dont_need_after_all</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">responding</span><span class="plain"> == </span><span class="identifier">in_response_mode</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">tr_done_already</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 <span class="functiontext">Strings::TextSubstitutions::compile_single_substitution</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">N</span><span class="plain">++;</span>
@@ -392,19 +383,18 @@ from the stack frame creating this text substitution to the stack frame
 compiling it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::compile_single_substitution</span><span class="plain">(</span><span class="reserved">text_substitution</span><span class="plain"> *</span><span class="identifier">ts</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TEXT_SUBSTITUTIONS</span><span class="plain">, </span><span class="string">"Compiling text routine %d %08x %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain">), </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">TEXT_SUBSTITUTIONS</span><span class="plain">, </span><span class="string">"Compiling text routine %d %08x %W\n"</span><span class="plain">,</span>
+            <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">parked_stack_frame</span><span class="plain">), </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain">);</span>
 
         <span class="identifier">current_ts_being_compiled</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">;</span>
-        <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;tr_done_already</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
-        <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;parked_stack_frame</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_marker</span><span class="plain"> &gt;= 0)) {</span>
+        <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">tr_done_already</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_routine_iname</span><span class="plain">);</span>
+        <span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain"> = </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">parked_stack_frame</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_rule</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_marker</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
             <span class="reserved">response_message</span><span class="plain"> *</span><span class="identifier">resp</span><span class="plain"> = </span><span class="functiontext">Rules::rule_defines_response</span><span class="plain">(</span>
-                <span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_rule</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;responding_to_marker</span><span class="plain">);</span>
+                <span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_rule</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">responding_to_marker</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">resp</span><span class="plain">) </span><span class="identifier">phsf</span><span class="plain"> = </span><span class="functiontext">Strings::frame_for_response</span><span class="plain">(</span><span class="identifier">resp</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phsf</span><span class="plain">) </span><span class="functiontext">LocalVariables::copy</span><span class="plain">(</span><span class="functiontext">Frames::current_stack_frame</span><span class="plain">(), </span><span class="identifier">phsf</span><span class="plain">);</span>
@@ -421,13 +411,13 @@ compiling it.
         <span class="plain">}</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_sb_needed</span><span class="plain">) {</span>
-            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_sb_needed</span><span class="plain">) {</span>
+            <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">makes_local_references</span><span class="plain">)</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PERISHABLE_TEXT_STORAGE_HL</span><span class="plain">));</span>
             <span class="reserved">else</span>
                 <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
-            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;ts_routine_iname</span><span class="plain">);</span>
+            <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">ts_routine_iname</span><span class="plain">);</span>
             <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">current_ts_being_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -466,7 +456,7 @@ a request for a new text substitution to be compiled later...
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
-                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
+                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain">);</span>
                                 <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">S</span><span class="plain">);</span>
                                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -478,15 +468,15 @@ a request for a new text substitution to be compiled later...
         <span class="plain">}</span>
 
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">ts_code_block</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">ROUTINE_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">belongs_to_module</span><span class="plain">);</span>
         <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">cm</span><span class="plain"> = </span><span class="functiontext">Modules::current</span><span class="plain">();</span>
-        <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;belongs_to_module</span><span class="plain">);</span>
-        <span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-</span><span class="element">&gt;unsubstituted_text</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="constant">from_text_substitution_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
+        <span class="functiontext">Modules::set_current_to</span><span class="plain">(</span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">belongs_to_module</span><span class="plain">);</span>
+        <span class="identifier">ts_code_block</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="identifier">INVOCATION_LIST_NT</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">ts</span><span class="plain">-&gt;</span><span class="element">unsubstituted_text</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="constant">from_text_substitution_ANNOT</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">);</span>
         <span class="functiontext">Sentences::RuleSubtrees::parse_routine_structure</span><span class="plain">(</span><span class="identifier">ts_code_block</span><span class="plain">);</span>
 
-        <span class="functiontext">Routines::Compile::code_block_outer</span><span class="plain">(0, </span><span class="identifier">ts_code_block</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="functiontext">Routines::Compile::code_block_outer</span><span class="plain">(0, </span><span class="identifier">ts_code_block</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
 
         <span class="identifier">Produce::rtrue</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 
@@ -503,7 +493,6 @@ the coroutine to go through the whole queue once, then go back to the
 start again &mdash; which would be very inefficient except that in this mode
 we aren't doing very much; most TSs will be passed quickly over.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Strings::TextSubstitutions::compile_text_routines_in_response_mode</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -76,7 +76,6 @@ differently, but share the same annotation data structure <code class="display">
 However it is stored in the file system, a project is a project.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">project_bundle_genre</span><span class="plain"> = </span><span class="functiontext">Genres::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"projectbundle"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -90,7 +89,7 @@ However it is stored in the file system, a project is a project.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::write_work</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -104,11 +103,10 @@ However it is stored in the file system, a project is a project.
 which stores data about extensions used by the Inform compiler.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_project</span><span class="plain"> *</span><span class="functiontext">ProjectBundleManager::from_copy</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;genre</span><span class="plain"> == </span><span class="identifier">project_bundle_genre</span><span class="plain">)) {</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_inform_project</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;content</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">C</span><span class="plain">) &amp;&amp; (</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">genre</span><span class="plain"> == </span><span class="identifier">project_bundle_genre</span><span class="plain">)) {</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_inform_project</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">content</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -116,10 +114,10 @@ which stores data about extensions used by the Inform compiler.
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">ProjectBundleManager::new_copy</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Projects::new_ip</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain"> = </span><span class="functiontext">Works::new</span><span class="plain">(</span><span class="identifier">project_bundle_genre</span><span class="plain">, </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain"> = </span><span class="functiontext">Editions::new</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">);</span>
-        <span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain"> = </span><span class="functiontext">Copies::new_in_path</span><span class="plain">(</span><span class="identifier">edition</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="functiontext">Copies::set_content</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">, </span><span class="identifier">STORE_POINTER_inform_project</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">;</span>
+        <span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain"> = </span><span class="functiontext">Editions::new</span><span class="plain">(</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">);</span>
+        <span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain"> = </span><span class="functiontext">Copies::new_in_path</span><span class="plain">(</span><span class="identifier">edition</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="functiontext">Copies::set_content</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">, </span><span class="identifier">STORE_POINTER_inform_project</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -139,7 +137,6 @@ not a file, false if we know the reverse, and otherwise not applicable.
 <p class="inwebparagraph">A project needs to be a directory whose name ends in <code class="display"><span class="extract">.inform</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::claim_as_copy</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> **</span><span class="identifier">C</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ext</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">directory_status</span><span class="plain">) {</span>
@@ -152,7 +149,7 @@ not a file, false if we know the reverse, and otherwise not applicable.
 
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">ProjectBundleManager::claim_folder_as_copy</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="functiontext">ProjectBundleManager::new_copy</span><span class="plain">(</span><span class="identifier">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
+        <span class="functiontext">Works::add_to_database</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">, </span><span class="constant">CLAIMED_WDBC</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -166,7 +163,6 @@ not a file, false if we know the reverse, and otherwise not applicable.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Searching. </b>Here we look through a nest to find all projects matching the supplied
 requirements; though in fact... projects are not nesting birds.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::search_nest_for</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">,</span>
@@ -182,12 +178,11 @@ requirements; though in fact... projects are not nesting birds.
 projects lived there.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::copy_to_nest</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">N</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">syncing</span><span class="plain">, </span><span class="reserved">build_methodology</span><span class="plain"> *</span><span class="identifier">meth</span><span class="plain">) {</span>
         <span class="identifier">Errors::with_text</span><span class="plain">(</span><span class="string">"projects (which is what '%S' is) cannot be copied to nests"</span><span class="plain">,</span>
-            <span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
+            <span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -197,11 +192,10 @@ projects lived there.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Build graph. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::building_soon</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">build_vertex</span><span class="plain"> **</span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">ProjectBundleManager::from_copy</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;chosen_build_target</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">project</span><span class="plain">-&gt;</span><span class="element">chosen_build_target</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::construct_graph</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
@@ -216,7 +210,6 @@ projects lived there.
 <p class="endnote">The function ProjectBundleManager::construct_graph is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Source text. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ProjectBundleManager::read_source_text_for</span><span class="plain">(</span><span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">G</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>

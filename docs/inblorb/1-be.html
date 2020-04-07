@@ -51,7 +51,6 @@ Inform user will never know that Inblorb exists.
 the source of the trouble:
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">error_position</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::set_error_position</span><span class="plain">(</span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
@@ -61,8 +60,8 @@ the source of the trouble:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">error_position</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%f, line %d: "</span><span class="plain">,</span>
-                <span class="identifier">error_position</span><span class="plain">-</span><span class="element">&gt;text_file_filename</span><span class="plain">,</span>
-                <span class="identifier">error_position</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain">);</span>
+                <span class="identifier">error_position</span><span class="plain">-&gt;</span><span class="element">text_file_filename</span><span class="plain">,</span>
+                <span class="identifier">error_position</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -76,12 +75,11 @@ the source of the trouble:
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Fatalities:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::fatal</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Fatal error: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Fatal error: %s\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">Main::print_report</span><span class="plain">();</span>
@@ -91,7 +89,7 @@ the source of the trouble:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::fatal_fs</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Fatal error: %s: filename '%f'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Fatal error: %s: filename '%f'\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">Main::print_report</span><span class="plain">();</span>
@@ -108,12 +106,11 @@ the source of the trouble:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Mere indispositions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -121,7 +118,7 @@ the source of the trouble:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">s</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%s'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%s'\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -129,7 +126,7 @@ the source of the trouble:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1S</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">s</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%S'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%S'\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">s</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -137,7 +134,7 @@ the source of the trouble:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::error_1f</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">erm</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::describe_file_position</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%f'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">, </span><span class="string">"Error: %s: '%f'\n"</span><span class="plain">, </span><span class="identifier">erm</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -174,7 +171,6 @@ the source of the trouble:
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>As noted, errors are spooled to a placeholder variable, for the benefit of
 the report:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BlorbErrors::spool_error</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>

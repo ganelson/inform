@@ -75,7 +75,6 @@ particular, the Standard Rules).
 <p class="inwebparagraph">Each index page is divided into "elements".
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">index_page</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_elements</span><span class="plain">;</span>
@@ -93,10 +92,9 @@ particular, the Standard Rules).
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">index_element</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">atomic_number</span><span class="plain">; </span>    <span class="comment">1, 2, 3, ..., within its page</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">atomic_number</span><span class="plain">; </span><span class="comment">1, 2, 3, ..., within its page</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">chemical_symbol</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">element_name</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">explanatory_note</span><span class="plain">;</span>
@@ -115,35 +113,34 @@ always has the file handle <code class="display"><span class="extract">ifl</span
 new index file for output.
 </p>
 
-
 <pre class="display">
     <span class="reserved">index_page</span><span class="plain"> *</span><span class="identifier">current_index_page</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::new_page</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">col</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain">) {</span>
         <span class="identifier">current_index_page</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">index_page</span><span class="plain">);</span>
-        <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain"> = 0;</span>
-        <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;key_colour</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">col</span><span class="plain">);</span>
-        <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;page_title</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
-        <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;page_explanation</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">exp</span><span class="plain">);</span>
-        <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;page_leafname</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
+        <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">key_colour</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">col</span><span class="plain">);</span>
+        <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">page_title</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
+        <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">page_explanation</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">exp</span><span class="plain">);</span>
+        <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">page_leafname</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::new_segment</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">abb</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_index_page</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"template creates index elements improperly"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">abb</span><span class="plain">) &gt; 2)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">abb</span><span class="plain">) &gt; </span><span class="constant">2</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"abbreviation for index element too long"</span><span class="plain">);</span>
         <span class="reserved">index_element</span><span class="plain"> *</span><span class="identifier">ie</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">index_element</span><span class="plain">);</span>
-        <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;owning_page</span><span class="plain"> = </span><span class="identifier">current_index_page</span><span class="plain">;</span>
-        <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain"> = ++(</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">);</span>
-        <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;chemical_symbol</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">abb</span><span class="plain">);</span>
-        <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;element_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
-        <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;explanatory_note</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
+        <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">owning_page</span><span class="plain"> = </span><span class="identifier">current_index_page</span><span class="plain">;</span>
+        <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain"> = ++(</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">);</span>
+        <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">chemical_symbol</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">abb</span><span class="plain">);</span>
+        <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">);</span>
+        <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">explanatory_note</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_file_counter</span><span class="plain"> = 0;</span>
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">Current destination of index text</span>
-    <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">index_file_struct</span><span class="plain">; </span>    <span class="comment">The current index file being written</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_file_counter</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ifl</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Current destination of index text</span>
+    <span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">index_file_struct</span><span class="plain">; </span><span class="comment">The current index file being written</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Index::open_file</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">index_leaf</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sub</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Task::index_file</span><span class="plain">(</span><span class="identifier">index_leaf</span><span class="plain">, </span><span class="identifier">sub</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ifl</span><span class="plain">) </span><span class="functiontext">Index::close_index_file</span><span class="plain">();</span>
@@ -157,7 +154,7 @@ new index file for output.
         <span class="identifier">HTMLFiles::html_header</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">);</span>
         <span class="identifier">index_file_counter</span><span class="plain">++;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">) == </span><span class="character">'&lt;'</span><span class="plain">) {</span>
-            <span class="functiontext">Index::index_banner_line</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1, </span><span class="identifier">I</span><span class="string">"^"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Details"</span><span class="plain">,</span>
+            <span class="functiontext">Index::index_banner_line</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"^"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Details"</span><span class="plain">,</span>
                 <span class="identifier">I</span><span class="string">"A single action in detail.|About the action rulebooks&lt;ARSUMMARY&gt;"</span><span class="plain">,</span>
                 <span class="string">"../Actions.html"</span><span class="plain">);</span>
             <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
@@ -242,23 +239,23 @@ and text underneath in another of class "headingrubric".
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_elements</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_elements</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">index_page</span><span class="plain"> *</span><span class="identifier">ip</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ip</span><span class="plain">, </span><span class="reserved">index_page</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">max_elements</span><span class="plain"> &lt; </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">)</span>
-                <span class="identifier">max_elements</span><span class="plain"> = </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">max_elements</span><span class="plain"> &lt; </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">)</span>
+                <span class="identifier">max_elements</span><span class="plain"> = </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">;</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">periodictable\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"cellspacing=\</span><span class="plain">"</span><span class="string">3\</span><span class="plain">"</span><span class="string"> border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> width=\</span><span class="plain">"</span><span class="string">100%%\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"periodictable\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"cellspacing=\"3\" border=\"0\" width=\"100%%\""</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">index_leaf</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Welcome.html"</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Write the heading row of the surround</span> <span class="cwebmacronumber">4.3.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ip</span><span class="plain">, </span><span class="reserved">index_page</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">index_leaf</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Welcome.html"</span><span class="plain">)) || (</span><span class="identifier">ip</span><span class="plain"> == </span><span class="identifier">current_index_page</span><span class="plain">)) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_leafname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Welcome"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
+                <span class="plain">(</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_leafname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Welcome"</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) {</span>
                 &lt;<span class="cwebmacro">Start a row of the periodic table</span> <span class="cwebmacronumber">4.3.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">index_element</span><span class="plain"> *</span><span class="identifier">ie</span><span class="plain">;</span>
                 <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ie</span><span class="plain">, </span><span class="reserved">index_element</span><span class="plain">)</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;owning_page</span><span class="plain"> == </span><span class="identifier">ip</span><span class="plain">)</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">owning_page</span><span class="plain"> == </span><span class="identifier">ip</span><span class="plain">)</span>
                         &lt;<span class="cwebmacro">Write an element-box of the periodic table</span> <span class="cwebmacronumber">4.3.3</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">End a row of the periodic table</span> <span class="cwebmacronumber">4.3.4</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -276,18 +273,18 @@ and text underneath in another of class "headingrubric".
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">surround0\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"id=\"surround0\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">2\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"2\""</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"src='inform:/doc_images/index@2x.png' border=1 width=115 height=115"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">%d\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">width:100%%;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">max_elements</span><span class="plain"> - 1);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingboxhigh\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingtext\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"colspan=\"%d\" style=\"width:100%%;\""</span><span class="plain">, </span><span class="identifier">max_elements</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingboxhigh\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingtext\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Welcome to the Index"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingrubric\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingrubric\""</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"A guide which grows with your project"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
@@ -307,15 +304,15 @@ and text underneath in another of class "headingrubric".
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">index_leaf</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Welcome.html"</span><span class="plain">)) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">window.location='%S.html'; return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_leafname</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">sidebar\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\"window.location='%S.html'; return false;\""</span><span class="plain">,</span>
+                <span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_leafname</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"sidebar\""</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">surround%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">window.location='Welcome.html'; return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">sidebar\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"id=\"surround%d\""</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\"window.location='Welcome.html'; return false;\""</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"sidebar\""</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -332,21 +329,21 @@ and text underneath in another of class "headingrubric".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ip</span><span class="plain"> == </span><span class="identifier">current_index_page</span><span class="plain">) {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">click_element_box('segment%d'); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\"click_element_box('segment%d'); return false;\""</span><span class="plain">,</span>
+                <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">window.location='%S.html?segment%d'; return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">,</span>
-                <span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_leafname</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"onclick=\"window.location='%S.html?segment%d'; return false;\""</span><span class="plain">,</span>
+                <span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_leafname</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">box%d_%d\</span><span class="plain">"</span><span class="string"> class=\</span><span class="plain">"</span><span class="string">box\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">symbol\</span><span class="plain">"</span><span class="string"> title=\</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string"> href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;element_name</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;chemical_symbol</span><span class="plain">);</span>
-        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">indexno\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"box%d_%d\" class=\"box\""</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"class=\"symbol\" title=\"%S\" href=\"#\""</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">chemical_symbol</span><span class="plain">);</span>
+        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"indexno\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">rubric\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;element_name</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"rubric\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
@@ -364,24 +361,24 @@ and text underneath in another of class "headingrubric".
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ip</span><span class="plain"> == </span><span class="identifier">current_index_page</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">show_all_elements(); return false;\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"onclick=\"show_all_elements(); return false;\" "</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"onclick=\</span><span class="plain">"</span><span class="string">window.location='%S.html'; return false;\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">,</span>
-                <span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_leafname</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"onclick=\"window.location='%S.html'; return false;\" "</span><span class="plain">,</span>
+                <span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_leafname</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain"> &lt; </span><span class="identifier">max_elements</span><span class="plain">)</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"colspan=\</span><span class="plain">"</span><span class="string">%d\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">, </span><span class="identifier">max_elements</span><span class="plain"> - </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain"> + 1);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">width:100%%\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain"> &lt; </span><span class="identifier">max_elements</span><span class="plain">)</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"colspan=\"%d\" "</span><span class="plain">, </span><span class="identifier">max_elements</span><span class="plain"> - </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">, </span><span class="string">"style=\"width:100%%\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">tds</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tds</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingbox\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingtext\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_title</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingbox\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingtext\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_title</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">headingrubric\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;page_explanation</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"headingrubric\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="element">page_explanation</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
 
@@ -407,13 +404,13 @@ content at last; and then a rule.
 <pre class="displaydefn">
         <span class="reserved">index_element</span><span class="plain"> *</span><span class="identifier">ie</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ie</span><span class="plain">, </span><span class="reserved">index_element</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;owning_page</span><span class="plain"> == </span><span class="identifier">current_index_page</span><span class="plain">) {</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">segment%d\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">owning_page</span><span class="plain"> == </span><span class="identifier">current_index_page</span><span class="plain">) {</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"segment%d\""</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
                 <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">);</span>
-                <span class="functiontext">Index::index_banner_line</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;chemical_symbol</span><span class="plain">,</span>
-                    <span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;element_name</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;explanatory_note</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                <span class="functiontext">Index::index_banner_line</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">chemical_symbol</span><span class="plain">,</span>
+                    <span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">explanatory_note</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
                 <span class="reserved">index_page</span><span class="plain"> *</span><span class="identifier">save_ip</span><span class="plain"> = </span><span class="identifier">current_index_page</span><span class="plain">;</span>
-                <span class="functiontext">Index::index_actual_element</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;chemical_symbol</span><span class="plain">);</span>
+                <span class="functiontext">Index::index_actual_element</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">chemical_symbol</span><span class="plain">);</span>
                 <span class="identifier">current_index_page</span><span class="plain"> = </span><span class="identifier">save_ip</span><span class="plain">;</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -428,16 +425,15 @@ content at last; and then a rule.
 and simpler navigation on the Actions detail pages.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::index_banner_line</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">sym</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">exp</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">link</span><span class="plain">) {</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"cellspacing=\</span><span class="plain">"</span><span class="string">3\</span><span class="plain">"</span><span class="string"> border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">background:#eeeeee;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"cellspacing=\"3\" border=\"0\" style=\"background:#eeeeee;\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Write the banner mini-element-box</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Write the row titling element</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -451,19 +447,19 @@ and simpler navigation on the Actions detail pages.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"valign=\</span><span class="plain">"</span><span class="string">top\</span><span class="plain">"</span><span class="string"> align=\</span><span class="plain">"</span><span class="string">left\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">minibox%d_%d\</span><span class="plain">"</span><span class="string"> class=\</span><span class="plain">"</span><span class="string">smallbox\</span><span class="plain">"</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"valign=\"top\" align=\"left\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"minibox%d_%d\" class=\"smallbox\""</span><span class="plain">,</span>
             <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">symbol\</span><span class="plain">"</span><span class="string"> title=\</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string"> "</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">link</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onclick=\</span><span class="plain">"</span><span class="string">click_element_box('segment%d'); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"class=\"symbol\" title=\"%S\" "</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"href=\"%s\""</span><span class="plain">, </span><span class="identifier">link</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">, </span><span class="string">"href=\"#\" onclick=\"click_element_box('segment%d'); return false;\""</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">dets</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">dets</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">sym</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">indexno\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"class=\"indexno\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d\n"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
@@ -479,10 +475,10 @@ and simpler navigation on the Actions detail pages.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">width:100%%;\</span><span class="plain">"</span><span class="string"> align=\</span><span class="plain">"</span><span class="string">left\</span><span class="plain">"</span><span class="string"> valign=\</span><span class="plain">"</span><span class="string">top\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">margin-top:0px;padding-top:0px;"</span>
-            <span class="string">"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%S&lt;/b&gt; &amp;mdash; \</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"style=\"width:100%%;\" align=\"left\" valign=\"top\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"style=\"margin-top:0px;padding-top:0px;"</span>
+            <span class="string">"margin-bottom:0px;padding-bottom:0px;line-height:150%%;\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%S&lt;/b&gt; &amp;mdash; \n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="functiontext">Index::explain</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">exp</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
@@ -494,22 +490,21 @@ and simpler navigation on the Actions detail pages.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. So here goes with the CSS and Javascript. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::scripting</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_index_page</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"style"</span><span class="plain">, </span><span class="string">"type=\</span><span class="plain">"</span><span class="string">text/css\</span><span class="plain">"</span><span class="string"> media=\</span><span class="plain">"</span><span class="string">screen, print\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"style"</span><span class="plain">, </span><span class="string">"type=\"text/css\" media=\"screen, print\""</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Write some CSS styles for all these classes</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"style"</span><span class="plain">);</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"script"</span><span class="plain">, </span><span class="string">"type=\</span><span class="plain">"</span><span class="string">text/javascript\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"var qq; window.onload = function() {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (location.search.length &gt; 0) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        qq = location.search.substring(1, location.search.length);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_only_one_element(qq);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"script"</span><span class="plain">, </span><span class="string">"type=\"text/javascript\""</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"var qq; window.onload = function() {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (location.search.length &gt; 0) {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        qq = location.search.substring(1, location.search.length);\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_only_one_element(qq);\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Write Javascript code for clicking on an element box</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Write Javascript code for clicking on the sidebar</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">;</span>
 
@@ -533,128 +528,128 @@ and simpler navigation on the Actions detail pages.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"p {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \</span><span class="plain">"</span><span class="string">Lucida Grande\</span><span class="plain">"</span><span class="string">, \</span><span class="plain">"</span><span class="string">Lucida Sans Unicode\</span><span class="plain">"</span><span class="string">, Helvetica, Arial, Verdana, sans-serif;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:link { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:visited { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:active { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:hover { text-decoration: none; color: #444444; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:link { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:visited { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:active { text-decoration: none; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:hover { text-decoration: none; color: #444444; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".symbol {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: -4px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	left: -1px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	width: 100%%;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	padding: 14px 0px 14px 1px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 20px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-weight: bold;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: center;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".indexno {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: 1px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	left: 3px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 7pt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: left;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".rubric {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: 35px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	width: 100%%;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 9px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-weight: bold;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: center;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" position: relative;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 56px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 56px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" padding: 0px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \</span><span class="plain">"</span><span class="string">Lucida Grande\</span><span class="plain">"</span><span class="string">, \</span><span class="plain">"</span><span class="string">Lucida Sans Unicode\</span><span class="plain">"</span><span class="string">, Helvetica, Arial, Verdana, sans-serif;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".sidebar {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 56px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 16px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #888;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \</span><span class="plain">"</span><span class="string">Lucida Grande\</span><span class="plain">"</span><span class="string">, \</span><span class="plain">"</span><span class="string">Lucida Sans Unicode\</span><span class="plain">"</span><span class="string">, Helvetica, Arial, Verdana, sans-serif;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".sidebar:hover { background: #222; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" position: relative;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 40px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 40px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" padding: 0px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \</span><span class="plain">"</span><span class="string">Lucida Grande\</span><span class="plain">"</span><span class="string">, \</span><span class="plain">"</span><span class="string">Lucida Sans Unicode\</span><span class="plain">"</span><span class="string">, Helvetica, Arial, Verdana, sans-serif;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"p {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:link { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:visited { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:active { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box a:hover { text-decoration: none; color: #444444; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:link { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:visited { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:active { text-decoration: none; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox a:hover { text-decoration: none; color: #444444; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".symbol {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: -4px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	left: -1px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	width: 100%%;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	padding: 14px 0px 14px 1px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 20px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-weight: bold;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: center;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".indexno {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: 1px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	left: 3px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 7pt;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: left;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".rubric {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	position: absolute;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	top: 35px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	width: 100%%;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	color: #ffffff;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-size: 9px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	font-weight: bold;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	text-align: center;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".box {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" position: relative;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 56px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 56px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" padding: 0px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".sidebar {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 56px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 16px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #888;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".sidebar:hover { background: #222; }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".smallbox {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" position: relative;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" height: 40px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" width: 40px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" padding: 0px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, Verdana, sans-serif;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-webkit-font-smoothing: antialiased;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="reserved">index_page</span><span class="plain"> *</span><span class="identifier">ip</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ip</span><span class="plain">, </span><span class="reserved">index_page</span><span class="plain">) {</span>
             <span class="reserved">index_element</span><span class="plain"> *</span><span class="identifier">ie</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ie</span><span class="plain">, </span><span class="reserved">index_element</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;owning_page</span><span class="plain"> == </span><span class="identifier">ip</span><span class="plain">) {</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#box%d_%d {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #%S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;key_colour</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#minibox%d_%d {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-</span><span class="element">&gt;atomic_number</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #%S;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-</span><span class="element">&gt;key_colour</span><span class="plain">);</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">owning_page</span><span class="plain"> == </span><span class="identifier">ip</span><span class="plain">) {</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#box%d_%d {\n"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #%S;\n"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">key_colour</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" }\n"</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#minibox%d_%d {\n"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">ie</span><span class="plain">-&gt;</span><span class="element">atomic_number</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" background: #%S;\n"</span><span class="plain">, </span><span class="identifier">ip</span><span class="plain">-&gt;</span><span class="identifier">key_colour</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" }\n"</span><span class="plain">);</span>
                 <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
 
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding: 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    margin-top: 1px;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    margin-bottom: 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    overflow-x: hidden;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    list-style: none}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded:before {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    float: left;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    width: 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    white-space: nowrap;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    content:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\</span><span class="plain">"</span><span class="string">.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \</span><span class="plain">"</span><span class="string">}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded span:first-child {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-right: 0.33em;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    background: white}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded span + span {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    float: right;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-left: 0.33em;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    background: white}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding: 0;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    margin-top: 1px;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    margin-bottom: 0;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    overflow-x: hidden;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    list-style: none}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded:before {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    float: left;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    width: 0;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    white-space: nowrap;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    content:\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	\".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  \"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded span:first-child {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-right: 0.33em;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    background: white}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ul.leaders li.leaded span + span {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    float: right;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-left: 0.33em;\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    background: white}\n"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;10; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"li.indent%d span:first-child {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-left: %dpx;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, 25*</span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"li.indent%d span:first-child {\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    padding-left: %dpx;\n"</span><span class="plain">, </span><span class="constant">25</span><span class="plain">*</span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"li.unleaded:before {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	content: \</span><span class="plain">"</span><span class="string">\</span><span class="plain">"</span><span class="string">;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"li.unleaded:before {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	content: \"\";\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -696,18 +691,18 @@ elements.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function click_element_box(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (document.getElementById(id).style.display == 'none') {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_only_one_element(id);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    } else {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        var x = 0;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function click_element_box(id) {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (document.getElementById(id).style.display == 'none') {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_only_one_element(id);\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    } else {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        var x = 0;\n"</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        if (document.getElementById('segment%d').style.display == '') { x++; }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        if (x == 1) { show_all_elements(); }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        else { show_only_one_element(id); }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="identifier">no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        if (document.getElementById('segment%d').style.display == '') { x++; }\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        if (x == 1) { show_all_elements(); }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        else { show_only_one_element(id); }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -725,13 +720,13 @@ state (1).
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function click_sidebar() {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (document.getElementById('surround0').style.display == 'none') {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        enter_periodic_table();\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    } else {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_all_elements();\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function click_sidebar() {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (document.getElementById('surround0').style.display == 'none') {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        enter_periodic_table();\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    } else {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"        show_all_elements();\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    }\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -749,12 +744,12 @@ page to a new state. This routine goes to state (1):
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_all_elements() {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    show_element('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_all_elements() {\n"</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    show_element('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"	}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -772,14 +767,14 @@ element &mdash; <code class="display"><span class="extract">segment1</span></cod
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_only_one_element(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    hide_element('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_down('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_only_one_element(id) {\n"</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    hide_element('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_down('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    show_element(id);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up(id);\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    show_element(id);\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up(id);\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -796,12 +791,12 @@ element &mdash; <code class="display"><span class="extract">segment1</span></cod
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function enter_periodic_table() {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    hide_element('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up('segment%d');\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function enter_periodic_table() {\n"</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    hide_element('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    light_up('segment%d');\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -819,12 +814,12 @@ to show, hide and colour things:
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_element(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(id).style.display = '';\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function hide_element(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(id).style.display = 'none';\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function show_element(id) {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(id).style.display = '';\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function hide_element(id) {\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(id).style.display = 'none';\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -837,15 +832,15 @@ to show, hide and colour things:
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function light_up(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function light_up(id) {\n"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Write Javascript to produce the corresponding icon name</span> <span class="cwebmacronumber">6.9.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(ic).style.background = '#%S';\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;key_colour</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function light_down(id) {\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(ic).style.background = '#%S';\n"</span><span class="plain">,</span>
+            <span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">key_colour</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"function light_down(id) {\n"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Write Javascript to produce the corresponding icon name</span> <span class="cwebmacronumber">6.9.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(ic).style.background = '#cccccc';\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    document.getElementById(ic).style.background = '#cccccc';\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"}\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -858,9 +853,9 @@ to show, hide and colour things:
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    var ic = 'box%d_1';\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=2; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-</span><span class="element">&gt;no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (id == 'segment%d') { ic = 'box%d_%d';}\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    var ic = 'box%d_1';\n"</span><span class="plain">, </span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=2; </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="element">no_elements</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    if (id == 'segment%d') { ic = 'box%d_%d';}\n"</span><span class="plain">,</span>
                 <span class="identifier">i</span><span class="plain">, </span><span class="identifier">current_index_page</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">+1, </span><span class="identifier">i</span><span class="plain">);</span>
 </pre>
 
@@ -869,7 +864,6 @@ to show, hide and colour things:
 <p class="endnote">This code is used in <a href="#SP6_9">&#167;6.9</a> (twice).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::index_actual_element</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">elt</span><span class="plain">) {</span>
@@ -926,7 +920,7 @@ to show, hide and colour things:
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Ch"</span><span class="plain">)) {</span>
             <span class="identifier">Data::Objects::page_Kinds</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-            <span class="identifier">Kinds::Index::index_kinds</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2);</span>
+            <span class="identifier">Kinds::Index::index_kinds</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Ar"</span><span class="plain">)) {</span>
@@ -950,7 +944,7 @@ to show, hide and colour things:
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Ev"</span><span class="plain">)) {</span>
-            <span class="identifier">Phrases::Timed::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span>    <span class="comment">rules which happen at set times of day</span>
+            <span class="identifier">Phrases::Timed::index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">); </span><span class="comment">rules which happen at set times of day</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"RS"</span><span class="plain">)) {</span>
@@ -961,11 +955,11 @@ to show, hide and colour things:
         <span class="plain">}</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"St"</span><span class="plain">)) {</span>
-            <span class="identifier">Rulebooks::index_page</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 1);</span>
+            <span class="identifier">Rulebooks::index_page</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Xt"</span><span class="plain">)) {</span>
-            <span class="identifier">Rulebooks::index_page</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2);</span>
+            <span class="identifier">Rulebooks::index_page</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 
@@ -1009,7 +1003,6 @@ to show, hide and colour things:
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::explain</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">italics_open</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -1038,7 +1031,7 @@ to show, hide and colour things:
                     <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">);</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%c"</span><span class="plain">, </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%c"</span><span class="plain">, </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">explanation</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">italics_open</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/i&gt;"</span><span class="plain">);</span>
@@ -1053,7 +1046,6 @@ to show, hide and colour things:
 above), or when the <code class="display"><span class="extract">.i6t</span></code> interpreter signals the end of indexing by
 calling <code class="display"><span class="extract">Index::complete</span></code> below.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::complete</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1090,7 +1082,6 @@ Standard Rules; if it is to an extension other than that, the link is made
 to the documentation for the extension; and otherwise we make a link to
 the source text in the application.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::link</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain">) {</span>
@@ -1135,7 +1126,6 @@ current index page: for instance, for the link from the Actions page to the
 page about the taking action.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::detail_link</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">stub</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sub</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">down</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
@@ -1154,7 +1144,6 @@ href links to anchors lower down the same HTML page. These can be identified
 either by number, or by name: whichever is more convenient for the indexing
 code.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::below_link</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
@@ -1192,22 +1181,21 @@ code.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. "Show extra" links, and also a spacer of equivalent width. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::extra_link</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">) {</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onclick=\</span><span class="plain">"</span><span class="string">showExtra('extra%d', 'plus%d'); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 id=\</span><span class="plain">"</span><span class="string">plus%d\</span><span class="plain">"</span><span class="string"> src=inform:/doc_images/extra.png"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\""</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 id=\"plus%d\" src=inform:/doc_images/extra.png"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::extra_link_with</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">icon</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain"> == 2000000) {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onclick=\</span><span class="plain">"</span><span class="string">showAllResp(%d); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">rule</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain"> == </span><span class="constant">2000000</span><span class="plain">) {</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"#\" onclick=\"showAllResp(%d); return false;\""</span><span class="plain">, </span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">rule</span><span class="plain">));</span>
             <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/%s.png"</span><span class="plain">, </span><span class="identifier">icon</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onclick=\</span><span class="plain">"</span><span class="string">showResp('extra%d', 'plus%d'); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
-            <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 id=\</span><span class="plain">"</span><span class="string">plus%d\</span><span class="plain">"</span><span class="string"> src=inform:/doc_images/%s.png"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">icon</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"#\" onclick=\"showResp('extra%d', 'plus%d'); return false;\""</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+            <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 id=\"plus%d\" src=inform:/doc_images/%s.png"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">icon</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
@@ -1230,10 +1218,9 @@ code.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>These open up divisions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::extra_div_open</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">indent</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">colour</span><span class="plain">) {</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">extra%d\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">display: none;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"extra%d\" style=\"display: none;\""</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
         <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">indent</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">HTML::open_coloured_box</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">colour</span><span class="plain">, </span><span class="identifier">ROUND_BOX_TOP</span><span class="plain">+</span><span class="identifier">ROUND_BOX_BOTTOM</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -1245,7 +1232,7 @@ code.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::extra_div_open_nested</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">indent</span><span class="plain">) {</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\</span><span class="plain">"</span><span class="string">extra%d\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">display: none;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">, </span><span class="string">"id=\"extra%d\" style=\"display: none;\""</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
         <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">indent</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -1267,10 +1254,9 @@ code.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. "Deprecation" icons. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::deprecation_icon</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">) {</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">#\</span><span class="plain">"</span><span class="string"> onclick=\</span><span class="plain">"</span><span class="string">showExtra('extra%d', 'plus%d'); return false;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"href=\"#\" onclick=\"showExtra('extra%d', 'plus%d'); return false;\""</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=0 src=inform:/doc_images/deprecated.png"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
@@ -1285,16 +1271,15 @@ code.
 quotes.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::dequote</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 1;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[0] == 0) || (</span><span class="identifier">p</span><span class="plain">[1] == 0)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[1] == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">+1]; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">) {</span>
                 <span class="reserved">case</span><span class="plain"> </span><span class="character">'"'</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;quot;"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">default</span><span class="plain">: </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

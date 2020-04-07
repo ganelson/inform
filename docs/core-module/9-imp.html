@@ -72,13 +72,12 @@ note that A is quite restricted in what it can be: it must be a simple-to-test
 description only, whereas B could be any subtree of an assertion.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">implication</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">if_spec</span><span class="plain">; </span>    <span class="comment">which objects are affected</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">then_pn</span><span class="plain">; </span>    <span class="comment">what assertion is implied about them</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implied_likelihood</span><span class="plain">; </span>    <span class="comment">with what certainty level</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">next_implication</span><span class="plain">; </span>    <span class="comment">in list of implications</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pcalc_prop</span><span class="plain"> *</span><span class="identifier">if_spec</span><span class="plain">; </span><span class="comment">which objects are affected</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">then_pn</span><span class="plain">; </span><span class="comment">what assertion is implied about them</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">implied_likelihood</span><span class="plain">; </span><span class="comment">with what certainty level</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">next_implication</span><span class="plain">; </span><span class="comment">in list of implications</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">implication</span><span class="plain">;</span>
 </pre>
@@ -90,11 +89,10 @@ description only, whereas B could be any subtree of an assertion.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>We also need a little piece of storage attached to each property name:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">possession_marker</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">possessed</span><span class="plain">; </span>    <span class="comment">temporary use when checking implications about objects</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">possession_certainty</span><span class="plain">; </span>    <span class="comment">ditto</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">possessed</span><span class="plain">; </span><span class="comment">temporary use when checking implications about objects</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">possession_certainty</span><span class="plain">; </span><span class="comment">ditto</span>
     <span class="plain">} </span><span class="reserved">possession_marker</span><span class="plain">;</span>
 </pre>
 
@@ -106,13 +104,12 @@ description only, whereas B could be any subtree of an assertion.
 is to store them and sit on them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Implications::new</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">py</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prevailing_mood</span><span class="plain"> == </span><span class="identifier">CERTAIN_CE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Reject implications given with certainty</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">py</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext">Assertions::Implications::new</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="functiontext">Assertions::Implications::new</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="functiontext">Assertions::Implications::new</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+            <span class="functiontext">Assertions::Implications::new</span><span class="plain">(</span><span class="identifier">px</span><span class="plain">, </span><span class="identifier">py</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Actually create a single implication</span> <span class="cwebmacronumber">4.2</span>&gt;<span class="plain">;</span>
@@ -156,15 +153,15 @@ is to store them and sit on them.
         &lt;<span class="cwebmacro">Check that the conclusion involves only a single either/or property</span> <span class="cwebmacronumber">4.2.3</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">imp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">implication</span><span class="plain">);</span>
-        <span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;if_spec</span><span class="plain"> = </span><span class="identifier">premiss</span><span class="plain">;</span>
-        <span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;then_pn</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
-        <span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;implied_likelihood</span><span class="plain"> = </span><span class="identifier">prevailing_mood</span><span class="plain">;</span>
+        <span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">if_spec</span><span class="plain"> = </span><span class="identifier">premiss</span><span class="plain">;</span>
+        <span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">then_pn</span><span class="plain"> = </span><span class="identifier">py</span><span class="plain">;</span>
+        <span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">implied_likelihood</span><span class="plain"> = </span><span class="identifier">prevailing_mood</span><span class="plain">;</span>
 
-        <span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;next_implication</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="identifier">premiss_kind</span><span class="plain">);</span>
+        <span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">next_implication</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="identifier">premiss_kind</span><span class="plain">);</span>
         <span class="functiontext">InferenceSubjects::set_implications</span><span class="plain">(</span><span class="identifier">premiss_kind</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">);</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Forming implication for $j: $D implies\</span><span class="plain">n</span><span class="string">  $T"</span><span class="plain">,</span>
-            <span class="identifier">premiss_kind</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;if_spec</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;then_pn</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Forming implication for $j: $D implies\n  $T"</span><span class="plain">,</span>
+            <span class="identifier">premiss_kind</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">if_spec</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="identifier">then_pn</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -178,7 +175,7 @@ is to store them and sit on them.
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">px</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) </span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">loc</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) </span><span class="identifier">loc</span><span class="plain"> = </span><span class="identifier">loc</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="identifier">premiss_kind</span><span class="plain"> = </span><span class="identifier">ParseTree::get_subject</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">);</span>
         <span class="identifier">premiss</span><span class="plain"> = </span><span class="identifier">ParseTree::get_creation_proposition</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
@@ -254,7 +251,6 @@ implications associated with "thing" applied to it, then with
 those associated with "container", and only then its own implications.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Implications::consider_all</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::domain</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -287,8 +283,8 @@ Here we erase these markers ready for use with X.
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">property</span><span class="plain">) {</span>
             <span class="reserved">possession_marker</span><span class="plain"> *</span><span class="identifier">pom</span><span class="plain"> = </span><span class="functiontext">Properties::get_possession_marker</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-            <span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possessed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possession_certainty</span><span class="plain"> = </span><span class="identifier">UNKNOWN_CE</span><span class="plain">;</span>
+            <span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possessed</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possession_certainty</span><span class="plain"> = </span><span class="identifier">UNKNOWN_CE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -299,7 +295,6 @@ Here we erase these markers ready for use with X.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>This is the recursive routine which sets the possession markers for X on the
 basis of the inferences so far drawn about it.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Implications::set_possessed_flags</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">) {</span>
@@ -332,7 +327,7 @@ of not being open, and vice versa.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">truth_state</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">certainty</span><span class="plain"> = </span><span class="functiontext">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">inf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">certainty</span><span class="plain"> &lt; 0) { </span><span class="identifier">certainty</span><span class="plain"> = -</span><span class="identifier">certainty</span><span class="plain">; </span><span class="identifier">truth_state</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">certainty</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">certainty</span><span class="plain"> = -</span><span class="identifier">certainty</span><span class="plain">; </span><span class="identifier">truth_state</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; }</span>
 
         <span class="reserved">possession_marker</span><span class="plain"> *</span><span class="identifier">pom</span><span class="plain"> = </span><span class="functiontext">Properties::get_possession_marker</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Mark this property if its possession is not already equally certainly known</span> <span class="cwebmacronumber">6.1.1</span>&gt;<span class="plain">;</span>
@@ -340,7 +335,7 @@ of not being open, and vice versa.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) {</span>
             <span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
             <span class="identifier">pom</span><span class="plain"> = </span><span class="functiontext">Properties::get_possession_marker</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-            <span class="identifier">truth_state</span><span class="plain"> = (</span><span class="identifier">truth_state</span><span class="plain">)?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
+            <span class="identifier">truth_state</span><span class="plain"> = (</span><span class="identifier">truth_state</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Mark this property if its possession is not already equally certainly known</span> <span class="cwebmacronumber">6.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -355,9 +350,9 @@ of not being open, and vice versa.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possession_certainty</span><span class="plain"> &lt; </span><span class="identifier">certainty</span><span class="plain">) {</span>
-            <span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possessed</span><span class="plain"> = </span><span class="identifier">truth_state</span><span class="plain">;</span>
-            <span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possession_certainty</span><span class="plain"> = </span><span class="identifier">certainty</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possession_certainty</span><span class="plain"> &lt; </span><span class="identifier">certainty</span><span class="plain">) {</span>
+            <span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possessed</span><span class="plain"> = </span><span class="identifier">truth_state</span><span class="plain">;</span>
+            <span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possession_certainty</span><span class="plain"> = </span><span class="identifier">certainty</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -376,18 +371,17 @@ repetition results in redundancy, since the inferences it would make have
 no better a certainty level.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Assertions::Implications::check_implications_of</span><span class="plain">(</span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">domain</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">candidate</span><span class="plain">) {</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">k</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::narrowest_broader_subject</span><span class="plain">(</span><span class="identifier">domain</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">k</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Assertions::Implications::check_implications_of</span><span class="plain">(</span><span class="identifier">k</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="identifier">domain</span><span class="plain">))</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Considering implications about $j as they apply to $j:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Considering implications about $j as they apply to $j:\n"</span><span class="plain">,</span>
                 <span class="identifier">domain</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">);</span>
 
         <span class="reserved">implication</span><span class="plain"> *</span><span class="identifier">imp</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">imp</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="identifier">domain</span><span class="plain">); </span><span class="identifier">imp</span><span class="plain">; </span><span class="identifier">imp</span><span class="plain"> = </span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;next_implication</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">imp</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::get_implications</span><span class="plain">(</span><span class="identifier">domain</span><span class="plain">); </span><span class="identifier">imp</span><span class="plain">; </span><span class="identifier">imp</span><span class="plain"> = </span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">next_implication</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Consider this individual implication as it applies to the candidate</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -405,25 +399,25 @@ no better a certainty level.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">conclusion_state</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;then_pn</span><span class="plain">, </span><span class="constant">negated_boolean_ANNOT</span><span class="plain">)) </span><span class="identifier">conclusion_state</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;implied_likelihood</span><span class="plain"> &lt; 0) </span><span class="identifier">conclusion_state</span><span class="plain"> = (</span><span class="identifier">conclusion_state</span><span class="plain">)?</span><span class="identifier">FALSE</span><span class="plain">:</span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">then_pn</span><span class="plain">, </span><span class="constant">negated_boolean_ANNOT</span><span class="plain">)) </span><span class="identifier">conclusion_state</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">implied_likelihood</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">conclusion_state</span><span class="plain"> = (</span><span class="identifier">conclusion_state</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"$D =&gt; $T (certainty %d; changed state %d)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;if_spec</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;then_pn</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;implied_likelihood</span><span class="plain">, </span><span class="identifier">conclusion_state</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"$D =&gt; $T (certainty %d; changed state %d)\n"</span><span class="plain">,</span>
+            <span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">if_spec</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">then_pn</span><span class="plain">, </span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="identifier">implied_likelihood</span><span class="plain">, </span><span class="identifier">conclusion_state</span><span class="plain">);</span>
 
-        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">conclusion_prop</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::has_EORP_meaning</span><span class="plain">(</span><span class="identifier">ParseTree::get_aph</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;then_pn</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">conclusion_prop</span><span class="plain"> = </span><span class="functiontext">Adjectives::Meanings::has_EORP_meaning</span><span class="plain">(</span><span class="identifier">ParseTree::get_aph</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">then_pn</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Check that the conclusion is not impossible</span> <span class="cwebmacronumber">7.1.1</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">possession_marker</span><span class="plain"> *</span><span class="identifier">pom</span><span class="plain"> = </span><span class="functiontext">Properties::get_possession_marker</span><span class="plain">(</span><span class="identifier">conclusion_prop</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Check that the conclusion is not redundant or irrelevant</span> <span class="cwebmacronumber">7.1.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">candidate_qualifies</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Assert::test_at_compile_time</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-</span><span class="element">&gt;if_spec</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">candidate_qualifies</span><span class="plain"> = </span><span class="functiontext">Calculus::Propositions::Assert::test_at_compile_time</span><span class="plain">(</span><span class="identifier">imp</span><span class="plain">-&gt;</span><span class="element">if_spec</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">candidate_qualifies</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"PASS: changing property $Y of $j\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">conclusion_prop</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"PASS: changing property $Y of $j\n"</span><span class="plain">, </span><span class="identifier">conclusion_prop</span><span class="plain">, </span><span class="identifier">candidate</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Apply the conclusion to the candidate</span> <span class="cwebmacronumber">7.1.3</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"FAIL: take no action\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"FAIL: take no action\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -439,7 +433,7 @@ no better a certainty level.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">conclusion_prop</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="functiontext">World::Permissions::find</span><span class="plain">(</span><span class="identifier">candidate</span><span class="plain">, </span><span class="identifier">conclusion_prop</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"IMPOSSIBLE: property not provided\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"IMPOSSIBLE: property not provided\n"</span><span class="plain">);</span>
             <span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -454,14 +448,14 @@ no better a certainty level.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Possession marker has (certainty %d; possessed state %d)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possession_certainty</span><span class="plain">, </span><span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possessed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possessed</span><span class="plain"> == </span><span class="identifier">conclusion_state</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"REDUNDANT: property already correct\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"Possession marker has (certainty %d; possessed state %d)\n"</span><span class="plain">,</span>
+            <span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possession_certainty</span><span class="plain">, </span><span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possessed</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possessed</span><span class="plain"> == </span><span class="identifier">conclusion_state</span><span class="plain">) {</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"REDUNDANT: property already correct\n"</span><span class="plain">);</span>
             <span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-</span><span class="element">&gt;possession_certainty</span><span class="plain"> == </span><span class="identifier">CERTAIN_CE</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"IRRELEVANT: property already settled\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pom</span><span class="plain">-&gt;</span><span class="element">possession_certainty</span><span class="plain"> == </span><span class="identifier">CERTAIN_CE</span><span class="plain">) {</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">IMPLICATIONS</span><span class="plain">, </span><span class="string">"IRRELEVANT: property already settled\n"</span><span class="plain">);</span>
             <span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>

@@ -71,7 +71,6 @@ target virtual machines, because we can imagine that, for example, version 7
 might work with all VMs, while version 8 required a 32-bit architecture.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_edition</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">;</span>
@@ -82,15 +81,15 @@ might work with all VMs, while version 8 required a 32-bit architecture.
 
     <span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="functiontext">Editions::new</span><span class="plain">(</span><span class="reserved">inbuild_work</span><span class="plain"> *</span><span class="identifier">work</span><span class="plain">, </span><span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">version</span><span class="plain">) {</span>
         <span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">edition</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inbuild_edition</span><span class="plain">);</span>
-        <span class="identifier">edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain"> = </span><span class="identifier">work</span><span class="plain">;</span>
-        <span class="identifier">edition</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain"> = </span><span class="identifier">version</span><span class="plain">;</span>
-        <span class="identifier">edition</span><span class="plain">-</span><span class="element">&gt;compatibility</span><span class="plain"> = </span><span class="identifier">Compatibility::all</span><span class="plain">();</span>
+        <span class="identifier">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain"> = </span><span class="identifier">work</span><span class="plain">;</span>
+        <span class="identifier">edition</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain"> = </span><span class="identifier">version</span><span class="plain">;</span>
+        <span class="identifier">edition</span><span class="plain">-&gt;</span><span class="element">compatibility</span><span class="plain"> = </span><span class="identifier">Compatibility::all</span><span class="plain">();</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">edition</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Editions::write</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="functiontext">Works::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">);</span>
-        <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">;</span>
+        <span class="functiontext">Works::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">);</span>
+        <span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" v%v"</span><span class="plain">, &amp;</span><span class="identifier">V</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -111,13 +110,12 @@ would go into <code class="display"><span class="extract">N/Extensions/Steve Hog
 contributes only the un-filename-extended leafname <code class="display"><span class="extract">Marbles-v2_1</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Editions::write_canonical_leaf</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">, </span><span class="string">"-v%v"</span><span class="plain">, &amp;(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">));</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">vn</span><span class="plain">, </span><span class="string">"-v%v"</span><span class="plain">, &amp;(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain">));</span>
             <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">vn</span><span class="plain">)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'.'</span><span class="plain">)</span>
                     <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'_'</span><span class="plain">);</span>
@@ -135,13 +133,12 @@ contributes only the un-filename-extended leafname <code class="display"><span c
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The <code class="display"><span class="extract">-inspect</span></code> command of Inbuild uses the following.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Editions::inspect</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inbuild_edition</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="functiontext">Editions::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Compatibility::universal</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;compatibility</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Compatibility::universal</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">compatibility</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" ("</span><span class="plain">);</span>
-            <span class="identifier">Compatibility::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;compatibility</span><span class="plain">);</span>
+            <span class="identifier">Compatibility::write</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">compatibility</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>

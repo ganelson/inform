@@ -78,10 +78,9 @@ in (a) or (b) above. This section of code determines to which module any new
 definition (of, say, a property or kind) belongs.
 </p>
 
-
 <pre class="display">
-    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the main text</span>
-    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one for the Standard Rules</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">source_text_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one for the main text</span>
+    <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">SR_module</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one for the Standard Rules</span>
 
     <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::SR</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">SR_module</span><span class="plain">;</span>
@@ -96,7 +95,6 @@ definition (of, say, a property or kind) belongs.
 level-0 headings, which are the nodes from which these blocks of source text hang:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::traverse_to_define</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">ParseTree::traverse</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="functiontext">Modules::look_for_cu</span><span class="plain">);</span>
@@ -105,7 +103,7 @@ level-0 headings, which are the nodes from which these blocks of source text han
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::look_for_cu</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">HEADING_NT</span><span class="plain">) {</span>
             <span class="identifier">heading</span><span class="plain"> *</span><span class="identifier">h</span><span class="plain"> = </span><span class="identifier">Headings::from_node</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">) &amp;&amp; (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == 0)) </span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">h</span><span class="plain">) &amp;&amp; (</span><span class="identifier">h</span><span class="plain">-&gt;</span><span class="identifier">level</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
@@ -118,7 +116,7 @@ level-0 headings, which are the nodes from which these blocks of source text han
         <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain"> = </span><span class="identifier">Packaging::new_cm</span><span class="plain">();</span>
         <span class="identifier">C</span><span class="plain">-&gt;</span><span class="identifier">hanging_from</span><span class="plain"> = </span><span class="identifier">from</span><span class="plain">;</span>
         <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-        <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+        <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pname</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Compose a name for the module package this will lead to</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
@@ -186,13 +184,12 @@ them. This is done by "propagating downwards", as follows.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
             <span class="identifier">ParseTree::set_module</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
-            <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+            <span class="functiontext">Modules::propagate_downwards</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
+            <span class="identifier">P</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -204,7 +201,6 @@ them. This is done by "propagating downwards", as follows.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>As promised, then, given a parse node, we have to return its compilation module:
 but that's now easy, as we just have to read off the annotation made above &mdash;
 </p>
-
 
 <pre class="display">
     <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="functiontext">Modules::find</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -220,7 +216,6 @@ but that's now easy, as we just have to read off the annotation made above &mdas
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Current module. </b>Inform has a concept of the "current module" it's working on, much as it has
 a concept of "current sentence".
 </p>
-
 
 <pre class="display">
     <span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">current_CM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -250,7 +245,6 @@ a concept of "current sentence".
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Relating to Inter. </b>Creating the necessary package, of type <code class="display"><span class="extract">_module</span></code>, is the work of the
 Packaging code.
 </p>
-
 
 <pre class="display">
     <span class="identifier">module_package</span><span class="plain"> *</span><span class="functiontext">Modules::inter_presence</span><span class="plain">(</span><span class="identifier">compilation_module</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>

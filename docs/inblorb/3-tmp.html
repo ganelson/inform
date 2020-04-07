@@ -40,10 +40,9 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Templates and their paths. </b>Template paths define, in order of priority, where to look for templates.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">template_path</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">template_repository</span><span class="plain">; </span>    <span class="comment">pathname of folder of repository</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">template_repository</span><span class="plain">; </span><span class="comment">pathname of folder of repository</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">template_path</span><span class="plain">;</span>
 </pre>
@@ -55,12 +54,11 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Whereas templates are the things themselves.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">template</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">template_name</span><span class="plain">; </span>    <span class="comment">e.g., "Standard"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">template_name</span><span class="plain">; </span><span class="comment">e.g., "Standard"</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">template_path</span><span class="plain"> *</span><span class="identifier">template_location</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">latest_use</span><span class="plain">; </span>    <span class="comment">filename most recently sought from it</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">latest_use</span><span class="plain">; </span><span class="comment">filename most recently sought from it</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">template</span><span class="plain">;</span>
 </pre>
@@ -72,14 +70,13 @@
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Defining template paths. </b>The following implements the Blurb command "template path".
 </p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_template_paths</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_template_paths</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Templates::new_path</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">template_path</span><span class="plain"> *</span><span class="identifier">tp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">template_path</span><span class="plain">);</span>
-        <span class="identifier">tp</span><span class="plain">-</span><span class="element">&gt;template_repository</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">tp</span><span class="plain">-&gt;</span><span class="element">template_repository</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">)</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Template search path %d: &lt;%p&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, ++</span><span class="identifier">no_template_paths</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Template search path %d: &lt;%p&gt;\n"</span><span class="plain">, ++</span><span class="identifier">no_template_paths</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -94,12 +91,11 @@ answer is that <code class="display"><span class="extract">Templates::seek_file<
 the presence of templates, not of files.
 </p>
 
-
 <pre class="display">
     <span class="reserved">template_path</span><span class="plain"> *</span><span class="functiontext">Templates::seek_file</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
         <span class="reserved">template_path</span><span class="plain"> *</span><span class="identifier">tp</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">tp</span><span class="plain">, </span><span class="reserved">template_path</span><span class="plain">) {</span>
-            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">tp</span><span class="plain">-</span><span class="element">&gt;template_repository</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">tp</span><span class="plain">-&gt;</span><span class="element">template_repository</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">possible</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">possible</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">tp</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -120,7 +116,6 @@ one which does in the case of an interpreter; those look rather like
 website templates).
 </p>
 
-
 <pre class="display">
     <span class="reserved">template</span><span class="plain"> *</span><span class="functiontext">Templates::find_file</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">template</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">;</span>
@@ -132,8 +127,8 @@ website templates).
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tp</span><span class="plain"> = </span><span class="functiontext">Templates::seek_file</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"(manifest).txt"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tp</span><span class="plain">) {</span>
             <span class="identifier">t</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">template</span><span class="plain">);</span>
-            <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;template_location</span><span class="plain"> = </span><span class="identifier">tp</span><span class="plain">;</span>
+            <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">template_location</span><span class="plain"> = </span><span class="identifier">tp</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -155,7 +150,7 @@ website templates).
 
 <pre class="displaydefn">
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">template</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">;</span>
 </pre>
 
@@ -166,7 +161,6 @@ website templates).
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Searching for template files. </b>If we can't find the file <code class="display"><span class="extract">name</span></code> in the template specified, we try looking
 inside "Standard" instead (if we can find a template of that name).
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">template_doesnt_exist</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
@@ -197,15 +191,14 @@ inside "Standard" instead (if we can find a template of that name).
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Where, finally:
 </p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Templates::try_single</span><span class="plain">(</span><span class="reserved">template</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">needed</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;template_location</span><span class="plain">-</span><span class="element">&gt;template_repository</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain">);</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;latest_use</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">needed</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Trying &lt;%f&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;latest_use</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;latest_use</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;latest_use</span><span class="plain">;</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">template_location</span><span class="plain">-&gt;</span><span class="element">template_repository</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain">);</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">latest_use</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">needed</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Trying &lt;%f&gt;\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">latest_use</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">latest_use</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">latest_use</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

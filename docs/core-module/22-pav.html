@@ -75,12 +75,11 @@ own right, a functional-programming sort of device. For example:
 <p class="inwebparagraph">has the name "doubling". Such a name is recorded here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">constant_phrase</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">phrase_meant</span><span class="plain">; </span>    <span class="comment">if known at this point</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">cphr_kind</span><span class="plain">; </span>    <span class="comment">ditto</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">phrase_meant</span><span class="plain">; </span><span class="comment">if known at this point</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">cphr_kind</span><span class="plain">; </span><span class="comment">ditto</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">cphr_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">associated_preamble_text</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -94,17 +93,16 @@ own right, a functional-programming sort of device. For example:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Here we create a new named phrase ("doubling", say):
 </p>
 
-
 <pre class="display">
     <span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::create</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RW</span><span class="plain">) {</span>
         <span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain">);</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;phrase_meant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">we won't know until later</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">nor this</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;associated_preamble_text</span><span class="plain"> = </span><span class="identifier">RW</span><span class="plain">;</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
+        <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">phrase_meant</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">we won't know until later</span>
+        <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">nor this</span>
+        <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">associated_preamble_text</span><span class="plain"> = </span><span class="identifier">RW</span><span class="plain">;</span>
+        <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
             <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
             <span class="constant">PHRASE_CONSTANT_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_constant_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">));</span>
-        <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -115,7 +113,6 @@ own right, a functional-programming sort of device. For example:
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>...and parse for an existing one:
 </p>
-
 
 <pre class="display">
     <span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::parse</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain">) {</span>
@@ -141,19 +138,18 @@ particular, before the second traverse many kinds do not yet exist.) So
 the following takes a patch-it-later approach.
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::kind</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> &lt; 2) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_phrase</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::binary_construction</span><span class="plain">(</span><span class="identifier">CON_phrase</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="identifier">cphr_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
             <span class="reserved">ph_type_data</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new</span><span class="plain">();</span>
             <span class="functiontext">Phrases::TypeData::Textual::parse</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">,</span>
-                <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;associated_preamble_text</span><span class="plain">, &amp;</span><span class="identifier">OW</span><span class="plain">);</span>
-            <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">);</span>
+                <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">associated_preamble_text</span><span class="plain">, &amp;</span><span class="identifier">OW</span><span class="plain">);</span>
+            <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_kind</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(&amp;</span><span class="identifier">phtd</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_kind</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -164,20 +160,19 @@ the following takes a patch-it-later approach.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And similarly for the <code class="display"><span class="extract">phrase</span></code> structure this name corresponds to.
 </p>
 
-
 <pre class="display">
     <span class="reserved">phrase</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null cphr"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;phrase_meant</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="identifier">phrase_meant</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data.constant_phrase_holder</span><span class="plain"> == </span><span class="identifier">cphr</span><span class="plain">) {</span>
-                    <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;phrase_meant</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">.</span><span class="element">constant_phrase_holder</span><span class="plain"> == </span><span class="identifier">cphr</span><span class="plain">) {</span>
+                    <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">phrase_meant</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;phrase_meant</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">phrase_meant</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -190,7 +185,6 @@ a surprise. It might be expected that a constant phrase compiles simply to
 an I6 routine name, but no: it compiles to a small array called a "closure".
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::compile</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
@@ -202,13 +196,13 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
     <span class="plain">}</span>
 
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="reserved">constant_phrase</span><span class="plain"> *</span><span class="identifier">cphr</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="identifier">cphr_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::as_phrase</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"cannot reconstruct phrase from cphr"</span><span class="plain">);</span>
-            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;requests_package</span><span class="plain">);</span>
-            <span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">CLOSURE_DATA_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Hierarchy::package_within</span><span class="plain">(</span><span class="constant">CLOSURES_HAP</span><span class="plain">, </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">requests_package</span><span class="plain">);</span>
+            <span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">CLOSURE_DATA_HL</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -220,7 +214,6 @@ an I6 routine name, but no: it compiles to a small array called a "closure".
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And this is where those arrays are made:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::compile_closures</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -255,14 +248,14 @@ case the phrase occurs as a constant but is never explicitly invoked.
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Phrases::Constants::iname</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">);</span>
         <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
 
-        <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;cphr_kind</span><span class="plain">);</span>
+        <span class="functiontext">Kinds::RunTime::emit_strong_id</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">cphr_kind</span><span class="plain">);</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">RS</span><span class="plain"> = </span><span class="functiontext">Routines::ToPhrases::make_iname</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
             <span class="functiontext">Phrases::Constants::kind</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">RS</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">cphr</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
         <span class="functiontext">Emit::array_text_entry</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
 
@@ -283,7 +276,6 @@ value of
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">phrase (text, time) -&gt; number</span>
 </pre>
@@ -294,7 +286,6 @@ routines. Since there are in principle an infinite number of distinct phrase
 kinds, we will only compile them for the phrase kinds which arise during
 compilation.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::Constants::compile_default_closure</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">closure_identifier</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -368,7 +359,7 @@ made above.
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::RunTime::emit_default_value_as_val</span><span class="plain">(</span><span class="identifier">result</span><span class="plain">, </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">) != </span><span class="identifier">TRUE</span><span class="plain">)</span>
-                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+                    <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="plain">}</span>
 
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>

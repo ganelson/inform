@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -67,7 +67,6 @@ stored away to be expanded later: it must be expanded into unpacked
 text before it perishes.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain">     = </span><span class="identifier">BLK_BVBITMAP_TEXT</span><span class="plain"> + </span><span class="identifier">BLK_BVBITMAP_CONSTANT</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CONSTANT_PERISHABLE_TEXT_STORAGE</span><span class="plain"> = </span><span class="identifier">BLK_BVBITMAP_TEXT</span><span class="plain"> + </span><span class="identifier">BLK_BVBITMAP_CONSTANT</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">;</span>
@@ -81,11 +80,10 @@ text before it perishes.
 number of characters, plus one for the null terminator.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Extent</span><span class="plain"> </span><span class="identifier">arg1</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">BlkValueSeekZeroEntry</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">; </span><span class="comment">! should not happen, of course</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1; </span><span class="comment">should not happen, of course</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">+1;</span>
     <span class="plain">];</span>
 </pre>
@@ -107,7 +105,6 @@ a single byte, and it does so in ZSCII. That forces our hand when it comes to
 choosing the indexed-text character set.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">IFDEF</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TEXT_TY_Storage_Flags</span><span class="plain"> = </span><span class="identifier">BLK_FLAG_MULTIPLE</span><span class="plain">;</span>
@@ -126,7 +123,6 @@ freely be bitwise copied or forgotten, which is why we need do nothing
 special to copy or destroy a text.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Support</span><span class="plain"> </span><span class="identifier">task</span><span class="plain"> </span><span class="identifier">arg1</span><span class="plain"> </span><span class="identifier">arg2</span><span class="plain"> </span><span class="identifier">arg3</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">task</span><span class="plain">) {</span>
@@ -138,13 +134,13 @@ special to copy or destroy a text.
             <span class="identifier">KINDDATA_KOVS</span><span class="plain">:    </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">EXTENT_KOVS</span><span class="plain">:      </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Extent</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">COMPARE_KOVS</span><span class="plain">:     </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Compare</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
-            <span class="identifier">READ_FILE_KOVS</span><span class="plain">:   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arg3</span><span class="plain"> == </span><span class="constant">-1</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+            <span class="identifier">READ_FILE_KOVS</span><span class="plain">:   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arg3</span><span class="plain"> == -1) </span><span class="reserved">rtrue</span><span class="plain">;</span>
                             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_ReadFile</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">, </span><span class="identifier">arg3</span><span class="plain">);</span>
             <span class="identifier">WRITE_FILE_KOVS</span><span class="plain">:  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_WriteFile</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">HASH_KOVS</span><span class="plain">:        </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Hash</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">DEBUG_KOVS</span><span class="plain">:       </span><span class="identifier">TEXT_TY_Debug</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="comment">! We choose not to respond to: DESTROY_KOVS, COPYKIND_KOVS, COPY_KOVS</span>
+        <span class="comment">We choose not to respond to: DESTROY_KOVS, COPYKIND_KOVS, COPY_KOVS</span>
         <span class="reserved">rfalse</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
@@ -153,7 +149,6 @@ special to copy or destroy a text.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Debugging. </b>This shows the various forms a text's short block can take:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Debug</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">;</span>
@@ -174,7 +169,6 @@ special to copy or destroy a text.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Array ThisIsAText --&gt; PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;</span>
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Create</span><span class="plain"> </span><span class="identifier">short_block</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
@@ -187,7 +181,6 @@ special to copy or destroy a text.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Copy Short Block. </b>When a short block for a constant is copied, the new copy isn't a constant
 any more.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_CopySB</span><span class="plain"> </span><span class="identifier">to_bv</span><span class="plain"> </span><span class="identifier">from_bv</span><span class="plain">;</span>
@@ -204,7 +197,6 @@ it into long block form. Sometimes this is a permanent change, but often
 it's only temporary, and will soon be followed by an un-transmutation.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Transmute</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">;</span>
         <span class="identifier">TEXT_TY_Temporarily_Transmute</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
@@ -212,7 +204,7 @@ it's only temporary, and will soon be followed by an un-transmutation.
 
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Temporarily_Transmute</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">  </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">txt</span><span class="plain">) &amp;&amp; (</span><span class="identifier">txt</span><span class="plain">--&gt;0 &amp; </span><span class="identifier">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) {</span>
-            <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">txt</span><span class="plain">--&gt;1; </span><span class="comment">! The old value was a packed string</span>
+            <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">txt</span><span class="plain">--&gt;1; </span><span class="comment">The old value was a packed string</span>
 
             <span class="identifier">txt</span><span class="plain">--&gt;0 = </span><span class="identifier">UNPACKED_TEXT_STORAGE</span><span class="plain">;</span>
             <span class="identifier">txt</span><span class="plain">--&gt;1 = </span><span class="identifier">FlexAllocate</span><span class="plain">(32, </span><span class="identifier">TEXT_TY</span><span class="plain">, </span><span class="identifier">TEXT_TY_Storage_Flags</span><span class="plain">);</span>
@@ -225,10 +217,10 @@ it's only temporary, and will soon be followed by an un-transmutation.
 
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Untransmute</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">pk</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pk</span><span class="plain">) &amp;&amp; (</span><span class="identifier">txt</span><span class="plain">--&gt;0 == </span><span class="identifier">UNPACKED_TEXT_STORAGE</span><span class="plain">)) {</span>
-            <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">txt</span><span class="plain">--&gt;1; </span><span class="comment">! The old value was an unpacked string</span>
+            <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">txt</span><span class="plain">--&gt;1; </span><span class="comment">The old value was an unpacked string</span>
             <span class="identifier">FlexFree</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">);</span>
             <span class="identifier">txt</span><span class="plain">--&gt;0 = </span><span class="identifier">cp</span><span class="plain">;</span>
-            <span class="identifier">txt</span><span class="plain">--&gt;1 = </span><span class="identifier">pk</span><span class="plain">; </span><span class="comment">! The value earlier returned by TEXT_TY_Temporarily_Transmute</span>
+            <span class="identifier">txt</span><span class="plain">--&gt;1 = </span><span class="identifier">pk</span><span class="plain">; </span><span class="comment">The value earlier returned by TEXT_TY_Temporarily_Transmute</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">;</span>
     <span class="plain">];</span>
@@ -240,14 +232,13 @@ it's only temporary, and will soon be followed by an un-transmutation.
 constants are never created in unpacked form.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Mutable</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txt</span><span class="plain">--&gt;0 &amp; </span><span class="identifier">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">TEXT_TY_Transmute</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! Tell BlockValue there's a long block pointer</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">2</span><span class="plain">; </span><span class="comment">Tell BlockValue there's a long block pointer</span>
     <span class="plain">];</span>
 </pre>
 
@@ -257,7 +248,6 @@ constants are never created in unpacked form.)
 type into semantically equivalent data in another: the only interesting
 cast here is that a snippet can be turned into a text.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Cast</span><span class="plain"> </span><span class="identifier">to_txt</span><span class="plain"> </span><span class="identifier">from_kind</span><span class="plain"> </span><span class="identifier">from_value</span><span class="plain">;</span>
@@ -299,14 +289,13 @@ does handle overruns safely, and indeed allows us to dynamically allocate
 memory as necessary so that we can always avoid overruns entirely.
 </p>
 
-
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">TEXT_TY_NoBuffers</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TEXT_TY_Buffers</span><span class="plain"> </span><span class="constant">-</span><span class="plain">&gt; </span><span class="identifier">TEXT_TY_BufferSize</span><span class="plain">*</span><span class="identifier">TEXT_TY_NoBuffers</span><span class="plain">; </span><span class="comment">! Where characters are bytes</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TEXT_TY_Buffers</span><span class="plain"> -&gt; </span><span class="identifier">TEXT_TY_BufferSize</span><span class="plain">*</span><span class="identifier">TEXT_TY_NoBuffers</span><span class="plain">; </span><span class="comment">Where characters are bytes</span>
     <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
-    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TEXT_TY_Buffers</span><span class="plain"> </span><span class="constant">--</span><span class="plain">&gt; (</span><span class="identifier">TEXT_TY_BufferSize</span><span class="plain">+2)*</span><span class="identifier">TEXT_TY_NoBuffers</span><span class="plain">; </span><span class="comment">! Where characters are words</span>
+    <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">TEXT_TY_Buffers</span><span class="plain"> --&gt; (</span><span class="identifier">TEXT_TY_BufferSize</span><span class="plain">+2)*</span><span class="identifier">TEXT_TY_NoBuffers</span><span class="plain">; </span><span class="comment">Where characters are words</span>
     <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
 
     <span class="identifier">Global</span><span class="plain"> </span><span class="identifier">RawBufferAddress</span><span class="plain"> = </span><span class="identifier">TEXT_TY_Buffers</span><span class="plain">;</span>
@@ -321,7 +310,6 @@ memory as necessary so that we can always avoid overruns entirely.
 important respects the same, but there are enough fiddly differences that
 it's clearer to give two definitions, so:
 </p>
-
 
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
@@ -340,7 +328,7 @@ it's clearer to give two definitions, so:
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_snippet</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">PrintSnippet</span><span class="plain">) </span><span class="identifier">from_value</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">PrintI6Text</span><span class="plain">) </span><span class="identifier">from_value</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> </span><span class="constant">-3</span><span class="plain">;</span>
+        <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> -3;</span>
         <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">;</span>
         <span class="identifier">ResumeRTP</span><span class="plain">();</span>
 
@@ -357,9 +345,8 @@ it's clearer to give two definitions, so:
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Glulx Version. </b></p>
 
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">! TARGET_ZCODE</span>
+    <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">TARGET_ZCODE</span>
     <span class="plain">[ </span><span class="identifier">TEXT_TY_CastPrimitive</span><span class="plain"> </span><span class="identifier">to_txt</span><span class="plain"> </span><span class="identifier">from_snippet</span><span class="plain"> </span><span class="identifier">from_value</span>
         <span class="identifier">len</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">stream</span><span class="plain"> </span><span class="identifier">saved_stream</span><span class="plain"> </span><span class="identifier">news</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain"> </span><span class="identifier">buffer_size</span><span class="plain"> </span><span class="identifier">memory_to_free</span><span class="plain"> </span><span class="identifier">results</span><span class="plain">;</span>
 
@@ -389,15 +376,15 @@ it's clearer to give two definitions, so:
             <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">PrintI6Text</span><span class="plain">) </span><span class="identifier">from_value</span><span class="plain">;</span>
             <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__pc</span><span class="plain">; @</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">say__p</span><span class="plain">;</span>
 
-            <span class="identifier">results</span><span class="plain"> = </span><span class="identifier">buffer</span><span class="plain"> + </span><span class="identifier">buffer_size</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">WORDSIZE</span><span class="plain">;</span>
+            <span class="identifier">results</span><span class="plain"> = </span><span class="identifier">buffer</span><span class="plain"> + </span><span class="identifier">buffer_size</span><span class="plain"> - </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">WORDSIZE</span><span class="plain">;</span>
             <span class="identifier">glk_stream_close</span><span class="plain">(</span><span class="identifier">stream</span><span class="plain">, </span><span class="identifier">results</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">saved_stream</span><span class="plain">) </span><span class="identifier">glk_stream_set_current</span><span class="plain">(</span><span class="identifier">saved_stream</span><span class="plain">);</span>
             <span class="identifier">ResumeRTP</span><span class="plain">();</span>
 
             <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">results</span><span class="plain">--&gt;1;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="identifier">RawBufferSize</span><span class="plain">-1) {</span>
-                <span class="comment">! Glulx had to truncate text output because the buffer ran out:</span>
-                <span class="comment">! len is the number of characters which it tried to print</span>
+                <span class="comment">Glulx had to truncate text output because the buffer ran out:</span>
+                <span class="comment">len is the number of characters which it tried to print</span>
                 <span class="identifier">news</span><span class="plain"> = </span><span class="identifier">RawBufferSize</span><span class="plain">;</span>
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">news</span><span class="plain"> &lt; </span><span class="identifier">len</span><span class="plain">) </span><span class="identifier">news</span><span class="plain">=</span><span class="identifier">news</span><span class="plain">*2;</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">VM_AllocateMemory</span><span class="plain">(</span><span class="identifier">news</span><span class="plain">*</span><span class="identifier">WORDSIZE</span><span class="plain">);</span>
@@ -409,7 +396,7 @@ it's clearer to give two definitions, so:
                     <span class="identifier">buffer_size</span><span class="plain"> = (</span><span class="identifier">RawBufferSize</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">)*</span><span class="identifier">WORDSIZE</span><span class="plain">;</span>
                     <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">RetryWithLargerBuffer</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="comment">! Memory allocation refused: all we can do is to truncate the text</span>
+                <span class="comment">Memory allocation refused: all we can do is to truncate the text</span>
                 <span class="identifier">len</span><span class="plain"> = </span><span class="identifier">RawBufferSize</span><span class="plain">-1;</span>
             <span class="plain">}</span>
             <span class="identifier">buffer</span><span class="plain">--&gt;(</span><span class="identifier">len</span><span class="plain">) = </span><span class="constant">0</span><span class="plain">;</span>
@@ -437,7 +424,6 @@ strings, but it does pose a few interesting questions. The answers are:
 </li><li>(b) Otherwise we test the current value of the text as expanded, so "[X]"
 and "17" can be equal as texts if X is 17.
 </li></ul>
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Compare</span><span class="plain"> </span><span class="identifier">left_txt</span><span class="plain"> </span><span class="identifier">right_txt</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
         <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">say__comp</span><span class="plain">;</span>
@@ -454,9 +440,9 @@ and "17" can be equal as texts if X is 17.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fl</span><span class="plain"> &amp;&amp; </span><span class="identifier">fr</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_txt</span><span class="plain">--&gt;1 </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">String</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right_txt</span><span class="plain">--&gt;1 </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">String</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">left_txt</span><span class="plain">--&gt;1 </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">right_txt</span><span class="plain">--&gt;1;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">left_txt</span><span class="plain">--&gt;1 - </span><span class="identifier">right_txt</span><span class="plain">--&gt;1;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left_txt</span><span class="plain">--&gt;1 </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">Routine</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right_txt</span><span class="plain">--&gt;1 </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">Routine</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">left_txt</span><span class="plain">--&gt;1 </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">right_txt</span><span class="plain">--&gt;1;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">left_txt</span><span class="plain">--&gt;1 - </span><span class="identifier">right_txt</span><span class="plain">--&gt;1;</span>
             <span class="identifier">cpl</span><span class="plain"> = </span><span class="identifier">left_txt</span><span class="plain">--&gt;0; </span><span class="identifier">cl</span><span class="plain"> = </span><span class="identifier">TEXT_TY_Temporarily_Transmute</span><span class="plain">(</span><span class="identifier">left_txt</span><span class="plain">);</span>
             <span class="identifier">cpr</span><span class="plain"> = </span><span class="identifier">right_txt</span><span class="plain">--&gt;0; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">TEXT_TY_Temporarily_Transmute</span><span class="plain">(</span><span class="identifier">right_txt</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fl</span><span class="plain">) {</span>
@@ -478,7 +464,7 @@ and "17" can be equal as texts if X is 17.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch1</span><span class="plain"> ~= </span><span class="identifier">ch2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ch1</span><span class="plain">-</span><span class="identifier">ch2</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch1</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">capacity_left</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">capacity_left</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">];</span>
 
@@ -492,7 +478,6 @@ and "17" can be equal as texts if X is 17.
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Hashing. </b>This calculates a hash value for the string, using Bernstein's algorithm.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Hash</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">  </span><span class="identifier">rv</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain">;</span>
@@ -515,7 +500,6 @@ if we simply perform <code class="display"><span class="extract">print (char) ch
 printed in ZSCII rather than Unicode.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Say</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">  </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">dsize</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txt</span><span class="plain">==0) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -526,7 +510,7 @@ printed in ZSCII rather than Unicode.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
             <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">char</span><span class="plain">) </span><span class="identifier">ch</span><span class="plain">;</span>
-            <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">! TARGET_ZCODE</span>
+            <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">; </span><span class="comment">TARGET_ZCODE</span>
             <span class="plain">@</span><span class="identifier">streamunichar</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -539,7 +523,6 @@ printed in ZSCII rather than Unicode.
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. Capitalised printing. </b>It turns out to be useful to have a variation on this:
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Say_Capitalised</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">mod</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain">;</span>
@@ -568,7 +551,6 @@ of decimal character codes, ending with the null terminator, and followed by
 a semicolon: thus <code class="display"><span class="extract">S65,66,67,0;</span></code> is the serialised form of the text "ABC".
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_WriteFile</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain">;</span>
         <span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">txt</span><span class="plain">--&gt;0; </span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">TEXT_TY_Temporarily_Transmute</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
@@ -593,12 +575,11 @@ characters from a file and reconstruct the text which gave rise to
 them.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_ReadFile</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">auxf</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">v</span><span class="plain"> </span><span class="identifier">dg</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> </span><span class="identifier">tsize</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">TEXT_TY_Transmute</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
         <span class="identifier">tsize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">);</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">-1</span><span class="plain">) {</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> -1) {</span>
             <span class="identifier">ch</span><span class="plain"> = </span><span class="identifier">FileIO_GetC</span><span class="plain">(</span><span class="identifier">auxf</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">';'</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">+1 &gt;= </span><span class="identifier">tsize</span><span class="plain">) {</span>
@@ -609,7 +590,7 @@ them.
                 <span class="identifier">v</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">';'</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">dg</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">;</span>
+                <span class="identifier">dg</span><span class="plain"> = </span><span class="identifier">ch</span><span class="plain"> - </span><span class="character">'0'</span><span class="plain">;</span>
                 <span class="identifier">v</span><span class="plain"> = </span><span class="identifier">v</span><span class="plain">*10 + </span><span class="identifier">dg</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -621,7 +602,6 @@ them.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Substitution. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_SubstitutedForm</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain">;</span>
@@ -645,7 +625,6 @@ them.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Perishability. </b>As noted above, a perishable constant is one which must be expanded before
 the values it refers to vanish from existence.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_ExpandIfPerishable</span><span class="plain"> </span><span class="reserved">to</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">;</span>
@@ -677,16 +656,15 @@ as an array of characters, or words (of three different sorts: see the
 Inform documentation for details), or paragraphs, or lines.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CHR_BLOB</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">! Construe as an array of characters</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WORD_BLOB</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">! Of words</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PWORD_BLOB</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">! Of punctuated words</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UWORD_BLOB</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">! Of unpunctuated words</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PARA_BLOB</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">! Of paragraphs</span>
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LINE_BLOB</span><span class="plain"> = </span><span class="constant">6</span><span class="plain">; </span><span class="comment">! Of lines</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CHR_BLOB</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="comment">Construe as an array of characters</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WORD_BLOB</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="comment">Of words</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PWORD_BLOB</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="comment">Of punctuated words</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">UWORD_BLOB</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">; </span><span class="comment">Of unpunctuated words</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PARA_BLOB</span><span class="plain"> = </span><span class="constant">5</span><span class="plain">; </span><span class="comment">Of paragraphs</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LINE_BLOB</span><span class="plain"> = </span><span class="constant">6</span><span class="plain">; </span><span class="comment">Of lines</span>
 
-    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REGEXP_BLOB</span><span class="plain"> = </span><span class="constant">7</span><span class="plain">; </span><span class="comment">! Not a blob type as such, but needed as a distinct value</span>
+    <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">REGEXP_BLOB</span><span class="plain"> = </span><span class="constant">7</span><span class="plain">; </span><span class="comment">Not a blob type as such, but needed as a distinct value</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -700,7 +678,6 @@ text <code class="display"><span class="extract">ctxt</span></code>. If the furt
 then <code class="display"><span class="extract">ctxt</span></code> is instead written with the original text <code class="display"><span class="extract">txt</span></code> as it would
 read if the blob in question were replaced with the text in <code class="display"><span class="extract">rtxt</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WS_BRM</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
@@ -752,96 +729,96 @@ read if the blob in question were replaced with the text in <code class="display
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">gp</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">PWORD_BLOB</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">UWORD_BLOB</span><span class="plain">) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'!'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'?'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'/'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">':'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">';'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">')'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">']'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'{'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'}'</span><span class="plain">))</span>
-                    <span class="identifier">gp</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">oldbrm</span><span class="plain">) {</span>
-                    <span class="identifier">WS_BRM</span><span class="plain">:</span>
-                        <span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTED_BRM</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">SKIPPED_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">PWORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTEDP_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="identifier">SKIPPED_BRM</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTED_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="identifier">ACCEPTED_BRM</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">SKIPPED_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">PWORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTEDP_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="identifier">ACCEPTEDP_BRM</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">PWORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTED_BRM</span><span class="plain">;</span>
-                            <span class="reserved">else</span><span class="plain"> {</span>
-                                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1)) &amp;&amp;</span>
-                                    <span class="plain">(</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'.'</span><span class="plain">)) </span><span class="identifier">blobcount</span><span class="plain">--;</span>
-                                <span class="identifier">blobcount</span><span class="plain">++;</span>
-                            <span class="plain">}</span>
-                        <span class="plain">}</span>
-                    <span class="identifier">ACCEPTEDN_BRM</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">SKIPPED_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">PWORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTEDP_BRM</span><span class="plain">;</span>
-                        <span class="plain">}</span>
-                    <span class="identifier">ACCEPTEDPN_BRM</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">PWORD_BLOB</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTED_BRM</span><span class="plain">;</span>
-                            <span class="reserved">else</span><span class="plain"> {</span>
-                                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1)) &amp;&amp;</span>
-                                    <span class="plain">(</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'.'</span><span class="plain">)) </span><span class="identifier">blobcount</span><span class="plain">--;</span>
-                                <span class="identifier">blobcount</span><span class="plain">++;</span>
-                            <span class="plain">}</span>
-                        <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">brm</span><span class="plain"> == </span><span class="identifier">ACCEPTED_BRM</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">ACCEPTEDP_BRM</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">oldbrm</span><span class="plain"> ~= </span><span class="identifier">brm</span><span class="plain">) </span><span class="identifier">blobcount</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ctxt</span><span class="plain">) &amp;&amp; (</span><span class="identifier">blobcount</span><span class="plain"> == </span><span class="identifier">wanted</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rtxt</span><span class="plain">) {</span>
-                        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
-                        <span class="identifier">TEXT_TY_Concatenate</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">rtxt</span><span class="plain">, </span><span class="identifier">CHR_BLOB</span><span class="plain">);</span>
-                        <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="identifier">cl</span><span class="plain"> = </span><span class="identifier">TEXT_TY_CharacterLength</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">brm</span><span class="plain"> == </span><span class="identifier">ACCEPTED_BRM</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTEDN_BRM</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">brm</span><span class="plain"> == </span><span class="identifier">ACCEPTEDP_BRM</span><span class="plain">) </span><span class="identifier">brm</span><span class="plain"> = </span><span class="identifier">ACCEPTEDPN_BRM</span><span class="plain">;</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl</span><span class="plain">+1 &gt;= </span><span class="identifier">csize</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">cl</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="plain">}</span>
-                        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">++, </span><span class="identifier">ch</span><span class="plain">);</span>
-                    <span class="plain">}</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rtxt</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl</span><span class="plain">+1 &gt;= </span><span class="identifier">csize</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">cl</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                            <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="plain">}</span>
-                        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">++, </span><span class="identifier">ch</span><span class="plain">);</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">rtxt</span><span class="plain">) &amp;&amp; (</span><span class="identifier">brm</span><span class="plain"> ~= </span><span class="identifier">ACCEPTEDN_BRM</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">ACCEPTEDPN_BRM</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl</span><span class="plain">+1 &gt;= </span><span class="identifier">csize</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">cl</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                    <span class="plain">}</span>
-                    <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">++, </span><span class="identifier">ch</span><span class="plain">);</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ctxt</span><span class="plain">) </span><span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">++, </span><span class="constant">0</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">blobcount</span><span class="plain">;</span>
-    <span class="plain">];</span>
+                    <span class="plain">(</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'</span><span class="comment">or '?'</span>
+                            <span class="character">or '</span><span class="plain">-</span><span class="character">' or '</span><span class="plain">/</span><span class="character">' or '</span><span class="string">"' or ':' or ';'</span>
+                            <span class="string">or '(' or ')' or '[' or ']' or '{' or '}'))</span>
+                    <span class="string">gp = true;</span>
+                <span class="string">switch (oldbrm) {</span>
+                    <span class="string">WS_BRM:</span>
+                        <span class="string">brm = ACCEPTED_BRM;</span>
+                        <span class="string">if (blobtype == WORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = SKIPPED_BRM;</span>
+                        <span class="string">}</span>
+                        <span class="string">if (blobtype == PWORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = ACCEPTEDP_BRM;</span>
+                        <span class="string">}</span>
+                    <span class="string">SKIPPED_BRM:</span>
+                        <span class="string">if (blobtype == WORD_BLOB) {</span>
+                            <span class="string">if (gp == false) brm = ACCEPTED_BRM;</span>
+                        <span class="string">}</span>
+                    <span class="string">ACCEPTED_BRM:</span>
+                        <span class="string">if (blobtype == WORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = SKIPPED_BRM;</span>
+                        <span class="string">}</span>
+                        <span class="string">if (blobtype == PWORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = ACCEPTEDP_BRM;</span>
+                        <span class="string">}</span>
+                    <span class="string">ACCEPTEDP_BRM:</span>
+                        <span class="string">if (blobtype == PWORD_BLOB) {</span>
+                            <span class="string">if (gp == false) brm = ACCEPTED_BRM;</span>
+                            <span class="string">else {</span>
+                                <span class="string">if ((ch == BlkValueRead(txt, i-1)) &amp;&amp;</span>
+                                    <span class="string">(ch == '-' or '.')) blobcount--;</span>
+                                <span class="string">blobcount++;</span>
+                            <span class="string">}</span>
+                        <span class="string">}</span>
+                    <span class="string">ACCEPTEDN_BRM:</span>
+                        <span class="string">if (blobtype == WORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = SKIPPED_BRM;</span>
+                        <span class="string">}</span>
+                        <span class="string">if (blobtype == PWORD_BLOB) {</span>
+                            <span class="string">if (gp) brm = ACCEPTEDP_BRM;</span>
+                        <span class="string">}</span>
+                    <span class="string">ACCEPTEDPN_BRM:</span>
+                        <span class="string">if (blobtype == PWORD_BLOB) {</span>
+                            <span class="string">if (gp == false) brm = ACCEPTED_BRM;</span>
+                            <span class="string">else {</span>
+                                <span class="string">if ((ch == BlkValueRead(txt, i-1)) &amp;&amp;</span>
+                                    <span class="string">(ch == '-' or '.')) blobcount--;</span>
+                                <span class="string">blobcount++;</span>
+                            <span class="string">}</span>
+                        <span class="string">}</span>
+                <span class="string">}</span>
+            <span class="string">}</span>
+            <span class="string">if (brm == ACCEPTED_BRM or ACCEPTEDP_BRM) {</span>
+                <span class="string">if (oldbrm ~= brm) blobcount++;</span>
+                <span class="string">if ((ctxt) &amp;&amp; (blobcount == wanted)) {</span>
+                    <span class="string">if (rtxt) {</span>
+                        <span class="string">BlkValueWrite(ctxt, cl, 0);</span>
+                        <span class="string">TEXT_TY_Concatenate(ctxt, rtxt, CHR_BLOB);</span>
+                        <span class="string">csize = BlkValueLBCapacity(ctxt);</span>
+                        <span class="string">cl = TEXT_TY_CharacterLength(ctxt);</span>
+                        <span class="string">if (brm == ACCEPTED_BRM) brm = ACCEPTEDN_BRM;</span>
+                        <span class="string">if (brm == ACCEPTEDP_BRM) brm = ACCEPTEDPN_BRM;</span>
+                    <span class="string">} else {</span>
+                        <span class="string">if (cl+1 &gt;= csize) {</span>
+                            <span class="string">if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;</span>
+                            <span class="string">csize = BlkValueLBCapacity(ctxt);</span>
+                        <span class="string">}</span>
+                        <span class="string">BlkValueWrite(ctxt, cl++, ch);</span>
+                    <span class="string">}</span>
+                <span class="string">} else {</span>
+                    <span class="string">if (rtxt) {</span>
+                        <span class="string">if (cl+1 &gt;= csize) {</span>
+                            <span class="string">if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;</span>
+                            <span class="string">csize = BlkValueLBCapacity(ctxt);</span>
+                        <span class="string">}</span>
+                        <span class="string">BlkValueWrite(ctxt, cl++, ch);</span>
+                    <span class="string">}</span>
+                <span class="string">}</span>
+            <span class="string">} else {</span>
+                <span class="string">if ((rtxt) &amp;&amp; (brm ~= ACCEPTEDN_BRM or ACCEPTEDPN_BRM)) {</span>
+                    <span class="string">if (cl+1 &gt;= csize) {</span>
+                        <span class="string">if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;</span>
+                        <span class="string">csize = BlkValueLBCapacity(ctxt);</span>
+                    <span class="string">}</span>
+                    <span class="string">BlkValueWrite(ctxt, cl++, ch);</span>
+                <span class="string">}</span>
+            <span class="string">}</span>
+        <span class="string">}</span>
+        <span class="string">if (ctxt) BlkValueWrite(ctxt, cl++, 0);</span>
+        <span class="string">return blobcount;</span>
+    <span class="string">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -849,7 +826,6 @@ read if the blob in question were replaced with the text in <code class="display
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Get Blob. </b>The front end which uses the above routine to read a blob. (Note that, for
 efficiency's sake, we read characters more directly.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_GetBlob</span><span class="plain"> </span><span class="identifier">ctxt</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">wanted</span><span class="plain"> </span><span class="identifier">blobtype</span><span class="plain">;</span>
@@ -865,7 +841,6 @@ efficiency's sake, we read characters more directly.)
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25. Replace Blob. </b>The front end which uses the above routine to replace a blob. (Once again,
 characters are handled directly to avoid incurring all that overhead.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_ReplaceBlob</span><span class="plain"> </span><span class="identifier">blobtype</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">wanted</span><span class="plain"> </span><span class="identifier">rtxt</span><span class="plain"> </span><span class="identifier">ctxt</span><span class="plain"> </span><span class="identifier">ilen</span><span class="plain"> </span><span class="identifier">rlen</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain">;</span>
@@ -917,7 +892,6 @@ single character. Second, if the blob-type is the special value
 than something literal to find: see "RegExp.i6t" for what happens next.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_ReplaceText</span><span class="plain"> </span><span class="identifier">blobtype</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">ftxt</span><span class="plain"> </span><span class="identifier">rtxt</span>
         <span class="identifier">r</span><span class="plain"> </span><span class="identifier">p1</span><span class="plain"> </span><span class="identifier">p2</span><span class="plain"> </span><span class="identifier">cp1</span><span class="plain"> </span><span class="identifier">cp2</span><span class="plain">;</span>
@@ -950,48 +924,48 @@ than something literal to find: see "RegExp.i6t" for what happens next.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mpos</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain">) {</span>
                     <span class="identifier">WORD_BLOB</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">whitespace</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">punctuation</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">chm</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">whitespace</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">punctuation</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">chm</span><span class="plain"> = -1;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="identifier">whitespace</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span><span class="plain">) </span><span class="identifier">whitespace</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
             <span class="identifier">punctuation</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'!'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'?'</span>
-                <span class="reserved">or</span><span class="plain"> </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'/'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">':'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">';'</span>
-                <span class="reserved">or</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">')'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">']'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'{'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'}'</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">WORD_BLOB</span><span class="plain">) </span><span class="identifier">chm</span><span class="plain"> = </span><span class="constant">-1</span><span class="plain">;</span>
-                <span class="identifier">punctuation</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">chm</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mpos</span><span class="plain"> == </span><span class="identifier">flen</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">ilen</span><span class="plain">) </span><span class="identifier">chm</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">chm</span><span class="plain"> = </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+1);</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">blobtype</span><span class="plain"> == </span><span class="identifier">CHR_BLOB</span><span class="plain">) ||</span>
-                        <span class="plain">(</span><span class="identifier">chm</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span><span class="plain">) ||</span>
-                        <span class="plain">(</span><span class="identifier">chm</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'!'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'?'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'/'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">':'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">';'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">')'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">']'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'{'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'}'</span><span class="plain">)) {</span>
-                        <span class="identifier">mpos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-                        <span class="identifier">cl</span><span class="plain"> = </span><span class="identifier">cl</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> (</span><span class="identifier">flen</span><span class="plain">-1);</span>
-                        <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
-                        <span class="identifier">TEXT_TY_Concatenate</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">rtxt</span><span class="plain">, </span><span class="identifier">CHR_BLOB</span><span class="plain">);</span>
-                        <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="identifier">cl</span><span class="plain"> = </span><span class="identifier">TEXT_TY_CharacterLength</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-                        <span class="reserved">continue</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">mpos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cl</span><span class="plain">+1 &gt;= </span><span class="identifier">csize</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">BlkValueSetLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">cl</span><span class="plain">) == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="identifier">csize</span><span class="plain"> = </span><span class="identifier">BlkValueLBCapacity</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-            <span class="plain">}</span>
-            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">cl</span><span class="plain">++, </span><span class="identifier">ch</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">BlkValueCopy</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="identifier">ctxt</span><span class="plain">);</span>
-        <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">);</span>
-    <span class="plain">];</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'</span><span class="comment">or '?'</span>
+                <span class="character">or '</span><span class="plain">-</span><span class="character">' or '</span><span class="plain">/</span><span class="character">' or '</span><span class="string">"' or ':' or ';'</span>
+                <span class="string">or '(' or ')' or '[' or ']' or '{' or '}') {</span>
+                <span class="string">if (blobtype == WORD_BLOB) chm = -1;</span>
+                <span class="string">punctuation = true;</span>
+            <span class="string">}</span>
+            <span class="string">if (ch == chm) {</span>
+                <span class="string">if (mpos == flen) {</span>
+                    <span class="string">if (i == ilen) chm = 0;</span>
+                    <span class="string">else chm = BlkValueRead(txt, i+1);</span>
+                    <span class="string">if ((blobtype == CHR_BLOB) ||</span>
+                        <span class="string">(chm == 0 or 10 or 13 or 32 or 9) ||</span>
+                        <span class="string">(chm == '.' or ',' or '</span><span class="comment">or '?'</span>
+                            <span class="string">or '-' or '/' or '"</span><span class="character">' or '</span><span class="plain">:</span><span class="character">' or '</span><span class="plain">;</span><span class="character">'</span>
+                            <span class="character">or '</span><span class="plain">(</span><span class="character">' or '</span><span class="plain">)</span><span class="character">' or '</span><span class="plain">[</span><span class="character">' or '</span><span class="plain">]</span><span class="character">' or '</span><span class="plain">{</span><span class="character">' or '</span><span class="plain">}</span><span class="character">')) {</span>
+                        <span class="character">mpos = 0;</span>
+                        <span class="character">cl = cl - (flen-1);</span>
+                        <span class="character">BlkValueWrite(ctxt, cl, 0);</span>
+                        <span class="character">TEXT_TY_Concatenate(ctxt, rtxt, CHR_BLOB);</span>
+                        <span class="character">csize = BlkValueLBCapacity(ctxt);</span>
+                        <span class="character">cl = TEXT_TY_CharacterLength(ctxt);</span>
+                        <span class="character">continue;</span>
+                    <span class="character">}</span>
+                <span class="character">}</span>
+            <span class="character">} else {</span>
+                <span class="character">mpos = 0;</span>
+            <span class="character">}</span>
+            <span class="character">if (cl+1 &gt;= csize) {</span>
+                <span class="character">if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;</span>
+                <span class="character">csize = BlkValueLBCapacity(ctxt);</span>
+            <span class="character">}</span>
+            <span class="character">BlkValueWrite(ctxt, cl++, ch);</span>
+        <span class="character">}</span>
+        <span class="character">BlkValueCopy(txt, ctxt);</span>
+        <span class="character">BlkValueFree(ctxt);</span>
+    <span class="character">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -999,7 +973,6 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27. Character Length. </b>When accessing at the character-by-character level, things are much easier
 and we needn't go through any finite state machine palaver.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_CharacterLength</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">dsize</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
@@ -1031,7 +1004,6 @@ and we needn't go through any finite state machine palaver.
 routine: which is why we subtract 1 when reading the array in the
 block-value, which counts from 0.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_GetCharacter</span><span class="plain"> </span><span class="identifier">ctxt</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain">;</span>
@@ -1065,7 +1037,6 @@ letters; in the case of Unicode, it follows the Unicode standard.
 long.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_CharactersOfCase</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txt</span><span class="plain">==0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
@@ -1089,7 +1060,6 @@ of what is a "letter", what case it has and what the other-case form is
 are as specified in the ZSCII and Unicode standards.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_CharactersToCase</span><span class="plain"> </span><span class="identifier">ctxt</span><span class="plain"> </span><span class="identifier">txt</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> </span><span class="identifier">len</span><span class="plain"> </span><span class="identifier">bnd</span><span class="plain"> </span><span class="identifier">pk</span><span class="plain"> </span><span class="identifier">cp</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">txt</span><span class="plain">==0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
@@ -1107,25 +1077,25 @@ are as specified in the ZSCII and Unicode standards.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">case</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) {</span>
                         <span class="identifier">bnd</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'!'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'?'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'-'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'/'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'"'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">':'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">';'</span>
-                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'('</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">')'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'['</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">']'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'{'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'}'</span><span class="plain">) </span><span class="identifier">bnd</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">case</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">13</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="constant">9</span><span class="plain">) {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bnd</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">bnd</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-                            <span class="reserved">else</span><span class="plain"> {</span>
-                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'!'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'?'</span><span class="plain">) </span><span class="identifier">bnd</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-                            <span class="plain">}</span>
-                        <span class="plain">}</span>
-                    <span class="plain">}</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">ctxt</span><span class="plain">, </span><span class="identifier">len</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">TEXT_TY_Untransmute</span><span class="plain">(</span><span class="identifier">txt</span><span class="plain">, </span><span class="identifier">pk</span><span class="plain">, </span><span class="identifier">cp</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ctxt</span><span class="plain">;</span>
-    <span class="plain">];</span>
+                            <span class="reserved">or</span><span class="plain"> </span><span class="character">'.'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">','</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'</span><span class="comment">or '?'</span>
+                            <span class="character">or '</span><span class="plain">-</span><span class="character">' or '</span><span class="plain">/</span><span class="character">' or '</span><span class="string">"' or ':' or ';'</span>
+                            <span class="string">or '(' or ')' or '[' or ']' or '{' or '}') bnd = 1;</span>
+                    <span class="string">}</span>
+                    <span class="string">if (case == 3) {</span>
+                        <span class="string">if (ch ~= 0 or 10 or 13 or 32 or 9) {</span>
+                            <span class="string">if (bnd == 1) bnd = 0;</span>
+                            <span class="string">else {</span>
+                                <span class="string">if (ch == '.' or '</span><span class="comment">or '?') bnd = 1;</span>
+                            <span class="string">}</span>
+                        <span class="string">}</span>
+                    <span class="string">}</span>
+                <span class="string">}</span>
+            <span class="string">}</span>
+            <span class="string">BlkValueWrite(ctxt, len, 0);</span>
+        <span class="string">}</span>
+        <span class="string">TEXT_TY_Untransmute(txt, pk, cp);</span>
+        <span class="string">return ctxt;</span>
+    <span class="string">];</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1140,7 +1110,6 @@ its expanded state.
 concatenation but to handle the concatenations occurring when a regular
 expression search-and-replace is going on: see "RegExp.i6t".
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Concatenate</span><span class="plain"> </span><span class="identifier">to_txt</span><span class="plain"> </span><span class="identifier">from_txt</span><span class="plain"> </span><span class="identifier">blobtype</span><span class="plain"> </span><span class="identifier">ref_txt</span>

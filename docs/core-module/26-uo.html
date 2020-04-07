@@ -88,15 +88,14 @@ the source text file they come from &mdash; for example, so that an Extension ca
 set a use option applying only to itself.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">use_option</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span>    <span class="comment">word range where name is stored</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">option_expansion</span><span class="plain">; </span>    <span class="comment">definition as given in source</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_used</span><span class="plain">; </span>    <span class="comment">where the option is taken in the source</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">option_used</span><span class="plain">; </span>    <span class="comment">set if this option has been taken</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_file_scoped</span><span class="plain">; </span>    <span class="comment">scope is the current source file only?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">minimum_setting_value</span><span class="plain">; </span>    <span class="comment">for those which are numeric</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">name</span><span class="plain">; </span><span class="comment">word range where name is stored</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">option_expansion</span><span class="plain">; </span><span class="comment">definition as given in source</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_used</span><span class="plain">; </span><span class="comment">where the option is taken in the source</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">option_used</span><span class="plain">; </span><span class="comment">set if this option has been taken</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">source_file_scoped</span><span class="plain">; </span><span class="comment">scope is the current source file only?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">minimum_setting_value</span><span class="plain">; </span><span class="comment">for those which are numeric</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">use_option</span><span class="plain">;</span>
 </pre>
@@ -108,19 +107,18 @@ set a use option applying only to itself.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Five of the pragma-like settings are stored here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">memory_economy_in_force</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dynamic_memory_allocation</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">dynamic_memory_allocation</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_engineering_notation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">use_exact_parsing_option</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_figure_thumbnails</span><span class="plain"> = 50;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">index_figure_thumbnails</span><span class="plain"> = </span><span class="constant">50</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">undo_prevention</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">serial_comma</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">predictable_randomisation</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">command_line_echoing</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">American_dialect</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = 2;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -132,11 +130,10 @@ work is for the user to hit the limit occasionally, and then raise that limit
 by hand with a sentence in the source text.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">i6_memory_setting</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ICL_identifier</span><span class="plain">; </span>    <span class="comment">see the DM4 for the I6 memory setting names</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number</span><span class="plain">; </span>    <span class="comment">e.g., <code class="display"><span class="extract">50000</span></code> means "at least 50,000"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ICL_identifier</span><span class="plain">; </span><span class="comment">see the DM4 for the I6 memory setting names</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">number</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">50000</span></code> means "at least 50,000"</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">i6_memory_setting</span><span class="plain">;</span>
 </pre>
@@ -148,22 +145,21 @@ by hand with a sentence in the source text.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Here first is the sentence handler for "Use ... means ..." sentences.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::use_translates_as_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">SW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[0]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Use American dialect means ..."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Use American dialect means ..."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt;(</span><span class="identifier">SW</span><span class="plain">)) {</span>
                     <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                    <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                    <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE1_SMFT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
                 <span class="functiontext">UseOptions::new_use_option</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -172,18 +168,18 @@ by hand with a sentence in the source text.
 
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::new_use_option</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))) &amp;&amp;</span>
-            <span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">)))) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;, 1);</span>
+        <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">))) &amp;&amp;</span>
+            <span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)))) {</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">use_option</span><span class="plain">);</span>
-            <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">OW</span><span class="plain">;</span>
-            <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_expansion</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
-            <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &gt; 0) </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> = -1;</span>
-            <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">OW</span><span class="plain">;</span>
+            <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_expansion</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+            <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> = -1;</span>
+            <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">)) &amp;&amp; (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; == </span><span class="constant">AUTHORIAL_MODESTY_UO</span><span class="plain">))</span>
-                <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
                 <span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain">,</span>
                 <span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="functiontext">Rvalues::from_use_option</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">));</span>
@@ -199,7 +195,6 @@ by hand with a sentence in the source text.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The object for such a sentence is just an I6 expansion:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">translates</span><span class="plain">-</span><span class="identifier">as</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">subject</span><span class="plain">&gt; ::=</span>
@@ -232,7 +227,6 @@ by hand with a sentence in the source text.
 them back that way too:
 </p>
 
-
 <pre class="display">
     <span class="reserved">use_option</span><span class="plain"> *</span><span class="functiontext">UseOptions::parse_uo</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ExParser::parse_excerpt</span><span class="plain">(</span><span class="identifier">MISCELLANEOUS_MC</span><span class="plain">, </span><span class="identifier">OW</span><span class="plain">);</span>
@@ -260,13 +254,12 @@ articled lists:
 option name is taken from the <code class="display"><span class="extract">...</span></code> or <code class="display"><span class="extract">###</span></code> as appropriate:
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt; ::=</span>
         <span class="plain">... </span><span class="identifier">of</span><span class="plain"> </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">least</span><span class="plain"> &lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">-</span><span class="identifier">unlimited</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
         <span class="plain">### </span><span class="identifier">of</span><span class="plain"> &lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">-</span><span class="identifier">unlimited</span><span class="plain">&gt; |			==&gt; -</span><span class="identifier">R</span><span class="plain">[1]</span>
-        <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; ...	|						==&gt; 0</span>
-        <span class="plain">...												==&gt; 0</span>
+        <span class="plain">&lt;</span><span class="identifier">definite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt; ...	|						==&gt; </span><span class="constant">0</span>
+        <span class="plain">...												==&gt; </span><span class="constant">0</span>
 
     <span class="plain">&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt; ::=</span>
         <span class="identifier">inter</span><span class="plain"> </span><span class="identifier">pipeline</span><span class="plain"> {&lt;</span><span class="identifier">quoted</span><span class="plain">-</span><span class="identifier">text</span><span class="plain">&gt;} 					==&gt; </span><span class="identifier">TRUE</span>
@@ -278,7 +271,6 @@ option name is taken from the <code class="display"><span class="extract">...</s
 recognises the English names when they are defined by the Standard Rules. (So
 there is no need to translate this to other languages.)
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">notable</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">option</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">&gt; ::=</span>
@@ -313,63 +305,62 @@ there is no need to translate this to other languages.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">AUTHORIAL_MODESTY_UO</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DYNAMIC_MEMORY_ALLOCATION_UO</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_ECONOMY_UO</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NO_DEPRECATED_FEATURES_UO</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NUMBERED_RULES_UO</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TELEMETRY_RECORDING_UO</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SCORING_UO</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NO_SCORING_UO</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ENGINEERING_NOTATION_UO</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNABBREVIATED_OBJECT_NAMES_UO</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INDEX_FIGURE_THUMBNAILS_UO</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">GN_TESTING_VERSION_UO</span><span class="plain"> 11</span>
-    <span class="definitionkeyword">define</span> <span class="constant">UNDO_PREVENTION_UO</span><span class="plain"> 12</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SERIAL_COMMA_UO</span><span class="plain"> 13</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PREDICTABLE_RANDOMISATION_UO</span><span class="plain"> 14</span>
-    <span class="definitionkeyword">define</span> <span class="constant">COMMAND_LINE_ECHOING_UO</span><span class="plain"> 15</span>
-    <span class="definitionkeyword">define</span> <span class="constant">AMERICAN_DIALECT_UO</span><span class="plain"> 16</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FULL_LENGTH_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 17</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ABBREVIATED_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 18</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VERBOSE_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 19</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 20</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SUPERBRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> 21</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AUTHORIAL_MODESTY_UO</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DYNAMIC_MEMORY_ALLOCATION_UO</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_ECONOMY_UO</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_DEPRECATED_FEATURES_UO</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NUMBERED_RULES_UO</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TELEMETRY_RECORDING_UO</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SCORING_UO</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_SCORING_UO</span><span class="plain"> </span><span class="constant">7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ENGINEERING_NOTATION_UO</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNABBREVIATED_OBJECT_NAMES_UO</span><span class="plain"> </span><span class="constant">9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INDEX_FIGURE_THUMBNAILS_UO</span><span class="plain"> </span><span class="constant">10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">GN_TESTING_VERSION_UO</span><span class="plain"> </span><span class="constant">11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UNDO_PREVENTION_UO</span><span class="plain"> </span><span class="constant">12</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SERIAL_COMMA_UO</span><span class="plain"> </span><span class="constant">13</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREDICTABLE_RANDOMISATION_UO</span><span class="plain"> </span><span class="constant">14</span>
+    <span class="definitionkeyword">define</span> <span class="constant">COMMAND_LINE_ECHOING_UO</span><span class="plain"> </span><span class="constant">15</span>
+    <span class="definitionkeyword">define</span> <span class="constant">AMERICAN_DIALECT_UO</span><span class="plain"> </span><span class="constant">16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FULL_LENGTH_ROOM_DESCRIPTIONS_UO</span><span class="plain"> </span><span class="constant">17</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ABBREVIATED_ROOM_DESCRIPTIONS_UO</span><span class="plain"> </span><span class="constant">18</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VERBOSE_ROOM_DESCRIPTIONS_UO</span><span class="plain"> </span><span class="constant">19</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> </span><span class="constant">20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SUPERBRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain"> </span><span class="constant">21</span>
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::use_SMF</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">NPs</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = (</span><span class="identifier">NPs</span><span class="plain">)?(</span><span class="identifier">NPs</span><span class="plain">[1]):</span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span>    <span class="comment">"Use American dialect."</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT</span><span class="plain">:</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) { </span><span class="comment">"Use American dialect."</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ACCEPT_SMFT:</span>
                 <span class="identifier">ParseTree::annotate_int</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="constant">verb_id_ANNOT</span><span class="plain">, </span><span class="constant">SPECIAL_MEANING_VB</span><span class="plain">);</span>
                 <span class="plain">&lt;</span><span class="identifier">nounphrase</span><span class="plain">-</span><span class="identifier">articled</span><span class="plain">-</span><span class="identifier">list</span><span class="plain">&gt;(</span><span class="identifier">OW</span><span class="plain">);</span>
-                <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
+                <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = &lt;&lt;</span><span class="identifier">rp</span><span class="plain">&gt;&gt;;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE1_SMFT</span><span class="plain">:</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRAVERSE2_SMFT</span><span class="plain">:</span>
-                <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE1_SMFT:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRAVERSE2_SMFT:</span>
+                <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::handle_set_use_option</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+        <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">AND_NT</span><span class="plain">) {</span>
-            <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-            <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+            <span class="functiontext">UseOptions::set_use_options</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Set the chain given in this word range</span> <span class="cwebmacronumber">11.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Set the option given in this word range</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Used: %W\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Used: %W\n"</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
         <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UnknownUseOption</span><span class="plain">),</span>
             <span class="string">"that isn't a 'Use' option known to me"</span><span class="plain">,</span>
             <span class="string">"and needs to be one of the ones listed in the documentation."</span><span class="plain">);</span>
@@ -391,22 +382,22 @@ there is no need to translate this to other languages.)
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">min_setting</span><span class="plain"> = -1;</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &lt; 0) </span>&lt;<span class="cwebmacro">Deal with the case of an I6 memory setting</span> <span class="cwebmacronumber">11.1.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &gt; 0) </span><span class="identifier">min_setting</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;, 1);</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &lt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Deal with the case of an I6 memory setting</span> <span class="cwebmacronumber">11.1.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt; &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">min_setting</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">OW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">-</span><span class="identifier">object</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain"> = </span><span class="functiontext">UseOptions::parse_uo</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">) {</span>
             <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Adjust the minimum setting</span> <span class="cwebmacronumber">11.1.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain">) {</span>
                 <span class="identifier">E</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">)));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span>    <span class="comment">that is, if used in the main source text</span>
-                    <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                    <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="comment">that is, if used in the main source text</span>
+                    <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                    <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-                <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+                <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="functiontext">UseOptions::set_immediate_option_flags</span><span class="plain">(</span><span class="identifier">OW</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
@@ -423,8 +414,8 @@ there is no need to translate this to other languages.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;, 1);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == 1) {</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">CW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">inter</span><span class="plain">-</span><span class="identifier">pipeline</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">traverse</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">CW</span><span class="plain">);</span>
             <span class="identifier">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -445,14 +436,14 @@ there is no need to translate this to other languages.)
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> == -1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> == -1) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min_setting</span><span class="plain"> != -1)</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_UONotNumerical</span><span class="plain">),</span>
                     <span class="string">"that 'Use' option does not have a numerical setting"</span><span class="plain">,</span>
                     <span class="string">"but is either used or not used."</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min_setting</span><span class="plain"> &gt;= </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">)</span>
-                <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> = </span><span class="identifier">min_setting</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">min_setting</span><span class="plain"> &gt;= </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">)</span>
+                <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> = </span><span class="identifier">min_setting</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -469,20 +460,20 @@ there is no need to translate this to other languages.)
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = -&lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;, </span><span class="identifier">w1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">));</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">w1</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">) &gt; 63) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">) &gt; </span><span class="constant">63</span><span class="plain">) {</span>
             <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_BadICLIdentifier</span><span class="plain">),</span>
                 <span class="string">"that is too long to be an ICL identifier"</span><span class="plain">,</span>
                 <span class="string">"so can't be the name of any I6 memory setting."</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">i6_memory_setting</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">i6_memory_setting</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> &lt; </span><span class="identifier">n</span><span class="plain">) </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">ICL_identifier</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">number</span><span class="plain"> &lt; </span><span class="identifier">n</span><span class="plain">) </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="identifier">ms</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">i6_memory_setting</span><span class="plain">);</span>
-        <span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">);</span>
-        <span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">ICL_identifier</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">);</span>
+        <span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">number</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">new_identifier</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
@@ -493,7 +484,6 @@ there is no need to translate this to other languages.)
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>For the pragma-like UOs:
 </p>
-
 
 <pre class="display">
     <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo_being_set</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -513,10 +503,9 @@ sentences. The following works through a list of use options, acting on
 those which need immediate action.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">immediate</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">&gt; ::=</span>
-        <span class="plain">... |											==&gt; </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span>    <span class="comment">match only when looking ahead</span>
+        <span class="plain">... |											==&gt; </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">preform_lookahead_mode</span><span class="plain">; </span><span class="comment">match only when looking ahead</span>
         <span class="plain">&lt;</span><span class="identifier">immediate</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt; &lt;</span><span class="identifier">immediate</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |	==&gt; </span><span class="identifier">TRUE</span>
         <span class="plain">&lt;</span><span class="identifier">immediate</span><span class="plain">-</span><span class="identifier">use</span><span class="plain">-</span><span class="identifier">entry</span><span class="plain">&gt;							==&gt; </span><span class="identifier">TRUE</span>
 
@@ -538,7 +527,7 @@ those which need immediate action.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">[1]) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AUTHORIAL_MODESTY_UO</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AUTHORIAL_MODESTY_UO:</span><span class="plain"> {</span>
                 <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> =</span>
                     <span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span>
                         <span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)));</span>
@@ -546,32 +535,32 @@ those which need immediate action.
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">Extensions::set_authorial_modesty</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DYNAMIC_MEMORY_ALLOCATION_UO</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo_being_set</span><span class="plain">) </span><span class="identifier">dynamic_memory_allocation</span><span class="plain"> = </span><span class="identifier">uo_being_set</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DYNAMIC_MEMORY_ALLOCATION_UO:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo_being_set</span><span class="plain">) </span><span class="identifier">dynamic_memory_allocation</span><span class="plain"> = </span><span class="identifier">uo_being_set</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MEMORY_ECONOMY_UO</span><span class="plain">: </span><span class="identifier">memory_economy_in_force</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_DEPRECATED_FEATURES_UO</span><span class="plain">: </span><span class="identifier">no_deprecated_features</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMBERED_RULES_UO</span><span class="plain">: </span><span class="functiontext">Rules::set_numbered_rules</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TELEMETRY_RECORDING_UO</span><span class="plain">: </span><span class="identifier">telemetry_recording</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SCORING_UO</span><span class="plain">: </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_SCORING_UO</span><span class="plain">: </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ENGINEERING_NOTATION_UO</span><span class="plain">: </span><span class="identifier">allow_engineering_notation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNABBREVIATED_OBJECT_NAMES_UO</span><span class="plain">: </span><span class="identifier">use_exact_parsing_option</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDEX_FIGURE_THUMBNAILS_UO</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo_being_set</span><span class="plain">) </span><span class="identifier">index_figure_thumbnails</span><span class="plain"> = </span><span class="identifier">uo_being_set</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MEMORY_ECONOMY_UO:</span><span class="plain"> </span><span class="identifier">memory_economy_in_force</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_DEPRECATED_FEATURES_UO:</span><span class="plain"> </span><span class="identifier">no_deprecated_features</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMBERED_RULES_UO:</span><span class="plain"> </span><span class="functiontext">Rules::set_numbered_rules</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TELEMETRY_RECORDING_UO:</span><span class="plain"> </span><span class="identifier">telemetry_recording</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SCORING_UO:</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_SCORING_UO:</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ENGINEERING_NOTATION_UO:</span><span class="plain"> </span><span class="identifier">allow_engineering_notation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNABBREVIATED_OBJECT_NAMES_UO:</span><span class="plain"> </span><span class="identifier">use_exact_parsing_option</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INDEX_FIGURE_THUMBNAILS_UO:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo_being_set</span><span class="plain">) </span><span class="identifier">index_figure_thumbnails</span><span class="plain"> = </span><span class="identifier">uo_being_set</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">;</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">GN_TESTING_VERSION_UO</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">GN_TESTING_VERSION_UO:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">UNDO_PREVENTION_UO</span><span class="plain">: </span><span class="identifier">undo_prevention</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SERIAL_COMMA_UO</span><span class="plain">: </span><span class="identifier">serial_comma</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PREDICTABLE_RANDOMISATION_UO</span><span class="plain">: </span><span class="identifier">predictable_randomisation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">COMMAND_LINE_ECHOING_UO</span><span class="plain">: </span><span class="identifier">command_line_echoing</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">AMERICAN_DIALECT_UO</span><span class="plain">: </span><span class="identifier">American_dialect</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FULL_LENGTH_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 2; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">ABBREVIATED_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 3; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERBOSE_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 2; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 1; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SUPERBRIEF_ROOM_DESCRIPTIONS_UO</span><span class="plain">: </span><span class="identifier">room_description_level</span><span class="plain"> = 3; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">UNDO_PREVENTION_UO:</span><span class="plain"> </span><span class="identifier">undo_prevention</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SERIAL_COMMA_UO:</span><span class="plain"> </span><span class="identifier">serial_comma</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PREDICTABLE_RANDOMISATION_UO:</span><span class="plain"> </span><span class="identifier">predictable_randomisation</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMAND_LINE_ECHOING_UO:</span><span class="plain"> </span><span class="identifier">command_line_echoing</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">AMERICAN_DIALECT_UO:</span><span class="plain"> </span><span class="identifier">American_dialect</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FULL_LENGTH_ROOM_DESCRIPTIONS_UO:</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ABBREVIATED_ROOM_DESCRIPTIONS_UO:</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VERBOSE_ROOM_DESCRIPTIONS_UO:</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BRIEF_ROOM_DESCRIPTIONS_UO:</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SUPERBRIEF_ROOM_DESCRIPTIONS_UO:</span><span class="plain"> </span><span class="identifier">room_description_level</span><span class="plain"> = </span><span class="constant">3</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -583,7 +572,6 @@ those which need immediate action.
 heap, on which strings, lists and stored actions sit; here's where the level
 is read:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::get_dynamic_memory_allocation</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -597,7 +585,6 @@ is read:
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>This keeps the Contents page of the index from exploding:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::get_index_figure_thumbnails</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -613,15 +600,14 @@ is read:
 pragma is set:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">)?(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">)))):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain">)?(</span><span class="identifier">Lexer::file_of_origin</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain">)))):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">efo</span><span class="plain"> = (</span><span class="identifier">sf</span><span class="plain">)?(</span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">category</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">E</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">efo</span><span class="plain"> == </span><span class="identifier">E</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -640,17 +626,16 @@ can occur if an attempt to release with an existing story file goes wrong
 and problem messages must be issued.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::compile</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
                 <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">UO</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
                 <span class="functiontext">I6T::interpret_i6t</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">,</span>
-                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_expansion</span><span class="plain">)) + 1),</span>
-                    <span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">, </span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_expansion</span><span class="plain">)) + </span><span class="constant">1</span><span class="plain">),</span>
+                    <span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">UO</span><span class="plain">, </span><span class="string">"\n"</span><span class="plain">);</span>
                 <span class="functiontext">Emit::intervention</span><span class="plain">(</span><span class="identifier">EARLY_LINK_STAGE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">UO</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
@@ -664,17 +649,16 @@ and problem messages must be issued.)
 source code: see the DM4 for details.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::compile_icl_commands</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Emit::pragma</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"-s"</span><span class="plain">);</span>
         <span class="reserved">i6_memory_setting</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">i6_memory_setting</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"MAX_LOCAL_VARIABLES"</span><span class="plain">)) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">ICL_identifier</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"MAX_LOCAL_VARIABLES"</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">TargetVMs::allow_MAX_LOCAL_VARIABLES</span><span class="plain">(</span><span class="functiontext">Task::vm</span><span class="plain">()) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
                 <span class="reserved">continue</span><span class="plain">;</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">, </span><span class="string">"$%S=%d"</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;ICL_identifier</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;number</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">, </span><span class="string">"$%S=%d"</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">ICL_identifier</span><span class="plain">, </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">number</span><span class="plain">);</span>
             <span class="functiontext">Emit::pragma</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">prag</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -690,9 +674,9 @@ source code: see the DM4 for details.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAIN_TEXT_UO_ORIGIN</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OPTIONS_FILE_UO_ORIGIN</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAIN_TEXT_UO_ORIGIN</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OPTIONS_FILE_UO_ORIGIN</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <pre class="display">
@@ -703,20 +687,20 @@ source code: see the DM4 for details.
         <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain">)</span>
             <span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &lt; 0)) </span><span class="identifier">nt</span><span class="plain">++;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">nt</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Whereas these are not in force:"</span><span class="plain">); </span><span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"tight"</span><span class="plain">);</span>
+            <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &lt; 0)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)) {</span>
                     &lt;<span class="cwebmacro">Write in the index line for a use option not taken</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (--</span><span class="identifier">nt</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (--</span><span class="identifier">nt</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", "</span><span class="plain">);</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
@@ -734,12 +718,12 @@ source code: see the DM4 for details.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">white-space:nowrap\</span><span class="plain">"</span><span class="string">;"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"style=\"white-space:nowrap\";"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"Use %+W."</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"Use %+W."</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;%+W"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
 </pre>
 
@@ -749,24 +733,23 @@ source code: see the DM4 for details.
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::index_options_in_force_from</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &lt; 0) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">))) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == 0) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write in the index line for a use option taken</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) &amp;&amp;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">source_file_scoped</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="identifier">option_used</span><span class="plain">) &amp;&amp; (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">UseOptions::uo_set_from</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="identifier">category</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">))) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == 0) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain">++ == </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Write in the use option subheading</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Write in the index line for a use option taken</span> <span class="cwebmacronumber">20.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -783,16 +766,16 @@ source code: see the DM4 for details.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 2, </span><span class="string">"tight"</span><span class="plain">);</span>
+        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"808080"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Set from "</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">category</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MAIN_TEXT_UO_ORIGIN</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MAIN_TEXT_UO_ORIGIN:</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the source text"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OPTIONS_FILE_UO_ORIGIN</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPTIONS_FILE_UO_ORIGIN:</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the Options.txt configuration file"</span><span class="plain">);</span>
                 <span class="identifier">Index::DocReferences::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"OPTIONSFILE"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTENSION_UO_ORIGIN</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTENSION_UO_ORIGIN:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Extensions::is_standard</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the "</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"the extension "</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="identifier">edition</span><span class="plain">-&gt;</span><span class="identifier">work</span><span class="plain">-&gt;</span><span class="identifier">title</span><span class="plain">);</span>
@@ -813,14 +796,14 @@ source code: see the DM4 for details.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 3, </span><span class="string">"tight"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Use %+W"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" of at least %d"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">) </span><span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;where_used</span><span class="plain">)));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0) {</span>
+        <span class="identifier">HTMLFiles::open_para</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">3</span><span class="plain">, </span><span class="string">"tight"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Use %+W"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" of at least %d"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain">) </span><span class="identifier">Index::link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">where_used</span><span class="plain">)));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;"</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"Use %+W of at least %d."</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">, 2*(</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">));</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"Use %+W of at least %d."</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">, </span><span class="constant">2</span><span class="plain">*(</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">));</span>
             <span class="identifier">HTML::Javascript::paste_stream</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&lt;i&gt;Double this&lt;/i&gt;"</span><span class="plain">);</span>
@@ -836,7 +819,6 @@ source code: see the DM4 for details.
 values at run-time, of the kind "use option". We need to provide two routines:
 one to test them, one to print them.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::TestUseOption_routine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -861,7 +843,7 @@ one to test them, one to print them.
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">UO_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::add_named_call_as_symbol</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"UO"</span><span class="plain">);</span>
         <span class="reserved">use_option</span><span class="plain"> *</span><span class="identifier">uo</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">uo</span><span class="plain">, </span><span class="reserved">use_option</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt;= 0)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">option_used</span><span class="plain">) || (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
@@ -907,9 +889,9 @@ one to test them, one to print them.
                             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
                             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
-                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">"%W option"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
-                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain"> &gt; 0)</span>
-                                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-</span><span class="element">&gt;minimum_setting_value</span><span class="plain">);</span>
+                                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">"%W option"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
+                                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
+                                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="string">" [%d]"</span><span class="plain">, </span><span class="identifier">uo</span><span class="plain">-&gt;</span><span class="element">minimum_setting_value</span><span class="plain">);</span>
                                 <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">N</span><span class="plain">);</span>
                                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
                             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -927,19 +909,17 @@ one to test them, one to print them.
 
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_verb_verb_exists</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">story_author_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ranking_table_given</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span>    <span class="comment">Whether in this case a score is kept at run time</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_deprecated_features</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">forbid syntaxes marked as deprecated?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scoring_option_set</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">; </span><span class="comment">Whether in this case a score is kept at run time</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_deprecated_features</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">forbid syntaxes marked as deprecated?</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::no_verb_verb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -953,16 +933,16 @@ one to test them, one to print them.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">UseOptions::configure_template</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 1;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">undo_prevention</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 2;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serial_comma</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 4;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">predictable_randomisation</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 16;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">command_line_echoing</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 32;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_verb_verb_exists</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 64;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">American_dialect</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 128;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">story_author_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 256;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranking_table_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += 512;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bitmap</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">scoring_option_set</span><span class="plain"> == </span><span class="identifier">TRUE</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">undo_prevention</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">2</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serial_comma</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">4</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">predictable_randomisation</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">16</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">command_line_echoing</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">32</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_verb_verb_exists</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">64</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">American_dialect</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">128</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">story_author_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">256</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ranking_table_given</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain"> += </span><span class="constant">512</span><span class="plain">;</span>
 
         <span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">TEMPLATE_CONFIGURATION_BITMAP_HL</span><span class="plain">);</span>
         <span class="functiontext">Emit::named_numeric_constant</span><span class="plain">(</span><span class="identifier">iname</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">bitmap</span><span class="plain">);</span>

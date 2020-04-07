@@ -69,11 +69,10 @@ using real arithmetic to approximately carry out integer calculations, or vice
 versa.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">generalised_kind</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">valid_kind</span><span class="plain">; </span>    <span class="comment">must be non-null</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">promotion</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">0</span></code> for no change, <code class="display"><span class="extract">1</span></code> for "a real version", <code class="display"><span class="extract">-1</span></code> for "an int version"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">valid_kind</span><span class="plain">; </span><span class="comment">must be non-null</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">promotion</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">0</span></code> for no change, <code class="display"><span class="extract">1</span></code> for "a real version", <code class="display"><span class="extract">-1</span></code> for "an int version"</span>
     <span class="plain">} </span><span class="reserved">generalised_kind</span><span class="plain">;</span>
 </pre>
 
@@ -83,39 +82,38 @@ versa.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">generalised_kind</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::new_gk</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't generalise the null kind"</span><span class="plain">);</span>
         <span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">;</span>
-        <span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-        <span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> = 0;</span>
+        <span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::log_gk</span><span class="plain">(</span><span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> == 1) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=&gt;real"</span><span class="plain">); }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> == -1) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=&gt;int"</span><span class="plain">); }</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$u"</span><span class="plain">, </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=&gt;real"</span><span class="plain">); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> == -1) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"=&gt;int"</span><span class="plain">); }</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::FloatingPoint::underlying</span><span class="plain">(</span><span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">.</span><span class="identifier">valid_kind</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::is_real</span><span class="plain">(</span><span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> == 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">generalised_kind</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::to_integer</span><span class="plain">(</span><span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::is_real</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> == 1) </span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::FloatingPoint::integer_equivalent</span><span class="plain">(</span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> = -1;</span>
+                <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::FloatingPoint::integer_equivalent</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> = -1;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::is_real</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">))</span>
@@ -125,11 +123,11 @@ versa.
 
     <span class="reserved">generalised_kind</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::to_real</span><span class="plain">(</span><span class="reserved">generalised_kind</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::is_real</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> == -1) </span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> = 0;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> == -1) </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::FloatingPoint::real_equivalent</span><span class="plain">(</span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="identifier">gK</span><span class="element">.valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">gK</span><span class="element">.promotion</span><span class="plain"> = 1;</span>
+                <span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Kinds::FloatingPoint::real_equivalent</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">)) </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">valid_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">gK</span><span class="plain">.</span><span class="element">promotion</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::FloatingPoint::is_real</span><span class="plain">(</span><span class="identifier">gK</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
@@ -154,28 +152,27 @@ versa.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_flotation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"REAL_NUMBER_TY_Divide("</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"REAL_NUMBER_TY_Divide("</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"NUMBER_TY_to_REAL_NUMBER_TY"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"("</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_flotation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", NUMBER_TY_to_REAL_NUMBER_TY(%d))"</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_deflotation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"REAL_NUMBER_TY_to_NUMBER_TY("</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"REAL_NUMBER_TY_Times("</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"REAL_NUMBER_TY_Times("</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_deflotation</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">)</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">", NUMBER_TY_to_REAL_NUMBER_TY(%d))"</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
@@ -183,7 +180,7 @@ versa.
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_flotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_DIVIDE_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
@@ -193,7 +190,7 @@ versa.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_flotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">NUMBER_TY_TO_REAL_NUMBER_TY_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
@@ -205,14 +202,14 @@ versa.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::begin_deflotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TIMES_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::end_deflotation_emit</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) != </span><span class="constant">1</span><span class="plain">) {</span>
             <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">Hierarchy::find</span><span class="plain">(</span><span class="identifier">REAL_NUMBER_TY_TO_NUMBER_TY_HL</span><span class="plain">));</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val</span><span class="plain">(</span><span class="identifier">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="functiontext">Kinds::Behaviour::scale_factor</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">));</span>
@@ -225,7 +222,7 @@ versa.
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_arithmetic_and_real</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Kinds::Constructors::is_arithmetic_and_real</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind</span><span class="plain"> *</span><span class="functiontext">Kinds::FloatingPoint::real_equivalent</span><span class="plain">(</span><span class="reserved">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>

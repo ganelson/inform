@@ -52,7 +52,6 @@ to (for example, to hold them back to the end of the current chapter, or even
 the current volume), so we also need to remember where it will actually go.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">ex_filename</span><span class="plain">;</span>
@@ -63,9 +62,9 @@ the current volume), so we also need to remember where it will actually go.
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ex_stars</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ex_sort_key</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ex_star_count</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">example_belongs_to_section</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span>    <span class="comment">e.g., an example might belong to section 7</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">example_displayed_at_section</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span>    <span class="comment">but be held back and appear at end of section 23</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">example_position</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span>    <span class="comment">sequence, counting from 0</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">example_belongs_to_section</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span><span class="comment">e.g., an example might belong to section 7</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">example_displayed_at_section</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span><span class="comment">but be held back and appear at end of section 23</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">example_position</span><span class="plain">[</span><span class="constant">MAX_VOLUMES</span><span class="plain">]; </span><span class="comment">sequence, counting from 0</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">example</span><span class="plain">;</span>
 </pre>
@@ -80,7 +79,7 @@ of their names:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXAMPLES</span><span class="plain"> 1000</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_EXAMPLES</span><span class="plain"> </span><span class="constant">1000</span>
 </pre>
 
 <pre class="display">
@@ -92,7 +91,6 @@ of their names:
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>These are used temporarily during recipe book construction.
 </p>
-
 
 <pre class="display">
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">recipe_location</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -111,7 +109,6 @@ below for the time being. A sample:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">*** Plural assertions</span>
         <span class="plain">(Clothing kinds; Get Me to the Church on Time)</span>
@@ -126,16 +123,15 @@ but is instead a layout plan for how examples appear in volume 1 of the
 Inform documentation.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::scan_examples</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">dir</span><span class="plain"> = </span><span class="functiontext">Directories::open</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_directory</span><span class="plain">);</span>
+        <span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">dir</span><span class="plain"> = </span><span class="functiontext">Directories::open</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_directory</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">dir</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"can't open examples directory"</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Directories::next</span><span class="plain">(</span><span class="identifier">dir</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_last_char</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">) == </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
-            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">exloc</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_directory</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">exloc</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_directory</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%(Recipes%)%c*"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Scan the Recipe Book catalogue</span> <span class="cwebmacronumber">5.2</span>&gt;
             <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Scan a regular example</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
@@ -164,8 +160,8 @@ Inform documentation.
             <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"too many examples"</span><span class="plain">);</span>
         <span class="identifier">examples</span><span class="plain">[</span><span class="identifier">no_examples</span><span class="plain">++] = </span><span class="identifier">E</span><span class="plain">;</span>
         <span class="reserved">examples_helper_state</span><span class="plain"> </span><span class="identifier">ehs</span><span class="plain">;</span>
-        <span class="identifier">ehs</span><span class="element">.E</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
-        <span class="identifier">ehs</span><span class="element">.ef</span><span class="plain"> = </span><span class="identifier">exloc</span><span class="plain">;</span>
+        <span class="identifier">ehs</span><span class="plain">.</span><span class="element">E</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">;</span>
+        <span class="identifier">ehs</span><span class="plain">.</span><span class="element">ef</span><span class="plain"> = </span><span class="identifier">exloc</span><span class="plain">;</span>
         <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">exloc</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't read example file"</span><span class="plain">,</span>
             <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Examples::examples_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">ehs</span><span class="plain">);</span>
 </pre>
@@ -176,7 +172,6 @@ Inform documentation.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">examples_helper_state</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
@@ -185,12 +180,12 @@ Inform documentation.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::examples_helper</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">v_ehs</span><span class="plain">) {</span>
         <span class="reserved">examples_helper_state</span><span class="plain"> *</span><span class="identifier">ehs</span><span class="plain"> = (</span><span class="reserved">examples_helper_state</span><span class="plain"> *) </span><span class="identifier">v_ehs</span><span class="plain">;</span>
-        <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">ehs</span><span class="plain">-</span><span class="element">&gt;E</span><span class="plain">;</span>
+        <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">ehs</span><span class="plain">-&gt;</span><span class="element">E</span><span class="plain">;</span>
         <span class="functiontext">Str::trim_white_space_at_end</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain"> == 1) </span>&lt;<span class="cwebmacro">Scan line 1 of the example header</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain"> == 2) </span>&lt;<span class="cwebmacro">Scan line 2 of the example header</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain"> == 3) </span>&lt;<span class="cwebmacro">Scan line 3 of the example header</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span>&lt;<span class="cwebmacro">Scan line 1 of the example header</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span>&lt;<span class="cwebmacro">Scan line 2 of the example header</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span>&lt;<span class="cwebmacro">Scan line 3 of the example header</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -208,27 +203,27 @@ Inform documentation.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%*+) (%c*)"</span><span class="plain">)) {</span>
-            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">asterisk_text</span><span class="plain"> = </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0];</span>
-            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sname</span><span class="plain"> = </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1];</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">asterisk_text</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">starc</span><span class="plain"> = 0;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"*"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=1;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"**"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=2;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"***"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=3;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"****"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=4;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">starc</span><span class="plain"> == 0) {</span>
+            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">asterisk_text</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>
+            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sname</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1];</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">asterisk_text</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">starc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"*"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=1;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"**"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=2;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"***"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=3;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"****"</span><span class="plain">)) </span><span class="identifier">starc</span><span class="plain">=4;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">starc</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"star count for example must be * to ****"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
-                <span class="identifier">starc</span><span class="plain"> = 1;</span>
+                <span class="identifier">starc</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_star_count</span><span class="plain"> = </span><span class="identifier">starc</span><span class="plain">;</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_star_count</span><span class="plain"> = </span><span class="identifier">starc</span><span class="plain">;</span>
 
-            <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">volumes</span><span class="plain">[0]-</span><span class="element">&gt;sections_by_name</span><span class="plain">, </span><span class="identifier">sname</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[0] = </span><span class="identifier">S</span><span class="plain">;</span>
+            <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">volumes</span><span class="plain">[0]-&gt;</span><span class="element">sections_by_name</span><span class="plain">, </span><span class="identifier">sname</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">example_belongs_to_section</span><span class="plain">[0] = </span><span class="identifier">S</span><span class="plain">;</span>
             <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[0] = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_belongs_to_section</span><span class="plain">[0] = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"example belongs to an unknown section"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_filename</span><span class="plain"> = </span><span class="identifier">ehs</span><span class="plain">-</span><span class="element">&gt;ef</span><span class="plain">;</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_filename</span><span class="plain"> = </span><span class="identifier">ehs</span><span class="plain">-&gt;</span><span class="element">ef</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"example has a malformed first line"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -247,24 +242,24 @@ Inform documentation.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *%((%c*?)%)"</span><span class="plain">)) {</span>
             <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr2</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
 
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *-- *(%c*)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[1]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*); *(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[0]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?): *(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[1]);</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric_pared_down</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *-- *(%c*)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*); *(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?): *(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric_pared_down</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">rb</span><span class="plain">);</span>
 
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*;(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*;(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?): (%d+). %c*"</span><span class="plain">)) {</span>
                 <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"%S %S"</span><span class="plain">, </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr2</span><span class="element">.exp</span><span class="plain">[1]);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="string">"%S %S"</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
             <span class="plain">}</span>
             <span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_public_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_public_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">examples_by_name</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">examples_by_name</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(100, </span><span class="constant">FALSE</span><span class="plain">);</span>
             <span class="functiontext">Dictionaries::create</span><span class="plain">(</span><span class="identifier">examples_by_name</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
@@ -287,7 +282,7 @@ Inform documentation.
 
 
 <pre class="displaydefn">
-        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_outline</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
+        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_outline</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -307,10 +302,10 @@ Inform documentation.
 
 <pre class="displaydefn">
         <span class="reserved">examples_rb_helper_state</span><span class="plain"> </span><span class="identifier">erbhs</span><span class="plain">;</span>
-        <span class="identifier">erbhs</span><span class="element">.current_rch</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">erbhs</span><span class="element">.current_rcsh</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">erbhs</span><span class="element">.no_recipe_headings</span><span class="plain"> = 0;</span>
-        <span class="identifier">erbhs</span><span class="element">.no_recipe_subheadings</span><span class="plain"> = 0;</span>
+        <span class="identifier">erbhs</span><span class="plain">.</span><span class="element">current_rch</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">erbhs</span><span class="plain">.</span><span class="element">current_rcsh</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">erbhs</span><span class="plain">.</span><span class="element">no_recipe_headings</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">erbhs</span><span class="plain">.</span><span class="element">no_recipe_subheadings</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">exloc</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't read Recipe Book catalogue file"</span><span class="plain">,</span>
             <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Examples::examples_rb_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">erbhs</span><span class="plain">);</span>
 </pre>
@@ -320,7 +315,6 @@ Inform documentation.
 <p class="endnote">This code is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">examples_rb_helper_state</span><span class="plain"> {</span>
@@ -337,7 +331,7 @@ Inform documentation.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%c*?) *== *(%c*?)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Scan a translation line</span> <span class="cwebmacronumber">7.1</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&gt;(%c*)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Scan a major heading</span> <span class="cwebmacronumber">7.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%*(%c*)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Scan a minor heading</span> <span class="cwebmacronumber">7.3</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) &gt; 0) </span>&lt;<span class="cwebmacro">Scan an example name</span> <span class="cwebmacronumber">7.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Scan an example name</span> <span class="cwebmacronumber">7.4</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -355,8 +349,8 @@ Inform documentation.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">recipe_translates_as</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">recipe_translates_as</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(100, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">trans</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">recipe_translates_as</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">trans</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">trans</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">recipe_translates_as</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">trans</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -369,10 +363,10 @@ Inform documentation.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;current_rch</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;no_recipe_headings</span><span class="plain">++;</span>
-        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;current_rcsh</span><span class="plain">);</span>
-        <span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;no_recipe_subheadings</span><span class="plain"> = 0;</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">current_rch</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
+        <span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">no_recipe_headings</span><span class="plain">++;</span>
+        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">current_rcsh</span><span class="plain">);</span>
+        <span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">no_recipe_subheadings</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -385,8 +379,8 @@ Inform documentation.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;current_rcsh</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;no_recipe_subheadings</span><span class="plain">++;</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">current_rcsh</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">no_recipe_subheadings</span><span class="plain">++;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -401,18 +395,18 @@ Inform documentation.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">recipe_subheading_of</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">recipe_subheading_of</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(100, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rso</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">recipe_subheading_of</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rso</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;current_rcsh</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rso</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">current_rcsh</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">recipe_location</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">recipe_location</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(100, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rl</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">recipe_location</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rl</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;current_rcsh</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rl</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">current_rcsh</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"About the examples"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rl</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"PREFACE"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Basic room, container, and supporter descriptions"</span><span class="plain">))</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">rl</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"PREFACE"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">recipe_sort_prefix</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">recipe_sort_prefix</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(100, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rsp</span><span class="plain"> = </span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">recipe_sort_prefix</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">rsp</span><span class="plain">, </span><span class="string">"%02d_%02d"</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;no_recipe_headings</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-</span><span class="element">&gt;no_recipe_subheadings</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">rsp</span><span class="plain">, </span><span class="string">"%02d_%02d"</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">no_recipe_headings</span><span class="plain">, </span><span class="identifier">erbhs</span><span class="plain">-&gt;</span><span class="element">no_recipe_subheadings</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -427,18 +421,18 @@ Inform documentation.
 <pre class="displaydefn">
         <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> == 0) </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">placings in WWI are already made</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">placings in WWI are already made</span>
             <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">example</span><span class="plain">) {</span>
-                <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to_find</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric_pared_down</span><span class="plain">;</span>
+                <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to_find</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric_pared_down</span><span class="plain">;</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sname</span><span class="plain"> = </span><span class="functiontext">Dictionaries::get_text</span><span class="plain">(</span><span class="identifier">recipe_location</span><span class="plain">, </span><span class="identifier">to_find</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::with_text</span><span class="plain">(</span><span class="string">"recipe book lookup failed (1): %S"</span><span class="plain">, </span><span class="identifier">to_find</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> {</span>
-                    <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = (</span><span class="reserved">section</span><span class="plain"> *) </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;sections_by_name</span><span class="plain">, </span><span class="identifier">sname</span><span class="plain">);</span>
+                    <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = (</span><span class="reserved">section</span><span class="plain"> *) </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">sections_by_name</span><span class="plain">, </span><span class="identifier">sname</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::with_text</span><span class="plain">(</span>
                         <span class="string">"recipe book lookup failed: %S refers to nonexistent section"</span><span class="plain">, </span><span class="identifier">to_find</span><span class="plain">);</span>
                     <span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">] = </span><span class="identifier">S</span><span class="plain">;</span>
+                        <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">] = </span><span class="identifier">S</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -471,22 +465,22 @@ inverse permutations.
 <pre class="displaydefn">
         <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">example</span><span class="plain">) {</span>
-            <span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;examples_sequence</span><span class="plain">[</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">] = </span><span class="identifier">E</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_resort</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> &gt; 0) </span><span class="identifier">last_resort</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_position</span><span class="plain">[0];</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_sort_key</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_sort_key</span><span class="plain">, </span><span class="string">"%08d-%08d-%08d"</span><span class="plain">,</span>
-                <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">]-</span><span class="element">&gt;allocation_id</span><span class="plain">,</span>
-                <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_star_count</span><span class="plain">,</span>
+            <span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">examples_sequence</span><span class="plain">[</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">] = </span><span class="identifier">E</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_resort</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">last_resort</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_position</span><span class="plain">[0];</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_sort_key</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_sort_key</span><span class="plain">, </span><span class="string">"%08d-%08d-%08d"</span><span class="plain">,</span>
+                <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">]-&gt;</span><span class="element">allocation_id</span><span class="plain">,</span>
+                <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_star_count</span><span class="plain">,</span>
                 <span class="identifier">last_resort</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;examples_sequence</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">no_examples</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">example</span><span class="plain"> *),</span>
+        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">examples_sequence</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">no_examples</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">example</span><span class="plain"> *),</span>
             <span class="functiontext">Examples::sort_comparison</span><span class="plain">);</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">=0; </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="identifier">no_examples</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">++) {</span>
-            <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;examples_sequence</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">];</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_position</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">] = </span><span class="identifier">n</span><span class="plain"> + 1; </span>    <span class="comment">to count from 1 when displayed</span>
+            <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">examples_sequence</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">];</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_position</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">] = </span><span class="identifier">n</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">; </span><span class="comment">to count from 1 when displayed</span>
         <span class="plain">}</span>
 </pre>
 
@@ -496,12 +490,11 @@ inverse permutations.
 
 <p class="inwebparagraph"><a id="SP5_5"></a><b>&#167;5.5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Examples::sort_comparison</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E1</span><span class="plain"> = *((</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> **) </span><span class="identifier">ent1</span><span class="plain">);</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E2</span><span class="plain"> = *((</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">example</span><span class="plain"> **) </span><span class="identifier">ent2</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Str::cmp</span><span class="plain">(</span><span class="identifier">E1</span><span class="plain">-</span><span class="element">&gt;ex_sort_key</span><span class="plain">, </span><span class="identifier">E2</span><span class="plain">-</span><span class="element">&gt;ex_sort_key</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Str::cmp</span><span class="plain">(</span><span class="identifier">E1</span><span class="plain">-&gt;</span><span class="element">ex_sort_key</span><span class="plain">, </span><span class="identifier">E2</span><span class="plain">-&gt;</span><span class="element">ex_sort_key</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -522,19 +515,19 @@ or even the end of the volume, to appear. This is where that's worked out.
 <pre class="displaydefn">
         <span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">example</span><span class="plain">) {</span>
-            <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">];</span>
+            <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">];</span>
             <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">hang_here</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = 0; </span><span class="identifier">p</span><span class="plain"> &lt; </span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;vol_section_count</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
-                <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">HS</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;sections</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
-                <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_granularity</span><span class="plain"> == </span><span class="constant">SECTION_GRANULARITY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">HS</span><span class="plain">))</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">p</span><span class="plain"> &lt; </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">vol_section_count</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++) {</span>
+                <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">HS</span><span class="plain"> = </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">sections</span><span class="plain">[</span><span class="identifier">p</span><span class="plain">];</span>
+                <span class="reserved">if</span><span class="plain"> (((</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_granularity</span><span class="plain"> == </span><span class="constant">SECTION_GRANULARITY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">HS</span><span class="plain">))</span>
                     <span class="plain">||</span>
-                    <span class="plain">((</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_granularity</span><span class="plain"> == </span><span class="constant">CHAPTER_GRANULARITY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">HS</span><span class="plain">-</span><span class="element">&gt;in_which_chapter</span><span class="plain"> == </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;in_which_chapter</span><span class="plain">))</span>
+                    <span class="plain">((</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_granularity</span><span class="plain"> == </span><span class="constant">CHAPTER_GRANULARITY</span><span class="plain">) &amp;&amp; (</span><span class="identifier">HS</span><span class="plain">-&gt;</span><span class="element">in_which_chapter</span><span class="plain"> == </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">in_which_chapter</span><span class="plain">))</span>
                     <span class="plain">||</span>
-                    <span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_granularity</span><span class="plain"> == </span><span class="constant">BOOK_GRANULARITY</span><span class="plain">))</span>
+                    <span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_granularity</span><span class="plain"> == </span><span class="constant">BOOK_GRANULARITY</span><span class="plain">))</span>
                     <span class="identifier">hang_here</span><span class="plain"> = </span><span class="identifier">HS</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">hang_here</span><span class="plain">)</span>
-                <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_displayed_at_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">] = </span><span class="identifier">hang_here</span><span class="plain">;</span>
+                <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_displayed_at_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">] = </span><span class="identifier">hang_here</span><span class="plain">;</span>
             <span class="reserved">else</span>
                 <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"miscalculated example ownership"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -552,11 +545,10 @@ but hidden by default until an icon is clicked, or (c) stored in an external,
 that is, separate file.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::render_example_cue</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">writing_index</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> == </span><span class="constant">PLAIN_FORMAT</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render example cue in plain text</span> <span class="cwebmacronumber">8.1</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render example cue in HTML</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain"> == </span><span class="constant">PLAIN_FORMAT</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render example cue in plain text</span> <span class="cwebmacronumber">8.1</span>&gt;
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render example cue in HTML</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -570,8 +562,8 @@ that is, separate file.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">Example %d (%S): %S\</span><span class="plain">n</span><span class="string">%S\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_position</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">], </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_stars</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_public_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_outline</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\nExample %d (%S): %S\n%S\n\n"</span><span class="plain">,</span>
+            <span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_position</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">], </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_stars</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_public_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_outline</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -586,12 +578,12 @@ that is, separate file.
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">writing_index</span><span class="plain"> ==  </span><span class="constant">FALSE</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">anchor</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">anchor</span><span class="plain">, </span><span class="string">"e%d"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">anchor</span><span class="plain">, </span><span class="string">"e%d"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">);</span>
             <span class="functiontext">HTML::anchor</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">anchor</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">anchor</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;navigation</span><span class="plain">-</span><span class="element">&gt;simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render the example cue left surround</span> <span class="cwebmacronumber">8.2.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">navigation</span><span class="plain">-&gt;</span><span class="element">simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render the example cue left surround</span> <span class="cwebmacronumber">8.2.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">onclick</span><span class="plain">);</span>
@@ -606,10 +598,10 @@ that is, separate file.
         <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_outline</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_outline</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;navigation</span><span class="plain">-</span><span class="element">&gt;simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render the example cue right surround</span> <span class="cwebmacronumber">8.2.4</span>&gt;<span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">navigation</span><span class="plain">-&gt;</span><span class="element">simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Render the example cue right surround</span> <span class="cwebmacronumber">8.2.4</span>&gt;<span class="plain">;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -621,7 +613,6 @@ panel about the example. It has one row of three cells:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">[ ( 22 ) ]  [ Example: Whatever ]  [ RB ]</span>
@@ -639,10 +630,10 @@ other book.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egcue\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"table"</span><span class="plain">, </span><span class="string">"class=\"egcue\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egcellforoval\</span><span class="plain">"</span><span class="string">"</span><span class="plain">); </span>    <span class="comment">The Oval begins</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\"egcellforoval\""</span><span class="plain">); </span><span class="comment">The Oval begins</span>
         <span class="functiontext">HTML::begin_div_with_class_S</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"egovalfornumber overstruckimage"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">onclick</span><span class="plain">);</span>
@@ -651,13 +642,13 @@ other book.
         <span class="functiontext">HTML::begin_link_with_class_onclick</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"eglink"</span><span class="plain">, </span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">onclick</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">onclick</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%d&lt;/b&gt;"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_position</span><span class="plain">[0]);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;b&gt;%d&lt;/b&gt;"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_position</span><span class="plain">[0]);</span>
         <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="functiontext">HTML::end_div</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">); </span>    <span class="comment">The Oval ends</span>
+        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">); </span><span class="comment">The Oval ends</span>
 
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egnamecell\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egcuetext\</span><span class="plain">"</span><span class="string">"</span><span class="plain">); </span>    <span class="comment">The Descriptive Panel Area begins</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\"egnamecell\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"egcuetext\""</span><span class="plain">); </span><span class="comment">The Descriptive Panel Area begins</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -670,8 +661,8 @@ other book.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">starcc</span><span class="plain">=0; </span><span class="identifier">starcc</span><span class="plain"> &lt; </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_star_count</span><span class="plain">; </span><span class="identifier">starcc</span><span class="plain">++) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;navigation</span><span class="plain">-</span><span class="element">&gt;simplified_examples</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"*"</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">starcc</span><span class="plain">=0; </span><span class="identifier">starcc</span><span class="plain"> &lt; </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_star_count</span><span class="plain">; </span><span class="identifier">starcc</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">navigation</span><span class="plain">-&gt;</span><span class="element">simplified_examples</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"*"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">HTMLUtilities::asterisk_image</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"asterisk.png"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -688,24 +679,24 @@ other book.
 <pre class="displaydefn">
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;ex_rubric</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_rubric</span><span class="plain">);</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*;(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*;(%c*?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?): (%d+)%c*"</span><span class="plain">)) {</span>
             <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="string">"%S %S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">, </span><span class="string">"%S %S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
         <span class="plain">}</span>
         <span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">);</span>
         <span class="functiontext">Rawtext::escape_HTML_characters_in</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;navigation</span><span class="plain">-</span><span class="element">&gt;simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egbanner\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">navigation</span><span class="plain">-&gt;</span><span class="element">simplified_examples</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"egbanner\""</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Example"</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egname\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"egname\""</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">text_of_name</span><span class="plain">);</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Example %d: %S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_position</span><span class="plain">[0], </span><span class="identifier">text_of_name</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Example %d: %S"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_position</span><span class="plain">[0], </span><span class="identifier">text_of_name</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">text_of_name</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -723,9 +714,9 @@ other book.
 
 <pre class="displaydefn">
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">); </span>    <span class="comment">The Descriptive Panel Area ends</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">egcrossref\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_volumes</span><span class="plain"> &gt; 1)</span>
+        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">); </span><span class="comment">The Descriptive Panel Area ends</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"class=\"egcrossref\""</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_volumes</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Render the cross-link to the same example in the other book</span> <span class="cwebmacronumber">8.2.4.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
@@ -743,7 +734,7 @@ other book.
 
 <pre class="displaydefn">
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cross_to</span><span class="plain"> = </span><span class="string">"RB"</span><span class="plain">; </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V_to</span><span class="plain"> = </span><span class="identifier">volumes</span><span class="plain">[1];</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> == 1) { </span><span class="identifier">cross_to</span><span class="plain"> = </span><span class="string">"WI"</span><span class="plain">; </span><span class="identifier">V_to</span><span class="plain"> = </span><span class="identifier">volumes</span><span class="plain">[0]; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) { </span><span class="identifier">cross_to</span><span class="plain"> = </span><span class="string">"WI"</span><span class="plain">; </span><span class="identifier">V_to</span><span class="plain"> = </span><span class="identifier">volumes</span><span class="plain">[0]; }</span>
         <span class="functiontext">HTML::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"START IGNORE"</span><span class="plain">);</span>
         <span class="functiontext">HTML::begin_div_with_class_S</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"egovalforxref overstruckimage"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
@@ -763,10 +754,9 @@ other book.
 some cases this should work by a Javascript function call instead...
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::open_example_url</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">from_V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">writing_index</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_mode</span><span class="plain"> == </span><span class="constant">EXMODE_openable_internal</span><span class="plain">) &amp;&amp; (</span><span class="identifier">writing_index</span><span class="plain"> == 0) &amp;&amp; (</span><span class="identifier">from_V</span><span class="plain"> == </span><span class="identifier">V</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_mode</span><span class="plain"> == </span><span class="constant">EXMODE_openable_internal</span><span class="plain">) &amp;&amp; (</span><span class="identifier">writing_index</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">from_V</span><span class="plain"> == </span><span class="identifier">V</span><span class="plain">))</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#"</span><span class="plain">);</span>
         <span class="reserved">else</span>
             <span class="functiontext">Examples::goto_example_url</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">);</span>
@@ -780,13 +770,12 @@ some cases this should work by a Javascript function call instead...
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>...and this is it, used for the <code class="display"><span class="extract">onclick</span></code> field:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::open_example_onclick</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">from_V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">writing_index</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;examples_mode</span><span class="plain"> == </span><span class="constant">EXMODE_openable_internal</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">writing_index</span><span class="plain"> == 0) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">examples_mode</span><span class="plain"> == </span><span class="constant">EXMODE_openable_internal</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">writing_index</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">from_V</span><span class="plain"> == </span><span class="identifier">V</span><span class="plain">)) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"showExample('example%d'); return false;"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"showExample('example%d'); return false;"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -798,10 +787,9 @@ some cases this should work by a Javascript function call instead...
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The actual URL holding the contents of an example are as follows:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Examples::goto_example_url</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S#e%d"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">]-</span><span class="element">&gt;unanchored_URL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S#e%d"</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">example_belongs_to_section</span><span class="plain">[</span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">]-&gt;</span><span class="element">unanchored_URL</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

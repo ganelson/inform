@@ -82,7 +82,6 @@ out textually on the command line, then commas are used to divide the stages:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'</span>
 </pre>
@@ -91,7 +90,6 @@ out textually on the command line, then commas are used to divide the stages:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -pipeline-file mypl.interpipeline</span>
@@ -102,7 +100,6 @@ so that the commas are not needed:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">plugh</span>
@@ -120,7 +117,6 @@ to make them before use. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -variable '*X=ex/why' -pipeline-file mypl.interpipeline</span>
 </pre>
@@ -131,7 +127,6 @@ the given pipeline. Inside the pipeline, a line such as:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">generate inform6 -&gt; *X</span>
 </pre>
@@ -140,7 +135,6 @@ the given pipeline. Inside the pipeline, a line such as:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">generate inform6 -&gt; ex/why</span>
@@ -166,7 +160,6 @@ For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">generate inventory -&gt; *log</span>
 </pre>
@@ -186,7 +179,6 @@ effect is that any useful pipeline for Inform will begin and end thus:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">read &lt;- *in</span>
         <span class="plain">...</span>
@@ -203,7 +195,6 @@ like extensions or kits. So, for example, the standard distribution includes
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">inform7/Internal/Pipelines/compile.interpipeline</span>
 </pre>
@@ -213,7 +204,6 @@ folder is free to provide a replacement:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Strange.materials/Pipelines/compile.interpipeline</span>
@@ -247,7 +237,6 @@ Inform; so for example you could write:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Example Work.materials/Pipelines/mypipeline.interpipeline</span>
 </pre>
@@ -258,7 +247,6 @@ on the command line instead:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inform7/Tangled/inform7 ... -pipeline NAME</span>
 </pre>
@@ -268,7 +256,6 @@ on the command line instead:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inform7/Tangled/inform7 ... -pipeline-file FILE</span>
 </pre>
@@ -277,7 +264,6 @@ on the command line instead:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'</span>
@@ -297,7 +283,6 @@ These take the following forms:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">STAGENAME [LOCATION] &lt;- SOURCE</span>
         <span class="plain">STAGENAME [LOCATION] FORMAT -&gt; DESTINATION</span>
@@ -308,7 +293,6 @@ These take the following forms:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">read 2 &lt;- *in</span>
@@ -342,7 +326,6 @@ repository to which subsequent stages apply. The format is:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">read REPOSITORY &lt;- FILE</span>
 </pre>
@@ -357,7 +340,6 @@ automatically detected.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">generate FORMAT -&gt; FILE</span>
@@ -401,7 +383,6 @@ them by what they seem to want to do. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">splat &amp;"Global nitwit = 2;\n"</span>
 </pre>
@@ -410,7 +391,6 @@ them by what they seem to want to do. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">splat GLOBAL &amp;"Global nitwit = 2;\n"</span>
@@ -428,7 +408,6 @@ For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">constant MAGIC K_number = 16339</span>
         <span class="plain">splat IFTRUE &amp;"#iftrue MAGIC == 16339;\n"</span>
@@ -443,7 +422,6 @@ For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">constant MAGIC K_number = 16339</span>
         <span class="plain">constant WIZARD K_number = 5</span>
@@ -457,7 +435,6 @@ higher-level inter statements. For example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">splat STUB &amp;"#Stub Peach 0;\n"</span>
         <span class="plain">splat ATTRIBUTE &amp;"Attribute marmorial;\n"</span>
@@ -467,7 +444,6 @@ higher-level inter statements. For example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">constant Peach K_unchecked_function = Peach_B __assimilated=1</span>

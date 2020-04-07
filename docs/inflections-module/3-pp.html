@@ -64,7 +64,6 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Constructing past participles. </b>For example, "turning away" to "turned away".
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">PastParticiples::pasturise_wording</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pasturised</span><span class="plain">);</span>
@@ -72,7 +71,7 @@
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="string">"%W"</span><span class="plain">, </span><span class="identifier">Wordings::one_word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pasturised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_first_char</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) == </span><span class="character">'\"'</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pasturised</span><span class="plain">, </span><span class="string">"some-long-text"</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">PastParticiples::pasturise_text</span><span class="plain">(</span><span class="identifier">pasturised</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">Feeds::feed_wording</span><span class="plain">(</span><span class="identifier">Wordings::up_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">-1));</span>
@@ -83,7 +82,7 @@
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">PLW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PAST_PARTICIPLES</span><span class="plain">, </span><span class="string">"[Past participle of %W is %W]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PLW</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">CONSTRUCTED_PAST_PARTICIPLES</span><span class="plain">, </span><span class="string">"[Past participle of %W is %W]\n"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PLW</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pasturised</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">PLW</span><span class="plain">;</span>
@@ -99,7 +98,6 @@ a past participle, like "turned". Note that it returns <code class="display"><sp
 to recognise the word in question as a present participle; this is needed
 above. It expects only a single word.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">PastParticiples::pasturise_text</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>

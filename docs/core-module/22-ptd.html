@@ -97,26 +97,26 @@ sequence" consists of two tokens, "T - table name" and "TC - table column".
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain"> 32 </span>    <span class="comment">the most the excerpt parser can hold anyway</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain"> </span><span class="constant">10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="comment">the most the excerpt parser can hold anyway</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ph_type_data</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">registration_text</span><span class="plain">; </span>    <span class="comment">words used to register the excerpt meaning</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">word_sequence</span><span class="plain">[</span><span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain">]; </span>    <span class="comment">the "word sequence": see above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_words</span><span class="plain">; </span>    <span class="comment">length of the word sequence</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">registration_text</span><span class="plain">; </span><span class="comment">words used to register the excerpt meaning</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">word_sequence</span><span class="plain">[</span><span class="constant">MAX_WORDS_PER_PHRASE</span><span class="plain">]; </span><span class="comment">the "word sequence": see above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_words</span><span class="plain">; </span><span class="comment">length of the word sequence</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_token</span><span class="plain"> </span><span class="identifier">token_sequence</span><span class="plain">[</span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_tokens</span><span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">manner_of_return</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_MOR</span></code> values</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">return_kind</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">NULL</span></code> except in the <code class="display"><span class="extract">DECIDES_VALUE_MOR</span></code> case</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">manner_of_return</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_MOR</span></code> values</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">return_kind</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">NULL</span></code> except in the <code class="display"><span class="extract">DECIDES_VALUE_MOR</span></code> case</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">as_say</span><span class="plain">; </span>    <span class="comment">used only for "say" phrases, that is, text substitutions</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inline_details</span><span class="plain"> </span><span class="identifier">as_inline</span><span class="plain">; </span>    <span class="comment">side effects for phrases like C keywords</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">as_say</span><span class="plain">; </span><span class="comment">used only for "say" phrases, that is, text substitutions</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inline_details</span><span class="plain"> </span><span class="identifier">as_inline</span><span class="plain">; </span><span class="comment">side effects for phrases like C keywords</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">now_deprecated</span><span class="plain">; </span>    <span class="comment">is this a phrase likely to be withdrawn in future?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">now_deprecated</span><span class="plain">; </span><span class="comment">is this a phrase likely to be withdrawn in future?</span>
     <span class="plain">} </span><span class="reserved">ph_type_data</span><span class="plain">;</span>
 </pre>
 
@@ -129,22 +129,22 @@ sequence" consists of two tokens, "T - table name" and "TC - table column".
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STANDARD_PT_CONSTRUCT</span><span class="plain"> 1 </span>    <span class="comment">e.g., <code class="display"><span class="extract">12</span></code>, <code class="display"><span class="extract">number</span></code>, <code class="display"><span class="extract">open door</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain"> 2 </span>    <span class="comment">e.g., <code class="display"><span class="extract">nonexisting number variable</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">EXISTING_LOCAL_PT_CONSTRUCT</span><span class="plain"> 3 </span>    <span class="comment">e.g., <code class="display"><span class="extract">existing number variable</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONDITION_PT_CONSTRUCT</span><span class="plain"> 4 </span>    <span class="comment">e.g., <code class="display"><span class="extract">a condition</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">STORAGE_PT_CONSTRUCT</span><span class="plain"> 5 </span>    <span class="comment">e.g., <code class="display"><span class="extract">storage</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">TABLE_REFERENCE_PT_CONSTRUCT</span><span class="plain"> 6 </span>    <span class="comment">e.g., <code class="display"><span class="extract">table-reference</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain"> 7 </span>    <span class="comment">e.g., <code class="display"><span class="extract">name of kind</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">VOID_PT_CONSTRUCT</span><span class="plain"> 8 </span>    <span class="comment">e.g., or in fact only, <code class="display"><span class="extract">phrase</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">STANDARD_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">12</span></code>, <code class="display"><span class="extract">number</span></code>, <code class="display"><span class="extract">open door</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">nonexisting number variable</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">EXISTING_LOCAL_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">existing number variable</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONDITION_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">a condition</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">STORAGE_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">storage</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">TABLE_REFERENCE_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">6</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">table-reference</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">7</span><span class="plain"> </span><span class="comment">e.g., <code class="display"><span class="extract">name of kind</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">VOID_PT_CONSTRUCT</span><span class="plain"> </span><span class="constant">8</span><span class="plain"> </span><span class="comment">e.g., or in fact only, <code class="display"><span class="extract">phrase</span></code></span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">phrase_token</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">token_name</span><span class="plain">; </span>    <span class="comment">name</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">to_match</span><span class="plain">; </span>    <span class="comment">what we expect to find here</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">token_name</span><span class="plain">; </span><span class="comment">name</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">to_match</span><span class="plain">; </span><span class="comment">what we expect to find here</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">token_kind</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">construct</span><span class="plain">; </span>    <span class="comment">one of the above values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">construct</span><span class="plain">; </span><span class="comment">one of the above values</span>
     <span class="plain">} </span><span class="reserved">phrase_token</span><span class="plain">;</span>
 </pre>
 
@@ -180,7 +180,6 @@ This is rather like C, where variables might be declared like so:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">int width, height; char *name;</span>
 </pre>
@@ -190,7 +189,6 @@ types which can be function arguments, so for instance:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">int area(int width, int height) { return width*height; }</span>
@@ -252,15 +250,14 @@ represented:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Say phrases &mdash; text substitutions, that is &mdash; need more:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">say_details</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase</span><span class="plain">; </span>    <span class="comment">one of the three <code class="display"><span class="extract">*_SAY_PHRASE</span></code> values</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_running_on</span><span class="plain">; </span>    <span class="comment">ignore implied newlines in previous invocation</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_position</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">SSP_*</span></code> values above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_token_at</span><span class="plain">; </span>    <span class="comment">word number of say stream token name</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_closing_token_at</span><span class="plain">; </span>    <span class="comment">ditto for choice of ending</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_control_structure</span><span class="plain">; </span>    <span class="comment">one of the four <code class="display"><span class="extract">*_SAY_CS</span></code> values below</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase</span><span class="plain">; </span><span class="comment">one of the three <code class="display"><span class="extract">*_SAY_PHRASE</span></code> values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_running_on</span><span class="plain">; </span><span class="comment">ignore implied newlines in previous invocation</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_position</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">SSP_*</span></code> values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_token_at</span><span class="plain">; </span><span class="comment">word number of say stream token name</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_phrase_stream_closing_token_at</span><span class="plain">; </span><span class="comment">ditto for choice of ending</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">say_control_structure</span><span class="plain">; </span><span class="comment">one of the four <code class="display"><span class="extract">*_SAY_CS</span></code> values below</span>
     <span class="plain">} </span><span class="reserved">say_details</span><span class="plain">;</span>
 </pre>
 
@@ -275,11 +272,11 @@ are control structures.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_SAY_CS</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">IF_SAY_CS</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OTHERWISE_SAY_CS</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">OTHERWISE_IF_SAY_CS</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">END_IF_SAY_CS</span><span class="plain"> 4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_SAY_CS</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">IF_SAY_CS</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OTHERWISE_SAY_CS</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">OTHERWISE_IF_SAY_CS</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">END_IF_SAY_CS</span><span class="plain"> </span><span class="constant">4</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The say stream is the sequence of successive invocations in a single say,
 or in a piece of text with substitutions. Some say phrases are compound in that
@@ -291,27 +288,26 @@ they must occur in a given sequence.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SSP_NONE</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SSP_START</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SSP_MIDDLE</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SSP_END</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SSP_NONE</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SSP_START</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SSP_MIDDLE</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SSP_END</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Inline phrase definitions are used to implement what, in other languages,
 would be control-structure keywords, so inline phrases sometimes need bells,
 whistles and doodads which regular phrases don't.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inline_details</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">invoked_inline_not_as_call</span><span class="plain">; </span>    <span class="comment">if <code class="display"><span class="extract">FALSE</span></code>, none of the rest applies</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">invoked_inline_not_as_call</span><span class="plain">; </span><span class="comment">if <code class="display"><span class="extract">FALSE</span></code>, none of the rest applies</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">let_phrase</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_LET_PHRASE</span></code> values below</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">assignment_phrase</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">TRUE</span></code> if this has to be typechecked as an assignment</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arithmetical_operation</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-1</span></code>, or one of the <code class="display"><span class="extract">*_OPERATION</span></code> constants</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">let_phrase</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_LET_PHRASE</span></code> values below</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">assignment_phrase</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">TRUE</span></code> if this has to be typechecked as an assignment</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">arithmetical_operation</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">-1</span></code>, or one of the <code class="display"><span class="extract">*_OPERATION</span></code> constants</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">block_follows</span><span class="plain">; </span>    <span class="comment">for inline phrases only: followed by a begin... end block?</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">only_in_loop</span><span class="plain">; </span>    <span class="comment">if not null, the phrase can only be used in this block</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">block_follows</span><span class="plain">; </span><span class="comment">for inline phrases only: followed by a begin... end block?</span>
+        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">only_in_loop</span><span class="plain">; </span><span class="comment">if not null, the phrase can only be used in this block</span>
     <span class="plain">} </span><span class="reserved">inline_details</span><span class="plain">;</span>
 </pre>
 
@@ -324,28 +320,27 @@ whistles and doodads which regular phrases don't.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NOT_A_LET_PHRASE</span><span class="plain"> 0 </span>    <span class="comment">needs to be 0 so that <code class="display"><span class="extract">let_phrase</span></code> can be a C condition</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain"> 1 </span>    <span class="comment">the regular "let"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EQUATION_LET_PHRASE</span><span class="plain"> 2 </span>    <span class="comment">"let" inviting Inform to solve an equation</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOT_A_LET_PHRASE</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">needs to be 0 so that <code class="display"><span class="extract">let_phrase</span></code> can be a C condition</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">the regular "let"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EQUATION_LET_PHRASE</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">"let" inviting Inform to solve an equation</span>
 </pre>
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Creation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">ph_type_data</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">ph_type_data</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">;</span>
-        <span class="identifier">phtd</span><span class="element">.registration_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">registration_text</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
 
-        <span class="identifier">phtd</span><span class="element">.manner_of_return</span><span class="plain"> = </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">;</span>
-        <span class="identifier">phtd</span><span class="element">.return_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">manner_of_return</span><span class="plain"> = </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">return_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="identifier">phtd</span><span class="element">.no_words</span><span class="plain"> = 0;</span>
-        <span class="identifier">phtd</span><span class="element">.no_tokens</span><span class="plain"> = 0;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">no_words</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">no_tokens</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-        <span class="identifier">phtd</span><span class="element">.as_say</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new_say_details</span><span class="plain">();</span>
-        <span class="identifier">phtd</span><span class="element">.as_inline</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new_inline_details</span><span class="plain">();</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">as_say</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new_say_details</span><span class="plain">();</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::new_inline_details</span><span class="plain">();</span>
 
-        <span class="identifier">phtd</span><span class="element">.now_deprecated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">.</span><span class="element">now_deprecated</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -357,20 +352,19 @@ whistles and doodads which regular phrases don't.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>And the manner of return is set shortly after that:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::set_mor</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
-        <span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain"> = </span><span class="identifier">mor</span><span class="plain">;</span>
-        <span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">manner_of_return</span><span class="plain"> = </span><span class="identifier">mor</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain"> = </span><span class="identifier">K</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::get_mor</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">manner_of_return</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Phrases::TypeData::get_return_kind</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_CONDITION_MOR</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_CONDITION_MOR</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_truth_state</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -384,19 +378,18 @@ whistles and doodads which regular phrases don't.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Phrases::TypeData::describe_manner_of_return</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mor</span><span class="plain">, </span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">mor</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"no value resulting"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECIDES_VALUE_MOR</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">)) *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECIDES_NOTHING_MOR:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"no value resulting"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECIDES_VALUE_MOR:</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">) &amp;&amp; (</span><span class="identifier">K</span><span class="plain">)) *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">"a phrase to decide a value"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECIDES_CONDITION_MOR</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"a phrase to make a decision"</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECIDES_CONDITION_MOR:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"a phrase to make a decision"</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECIDES_NOTHING_AND_RETURNS_MOR:</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">"a phrase providing an outcome to a rulebook"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="string">"some phrase"</span><span class="plain">; </span>    <span class="comment">should never actually be needed</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="string">"some phrase"</span><span class="plain">; </span><span class="comment">should never actually be needed</span>
     <span class="plain">}</span>
 </pre>
 
@@ -438,7 +431,6 @@ in different circumstances at run-time.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">phrase (K, K) -&gt; nothing</span>
 </pre>
@@ -461,7 +453,6 @@ phrase as
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">phrase (K, K, K) -&gt; nothing</span>
 </pre>
@@ -471,13 +462,12 @@ rather than three arguments. (This is all a sort of poor man's second-order
 logic, since one argument is in effect a kind rather than a value.)
 </p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Phrases::TypeData::kind</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">argument_kinds</span><span class="plain">[</span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain"> = 0;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="identifier">argument_kinds</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">++] = </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.token_kind</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="identifier">argument_kinds</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">++] = </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">token_kind</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Phrases::TypeData::get_return_kind</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::function_kind</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">argument_kinds</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -489,7 +479,6 @@ logic, since one argument is in effect a kind rather than a value.)
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Whence:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::contains_variables</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
@@ -507,11 +496,10 @@ logic, since one argument is in effect a kind rather than a value.)
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>More specifically:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::tokens_contain_variable</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">v</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.token_kind</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Behaviour::involves_var</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">token_kind</span><span class="plain">, </span><span class="identifier">v</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -523,10 +511,9 @@ logic, since one argument is in effect a kind rather than a value.)
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. The tokens. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::get_no_tokens</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -536,12 +523,11 @@ logic, since one argument is in effect a kind rather than a value.)
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::index_of_token_creating_a_variable</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> -1;</span>
     <span class="plain">}</span>
@@ -557,12 +543,11 @@ and the same name metonymically referring to the value of the property for
 a given instance ("carrying capacity of the player", say).
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::preamble_requires_property_value</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.to_match</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">to_match</span><span class="plain">)</span>
                 <span class="plain">== </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -581,14 +566,13 @@ the procedure is to deprecate them in one major build and withdraw them
 in the next.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::deprecated</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;now_deprecated</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">now_deprecated</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::deprecate_phrase</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;now_deprecated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">now_deprecated</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -637,7 +621,6 @@ which has the kind:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">phrase (number, list of numbers) -&gt; nothing</span>
 </pre>
@@ -646,7 +629,6 @@ which has the kind:
 arguments, "number" and then "list of numbers", and creates local
 variables "new entry" and "L" with those kinds.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::into_stack_frame</span><span class="plain">(</span><span class="reserved">ph_stack_frame</span><span class="plain"> *</span><span class="identifier">phsf</span><span class="plain">,</span>
@@ -658,12 +640,12 @@ variables "new entry" and "L" with those kinds.
         <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">kind_in_this_compilation</span><span class="plain">, &amp;</span><span class="identifier">args</span><span class="plain">, &amp;</span><span class="identifier">ret</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">) != </span><span class="identifier">CON_TUPLE_ENTRY</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"bad tupling"</span><span class="plain">);</span>
             <span class="identifier">Kinds::binary_construction_material</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, &amp;</span><span class="identifier">K</span><span class="plain">, &amp;</span><span class="identifier">args</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first</span><span class="plain">) {</span>
-                <span class="functiontext">LocalVariables::add_call_parameter</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.token_name</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
+                <span class="functiontext">LocalVariables::add_call_parameter</span><span class="plain">(</span><span class="identifier">phsf</span><span class="plain">, </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">token_name</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="functiontext">LocalVariables::get_ith_parameter</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain">) </span><span class="functiontext">LocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">K</span><span class="plain">);</span>
@@ -682,7 +664,6 @@ variables "new entry" and "L" with those kinds.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Comparison of PHTDs. </b>This is used when sorting "To..." phrases in order of logical priority:
 see Phrases for the return codes.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::comparison</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd1</span><span class="plain">, </span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd2</span><span class="plain">) {</span>
@@ -723,8 +704,8 @@ see Phrases for the return codes.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fw1</span><span class="plain"> = </span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain"> - </span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fw2</span><span class="plain"> = </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain"> - </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fw1</span><span class="plain"> = </span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">no_words</span><span class="plain"> - </span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">fw2</span><span class="plain"> = </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">no_words</span><span class="plain"> - </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fw1</span><span class="plain"> &gt; </span><span class="identifier">fw2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fw1</span><span class="plain"> &lt; </span><span class="identifier">fw2</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
 </pre>
@@ -739,8 +720,8 @@ see Phrases for the return codes.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain"> &gt; </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain"> &lt; </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="identifier">no_tokens</span><span class="plain"> &gt; </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="identifier">no_tokens</span><span class="plain"> &lt; </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -773,17 +754,17 @@ We might for example be comparing these two:
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &gt;= </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">)</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">no_words</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="identifier">word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="identifier">word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &gt;= </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">)</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="identifier">word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">Wide::cmp</span><span class="plain">(</span>
-                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]),</span>
-                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]));</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &lt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
+                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]),</span>
+                    <span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">word_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]));</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -828,9 +809,9 @@ the other hand these are simply incomparable:
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">possibly_subschema</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">possibly_superschema</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain"> = </span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.to_match</span><span class="plain">;</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain"> = </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.to_match</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">no_tokens</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec1</span><span class="plain"> = </span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">to_match</span><span class="plain">;</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec2</span><span class="plain"> = </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">to_match</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">See if the ith token rules out being a sub- or superschema</span> <span class="cwebmacronumber">21.5.2</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">possibly_subschema</span><span class="plain">) || (</span><span class="identifier">possibly_superschema</span><span class="plain">))</span>
@@ -868,9 +849,9 @@ false positives in the case of kind variables, etc.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain"> != </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain">) ||</span>
-            <span class="plain">((</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">, </span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;return_kind</span><span class="plain">))))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">manner_of_return</span><span class="plain"> != </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">manner_of_return</span><span class="plain">) ||</span>
+            <span class="plain">((</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">, </span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">return_kind</span><span class="plain">))))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">CONFLICTED_PH</span><span class="plain">;</span>
 </pre>
 
@@ -898,18 +879,18 @@ variable" is more specific than "new variable", which isn't helpful.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> != </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> != </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)) {</span>
             <span class="identifier">possibly_superschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> != </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)) {</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> != </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> == </span><span class="constant">NEW_LOCAL_PT_CONSTRUCT</span><span class="plain">)) {</span>
             <span class="identifier">possibly_subschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">wont_mix</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Specifications::compare_specificity</span><span class="plain">(</span><span class="identifier">spec1</span><span class="plain">, </span><span class="identifier">spec2</span><span class="plain">, &amp;</span><span class="identifier">wont_mix</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wont_mix</span><span class="plain">) { </span><span class="identifier">possibly_subschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">possibly_superschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; }</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> &lt; 0) </span><span class="identifier">possibly_subschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> &gt; 0) </span><span class="identifier">possibly_superschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">possibly_subschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">possibly_superschema</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -921,73 +902,73 @@ variable" is more specific than "new variable", which isn't helpful.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NOT_A_SAY_PHRASE</span><span class="plain"> 0 </span>    <span class="comment">needs to be 0 so that <code class="display"><span class="extract">sd.say_phrase</span></code> can be a C condition</span>
-    <span class="definitionkeyword">define</span> <span class="constant">A_MISCELLANEOUS_SAY_PHRASE</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOT_A_SAY_PHRASE</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">needs to be 0 so that <code class="display"><span class="extract">sd.say_phrase</span></code> can be a C condition</span>
+    <span class="definitionkeyword">define</span> <span class="constant">A_MISCELLANEOUS_SAY_PHRASE</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">say_details</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::new_say_details</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain"> = </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="element">.say_phrase_running_on</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="element">.say_control_structure</span><span class="plain"> = </span><span class="constant">NO_SAY_CS</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="element">.say_phrase_stream_position</span><span class="plain"> = </span><span class="constant">SSP_NONE</span><span class="plain">;</span>
-        <span class="identifier">sd</span><span class="element">.say_phrase_stream_token_at</span><span class="plain"> = -1;</span>
-        <span class="identifier">sd</span><span class="element">.say_phrase_stream_closing_token_at</span><span class="plain"> = -1;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> = </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase_running_on</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_control_structure</span><span class="plain"> = </span><span class="constant">NO_SAY_CS</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase_stream_position</span><span class="plain"> = </span><span class="constant">SSP_NONE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase_stream_token_at</span><span class="plain"> = -1;</span>
+        <span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase_stream_closing_token_at</span><span class="plain"> = -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_say_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::make_sd</span><span class="plain">(</span><span class="reserved">say_details</span><span class="plain"> *</span><span class="identifier">sd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ro</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cs</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">at</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">) {</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase</span><span class="plain"> = </span><span class="constant">A_MISCELLANEOUS_SAY_PHRASE</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase</span><span class="plain"> = </span><span class="constant">A_MISCELLANEOUS_SAY_PHRASE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">first_say_made</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase</span><span class="plain"> = </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">;</span>
+            <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase</span><span class="plain"> = </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">;</span>
             <span class="identifier">first_say_made</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_running_on</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt;= 0) </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_control_structure</span><span class="plain"> = </span><span class="identifier">cs</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> &gt;= 0) </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_position</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> &gt;= 0) </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_token_at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cat</span><span class="plain"> &gt;= 0) </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_closing_token_at</span><span class="plain"> = </span><span class="identifier">cat</span><span class="plain">;</span>
+        <span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_running_on</span><span class="plain"> = </span><span class="identifier">ro</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cs</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_control_structure</span><span class="plain"> = </span><span class="identifier">cs</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_position</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_token_at</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cat</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_closing_token_at</span><span class="plain"> = </span><span class="identifier">cat</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::log_say_details</span><span class="plain">(</span><span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">) {</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">A_MISCELLANEOUS_SAY_PHRASE</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  A_MISCELLANEOUS_SAY_PHRASE\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  THE_PRIMORDIAL_SAY_PHRASE\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  &lt;invalid say phrase status&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="identifier">say_phrase</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOT_A_SAY_PHRASE:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">A_MISCELLANEOUS_SAY_PHRASE:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  A_MISCELLANEOUS_SAY_PHRASE\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">THE_PRIMORDIAL_SAY_PHRASE:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  THE_PRIMORDIAL_SAY_PHRASE\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  &lt;invalid say phrase status&gt;\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase_running_on</span><span class="plain">)</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  running on from previous say invocation without implied newline\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_control_structure</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NO_SAY_CS</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">IF_SAY_CS</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  IF_SAY_CS\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">END_IF_SAY_CS</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  END_IF_SAY_CS\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OTHERWISE_SAY_CS</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  OTHERWISE_SAY_CS\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">OTHERWISE_IF_SAY_CS</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  OTHERWISE_IF_SAY_CS\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  &lt;invalid say phrase status&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase_running_on</span><span class="plain">)</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  running on from previous say invocation without implied newline\n"</span><span class="plain">);</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="identifier">say_control_structure</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NO_SAY_CS:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IF_SAY_CS:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  IF_SAY_CS\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">END_IF_SAY_CS:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  END_IF_SAY_CS\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OTHERWISE_SAY_CS:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  OTHERWISE_SAY_CS\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OTHERWISE_IF_SAY_CS:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  OTHERWISE_IF_SAY_CS\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  &lt;invalid say phrase status&gt;\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_a_say_phrase</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_say.say_phrase</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ph</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_say</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_a_say_X_phrase</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_say.say_phrase</span><span class="plain"> == </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain"> == 2) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[1] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">as_say</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> == </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">no_words</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">word_sequence</span><span class="plain">[1] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_a_spare_say_X_phrase</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_say.say_phrase</span><span class="plain"> == </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;no_words</span><span class="plain"> == 2) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;word_sequence</span><span class="plain">[1] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">)) {</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;token_sequence</span><span class="plain">[0]</span><span class="element">.token_kind</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">as_say</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> == </span><span class="constant">NOT_A_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">no_words</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">word_sequence</span><span class="plain">[1] &lt; </span><span class="constant">MAX_TOKENS_PER_PHRASE</span><span class="plain">)) {</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">token_sequence</span><span class="plain">[0].</span><span class="element">token_kind</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -995,29 +976,29 @@ variable" is more specific than "new variable", which isn't helpful.
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_the_primordial_say</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_say.say_phrase</span><span class="plain"> == </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">as_say</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> == </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::get_say_data</span><span class="plain">(</span><span class="reserved">say_details</span><span class="plain"> *</span><span class="identifier">sd</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">say_cs</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">ssp_ctok</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">ssp_pos</span><span class="plain">) {</span>
-        <span class="plain">*</span><span class="identifier">say_cs</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_control_structure</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">ssp_tok</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_token_at</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">ssp_ctok</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_closing_token_at</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">ssp_pos</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-</span><span class="element">&gt;say_phrase_stream_position</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">say_cs</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_control_structure</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">ssp_tok</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_token_at</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">ssp_ctok</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_closing_token_at</span><span class="plain">;</span>
+        <span class="plain">*</span><span class="identifier">ssp_pos</span><span class="plain"> = </span><span class="identifier">sd</span><span class="plain">-&gt;</span><span class="element">say_phrase_stream_position</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::preface_for_say_HTML</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">paste_format</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain"> != </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> != </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) {</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PASTE_PHRASE_FORMAT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"["</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \</span><span class="plain">"</span><span class="string">["</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PASTE_PHRASE_FORMAT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"["</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INDEX_PHRASE_FORMAT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \"["</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PASTE_PHRASE_FORMAT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \</span><span class="plain">"</span><span class="string">\</span><span class="plain">"</span><span class="string">"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \</span><span class="plain">"</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PASTE_PHRASE_FORMAT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \"\""</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INDEX_PHRASE_FORMAT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"say \""</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -1026,24 +1007,24 @@ variable" is more specific than "new variable", which isn't helpful.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::epilogue_for_say_HTML</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">say_details</span><span class="plain"> </span><span class="identifier">sd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">paste_format</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="element">.say_phrase</span><span class="plain"> != </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sd</span><span class="plain">.</span><span class="element">say_phrase</span><span class="plain"> != </span><span class="constant">THE_PRIMORDIAL_SAY_PHRASE</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain"> == </span><span class="constant">PASTE_PHRASE_FORMAT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"]"</span><span class="plain">);</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain"> == </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"]\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain"> == </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"]\""</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain"> == </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">paste_format</span><span class="plain"> == </span><span class="constant">INDEX_PHRASE_FORMAT</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\""</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::ssp_matches</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_pos</span><span class="plain">,</span>
         <span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_tok</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_say.say_phrase_stream_token_at</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_pos</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_say.say_phrase_stream_position</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_tok</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">as_say</span><span class="plain">.</span><span class="element">say_phrase_stream_token_at</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_pos</span><span class="plain"> = </span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">as_say</span><span class="plain">.</span><span class="element">say_phrase_stream_position</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_tok</span><span class="plain"> == -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">this_pos</span><span class="plain"> != </span><span class="identifier">list_pos</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">compare_words</span><span class="plain">(</span><span class="identifier">ssp_tok</span><span class="plain">, </span><span class="identifier">this_tok</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="plain">*</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;registration_text</span><span class="plain">); </span>    <span class="comment">to remove the word "say"</span>
+        <span class="plain">*</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">registration_text</span><span class="plain">); </span><span class="comment">to remove the word "say"</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1079,23 +1060,23 @@ by than name.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_BLOCK_FOLLOWS</span><span class="plain"> 0 				</span>    <span class="comment">this needs to be 0, to make if conditions work</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MISCELLANEOUS_BLOCK_FOLLOWS</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONDITIONAL_BLOCK_FOLLOWS</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LOOP_BODY_BLOCK_FOLLOWS</span><span class="plain"> 3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_BLOCK_FOLLOWS</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> 				</span><span class="comment">this needs to be 0, to make if conditions work</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MISCELLANEOUS_BLOCK_FOLLOWS</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONDITIONAL_BLOCK_FOLLOWS</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LOOP_BODY_BLOCK_FOLLOWS</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">inline_details</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::new_inline_details</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inline_details</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">;</span>
 
-        <span class="identifier">id</span><span class="element">.invoked_inline_not_as_call</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">invoked_inline_not_as_call</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 
-        <span class="identifier">id</span><span class="element">.let_phrase</span><span class="plain"> = </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="element">.block_follows</span><span class="plain"> = </span><span class="constant">NO_BLOCK_FOLLOWS</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="element">.only_in_loop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="element">.assignment_phrase</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="element">.arithmetical_operation</span><span class="plain"> = -1;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">let_phrase</span><span class="plain"> = </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">block_follows</span><span class="plain"> = </span><span class="constant">NO_BLOCK_FOLLOWS</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">assignment_phrase</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">.</span><span class="element">arithmetical_operation</span><span class="plain"> = -1;</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1107,18 +1088,17 @@ by than name.
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b></p>
 
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_lets_made</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_lets_made</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::make_id</span><span class="plain">(</span><span class="reserved">inline_details</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">op</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">assgn</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">let</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">blk</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">only_in</span><span class="plain">) {</span>
-        <span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;arithmetical_operation</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;assignment_phrase</span><span class="plain"> = </span><span class="identifier">assgn</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">let</span><span class="plain"> == </span><span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">no_lets_made</span><span class="plain">++ &gt;= 3)) </span><span class="identifier">let</span><span class="plain"> = </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;let_phrase</span><span class="plain"> = </span><span class="identifier">let</span><span class="plain">;</span>
-        <span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;block_follows</span><span class="plain"> = </span><span class="identifier">blk</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">only_in</span><span class="plain"> == -1) </span><span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;only_in_loop</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"loop"</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">only_in</span><span class="plain"> &gt; 0) </span><span class="identifier">id</span><span class="plain">-</span><span class="element">&gt;only_in_loop</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">only_in</span><span class="plain">);</span>
+        <span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">arithmetical_operation</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">assignment_phrase</span><span class="plain"> = </span><span class="identifier">assgn</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">let</span><span class="plain"> == </span><span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">no_lets_made</span><span class="plain">++ &gt;= </span><span class="constant">3</span><span class="plain">)) </span><span class="identifier">let</span><span class="plain"> = </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">let_phrase</span><span class="plain"> = </span><span class="identifier">let</span><span class="plain">;</span>
+        <span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">block_follows</span><span class="plain"> = </span><span class="identifier">blk</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">only_in</span><span class="plain"> == -1) </span><span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">only_in_loop</span><span class="plain"> = </span><span class="identifier">L</span><span class="string">"loop"</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">only_in</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">id</span><span class="plain">-&gt;</span><span class="element">only_in_loop</span><span class="plain"> = </span><span class="identifier">Lexer::word_text</span><span class="plain">(</span><span class="identifier">only_in</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1128,15 +1108,14 @@ by than name.
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::log_inline_details</span><span class="plain">(</span><span class="reserved">inline_details</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="element">.block_follows</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  block follows\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="element">.let_phrase</span><span class="plain"> != </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  let phrase (%d)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="element">.let_phrase</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="element">.only_in_loop</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  may only be used in a %w body\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id</span><span class="element">.only_in_loop</span><span class="plain">);</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="element">.invoked_inline_not_as_call</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  invoked inline\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  invoked by I6 function call\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">.</span><span class="element">block_follows</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  block follows\n"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">.</span><span class="element">let_phrase</span><span class="plain"> != </span><span class="constant">NOT_A_LET_PHRASE</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  let phrase (%d)\n"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">.</span><span class="element">let_phrase</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  may only be used in a %w body\n"</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain">);</span>
+        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">.</span><span class="identifier">invoked_inline_not_as_call</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRUE:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  invoked inline\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FALSE:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  invoked by I6 function call\n"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -1147,14 +1126,13 @@ by than name.
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::make_inline</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_inline.invoked_inline_not_as_call</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">invoked_inline_not_as_call</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::invoked_inline</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.invoked_inline_not_as_call</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">invoked_inline_not_as_call</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1166,39 +1144,38 @@ by than name.
 
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_a_let_assignment</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.let_phrase</span><span class="plain"> == </span><span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">let_phrase</span><span class="plain"> == </span><span class="constant">ASSIGNMENT_LET_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_a_let_equation</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.let_phrase</span><span class="plain"> == </span><span class="constant">EQUATION_LET_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">let_phrase</span><span class="plain"> == </span><span class="constant">EQUATION_LET_PHRASE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::arithmetic_operation</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.arithmetical_operation</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">arithmetical_operation</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_arithmetic_phrase</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::arithmetic_operation</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) &gt;= 0) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::arithmetic_operation</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Phrases::TypeData::arithmetic_operation</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) &lt; </span><span class="identifier">NO_OPERATIONS</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::is_assignment_phrase</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.assignment_phrase</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">assignment_phrase</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Phrases::TypeData::only_in</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.only_in_loop</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::block_follows</span><span class="plain">(</span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.as_inline.block_follows</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="identifier">type_data</span><span class="plain">.</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">block_follows</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1226,11 +1203,10 @@ determined on dimensional grounds. (A number times a length is another
 length, but a number plus a length is an error, and so on.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::return_decided_dimensionally</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_VALUE_MOR</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-</span><span class="element">&gt;as_inline.arithmetical_operation</span><span class="plain"> &gt;= 0)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="identifier">manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_VALUE_MOR</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">phtd</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">arithmetical_operation</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1246,12 +1222,11 @@ any chance of ambiguities arising due to unwise phrase definitions in the
 source text.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Phrases::TypeData::inline_type_data_comparison</span><span class="plain">(</span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd1</span><span class="plain">, </span><span class="reserved">ph_type_data</span><span class="plain"> *</span><span class="identifier">phtd2</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;as_inline.only_in_loop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;as_inline.only_in_loop</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">BEFORE_PH</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd2</span><span class="plain">-</span><span class="element">&gt;as_inline.only_in_loop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd1</span><span class="plain">-</span><span class="element">&gt;as_inline.only_in_loop</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">phtd2</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">phtd1</span><span class="plain">-&gt;</span><span class="element">as_inline</span><span class="plain">.</span><span class="element">only_in_loop</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">))</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">AFTER_PH</span><span class="plain">;</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">EQUAL_PH</span><span class="plain">;</span>

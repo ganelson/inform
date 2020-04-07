@@ -67,14 +67,13 @@ which table will store the property values at run-time, or else is left as
 <code class="display"><span class="extract">-1, 0</span></code> if the property values aren't living inside a table structure.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">property_of_value_storage</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">storage_table_iname</span><span class="plain">; </span>    <span class="comment">for the relevant column array</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">storage_table_iname</span><span class="plain">; </span><span class="comment">for the relevant column array</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">property_of_value_storage</span><span class="plain">;</span>
 
-    <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="identifier">latest_povs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">see below</span>
+    <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="identifier">latest_povs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">see below</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -88,11 +87,10 @@ calls this routine to notify us of where the next batch of properties will be,
 and we mark them down in the most recently created property permission.
 </p>
 
-
 <pre class="display">
     <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="functiontext">Properties::OfValues::get_storage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="identifier">povs</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">property_of_value_storage</span><span class="plain">);</span>
-        <span class="identifier">povs</span><span class="plain">-</span><span class="element">&gt;storage_table_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">povs</span><span class="plain">-&gt;</span><span class="element">storage_table_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">latest_povs</span><span class="plain"> = </span><span class="identifier">povs</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">povs</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -100,7 +98,7 @@ and we mark them down in the most recently created property permission.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::OfValues::pp_set_table_storage</span><span class="plain">(</span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">store</span><span class="plain">) {</span>
     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">store</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"ugh"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_povs</span><span class="plain">) {</span>
-            <span class="identifier">latest_povs</span><span class="plain">-</span><span class="element">&gt;storage_table_iname</span><span class="plain"> = </span><span class="identifier">store</span><span class="plain">;</span>
+            <span class="identifier">latest_povs</span><span class="plain">-&gt;</span><span class="element">storage_table_iname</span><span class="plain"> = </span><span class="identifier">store</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -115,12 +113,11 @@ and we mark them down in the most recently created property permission.
 the property-permission symbol accordingly:
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Properties::OfValues::annotate_table_storage</span><span class="plain">(</span><span class="reserved">property_permission</span><span class="plain"> *</span><span class="identifier">pp</span><span class="plain">) {</span>
         <span class="reserved">property_of_value_storage</span><span class="plain"> *</span><span class="identifier">povs</span><span class="plain"> =</span>
             <span class="identifier">RETRIEVE_POINTER_property_of_value_storage</span><span class="plain">(</span><span class="functiontext">World::Permissions::get_storage_data</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">));</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">povs</span><span class="plain">-</span><span class="element">&gt;storage_table_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">povs</span><span class="plain">-&gt;</span><span class="element">storage_table_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -144,7 +141,6 @@ instead in a flat array, which is how it will want to handle properties of
 values. There are ways we could fix this, but property lookup needs to be fast,
 and it seems best to reject the extra complexity needed.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Properties::OfValues::check_allowable</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -173,7 +169,7 @@ and it seems best to reject the extra complexity needed.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == 0) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Properties::has_been_translated</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">))) {</span>
             <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="functiontext">World::Permissions::where_granted</span><span class="plain">(</span><span class="identifier">pp</span><span class="plain">);</span>

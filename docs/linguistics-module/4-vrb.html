@@ -70,7 +70,6 @@ interacting subject phrases rather than a subject and an object: in English,
 to the first-created verb marked as copular.
 </p>
 
-
 <pre class="display">
     <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">copular_verb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -87,7 +86,6 @@ come from the same instance of the following structure; this essentially
 defines a verb as a combination of its inflected forms with its possible
 usages in a sentence.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_identity</span><span class="plain"> {</span>
@@ -117,18 +115,17 @@ what we'll call "operator verbs", where a mathematical operator is used
 instead of a word: for example, the <code class="display"><span class="extract">&lt;=</span></code> sign is such a verb in Inform.
 </p>
 
-
 <pre class="display">
     <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="functiontext">Verbs::new_verb</span><span class="plain">(</span><span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cop</span><span class="plain">) {</span>
         <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain">);</span>
-        <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain"> = </span><span class="identifier">vc</span><span class="plain">;</span>
-        <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain"> = </span><span class="identifier">vc</span><span class="plain">;</span>
+        <span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">verb_package</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">cop</span><span class="plain">) &amp;&amp; (</span><span class="identifier">copular_verb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vc</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">WordAssemblages::nonempty</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">))) </span><span class="identifier">copular_verb</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"New verb: $w\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">vi</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"New verb: $w\n"</span><span class="plain">, </span><span class="identifier">vi</span><span class="plain">);</span>
         <span class="functiontext">Verbs::add_form</span><span class="plain">(</span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="functiontext">VerbMeanings::meaninglessness</span><span class="plain">(), </span><span class="constant">SVO_FS_BIT</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vi</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -138,7 +135,7 @@ instead of a word: for example, the <code class="display"><span class="extract">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;no-vi&gt;"</span><span class="plain">); }</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"v="</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%A"</span><span class="plain">, &amp;(</span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%A"</span><span class="plain">, &amp;(</span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">));</span>
             <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;none&gt;"</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%d)"</span><span class="plain">, </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -153,14 +150,13 @@ instead of a word: for example, the <code class="display"><span class="extract">
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Package. </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="identifier">package_request</span><span class="plain"> *</span><span class="functiontext">Verbs::verb_package</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no verb identity"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::package</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">), </span><span class="identifier">VERBS_HAP</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;verb_package</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">verb_package</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">verb_package</span><span class="plain"> = </span><span class="identifier">Hierarchy::package</span><span class="plain">(</span><span class="identifier">Modules::find</span><span class="plain">(</span><span class="identifier">where</span><span class="plain">), </span><span class="identifier">VERBS_HAP</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="identifier">verb_package</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
@@ -173,7 +169,6 @@ instead of a word: for example, the <code class="display"><span class="extract">
 only by symbols such as <code class="display"><span class="extract">&lt;=</span></code>. As infix operators, they mimic SVO sentence
 structures.
 </p>
-
 
 <pre class="display">
     <span class="reserved">verb_identity</span><span class="plain"> *</span><span class="functiontext">Verbs::new_operator_verb</span><span class="plain">(</span><span class="reserved">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">) {</span>
@@ -217,32 +212,31 @@ form usages can be legal for the same form, this is a bitmap:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SVO_FS_BIT</span><span class="plain"> 			1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VO_FS_BIT</span><span class="plain">			2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SVOO_FS_BIT</span><span class="plain">			4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VOO_FS_BIT</span><span class="plain">			8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SVO_FS_BIT</span><span class="plain"> 			</span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VO_FS_BIT</span><span class="plain">			</span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SVOO_FS_BIT</span><span class="plain">			</span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VOO_FS_BIT</span><span class="plain">			</span><span class="constant">8</span>
 </pre>
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>So here's the verb form:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_form</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">underlying_verb</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">preposition</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">second_clause_preposition</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form_structures</span><span class="plain">; </span>    <span class="comment">bitmap of <code class="display"><span class="extract">*_FS_BIT</span></code> values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form_structures</span><span class="plain">; </span><span class="comment">bitmap of <code class="display"><span class="extract">*_FS_BIT</span></code> values</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">vf_iname</span><span class="plain">; </span>    <span class="comment">routine to conjugate this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">vf_iname</span><span class="plain">; </span><span class="comment">routine to conjugate this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">where_vf_created</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">infinitive_reference_text</span><span class="plain">; </span>    <span class="comment">e.g. "translate into"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">pos_reference_text</span><span class="plain">; </span>    <span class="comment">e.g. "translate into"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">neg_reference_text</span><span class="plain">; </span>    <span class="comment">e.g. "do not translate into"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">infinitive_reference_text</span><span class="plain">; </span><span class="comment">e.g. "translate into"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">pos_reference_text</span><span class="plain">; </span><span class="comment">e.g. "translate into"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">neg_reference_text</span><span class="plain">; </span><span class="comment">e.g. "do not translate into"</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">list_of_senses</span><span class="plain">;</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">next_form</span><span class="plain">; </span>    <span class="comment">within the linked list for the verb</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">next_form</span><span class="plain">; </span><span class="comment">within the linked list for the verb</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">verb_form</span><span class="plain">;</span>
 </pre>
@@ -261,11 +255,10 @@ by looking at X and Y.)
 can be joined into a linked list. Verb meanings are described elsewhere.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_sense</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">next_sense</span><span class="plain">; </span>    <span class="comment">within the linked list for the verb form</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">next_sense</span><span class="plain">; </span><span class="comment">within the linked list for the verb form</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">verb_sense</span><span class="plain">;</span>
 </pre>
@@ -278,12 +271,11 @@ can be joined into a linked list. Verb meanings are described elsewhere.
 of verb and two prepositions:
 </p>
 
-
 <pre class="display">
     <span class="reserved">verb_form</span><span class="plain"> *</span><span class="functiontext">Verbs::find_form</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">second_prep</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vi</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain"> == </span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;second_clause_preposition</span><span class="plain"> == </span><span class="identifier">second_prep</span><span class="plain">))</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain">; </span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">)</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">preposition</span><span class="plain"> == </span><span class="identifier">prep</span><span class="plain">) &amp;&amp; (</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">second_clause_preposition</span><span class="plain"> == </span><span class="identifier">second_prep</span><span class="plain">))</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -296,12 +288,11 @@ of verb and two prepositions:
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And here's how we add them.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Verbs::add_form</span><span class="plain">(</span><span class="reserved">verb_identity</span><span class="plain"> *</span><span class="identifier">vi</span><span class="plain">, </span><span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">,</span>
         <span class="reserved">preposition_identity</span><span class="plain"> *</span><span class="identifier">second_prep</span><span class="plain">, </span><span class="reserved">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">form_structs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"  Adding form: $w + $p + $p = $y\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">VERB_FORMS</span><span class="plain">, </span><span class="string">"  Adding form: $w + $p + $p = $y\n"</span><span class="plain">,</span>
                 <span class="identifier">vi</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">, &amp;</span><span class="identifier">vm</span><span class="plain">);</span>
 
         <span class="functiontext">VerbMeanings::set_where_assigned</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
@@ -311,9 +302,9 @@ of verb and two prepositions:
         <span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Find or create the verb form structure for this combination</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;form_structures</span><span class="plain"> = ((</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;form_structures</span><span class="plain">) | </span><span class="identifier">form_structs</span><span class="plain">);</span>
+        <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">form_structures</span><span class="plain"> = ((</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">form_structures</span><span class="plain">) | </span><span class="identifier">form_structs</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;</span><span class="identifier">vm</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Add this meaning as a new sense of the verb form</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -331,15 +322,15 @@ of verb and two prepositions:
         <span class="identifier">vf</span><span class="plain"> = </span><span class="functiontext">Verbs::find_form</span><span class="plain">(</span><span class="identifier">vi</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">vf</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">verb_form</span><span class="plain">);</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;underlying_verb</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain"> = </span><span class="identifier">prep</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;second_clause_preposition</span><span class="plain"> = </span><span class="identifier">second_prep</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;form_structures</span><span class="plain"> = 0;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">underlying_verb</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">preposition</span><span class="plain"> = </span><span class="identifier">prep</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">second_clause_preposition</span><span class="plain"> = </span><span class="identifier">second_prep</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">form_structures</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;vf_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;where_vf_created</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">vf_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">where_vf_created</span><span class="plain"> = </span><span class="identifier">current_sentence</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">endif</span>
             &lt;<span class="cwebmacro">Compose the reference texts for the new form</span> <span class="cwebmacronumber">12.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Insert the new form into the list of forms for this verb</span> <span class="cwebmacronumber">12.1.2</span>&gt;<span class="plain">;</span>
@@ -361,32 +352,32 @@ in a canonical verbal form. For example, "translate into <code class="display"><
 
 
 <pre class="displaydefn">
-        <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;conjugation</span><span class="plain">;</span>
+        <span class="identifier">verb_conjugation</span><span class="plain"> *</span><span class="identifier">vc</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">conjugation</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vc</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">VerbUsages::adaptive_person</span><span class="plain">(</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">defined_in</span><span class="plain">);</span>
             <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">we_form</span><span class="plain"> = (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][0][</span><span class="identifier">p</span><span class="plain">]);</span>
             <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">we_dont_form</span><span class="plain"> = (</span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">tabulations</span><span class="plain">[</span><span class="identifier">ACTIVE_MOOD</span><span class="plain">].</span><span class="identifier">vc_text</span><span class="plain">[</span><span class="identifier">IS_TENSE</span><span class="plain">][1][</span><span class="identifier">p</span><span class="plain">]);</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain"> = </span><span class="identifier">we_form</span><span class="plain">;</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain"> = </span><span class="identifier">we_dont_form</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">vc</span><span class="plain">-&gt;</span><span class="identifier">infinitive</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain"> = </span><span class="identifier">we_form</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain"> = </span><span class="identifier">we_dont_form</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prep</span><span class="plain">) {</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">second_prep</span><span class="plain">) {</span>
                 <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">plus</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_1</span><span class="plain">(</span><span class="identifier">PLUS_V</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
-                <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-</span><span class="element">&gt;prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain">, </span><span class="identifier">plus</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
+                <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::join</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain">, </span><span class="identifier">second_prep</span><span class="plain">-&gt;</span><span class="element">prep_text</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">infinitive_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">pos_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">neg_reference_text</span><span class="plain"> = </span><span class="identifier">WordAssemblages::new_assemblage</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -404,16 +395,16 @@ in a canonical verbal form. For example, "translate into <code class="display"><
 
 
 <pre class="displaydefn">
-        <span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">evf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">evf</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">evf</span><span class="plain">, </span><span class="identifier">evf</span><span class="plain"> = </span><span class="identifier">evf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Prepositions::length</span><span class="plain">(</span><span class="identifier">prep</span><span class="plain">) &gt; </span><span class="functiontext">Prepositions::length</span><span class="plain">(</span><span class="identifier">evf</span><span class="plain">-</span><span class="element">&gt;preposition</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">evf</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">evf</span><span class="plain">; </span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">evf</span><span class="plain">, </span><span class="identifier">evf</span><span class="plain"> = </span><span class="identifier">evf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Prepositions::length</span><span class="plain">(</span><span class="identifier">prep</span><span class="plain">) &gt; </span><span class="functiontext">Prepositions::length</span><span class="plain">(</span><span class="identifier">evf</span><span class="plain">-&gt;</span><span class="element">preposition</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain">;</span>
-            <span class="identifier">vi</span><span class="plain">-</span><span class="element">&gt;list_of_forms</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain"> = </span><span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain">;</span>
+            <span class="identifier">vi</span><span class="plain">-&gt;</span><span class="element">list_of_forms</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain">;</span>
-            <span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_form</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">;</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain">;</span>
+            <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">next_form</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -433,15 +424,15 @@ we overwrite that with the new (presumably meaningful) one.
 
 
 <pre class="displaydefn">
-        <span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain">, *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">vs</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">))) { </span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain"> = </span><span class="identifier">vm</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
-            <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;next_sense</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbMeanings::is_meaningless</span><span class="plain">(&amp;(</span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">))) { </span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain"> = </span><span class="identifier">vm</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
+            <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">next_sense</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vs</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">vs</span><span class="plain"> = </span><span class="functiontext">Verbs::new_sense</span><span class="plain">(</span><span class="identifier">vm</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">prev</span><span class="plain">-</span><span class="element">&gt;next_sense</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">;</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="identifier">next_sense</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -451,16 +442,15 @@ we overwrite that with the new (presumably meaningful) one.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">Verbs::form_iname</span><span class="plain">(</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;vf_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Verbs::verb_package</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;underlying_verb</span><span class="plain">, </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;where_vf_created</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">vf_iname</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Verbs::verb_package</span><span class="plain">(</span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">underlying_verb</span><span class="plain">, </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">where_vf_created</span><span class="plain">);</span>
             <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain"> = </span><span class="identifier">Hierarchy::package_within</span><span class="plain">(</span><span class="identifier">VERB_FORMS_HAP</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">);</span>
-            <span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;vf_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">FORM_FN_HL</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">);</span>
+            <span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">vf_iname</span><span class="plain"> = </span><span class="identifier">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="identifier">FORM_FN_HL</span><span class="plain">, </span><span class="identifier">R2</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;vf_iname</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="identifier">vf_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
@@ -472,12 +462,11 @@ we overwrite that with the new (presumably meaningful) one.
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Where:
 </p>
 
-
 <pre class="display">
     <span class="reserved">verb_sense</span><span class="plain"> *</span><span class="functiontext">Verbs::new_sense</span><span class="plain">(</span><span class="reserved">verb_meaning</span><span class="plain"> </span><span class="identifier">vm</span><span class="plain">) {</span>
         <span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">verb_sense</span><span class="plain">);</span>
-        <span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain"> = </span><span class="identifier">vm</span><span class="plain">;</span>
-        <span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;next_sense</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain"> = </span><span class="identifier">vm</span><span class="plain">;</span>
+        <span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">next_sense</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">vs</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -489,10 +478,10 @@ we overwrite that with the new (presumably meaningful) one.
 
     <span class="reserved">verb_meaning</span><span class="plain"> *</span><span class="functiontext">Verbs::regular_meaning_from_form</span><span class="plain">(</span><span class="reserved">verb_form</span><span class="plain"> *</span><span class="identifier">vf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vf</span><span class="plain">)</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-</span><span class="element">&gt;list_of_senses</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;next_sense</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rev</span><span class="plain"> = 0;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbMeanings::get_special_meaning</span><span class="plain">(&amp;(</span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">), &amp;</span><span class="identifier">rev</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)</span>
-                    <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">vs</span><span class="plain">-</span><span class="element">&gt;vm</span><span class="plain">);</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">verb_sense</span><span class="plain"> *</span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vf</span><span class="plain">-&gt;</span><span class="element">list_of_senses</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain">; </span><span class="identifier">vs</span><span class="plain"> = </span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">next_sense</span><span class="plain">) {</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rev</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VerbMeanings::get_special_meaning</span><span class="plain">(&amp;(</span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">), &amp;</span><span class="identifier">rev</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">)</span>
+                    <span class="reserved">return</span><span class="plain"> &amp;(</span><span class="identifier">vs</span><span class="plain">-&gt;</span><span class="element">vm</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>

@@ -97,7 +97,6 @@ and an operand; for instance,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">i6-printing-routine-actions:DA_Number</span>
 </pre>
@@ -107,31 +106,30 @@ and an operand; for instance,
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NO_KCA</span><span class="plain"> -1 </span>    <span class="comment">there's no operand</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BOOLEAN_KCA</span><span class="plain"> 1 </span>    <span class="comment">must be <code class="display"><span class="extract">yes</span></code> or <code class="display"><span class="extract">no</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">CCM_KCA</span><span class="plain"> 2 </span>    <span class="comment">a constant compilation method</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TEXT_KCA</span><span class="plain"> 3 </span>    <span class="comment">any text (no quotation marks or other delimiters are used)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">VOCABULARY_KCA</span><span class="plain"> 4 </span>    <span class="comment">any single word</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NUMERIC_KCA</span><span class="plain"> 5 </span>    <span class="comment">any decimal number</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CONSTRUCTOR_KCA</span><span class="plain"> 6 </span>    <span class="comment">any valid kind number, such as "number"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TEMPLATE_KCA</span><span class="plain"> 7 </span>    <span class="comment">the name of a template whose definition is given in the file</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MACRO_KCA</span><span class="plain"> 8 </span>    <span class="comment">the name of a macro whose definition is given in the file</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NO_KCA</span><span class="plain"> -1 </span><span class="comment">there's no operand</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BOOLEAN_KCA</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">must be <code class="display"><span class="extract">yes</span></code> or <code class="display"><span class="extract">no</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">CCM_KCA</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">a constant compilation method</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TEXT_KCA</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">any text (no quotation marks or other delimiters are used)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">VOCABULARY_KCA</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="comment">any single word</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NUMERIC_KCA</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">any decimal number</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CONSTRUCTOR_KCA</span><span class="plain"> </span><span class="constant">6</span><span class="plain"> </span><span class="comment">any valid kind number, such as "number"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TEMPLATE_KCA</span><span class="plain"> </span><span class="constant">7</span><span class="plain"> </span><span class="comment">the name of a template whose definition is given in the file</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MACRO_KCA</span><span class="plain"> </span><span class="constant">8</span><span class="plain"> </span><span class="comment">the name of a macro whose definition is given in the file</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>When processing a command, we parse it into one of the following structures:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">single_kind_command</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_command_definition</span><span class="plain"> *</span><span class="identifier">which_kind_command</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">boolean_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">numeric_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">textual_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ccm_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">vocabulary_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">constructor_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">template_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">macro_argument</span><span class="plain">; </span>    <span class="comment">where appropriate</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">boolean_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">numeric_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">textual_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ccm_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">vocabulary_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">constructor_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">template_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">macro_argument</span><span class="plain">; </span><span class="comment">where appropriate</span>
     <span class="plain">} </span><span class="reserved">single_kind_command</span><span class="plain">;</span>
 </pre>
 
@@ -145,7 +143,6 @@ when we write
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">cast:RULEBOOK_TY</span>
 </pre>
@@ -156,11 +153,10 @@ in the definition block, so we need somewhere to store details, and the
 following structure provides an entry in a linked list.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor_casting_rule</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">cast_from_kind_unparsed</span><span class="plain">; </span>    <span class="comment">to the one which has the rule</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">cast_from_kind</span><span class="plain">; </span>    <span class="comment">to the one which has the rule</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">cast_from_kind_unparsed</span><span class="plain">; </span><span class="comment">to the one which has the rule</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">cast_from_kind</span><span class="plain">; </span><span class="comment">to the one which has the rule</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor_casting_rule</span><span class="plain"> *</span><span class="identifier">next_casting_rule</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">kind_constructor_casting_rule</span><span class="plain">;</span>
 </pre>
@@ -172,7 +168,6 @@ following structure provides an entry in a linked list.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this is the analogous structure for giving I6 schemas to compare
 data of two different kinds:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor_comparison_schema</span><span class="plain"> {</span>
@@ -191,7 +186,6 @@ data of two different kinds:
 data of two different kinds:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor_instance</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">instance_of_this_unparsed</span><span class="plain">;</span>
@@ -206,7 +200,6 @@ data of two different kinds:
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And, to cut to the chase, here is the complete table of commands:
 </p>
-
 
 <pre class="display">
     <span class="reserved">kind_command_definition</span><span class="plain"> </span><span class="identifier">table_of_kind_commands</span><span class="plain">[] = {</span>
@@ -266,7 +259,6 @@ data of two different kinds:
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Where each legal command is defined with a block like so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_command_definition</span><span class="plain"> {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text_of_command</span><span class="plain">;</span>
@@ -282,16 +274,15 @@ data of two different kinds:
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Macros and templates have their definitions stored in structures thus:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_definition</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">template_name</span><span class="plain">; </span>    <span class="comment">including the asterisk, e.g., <code class="display"><span class="extract">"*PRINTING-ROUTINE"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">template_name</span><span class="plain">; </span><span class="comment">including the asterisk, e.g., <code class="display"><span class="extract">"*PRINTING-ROUTINE"</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">template_text</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">kind_template_definition</span><span class="plain">;</span>
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_macro_definition</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">kind_macro_name</span><span class="plain">; </span>    <span class="comment">including the sharp, e.g., <code class="display"><span class="extract">"#UNIT"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">kind_macro_name</span><span class="plain">; </span><span class="comment">including the sharp, e.g., <code class="display"><span class="extract">"#UNIT"</span></code></span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_macro_line_count</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">single_kind_command</span><span class="plain"> </span><span class="identifier">kind_macro_line</span><span class="plain">[</span><span class="constant">MAX_KIND_MACRO_LENGTH</span><span class="plain">];</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -309,11 +300,10 @@ later on. (We do this because kind definitions are read very early on
 in Inform's run, whereas I7 source text can only be lexed later.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_obligation</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">remembered_template</span><span class="plain">; </span>    <span class="comment">I7 source to insert...</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">remembered_constructor</span><span class="plain">; </span>    <span class="comment">...concerning this kind</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">remembered_template</span><span class="plain">; </span><span class="comment">I7 source to insert...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">remembered_constructor</span><span class="plain">; </span><span class="comment">...concerning this kind</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">kind_template_obligation</span><span class="plain">;</span>
 </pre>
@@ -346,10 +336,9 @@ errors or generate I6 code which fails to compile through I6.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_MACRO_LENGTH</span><span class="plain"> 20 </span>    <span class="comment">maximum number of commands in any one macro</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_KIND_MACRO_LENGTH</span><span class="plain"> </span><span class="constant">20</span><span class="plain"> </span><span class="comment">maximum number of commands in any one macro</span>
 </pre>
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Setting up the interpreter. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -371,7 +360,6 @@ they often need to contain I7 phrase definitions, where lines end with
 colons.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">constructor_described</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -384,7 +372,7 @@ colons.)
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_last_char</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">) == </span><span class="character">':'</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Interpreter::recording_a_kind_macro</span><span class="plain">()) </span><span class="functiontext">Kinds::Interpreter::end_kind_macro</span><span class="plain">();</span>
-            <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">); </span>    <span class="comment">remove the terminal colon</span>
+            <span class="identifier">Str::delete_last_character</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">); </span><span class="comment">remove the terminal colon</span>
             &lt;<span class="cwebmacro">Deal with the heading at the top of a kind command block</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -439,7 +427,6 @@ colons.)
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Parsing single kind commands. </b>Each command is read in as text, parsed and stored into a modest structure.
 </p>
 
-
 <pre class="display">
     <span class="reserved">single_kind_command</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::parse_kind_command</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">whole_command</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
@@ -451,15 +438,15 @@ colons.)
         &lt;<span class="cwebmacro">Initialise the STC to a blank command</span> <span class="cwebmacronumber">15.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Identify the command being used</span> <span class="cwebmacronumber">15.3</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain">-</span><span class="element">&gt;operand_type</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">BOOLEAN_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a boolean argument for a kind command</span> <span class="cwebmacronumber">15.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CCM_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a CCM argument for a kind command</span> <span class="cwebmacronumber">15.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CONSTRUCTOR_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a constructor-name argument for a kind command</span> <span class="cwebmacronumber">15.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">MACRO_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a macro name argument for a kind command</span> <span class="cwebmacronumber">15.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NUMERIC_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a numeric argument for a kind command</span> <span class="cwebmacronumber">15.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEMPLATE_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a template name argument for a kind command</span> <span class="cwebmacronumber">15.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEXT_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a textual argument for a kind command</span> <span class="cwebmacronumber">15.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VOCABULARY_KCA</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse a vocabulary argument for a kind command</span> <span class="cwebmacronumber">15.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+        <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="identifier">which_kind_command</span><span class="plain">-&gt;</span><span class="element">operand_type</span><span class="plain">) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BOOLEAN_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a boolean argument for a kind command</span> <span class="cwebmacronumber">15.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CCM_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a CCM argument for a kind command</span> <span class="cwebmacronumber">15.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CONSTRUCTOR_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a constructor-name argument for a kind command</span> <span class="cwebmacronumber">15.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MACRO_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a macro name argument for a kind command</span> <span class="cwebmacronumber">15.11</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NUMERIC_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a numeric argument for a kind command</span> <span class="cwebmacronumber">15.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEMPLATE_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a template name argument for a kind command</span> <span class="cwebmacronumber">15.10</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEXT_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a textual argument for a kind command</span> <span class="cwebmacronumber">15.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">VOCABULARY_KCA:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Parse a vocabulary argument for a kind command</span> <span class="cwebmacronumber">15.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
@@ -477,15 +464,15 @@ colons.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">stc</span><span class="element">.boolean_argument</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
-        <span class="identifier">stc</span><span class="element">.numeric_argument</span><span class="plain"> = 0;</span>
-        <span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain"> = -1;</span>
-        <span class="identifier">stc</span><span class="element">.vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
-        <span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">stc</span><span class="element">.macro_argument</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">stc</span><span class="element">.template_argument</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">boolean_argument</span><span class="plain"> = </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">numeric_argument</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain"> = -1;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">macro_argument</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">template_argument</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -531,11 +518,11 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.text_of_command</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_narrow_string</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.text_of_command</span><span class="plain">))</span>
-                <span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain"> = &amp;(</span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">text_of_command</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_narrow_string</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">text_of_command</span><span class="plain">))</span>
+                <span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain"> = &amp;(</span><span class="identifier">table_of_kind_commands</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"no such kind command"</span><span class="plain">);</span>
 </pre>
 
@@ -549,8 +536,8 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"yes"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.boolean_argument</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"no"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.boolean_argument</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"yes"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">boolean_argument</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"no"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">boolean_argument</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"boolean kind command takes yes/no argument"</span><span class="plain">);</span>
 </pre>
 
@@ -564,10 +551,10 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"none"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain"> = </span><span class="constant">NONE_CCM</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"literal"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain"> = </span><span class="constant">LITERAL_CCM</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"quantitative"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain"> = </span><span class="constant">NAMED_CONSTANT_CCM</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"special"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain"> = </span><span class="constant">SPECIAL_CCM</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"none"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain"> = </span><span class="constant">NONE_CCM</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"literal"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain"> = </span><span class="constant">LITERAL_CCM</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"quantitative"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain"> = </span><span class="constant">NAMED_CONSTANT_CCM</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"special"</span><span class="plain">)) </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain"> = </span><span class="constant">SPECIAL_CCM</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"kind command with unknown constant-compilation-method"</span><span class="plain">);</span>
 </pre>
 
@@ -581,7 +568,7 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
+        <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -594,14 +581,14 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">stc</span><span class="element">.vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::lit_0</span><span class="plain">();</span>
         <span class="identifier">feed_t</span><span class="plain"> </span><span class="identifier">id</span><span class="plain"> = </span><span class="identifier">Feeds::begin</span><span class="plain">();</span>
         <span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt;= 30)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt;= </span><span class="constant">30</span><span class="plain">)</span>
             <span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"too many words in kind command"</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="identifier">stc</span><span class="element">.vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="identifier">stc</span><span class="plain">.</span><span class="element">vocabulary_argument</span><span class="plain"> = </span><span class="identifier">WordAssemblages::from_wording</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -614,7 +601,7 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">stc</span><span class="element">.numeric_argument</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, 0);</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">numeric_argument</span><span class="plain"> = </span><span class="identifier">Str::atoi</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -630,10 +617,10 @@ so we neglect it.
         <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?)&gt;&gt;&gt;(%c+)"</span><span class="plain">)) {</span>
             <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
-            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1]);</span>
+            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1]);</span>
             <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -646,8 +633,8 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">stc</span><span class="element">.template_argument</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::parse_kind_template_name</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="element">.template_argument</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">template_argument</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::parse_kind_template_name</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">template_argument</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"unknown template name in kind command"</span><span class="plain">);</span>
 </pre>
 
@@ -661,8 +648,8 @@ so we neglect it.
 
 
 <pre class="displaydefn">
-        <span class="identifier">stc</span><span class="element">.macro_argument</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="element">.macro_argument</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="identifier">stc</span><span class="plain">.</span><span class="element">macro_argument</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">argument</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">macro_argument</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="string">"unknown template name in kind command"</span><span class="plain">);</span>
 </pre>
 
@@ -675,7 +662,6 @@ source text at the request of any kind. An example would be:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">*UNDERSTOOD-VARIABLE:</span>
@@ -703,7 +689,6 @@ any rule or other definition. Thus this template would fail:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">*UNDERSTOOD-VARIABLE:</span>
         <span class="plain">&lt;kind&gt; understood is a &lt;kind&gt; which</span>
@@ -718,7 +703,6 @@ template must be reformatted thus to work:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">*UNDERSTOOD-VARIABLE:</span>
         <span class="plain">&lt;kind&gt; understood is a &lt;kind&gt; which varies.</span>
@@ -732,18 +716,17 @@ template must be reformatted thus to work:
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>So, to begin:
 </p>
 
-
 <pre class="display">
     <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="functiontext">Kinds::Interpreter::new_kind_template</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">ttd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_template_definition</span><span class="plain">);</span>
-        <span class="identifier">ttd</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">ttd</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ttd</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="functiontext">Kinds::Interpreter::parse_kind_template_name</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">ttd</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ttd</span><span class="plain">, </span><span class="reserved">kind_template_definition</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">ttd</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">ttd</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ttd</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -760,9 +743,8 @@ text at a time. (In the above example, <code class="display"><span class="extrac
 called just once, with the single source text line.)
 </p>
 
-
 <pre class="display">
-    <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">current_kind_template</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one now being recorded</span>
+    <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">current_kind_template</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one now being recorded</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::recording_a_kind_template</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_kind_template</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -774,7 +756,7 @@ called just once, with the single source text line.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Interpreter::parse_kind_template_name</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">))</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"duplicate definition of source text template"</span><span class="plain">);</span>
         <span class="identifier">current_kind_template</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::new_kind_template</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">current_kind_template</span><span class="plain">-</span><span class="element">&gt;template_text</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::begin_recording_kind_text</span><span class="plain">();</span>
+        <span class="identifier">current_kind_template</span><span class="plain">-&gt;</span><span class="element">template_text</span><span class="plain"> = </span><span class="functiontext">Kinds::Interpreter::begin_recording_kind_text</span><span class="plain">();</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::record_into_kind_template</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">) {</span>
@@ -804,7 +786,6 @@ we read kind commands it is very early in Inform's run, and the lexer may not
 even have started yet. So we simply remember our intention to insert the text:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">era_of_kind_template_transcription</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::remember_to_transcribe_spec_template</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">ttd</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
@@ -812,8 +793,8 @@ even have started yet. So we simply remember our intention to insert the text:
             <span class="functiontext">Kinds::Interpreter::transcribe_kind_template</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">ttd</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">kind_template_obligation</span><span class="plain"> *</span><span class="identifier">tto</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_template_obligation</span><span class="plain">);</span>
-            <span class="identifier">tto</span><span class="plain">-</span><span class="element">&gt;remembered_template</span><span class="plain"> = </span><span class="identifier">ttd</span><span class="plain">;</span>
-            <span class="identifier">tto</span><span class="plain">-</span><span class="element">&gt;remembered_constructor</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
+            <span class="identifier">tto</span><span class="plain">-&gt;</span><span class="element">remembered_template</span><span class="plain"> = </span><span class="identifier">ttd</span><span class="plain">;</span>
+            <span class="identifier">tto</span><span class="plain">-&gt;</span><span class="element">remembered_constructor</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -825,33 +806,32 @@ even have started yet. So we simply remember our intention to insert the text:
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>...until now, when it's later on and the source text does indeed exist.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::include_templates_for_kinds</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">) {</span>
         <span class="identifier">era_of_kind_template_transcription</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">kind_template_obligation</span><span class="plain"> *</span><span class="identifier">tto</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">tto</span><span class="plain">, </span><span class="reserved">kind_template_obligation</span><span class="plain">)</span>
             <span class="functiontext">Kinds::Interpreter::transcribe_kind_template</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">,</span>
-                <span class="identifier">tto</span><span class="plain">-</span><span class="element">&gt;remembered_template</span><span class="plain">, </span><span class="identifier">tto</span><span class="plain">-</span><span class="element">&gt;remembered_constructor</span><span class="plain">);</span>
+                <span class="identifier">tto</span><span class="plain">-&gt;</span><span class="element">remembered_template</span><span class="plain">, </span><span class="identifier">tto</span><span class="plain">-&gt;</span><span class="element">remembered_constructor</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::transcribe_kind_template</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">,</span>
         <span class="reserved">kind_template_definition</span><span class="plain"> *</span><span class="identifier">ttd</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ttd</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to transcribe missing source text template"</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">parsing_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">ttd</span><span class="plain">-</span><span class="element">&gt;template_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*UNDERSTOOD-VARIABLE"</span><span class="plain">)))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">parsing_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">ttd</span><span class="plain">-&gt;</span><span class="element">template_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"*UNDERSTOOD-VARIABLE"</span><span class="plain">)))</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ttd</span><span class="plain">-</span><span class="element">&gt;template_text</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0;</span>
+        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">ttd</span><span class="plain">-&gt;</span><span class="element">template_text</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) == </span><span class="character">' '</span><span class="plain">)) { </span><span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\n'</span><span class="plain">) || (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) == </span><span class="character">' '</span><span class="plain">)) { </span><span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">; }</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminator</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminator</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Transcribe one line of the template into the line buffer</span> <span class="cwebmacronumber">20.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">terminator</span><span class="plain"> != 0) </span><span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">XW</span><span class="plain">, </span><span class="identifier">terminator</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">terminator</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">Sentences::make_node</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">XW</span><span class="plain">, </span><span class="identifier">terminator</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -884,11 +864,11 @@ not matter, since such things never come into kind definitions.
 
 
 <pre class="displaydefn">
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != 0) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">)) {</span>
+        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'\n'</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'&lt;'</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">template_wildcard_buffer</span><span class="plain">);</span>
                 <span class="identifier">i</span><span class="plain">++;</span>
-                <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != 0) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'&gt;'</span><span class="plain">))</span>
+                <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'\n'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">) != </span><span class="character">'&gt;'</span><span class="plain">))</span>
                     <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">template_wildcard_buffer</span><span class="plain">, </span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++));</span>
                 <span class="identifier">i</span><span class="plain">++;</span>
                 &lt;<span class="cwebmacro">Transcribe the template wildcard</span> <span class="cwebmacronumber">20.1.1</span>&gt;<span class="plain">;</span>
@@ -966,7 +946,7 @@ not matter, since such things never come into kind definitions.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;weak_kind_ID</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">weak_kind_ID</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -979,7 +959,7 @@ not matter, since such things never come into kind definitions.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dt_I6_identifier</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">dt_I6_identifier</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -992,7 +972,7 @@ not matter, since such things never come into kind definitions.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">template_line_buffer</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">comparison_routine</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1002,17 +982,16 @@ not matter, since such things never come into kind definitions.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>Where:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::transcribe_constructor_name</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">lower_case</span><span class="plain">) {</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dt_tag</span><span class="plain">) </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::get_name</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">dt_tag</span><span class="plain">) </span><span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Kinds::Constructors::get_name</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Kinds::Constructors::arity</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">full_length</span><span class="plain"> = </span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">w1</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">full_length</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
                     <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain"> = </span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">w1</span><span class="plain">+</span><span class="identifier">i</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ve</span><span class="plain"> == </span><span class="identifier">STROKE_V</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ve</span><span class="plain"> == </span><span class="identifier">CAPITAL_K_V</span><span class="plain">) || (</span><span class="identifier">ve</span><span class="plain"> == </span><span class="identifier">CAPITAL_L_V</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"value"</span><span class="plain">);</span>
@@ -1034,21 +1013,20 @@ not matter, since such things never come into kind definitions.
 under names.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">current_kind_macro</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the one now being recorded</span>
+    <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">current_kind_macro</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the one now being recorded</span>
 
     <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="functiontext">Kinds::Interpreter::new_kind_macro</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">tmd</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_macro_definition</span><span class="plain">);</span>
-        <span class="identifier">tmd</span><span class="plain">-</span><span class="element">&gt;kind_macro_line_count</span><span class="plain"> = 0;</span>
-        <span class="identifier">tmd</span><span class="plain">-</span><span class="element">&gt;kind_macro_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">tmd</span><span class="plain">-&gt;</span><span class="element">kind_macro_line_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">tmd</span><span class="plain">-&gt;</span><span class="element">kind_macro_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tmd</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="functiontext">Kinds::Interpreter::parse_kind_macro_name</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">tmd</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">tmd</span><span class="plain">, </span><span class="reserved">kind_macro_definition</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">tmd</span><span class="plain">-</span><span class="element">&gt;kind_macro_name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">tmd</span><span class="plain">-&gt;</span><span class="element">kind_macro_name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tmd</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -1062,7 +1040,6 @@ under names.
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>And here once again is the code to record macros:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::recording_a_kind_macro</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1079,9 +1056,9 @@ under names.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::record_into_kind_macro</span><span class="plain">(</span><span class="reserved">single_kind_command</span><span class="plain"> </span><span class="identifier">stc</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_kind_macro</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"kind macro not being recorded"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_kind_macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line_count</span><span class="plain"> &gt;= </span><span class="constant">MAX_KIND_MACRO_LENGTH</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_kind_macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line_count</span><span class="plain"> &gt;= </span><span class="constant">MAX_KIND_MACRO_LENGTH</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"kind macro contains too many lines"</span><span class="plain">);</span>
-        <span class="identifier">current_kind_macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line</span><span class="plain">[</span><span class="identifier">current_kind_macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line_count</span><span class="plain">++] = </span><span class="identifier">stc</span><span class="plain">;</span>
+        <span class="identifier">current_kind_macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line</span><span class="plain">[</span><span class="identifier">current_kind_macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line_count</span><span class="plain">++] = </span><span class="identifier">stc</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::end_kind_macro</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1104,17 +1081,16 @@ under names.
 commands in sequence to the relevant kind.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">kind_macro_definition</span><span class="plain"> *</span><span class="identifier">macro</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">macro</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such kind macro to play back"</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Macro %S on %S (%d lines)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_name</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line_count</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Macro %S on %S (%d lines)\n"</span><span class="plain">,</span>
+            <span class="identifier">macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_name</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">name_in_template_code</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line_count</span><span class="plain">);</span>
         <span class="identifier">LOG_INDENT</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="functiontext">Kinds::Interpreter::apply_kind_command</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_line</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">con</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+            <span class="functiontext">Kinds::Interpreter::apply_kind_command</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_line</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">con</span><span class="plain">);</span>
         <span class="identifier">LOG_OUTDENT</span><span class="plain">;</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Macro %S ended\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-</span><span class="element">&gt;kind_macro_name</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"Macro %S ended\n"</span><span class="plain">, </span><span class="identifier">macro</span><span class="plain">-&gt;</span><span class="element">kind_macro_name</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1127,7 +1103,6 @@ memory, and we go into recording mode to accept a series of them,
 concatenated with newlines dividing them, in a text stream.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">kind_recording</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -1137,7 +1112,6 @@ concatenated with newlines dividing them, in a text stream.
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>And here is recording mode:
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Kinds::Interpreter::begin_recording_kind_text</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">kind_recording</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
@@ -1146,7 +1120,7 @@ concatenated with newlines dividing them, in a text stream.
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::record_kind_text</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind_recording</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't record outside recording"</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">kind_recording</span><span class="plain">, </span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">kind_recording</span><span class="plain">, </span><span class="string">"%S\n"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::end_recording_kind_text</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1164,10 +1138,9 @@ concatenated with newlines dividing them, in a text stream.
 
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27. Error messages. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::kind_command_error</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">error</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Kind command error found at: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Kind command error found at: %S\n"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="identifier">error</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -1181,56 +1154,56 @@ concatenated with newlines dividing them, in a text stream.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">apply_macro_KCC</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">apply_template_KCC</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">can_coincide_with_property_KCC</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">can_exchange_KCC</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">cast_KCC</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">comparison_routine_KCC</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">comparison_schema_KCC</span><span class="plain"> 9</span>
-    <span class="definitionkeyword">define</span> <span class="constant">constant_compilation_method_KCC</span><span class="plain"> 10</span>
-    <span class="definitionkeyword">define</span> <span class="constant">constructor_arity_KCC</span><span class="plain"> 11</span>
-    <span class="definitionkeyword">define</span> <span class="constant">default_value_KCC</span><span class="plain"> 12</span>
-    <span class="definitionkeyword">define</span> <span class="constant">defined_in_source_text_KCC</span><span class="plain"> 13</span>
-    <span class="definitionkeyword">define</span> <span class="constant">description_KCC</span><span class="plain"> 14</span>
-    <span class="definitionkeyword">define</span> <span class="constant">distinguisher_KCC</span><span class="plain"> 15</span>
-    <span class="definitionkeyword">define</span> <span class="constant">documentation_reference_KCC</span><span class="plain"> 16</span>
-    <span class="definitionkeyword">define</span> <span class="constant">explicit_i6_GPR_KCC</span><span class="plain"> 17</span>
-    <span class="definitionkeyword">define</span> <span class="constant">group_KCC</span><span class="plain"> 18</span>
-    <span class="definitionkeyword">define</span> <span class="constant">has_i6_GPR_KCC</span><span class="plain"> 19</span>
-    <span class="definitionkeyword">define</span> <span class="constant">heap_size_estimate_KCC</span><span class="plain"> 20</span>
-    <span class="definitionkeyword">define</span> <span class="constant">i6_printing_routine_actions_KCC</span><span class="plain"> 21</span>
-    <span class="definitionkeyword">define</span> <span class="constant">i6_printing_routine_KCC</span><span class="plain"> 22</span>
-    <span class="definitionkeyword">define</span> <span class="constant">index_default_value_KCC</span><span class="plain"> 23</span>
-    <span class="definitionkeyword">define</span> <span class="constant">index_maximum_value_KCC</span><span class="plain"> 24</span>
-    <span class="definitionkeyword">define</span> <span class="constant">index_minimum_value_KCC</span><span class="plain"> 25</span>
-    <span class="definitionkeyword">define</span> <span class="constant">indexed_grey_if_empty_KCC</span><span class="plain"> 26</span>
-    <span class="definitionkeyword">define</span> <span class="constant">index_priority_KCC</span><span class="plain"> 27</span>
-    <span class="definitionkeyword">define</span> <span class="constant">instance_of_KCC</span><span class="plain"> 28</span>
-    <span class="definitionkeyword">define</span> <span class="constant">is_incompletely_defined_KCC</span><span class="plain"> 29</span>
-    <span class="definitionkeyword">define</span> <span class="constant">is_template_variable_KCC</span><span class="plain"> 30</span>
-    <span class="definitionkeyword">define</span> <span class="constant">loop_domain_schema_KCC</span><span class="plain"> 31</span>
-    <span class="definitionkeyword">define</span> <span class="constant">modifying_adjective_KCC</span><span class="plain"> 32</span>
-    <span class="definitionkeyword">define</span> <span class="constant">multiple_block_KCC</span><span class="plain"> 33</span>
-    <span class="definitionkeyword">define</span> <span class="constant">named_values_created_with_assertions_KCC</span><span class="plain"> 34</span>
-    <span class="definitionkeyword">define</span> <span class="constant">plural_KCC</span><span class="plain"> 35</span>
-    <span class="definitionkeyword">define</span> <span class="constant">recognition_only_GPR_KCC</span><span class="plain"> 36</span>
-    <span class="definitionkeyword">define</span> <span class="constant">singular_KCC</span><span class="plain"> 37</span>
-    <span class="definitionkeyword">define</span> <span class="constant">specification_text_KCC</span><span class="plain"> 38</span>
-    <span class="definitionkeyword">define</span> <span class="constant">small_block_size_KCC</span><span class="plain"> 39</span>
-    <span class="definitionkeyword">define</span> <span class="constant">template_variable_number_KCC</span><span class="plain"> 40</span>
+    <span class="definitionkeyword">define</span> <span class="constant">apply_macro_KCC</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">apply_template_KCC</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">can_coincide_with_property_KCC</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">can_exchange_KCC</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">cast_KCC</span><span class="plain"> </span><span class="constant">7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">comparison_routine_KCC</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">comparison_schema_KCC</span><span class="plain"> </span><span class="constant">9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">constant_compilation_method_KCC</span><span class="plain"> </span><span class="constant">10</span>
+    <span class="definitionkeyword">define</span> <span class="constant">constructor_arity_KCC</span><span class="plain"> </span><span class="constant">11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">default_value_KCC</span><span class="plain"> </span><span class="constant">12</span>
+    <span class="definitionkeyword">define</span> <span class="constant">defined_in_source_text_KCC</span><span class="plain"> </span><span class="constant">13</span>
+    <span class="definitionkeyword">define</span> <span class="constant">description_KCC</span><span class="plain"> </span><span class="constant">14</span>
+    <span class="definitionkeyword">define</span> <span class="constant">distinguisher_KCC</span><span class="plain"> </span><span class="constant">15</span>
+    <span class="definitionkeyword">define</span> <span class="constant">documentation_reference_KCC</span><span class="plain"> </span><span class="constant">16</span>
+    <span class="definitionkeyword">define</span> <span class="constant">explicit_i6_GPR_KCC</span><span class="plain"> </span><span class="constant">17</span>
+    <span class="definitionkeyword">define</span> <span class="constant">group_KCC</span><span class="plain"> </span><span class="constant">18</span>
+    <span class="definitionkeyword">define</span> <span class="constant">has_i6_GPR_KCC</span><span class="plain"> </span><span class="constant">19</span>
+    <span class="definitionkeyword">define</span> <span class="constant">heap_size_estimate_KCC</span><span class="plain"> </span><span class="constant">20</span>
+    <span class="definitionkeyword">define</span> <span class="constant">i6_printing_routine_actions_KCC</span><span class="plain"> </span><span class="constant">21</span>
+    <span class="definitionkeyword">define</span> <span class="constant">i6_printing_routine_KCC</span><span class="plain"> </span><span class="constant">22</span>
+    <span class="definitionkeyword">define</span> <span class="constant">index_default_value_KCC</span><span class="plain"> </span><span class="constant">23</span>
+    <span class="definitionkeyword">define</span> <span class="constant">index_maximum_value_KCC</span><span class="plain"> </span><span class="constant">24</span>
+    <span class="definitionkeyword">define</span> <span class="constant">index_minimum_value_KCC</span><span class="plain"> </span><span class="constant">25</span>
+    <span class="definitionkeyword">define</span> <span class="constant">indexed_grey_if_empty_KCC</span><span class="plain"> </span><span class="constant">26</span>
+    <span class="definitionkeyword">define</span> <span class="constant">index_priority_KCC</span><span class="plain"> </span><span class="constant">27</span>
+    <span class="definitionkeyword">define</span> <span class="constant">instance_of_KCC</span><span class="plain"> </span><span class="constant">28</span>
+    <span class="definitionkeyword">define</span> <span class="constant">is_incompletely_defined_KCC</span><span class="plain"> </span><span class="constant">29</span>
+    <span class="definitionkeyword">define</span> <span class="constant">is_template_variable_KCC</span><span class="plain"> </span><span class="constant">30</span>
+    <span class="definitionkeyword">define</span> <span class="constant">loop_domain_schema_KCC</span><span class="plain"> </span><span class="constant">31</span>
+    <span class="definitionkeyword">define</span> <span class="constant">modifying_adjective_KCC</span><span class="plain"> </span><span class="constant">32</span>
+    <span class="definitionkeyword">define</span> <span class="constant">multiple_block_KCC</span><span class="plain"> </span><span class="constant">33</span>
+    <span class="definitionkeyword">define</span> <span class="constant">named_values_created_with_assertions_KCC</span><span class="plain"> </span><span class="constant">34</span>
+    <span class="definitionkeyword">define</span> <span class="constant">plural_KCC</span><span class="plain"> </span><span class="constant">35</span>
+    <span class="definitionkeyword">define</span> <span class="constant">recognition_only_GPR_KCC</span><span class="plain"> </span><span class="constant">36</span>
+    <span class="definitionkeyword">define</span> <span class="constant">singular_KCC</span><span class="plain"> </span><span class="constant">37</span>
+    <span class="definitionkeyword">define</span> <span class="constant">specification_text_KCC</span><span class="plain"> </span><span class="constant">38</span>
+    <span class="definitionkeyword">define</span> <span class="constant">small_block_size_KCC</span><span class="plain"> </span><span class="constant">39</span>
+    <span class="definitionkeyword">define</span> <span class="constant">template_variable_number_KCC</span><span class="plain"> </span><span class="constant">40</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::apply_kind_command</span><span class="plain">(</span><span class="identifier">parse_node_tree</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">single_kind_command</span><span class="plain"> </span><span class="identifier">stc</span><span class="plain">, </span><span class="reserved">kind_constructor</span><span class="plain"> *</span><span class="identifier">con</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null STC command"</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"apply: %s (%d/%d/%S/%S) to %d/%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain">-</span><span class="element">&gt;text_of_command</span><span class="plain">,</span>
-            <span class="identifier">stc</span><span class="element">.boolean_argument</span><span class="plain">, </span><span class="identifier">stc</span><span class="element">.numeric_argument</span><span class="plain">,</span>
-            <span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">, </span><span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain">,</span>
-            <span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;name_in_template_code</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null STC command"</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CREATIONS</span><span class="plain">, </span><span class="string">"apply: %s (%d/%d/%S/%S) to %d/%S\n"</span><span class="plain">,</span>
+            <span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain">-&gt;</span><span class="element">text_of_command</span><span class="plain">,</span>
+            <span class="identifier">stc</span><span class="plain">.</span><span class="element">boolean_argument</span><span class="plain">, </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">numeric_argument</span><span class="plain">,</span>
+            <span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">, </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain">,</span>
+            <span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">name_in_template_code</span><span class="plain">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tcc</span><span class="plain"> = </span><span class="identifier">stc</span><span class="element">.which_kind_command</span><span class="plain">-</span><span class="element">&gt;opcode_number</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tcc</span><span class="plain"> = </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">which_kind_command</span><span class="plain">-&gt;</span><span class="element">opcode_number</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Apply kind macros or transcribe kind templates on request</span> <span class="cwebmacronumber">28.1</span>&gt;<span class="plain">;</span>
 
@@ -1253,11 +1226,11 @@ concatenated with newlines dividing them, in a text stream.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">apply_template_KCC</span><span class="plain">:</span>
-                <span class="functiontext">Kinds::Interpreter::remember_to_transcribe_spec_template</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">stc</span><span class="element">.template_argument</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">apply_template_KCC:</span>
+                <span class="functiontext">Kinds::Interpreter::remember_to_transcribe_spec_template</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">template_argument</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">apply_macro_KCC</span><span class="plain">:</span>
-                <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">stc</span><span class="element">.macro_argument</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">apply_macro_KCC:</span>
+                <span class="functiontext">Kinds::Interpreter::play_back_kind_macro</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">macro_argument</span><span class="plain">, </span><span class="identifier">con</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -1270,10 +1243,10 @@ concatenated with newlines dividing them, in a text stream.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">SET_BOOLEAN_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC</span><span class="plain">: </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="element">.boolean_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">SET_INTEGER_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC</span><span class="plain">: </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="element">.numeric_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">SET_TEXTUAL_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC</span><span class="plain">: </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">SET_CCM_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC</span><span class="plain">: </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="element">.ccm_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SET_BOOLEAN_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC:</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">boolean_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SET_INTEGER_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC:</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">numeric_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SET_TEXTUAL_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC:</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">;</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SET_CCM_FIELD</span><span class="plain">(</span><span class="identifier">field</span><span class="plain">) </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">field</span><span class="plain">##</span><span class="identifier">_KCC:</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">field</span><span class="plain"> = </span><span class="identifier">stc</span><span class="plain">.</span><span class="element">ccm_argument</span><span class="plain">; </span><span class="reserved">return</span><span class="plain">;</span>
 
     <p class="macrodefinition"><code class="display">
     &lt;<span class="cwebmacrodefn">Most kind commands simply set a field in the constructor structure</span> <span class="cwebmacronumber">28.2</span>&gt; =
@@ -1323,31 +1296,31 @@ concatenated with newlines dividing them, in a text stream.
     <pre class="displaydefn">
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain"> == </span><span class="constant">cast_KCC</span><span class="plain">) {</span>
                 <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"SNIPPET_TY"</span><span class="plain">)) &amp;&amp;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"SNIPPET_TY"</span><span class="plain">)) &amp;&amp;</span>
                     <span class="plain">(</span><span class="identifier">Plugins::Manage::plugged_in</span><span class="plain">(</span><span class="identifier">parsing_plugin</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">endif</span>
                 <span class="reserved">kind_constructor_casting_rule</span><span class="plain"> *</span><span class="identifier">dtcr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_constructor_casting_rule</span><span class="plain">);</span>
-                <span class="identifier">dtcr</span><span class="plain">-</span><span class="element">&gt;next_casting_rule</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_casting_rule</span><span class="plain">;</span>
-                <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_casting_rule</span><span class="plain"> = </span><span class="identifier">dtcr</span><span class="plain">;</span>
-                <span class="identifier">dtcr</span><span class="plain">-</span><span class="element">&gt;cast_from_kind_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain">);</span>
-                <span class="identifier">dtcr</span><span class="plain">-</span><span class="element">&gt;cast_from_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">dtcr</span><span class="plain">-&gt;</span><span class="element">next_casting_rule</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_casting_rule</span><span class="plain">;</span>
+                <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_casting_rule</span><span class="plain"> = </span><span class="identifier">dtcr</span><span class="plain">;</span>
+                <span class="identifier">dtcr</span><span class="plain">-&gt;</span><span class="element">cast_from_kind_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain">);</span>
+                <span class="identifier">dtcr</span><span class="plain">-&gt;</span><span class="element">cast_from_kind</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain"> == </span><span class="constant">instance_of_KCC</span><span class="plain">) {</span>
                 <span class="reserved">kind_constructor_instance</span><span class="plain"> *</span><span class="identifier">dti</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_constructor_instance</span><span class="plain">);</span>
-                <span class="identifier">dti</span><span class="plain">-</span><span class="element">&gt;next_instance_rule</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_instance_rule</span><span class="plain">;</span>
-                <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_instance_rule</span><span class="plain"> = </span><span class="identifier">dti</span><span class="plain">;</span>
-                <span class="identifier">dti</span><span class="plain">-</span><span class="element">&gt;instance_of_this_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain">);</span>
-                <span class="identifier">dti</span><span class="plain">-</span><span class="element">&gt;instance_of_this</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">dti</span><span class="plain">-&gt;</span><span class="element">next_instance_rule</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_instance_rule</span><span class="plain">;</span>
+                <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_instance_rule</span><span class="plain"> = </span><span class="identifier">dti</span><span class="plain">;</span>
+                <span class="identifier">dti</span><span class="plain">-&gt;</span><span class="element">instance_of_this_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain">);</span>
+                <span class="identifier">dti</span><span class="plain">-&gt;</span><span class="element">instance_of_this</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain"> == </span><span class="constant">comparison_schema_KCC</span><span class="plain">) {</span>
                 <span class="reserved">kind_constructor_comparison_schema</span><span class="plain"> *</span><span class="identifier">dtcs</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">kind_constructor_comparison_schema</span><span class="plain">);</span>
-                <span class="identifier">dtcs</span><span class="plain">-</span><span class="element">&gt;next_comparison_schema</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_comparison_schema</span><span class="plain">;</span>
-                <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;first_comparison_schema</span><span class="plain"> = </span><span class="identifier">dtcs</span><span class="plain">;</span>
-                <span class="identifier">dtcs</span><span class="plain">-</span><span class="element">&gt;comparator_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.constructor_argument</span><span class="plain">);</span>
-                <span class="identifier">dtcs</span><span class="plain">-</span><span class="element">&gt;comparator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">dtcs</span><span class="plain">-</span><span class="element">&gt;comparison_schema</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+                <span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="element">next_comparison_schema</span><span class="plain"> = </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_comparison_schema</span><span class="plain">;</span>
+                <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">first_comparison_schema</span><span class="plain"> = </span><span class="identifier">dtcs</span><span class="plain">;</span>
+                <span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="element">comparator_unparsed</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">constructor_argument</span><span class="plain">);</span>
+                <span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="element">comparator</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">dtcs</span><span class="plain">-&gt;</span><span class="element">comparison_schema</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
     </pre>
@@ -1363,28 +1336,28 @@ concatenated with newlines dividing them, in a text stream.
 
     <pre class="displaydefn">
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">constructor_arity_KCC</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">constructor_arity_KCC:</span>
                     &lt;<span class="cwebmacro">Parse the constructor arity text</span> <span class="cwebmacronumber">28.4.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">description_KCC</span><span class="plain">:</span>
-                    <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;constructor_description</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">description_KCC:</span>
+                    <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">constructor_description</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">comparison_routine_KCC</span><span class="plain">:</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">) &gt; 31) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;comparison_routine</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">comparison_routine_KCC:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">) &gt; </span><span class="constant">31</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">comparison_routine</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">i6_printing_routine_KCC</span><span class="plain">:</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">) &gt; 31) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dt_I6_identifier</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">i6_printing_routine_KCC:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">) &gt; </span><span class="constant">31</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">dt_I6_identifier</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">i6_printing_routine_actions_KCC</span><span class="plain">:</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">) &gt; 31) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;name_of_printing_rule_ACTIONS</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">i6_printing_routine_actions_KCC:</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">) &gt; </span><span class="constant">31</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"overlong I6 identifier"</span><span class="plain">);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="identifier">name_of_printing_rule_ACTIONS</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">singular_KCC</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">plural_KCC</span><span class="plain">: {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">singular_KCC:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">plural_KCC:</span><span class="plain"> {</span>
                     <span class="identifier">vocabulary_entry</span><span class="plain"> **</span><span class="identifier">array</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">;</span>
-                    <span class="identifier">WordAssemblages::as_array</span><span class="plain">(&amp;(</span><span class="identifier">stc</span><span class="element">.vocabulary_argument</span><span class="plain">), &amp;</span><span class="identifier">array</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">length</span><span class="plain"> == 1) {</span>
+                    <span class="identifier">WordAssemblages::as_array</span><span class="plain">(&amp;(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">vocabulary_argument</span><span class="plain">), &amp;</span><span class="identifier">array</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">);</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">length</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                         <span class="functiontext">Kinds::mark_vocabulary_as_kind</span><span class="plain">(</span><span class="identifier">array</span><span class="plain">[0], </span><span class="functiontext">Kinds::base_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">));</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
@@ -1392,8 +1365,8 @@ concatenated with newlines dividing them, in a text stream.
                             <span class="identifier">Vocabulary::set_flags</span><span class="plain">(</span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="constant">KIND_SLOW_MC</span><span class="plain">);</span>
                             <span class="identifier">Preform::mark_vocabulary</span><span class="plain">(</span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], &lt;</span><span class="identifier">k</span><span class="plain">-</span><span class="reserved">kind</span><span class="plain">&gt;);</span>
                         <span class="plain">}</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;group</span><span class="plain"> != </span><span class="constant">PROPER_CONSTRUCTOR_GRP</span><span class="plain">) {</span>
-                            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain"> = </span><span class="identifier">WordAssemblages::hyphenated</span><span class="plain">(&amp;(</span><span class="identifier">stc</span><span class="element">.vocabulary_argument</span><span class="plain">));</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">group</span><span class="plain"> != </span><span class="constant">PROPER_CONSTRUCTOR_GRP</span><span class="plain">) {</span>
+                            <span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">ve</span><span class="plain"> = </span><span class="identifier">WordAssemblages::hyphenated</span><span class="plain">(&amp;(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">vocabulary_argument</span><span class="plain">));</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ve</span><span class="plain">) </span><span class="functiontext">Kinds::mark_vocabulary_as_kind</span><span class="plain">(</span><span class="identifier">ve</span><span class="plain">, </span><span class="functiontext">Kinds::base_construction</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">));</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
@@ -1402,18 +1375,18 @@ concatenated with newlines dividing them, in a text stream.
                         <span class="identifier">Feeds::feed_text</span><span class="plain">(</span><span class="identifier">Vocabulary::get_exemplar</span><span class="plain">(</span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">FALSE</span><span class="plain">));</span>
                     <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">LW</span><span class="plain"> = </span><span class="identifier">Feeds::end</span><span class="plain">(</span><span class="identifier">id</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tcc</span><span class="plain"> == </span><span class="constant">singular_KCC</span><span class="plain">) {</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ro</span><span class="plain"> = 0;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;group</span><span class="plain"> != </span><span class="constant">PROPER_CONSTRUCTOR_GRP</span><span class="plain">) </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">REGISTER_PLURAL_NTOPT</span><span class="plain">;</span>
+                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ro</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">group</span><span class="plain"> != </span><span class="constant">PROPER_CONSTRUCTOR_GRP</span><span class="plain">) </span><span class="identifier">ro</span><span class="plain"> = </span><span class="identifier">REGISTER_SINGULAR_NTOPT</span><span class="plain"> + </span><span class="identifier">REGISTER_PLURAL_NTOPT</span><span class="plain">;</span>
                         <span class="identifier">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> =</span>
                             <span class="identifier">Nouns::new_common_noun</span><span class="plain">(</span><span class="identifier">LW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">, </span><span class="identifier">PARSE_EXACTLY_NTOPT</span><span class="plain"> + </span><span class="identifier">ro</span><span class="plain">,</span>
                             <span class="constant">KIND_SLOW_MC</span><span class="plain">, </span><span class="identifier">STORE_POINTER_kind_constructor</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">));</span>
-                        <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dt_tag</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">;</span>
+                        <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">dt_tag</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">;</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">Nouns::set_plural_name</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;dt_tag</span><span class="plain">, </span><span class="identifier">LW</span><span class="plain">);</span>
+                        <span class="identifier">Nouns::set_plural_name</span><span class="plain">(</span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">dt_tag</span><span class="plain">, </span><span class="identifier">LW</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">return</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">modifying_adjective_KCC</span><span class="plain">:</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">modifying_adjective_KCC:</span>
                     <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"the modifying-adjective syntax has been withdrawn"</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -1429,30 +1402,30 @@ concatenated with newlines dividing them, in a text stream.
 
 
     <pre class="displaydefn">
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
-            <span class="identifier">string_position</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Str::start</span><span class="plain">(</span><span class="identifier">stc</span><span class="element">.textual_argument</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">string_position</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Str::start</span><span class="plain">(</span><span class="identifier">stc</span><span class="plain">.</span><span class="element">textual_argument</span><span class="plain">);</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">))) </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">','</span><span class="plain">) { </span><span class="identifier">c</span><span class="plain">++; </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">); </span><span class="reserved">continue</span><span class="plain">; }</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt;= 2) { </span><span class="identifier">c</span><span class="plain">=1; </span><span class="reserved">break</span><span class="plain">; }</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">) { </span><span class="identifier">c</span><span class="plain">=1; </span><span class="reserved">break</span><span class="plain">; }</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">);</span>
-                <span class="reserved">while</span><span class="plain"> ((!</span><span class="identifier">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">','</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != 0)) {</span>
+                <span class="reserved">while</span><span class="plain"> ((!</span><span class="identifier">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">))) &amp;&amp; (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="character">','</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">)) {</span>
                     <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">)); </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">Str::forward</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">) &gt; 0) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"covariant"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;variance</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">COVARIANT</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"contravariant"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;variance</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">CONTRAVARIANT</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"optional"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;tupling</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">ALLOW_NOTHING_TUPLING</span><span class="plain">;</span>
-                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"list"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;tupling</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">ARBITRARY_TUPLING</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"covariant"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">variance</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">COVARIANT</span><span class="plain">;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"contravariant"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">variance</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">CONTRAVARIANT</span><span class="plain">;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"optional"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">tupling</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">ALLOW_NOTHING_TUPLING</span><span class="plain">;</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"list"</span><span class="plain">)) </span><span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">tupling</span><span class="plain">[</span><span class="identifier">c</span><span class="plain">] = </span><span class="constant">ARBITRARY_TUPLING</span><span class="plain">;</span>
                     <span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Word: &lt;%S&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">wd</span><span class="plain">);</span>
+                        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Word: &lt;%S&gt;\n"</span><span class="plain">, </span><span class="identifier">wd</span><span class="plain">);</span>
                         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"illegal constructor-arity keyword"</span><span class="plain">);</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">wd</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">con</span><span class="plain">-</span><span class="element">&gt;constructor_arity</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">+1;</span>
+            <span class="identifier">con</span><span class="plain">-&gt;</span><span class="element">constructor_arity</span><span class="plain"> = </span><span class="identifier">c</span><span class="plain">+1;</span>
     </pre>
 
     <p class="inwebparagraph"></p>
@@ -1462,7 +1435,6 @@ concatenated with newlines dividing them, in a text stream.
     <p class="inwebparagraph"><a id="SP29"></a><b>&#167;29. Completing a batch. </b>At one time it was useful to do some mopping-up work after a round of kind
     commands, so the following hook was devised; but at present it's not needed.
     </p>
-
 
     <pre class="display">
         <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Kinds::Interpreter::batch_done</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

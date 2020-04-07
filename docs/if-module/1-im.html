@@ -135,12 +135,12 @@ which use this module:
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">slash_gpr</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">spatial_data</span><span class="plain">)</span>
 
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">action_name_list</span><span class="plain">, 1000)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">action_pattern</span><span class="plain">, 100)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">ap_optional_clause</span><span class="plain">, 400)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">scene_connector</span><span class="plain">, 1000)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">understanding_item</span><span class="plain">, 100)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">understanding_reference</span><span class="plain">, 100)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">action_name_list</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">action_pattern</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">ap_optional_clause</span><span class="plain">, </span><span class="constant">400</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">scene_connector</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">understanding_item</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">understanding_reference</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
 
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">action_meaning</span><span class="plain">, </span><span class="reserved">action_pattern</span><span class="plain">)</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">constant_action_name</span><span class="plain">, </span><span class="reserved">action_name</span><span class="plain">)</span>
@@ -155,7 +155,6 @@ which use this module:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. The beginning. </b>(The client doesn't need to call the start and end routines, because the
 foundation module does that automatically.)
 </p>
-
 
 <pre class="display">
     <span class="identifier">COMPILE_WRITER</span><span class="plain">(</span><span class="reserved">action_pattern</span><span class="plain"> *, </span><span class="functiontext">PL::Actions::Patterns::log</span><span class="plain">)</span>
@@ -247,7 +246,6 @@ foundation module does that automatically.)
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This module uses <code class="display"><span class="extract">syntax</span></code>, and adds the following annotations to the
 syntax tree.
 </p>
-
 
 <pre class="display">
     <span class="identifier">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">action_meaning</span><span class="plain">, </span><span class="reserved">action_pattern</span><span class="plain">)</span>

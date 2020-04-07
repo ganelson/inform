@@ -67,7 +67,6 @@
 in our calculus.
 </p>
 
-
 <pre class="display">
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">R_equality</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">a_has_b_predicate</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -79,13 +78,12 @@ in our calculus.
 since (alone among binary predicates) it has no distinct reversal.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_create_initial_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">R_equality</span><span class="plain"> = </span><span class="functiontext">BinaryPredicates::make_equality</span><span class="plain">();</span>
         <span class="functiontext">BinaryPredicates::set_index_details</span><span class="plain">(</span><span class="identifier">R_equality</span><span class="plain">, </span><span class="string">"value"</span><span class="plain">, </span><span class="string">"value"</span><span class="plain">);</span>
 
-        <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt;, 0,</span>
+        <span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">wa</span><span class="plain"> = </span><span class="identifier">Preform::Nonparsing::merge</span><span class="plain">(&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">name</span><span class="plain">-</span><span class="identifier">formal</span><span class="plain">&gt;, </span><span class="constant">0</span><span class="plain">,</span>
                 <span class="identifier">Preform::Nonparsing::wording</span><span class="plain">(&lt;</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">names</span><span class="plain">&gt;, </span><span class="constant">EQUALITY_RELATION_NAME</span><span class="plain">));</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">AW</span><span class="plain"> = </span><span class="identifier">WordAssemblages::to_wording</span><span class="plain">(&amp;</span><span class="identifier">wa</span><span class="plain">);</span>
         <span class="identifier">Nouns::new_proper_noun</span><span class="plain">(</span><span class="identifier">AW</span><span class="plain">, </span><span class="identifier">NEUTER_GENDER</span><span class="plain">,</span>
@@ -111,7 +109,6 @@ since (alone among binary predicates) it has no distinct reversal.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Second stock. </b>There is none, of course.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_create_second_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
@@ -125,14 +122,13 @@ since (alone among binary predicates) it has no distinct reversal.
 any kind.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_typecheck</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
             <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_of_terms</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_required</span><span class="plain">, </span><span class="reserved">tc_problem_kit</span><span class="plain"> *</span><span class="identifier">tck</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Typecheck $u '==' $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Typecheck $u '==' $u\n"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K_understanding</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">K_understanding</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[1], </span><span class="identifier">K_text</span><span class="plain">))) {</span>
-                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"No!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"No!\n"</span><span class="plain">);</span>
             <span class="functiontext">Problems::Issue::tcp_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_TextIsNotTopic</span><span class="plain">), </span><span class="identifier">tck</span><span class="plain">,</span>
                 <span class="string">"though they look the same, because both are written in double "</span>
                 <span class="string">"quotes, text values can't in fact be used as topics, so it's "</span>
@@ -178,8 +174,8 @@ for a fairly common mistake:
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;log_to_I6_text</span><span class="plain">)</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Comparison of object with $u value\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">log_to_I6_text</span><span class="plain">)</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Comparison of object with $u value\n"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
             <span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
             <span class="functiontext">Problems::Issue::tcp_problem</span><span class="plain">(</span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_NonPropertyCompared</span><span class="plain">), </span><span class="identifier">tck</span><span class="plain">,</span>
                 <span class="string">"taken literally that says that an object is the same as a "</span>
@@ -217,8 +213,8 @@ and scenes are not.
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ALWAYS_MATCH</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]) == </span><span class="identifier">NEVER_MATCH</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">Kinds::Compare::compatible</span><span class="plain">(</span><span class="identifier">kinds_of_terms</span><span class="plain">[1], </span><span class="identifier">kinds_of_terms</span><span class="plain">[0]) == </span><span class="identifier">NEVER_MATCH</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;log_to_I6_text</span><span class="plain">)</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Unable to compare $u with $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">log_to_I6_text</span><span class="plain">)</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Unable to compare $u with $u\n"</span><span class="plain">, </span><span class="identifier">kinds_of_terms</span><span class="plain">[0], </span><span class="identifier">kinds_of_terms</span><span class="plain">[1]);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">NEVER_MATCH_SAYING_WHY_NOT</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -228,7 +224,6 @@ and scenes are not.
 <p class="endnote">This code is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::both_terms_of_same_construction</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k0</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">k1</span><span class="plain">, </span><span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">cons</span><span class="plain">) {</span>
@@ -245,7 +240,6 @@ and scenes are not.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Assertion. </b>In general values differ, and cannot be equated by fiat. But an exception is
 setting a global variable.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_assert</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
@@ -318,12 +312,11 @@ schema is a function of both the storage class of A and the kinds of value
 of both A and B.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_compile</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">annotated_i6_schema</span><span class="plain"> *</span><span class="identifier">asch</span><span class="plain">) {</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">st</span><span class="plain">[2];</span>
-        <span class="identifier">st</span><span class="plain">[0] = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0</span><span class="plain">);</span>
-        <span class="identifier">st</span><span class="plain">[1] = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt1</span><span class="plain">);</span>
+        <span class="identifier">st</span><span class="plain">[0] = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">);</span>
+        <span class="identifier">st</span><span class="plain">[1] = </span><span class="functiontext">Calculus::Deferrals::Cinders::kind_of_value_of_term</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt1</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">K_object</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="functiontext">Properties::Conditions::name_can_coincide_with_property</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[1])) &amp;&amp; (</span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[1])))</span>
@@ -333,37 +326,37 @@ of both A and B.
             &lt;<span class="cwebmacro">Handle the case of setting a response separately</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
 
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">st</span><span class="plain">[0]) &amp;&amp; (</span><span class="identifier">st</span><span class="plain">[1]))</span>
-                    <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">,</span>
+                    <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">,</span>
                         <span class="functiontext">Kinds::RunTime::interpret_test_equality</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1]));</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == 0) {</span>
-                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$0 and $0; $u and $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt1</span><span class="plain">), </span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1]);</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"$0 and $0; $u and $u\n"</span><span class="plain">, &amp;(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">), &amp;(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt1</span><span class="plain">), </span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1]);</span>
                     <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantCompareValues</span><span class="plain">),</span>
                         <span class="string">"that would involve comparing things which don't mean "</span>
                         <span class="string">"anything to me"</span><span class="plain">,</span>
                         <span class="string">"so I'm lost."</span><span class="plain">);</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">: {</span>
-                <span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">storage_class</span><span class="plain"> = </span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span><span class="plain"> {</span>
+                <span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">storage_class</span><span class="plain"> = </span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">.</span><span class="element">constant</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">storage_class</span><span class="plain"> == </span><span class="constant">UNKNOWN_NT</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="identifier">Kinds::get_construct</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0]) == </span><span class="identifier">CON_property</span><span class="plain">))</span>
                     <span class="identifier">storage_class</span><span class="plain"> = </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Call::forbid_setting</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt1.term_checked_as_kind</span><span class="plain">)) {</span>
-                    <span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Plugins::Call::forbid_setting</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt1</span><span class="plain">.</span><span class="element">term_checked_as_kind</span><span class="plain">)) {</span>
+                    <span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 &lt;<span class="cwebmacro">Make a further check that kinds permit this assignment</span> <span class="cwebmacronumber">8.4</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">storage_class</span><span class="plain"> == </span><span class="constant">UNKNOWN_NT</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Issue problem message for being unable to set equal</span> <span class="cwebmacronumber">8.5</span>&gt;
-                    <span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                    <span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     &lt;<span class="cwebmacro">Exceptional case of setting the "player" global variable</span> <span class="cwebmacronumber">8.3</span>&gt;<span class="plain">;</span>
-                    <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">,</span>
-                        <span class="functiontext">Lvalues::interpret_store</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">, </span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1], 0));</span>
+                    <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">,</span>
+                        <span class="functiontext">Lvalues::interpret_store</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">, </span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">st</span><span class="plain">[1], </span><span class="constant">0</span><span class="plain">));</span>
                     &lt;<span class="cwebmacro">Add kind-checking code for run-time checking</span> <span class="cwebmacronumber">8.6</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -400,13 +393,13 @@ lantern is bright".
 <pre class="displaydefn">
         <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Properties::Conditions::get_coinciding_property</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[1]);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
-                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"*1.%n == *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
+                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"*1.%n == *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
-                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"*1.%n = *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
+                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"*1.%n = *2"</span><span class="plain">, </span><span class="functiontext">Properties::iname</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -423,16 +416,16 @@ lantern is bright".
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">task</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_ATOM_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_ATOM_TASK:</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_ResponseComparisonUnsafe</span><span class="plain">),</span>
                     <span class="string">"for complicated internal reasons this comparison isn't safe to perform"</span><span class="plain">,</span>
                     <span class="string">"and might give you a falsely negative result. To avoid what might "</span>
                     <span class="string">"be misleading, you aren't allowed to compare a response to text."</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_FALSE_TASK</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_FALSE_TASK:</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NOW_ATOM_TRUE_TASK</span><span class="plain">:</span>
-                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"BlkValueCopy(ResponseTexts--&gt;((*1)-1), *^2)"</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NOW_ATOM_TRUE_TASK:</span>
+                <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"BlkValueCopy(ResponseTexts--&gt;((*1)-1), *^2)"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -453,14 +446,14 @@ lantern is bright".
 
 <pre class="displaydefn">
         <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> =</span>
-            <span class="functiontext">Lvalues::get_nonlocal_variable_if_any</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">);</span>
+            <span class="functiontext">Lvalues::get_nonlocal_variable_if_any</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">.</span><span class="element">constant</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nlv</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">NonlocalVariables::must_be_constant</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">))) {</span>
-            <span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">exotica</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::get_write_schema</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">exotica</span><span class="plain">) {</span>
-            <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">exotica</span><span class="plain">);</span>
+            <span class="functiontext">Calculus::Schemas::modify</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">exotica</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -488,7 +481,7 @@ lantern is bright".
                     <span class="string">"In the line %1, you seem to be asking me to put %2 into %3, "</span>
                     <span class="string">"which can't safely be done."</span><span class="plain">);</span>
                 <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
-                <span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -509,8 +502,8 @@ one that's more helpfully specific and return <code class="display"><span class=
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;pt0.constant</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">.</span><span class="element">constant</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Compare::le</span><span class="plain">(</span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">pt0</span><span class="plain">.</span><span class="element">constant</span><span class="plain">), </span><span class="identifier">K_object</span><span class="plain">))</span>
                 <span class="identifier">Problems::Issue::sentence_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_CantEquateValues</span><span class="plain">),</span>
                     <span class="string">"equality is not something I can change"</span><span class="plain">,</span>
                     <span class="string">"so either those are already the same or are different, and I "</span>
@@ -541,11 +534,11 @@ one that's more helpfully specific and return <code class="display"><span class=
             <span class="plain">(</span><span class="identifier">Kinds::Compare::lt</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0], </span><span class="identifier">K_object</span><span class="plain">))) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">,</span>
-                <span class="string">"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \</span><span class="plain">"</span><span class="string">*?\</span><span class="plain">"</span><span class="string">, \</span><span class="plain">"</span><span class="string">"</span><span class="plain">,</span>
+                <span class="string">"; if (~~(*1 ofclass %n)) RunTimeProblem(RTP_WRONGASSIGNEDKIND, *1, \"*?\", \""</span><span class="plain">,</span>
                 <span class="functiontext">Kinds::RunTime::I6_classname</span><span class="plain">(</span><span class="identifier">st</span><span class="plain">[0]));</span>
             <span class="identifier">Kinds::Textual::write</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">st</span><span class="plain">[0]);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"\</span><span class="plain">"</span><span class="string">);"</span><span class="plain">);</span>
-            <span class="functiontext">Calculus::Schemas::append</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-</span><span class="element">&gt;schema</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"\");"</span><span class="plain">);</span>
+            <span class="functiontext">Calculus::Schemas::append</span><span class="plain">(</span><span class="identifier">asch</span><span class="plain">-&gt;</span><span class="element">schema</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
@@ -555,7 +548,6 @@ one that's more helpfully specific and return <code class="display"><span class=
 <p class="endnote">This code is used in <a href="#SP8">&#167;8</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Problem message text. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Calculus::Equality::REL_describe_for_problems</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>

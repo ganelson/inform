@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -71,7 +71,6 @@ because that would make it true that
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">HolderOf(player) == ContainerOf(player)</span>
 </pre>
@@ -80,7 +79,6 @@ because that would make it true that
 the player had been on the holder of the player, which is not in fact the
 case. So we return <code class="display"><span class="extract">thedark</span></code> as a typesafe but impossible value here.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">HolderOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
@@ -123,7 +121,6 @@ For a room, <code class="display"><span class="extract">LocationOf</span></code>
 of <code class="display"><span class="extract">CommonAncestor</span></code> from the I6 library, adapted to work on the core tree.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LocationOf</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">K2_thing</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
@@ -132,7 +129,7 @@ of <code class="display"><span class="extract">CommonAncestor</span></code> from
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FrontSideOfDoor</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K7_backdrop</span><span class="plain">) {</span>
-            <span class="comment">! print "(deciding ", (the) O, " is at ", (the) BackdropLocation(o), ") ";</span>
+            <span class="comment">print "(deciding ", (the) O, " is at ", (the) BackdropLocation(o), ") ";</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BackdropLocation</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain">) {</span>
@@ -183,7 +180,6 @@ Hall" and "in the laundry-basket" are both true if the player is in a
 laundry-basket in the Hall.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">WhetherIn</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">enterable</span><span class="plain">) {</span>
@@ -220,7 +216,6 @@ have to provide an iterator function <code class="display"><span class="extract"
 would get the wrong result when B is a region.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ContainerOf</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">.</span><span class="identifier">map_region</span><span class="plain">;</span>
@@ -251,7 +246,6 @@ would get the wrong result when B is a region.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Support Relation. </b>This then is simpler, with no need for an iterator governing searches.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">SupporterOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
@@ -266,7 +260,6 @@ would get the wrong result when B is a region.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Carrying Relation. </b>Only people may carry, and something worn is not in this sense carried.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">CarrierOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
@@ -279,7 +272,6 @@ would get the wrong result when B is a region.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Wearing Relation. </b>Only people may wear.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">WearerOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
@@ -294,7 +286,6 @@ would get the wrong result when B is a region.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Having Relation. </b>A person has something if and only if he either wears or carries it.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">OwnerOf</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">;</span>
         <span class="identifier">p</span><span class="plain"> = </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
@@ -308,7 +299,6 @@ would get the wrong result when B is a region.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Making Parts. </b>Note that <code class="display"><span class="extract">MakePart</span></code> removes the part-to-be from the object tree before
 attaching it: it cannot, of course, be the core of the resulting object.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MakePart</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> </span><span class="identifier">Of</span><span class="plain"> </span><span class="identifier">First</span><span class="plain">;</span>
@@ -341,7 +331,6 @@ attaching it: it cannot, of course, be the core of the resulting object.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Movements. </b>Note that an object is detached from its component parent, if it has one,
 when moved.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MoveObject</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">T</span><span class="plain"> </span><span class="identifier">opt</span><span class="plain"> </span><span class="identifier">going_mode</span><span class="plain"> </span><span class="identifier">was</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
@@ -403,7 +392,6 @@ play; in I7 only doors and backdrops are allowed to float, and only backdrops
 are allowed to be removed from play.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">OnStage</span><span class="plain"> </span><span class="identifier">O</span><span class="plain"> </span><span class="identifier">set</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K1_room</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -418,7 +406,7 @@ are allowed to be removed from play.
                 <span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">);</span>
+        <span class="identifier">x</span><span class="plain"> = </span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, -1);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">x</span><span class="plain">) &amp;&amp; (</span><span class="identifier">set</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">)) </span><span class="identifier">RemoveFromPlay</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">x</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) &amp;&amp; (</span><span class="identifier">set</span><span class="plain">)) </span><span class="identifier">MoveObject</span><span class="plain">(</span><span class="identifier">O</span><span class="plain">, </span><span class="identifier">real_location</span><span class="plain">);</span>
         <span class="reserved">rfalse</span><span class="plain">;</span>
@@ -432,7 +420,6 @@ us to maintain the invariant for <code class="display"><span class="extract">rea
 see "Light.i6t") and to ensure that multiply-present objects can be
 witnessed where they need to be.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">PlayerTo</span><span class="plain"> </span><span class="identifier">newplace</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
@@ -462,7 +449,6 @@ these various operations are each handled by different named rules to
 increase the flexibility of the system.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MoveDuringGoing</span><span class="plain"> </span><span class="identifier">F</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
         <span class="identifier">MoveObject</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">);</span>
@@ -479,7 +465,6 @@ increase the flexibility of the system.)
 "everywhere", that is, which is found in every room.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FoundEverywhere</span><span class="plain">; </span><span class="reserved">rtrue</span><span class="plain">; ];</span>
 </pre>
@@ -487,7 +472,6 @@ increase the flexibility of the system.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Testing Everywhere. </b></p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BackdropEverywhere</span><span class="plain"> </span><span class="identifier">O</span><span class="plain">;</span>
@@ -525,11 +509,10 @@ fact. No such device is needed for other people being changed from because
 they are explicitly given printed names &mdash; say "Mr Darcy", "the sous-chef",
 etc. &mdash; in the source text.
 </li></ul>
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ChangePlayer</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">obj</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K8_person</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTCHANGE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="constant">-1</span><span class="plain">))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTCHANGEOFFSTAGE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">OnStage</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, -1))) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTCHANGEOFFSTAGE</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain">.</span><span class="identifier">component_parent</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_CANTMAKEPART</span><span class="plain">, </span><span class="identifier">obj</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">obj</span><span class="plain"> == </span><span class="identifier">player</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
 
@@ -543,7 +526,7 @@ etc. &mdash; in the source text.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> == </span><span class="identifier">selfobj</span><span class="plain">) {</span>
             <span class="identifier">player</span><span class="plain">.</span><span class="identifier">short_name</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">.</span><span class="identifier">saved_short_name</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">remove_proper</span><span class="plain">; </span><span class="comment">! when changing out again</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">player</span><span class="plain"> </span><span class="reserved">hasnt</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">) </span><span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">remove_proper</span><span class="plain">; </span><span class="comment">when changing out again</span>
         <span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">concealed</span><span class="plain">;</span>
         <span class="reserved">give</span><span class="plain"> </span><span class="identifier">player</span><span class="plain"> </span><span class="identifier">proper</span><span class="plain">;</span>
 
@@ -588,7 +571,6 @@ location, but (b) assumed that the only sense by which the player could
 witness an object was sight. In I7, <code class="display"><span class="extract">thedark</span></code> is not a valid room, and we
 are a bit more careful about the senses.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MoveFloatingObjects</span><span class="plain"> </span><span class="identifier">toroom</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">address</span><span class="plain"> </span><span class="identifier">flag</span><span class="plain">;</span>
@@ -639,7 +621,6 @@ other than nothing, determines whether it can ever be the location. Note
 that this routine also works for two-sided doors, despite its name.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">BackdropLocation</span><span class="plain"> </span><span class="identifier">O</span><span class="plain"> </span><span class="identifier">target</span><span class="plain"> </span><span class="identifier">address</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> </span><span class="identifier">l</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">O</span><span class="plain"> </span><span class="reserved">has</span><span class="plain"> </span><span class="identifier">absent</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">;</span>
@@ -689,7 +670,6 @@ if X is moved in the object tree, or made a part of something, or removed
 from play, then <code class="display"><span class="extract">worn</span></code> is removed.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">WearObject</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> </span><span class="identifier">opt</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain"> == </span><span class="reserved">false</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -719,7 +699,6 @@ but <code class="display"><span class="extract">nothing</span></code> is not a t
 
 <p class="inwebparagraph">Note that map connections via doors are immutable.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">MapConnection</span><span class="plain"> </span><span class="identifier">from_room</span><span class="plain"> </span><span class="identifier">dir</span>
@@ -789,7 +768,6 @@ but <code class="display"><span class="extract">nothing</span></code> is not a t
 doors.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TestAdjacency</span><span class="plain"> </span><span class="identifier">R1</span><span class="plain"> </span><span class="identifier">R2</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> </span><span class="identifier">row</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R1</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K9_region</span><span class="plain">) </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_REGIONSNOTADJACENT</span><span class="plain">, </span><span class="identifier">R1</span><span class="plain">);</span>
@@ -812,7 +790,6 @@ property which is the smallest region containing it, if any does, and
 parenthood corresponds to spatial containment. (Note that in I7, a region
 must either completely contain another region, or else have no overlap with it.)
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TestRegionalContainment</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">region</span><span class="plain"> </span><span class="identifier">o</span><span class="plain">;</span>
@@ -854,16 +831,15 @@ of course depends on which side of it the player is standing. Similarly,
 I7's template it returns the direction object (<code class="display"><span class="extract">n_obj</span></code>, <code class="display"><span class="extract">s_obj</span></code>, etc.)
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">FrontSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;0; </span><span class="comment">! Two-sided</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">); </span><span class="comment">! One-sided</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;0; </span><span class="comment">Two-sided</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">); </span><span class="comment">One-sided</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">BackSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">ofclass</span><span class="plain"> </span><span class="identifier">K4_door</span><span class="plain">)) </span><span class="reserved">rfalse</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;1; </span><span class="comment">! Two-sided</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">; </span><span class="comment">! One-sided</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> </span><span class="reserved">provides</span><span class="plain"> </span><span class="identifier">found_in</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain">.&amp;</span><span class="identifier">found_in</span><span class="plain">)--&gt;1; </span><span class="comment">Two-sided</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="reserved">nothing</span><span class="plain">; </span><span class="comment">One-sided</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">OtherSideOfDoor</span><span class="plain"> </span><span class="identifier">D</span><span class="plain"> </span><span class="identifier">from_room</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -893,7 +869,6 @@ I7's template it returns the direction object (<code class="display"><span class
 it's a relation which cannot be asserted true or false.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TestVisibility</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (~~</span><span class="identifier">OffersLight</span><span class="plain">(</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">CoreOf</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">)))) </span><span class="reserved">rfalse</span><span class="plain">;</span>
@@ -907,7 +882,6 @@ it's a relation which cannot be asserted true or false.
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25. Touchability Relation. </b>We use <code class="display"><span class="extract">ObjectIsUntouchable</span></code> to decide whether there is physical access from
 A to B; it's a relation which cannot be asserted true or false.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TestTouchability</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -926,7 +900,6 @@ A to B; it's a relation which cannot be asserted true or false.
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26. Concealment Relation. </b>An activity determines whether one object conceals another; it's a relation
 which cannot be asserted true or false.
 </p>
-
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">TestConcealment</span><span class="plain"> </span><span class="identifier">A</span><span class="plain"> </span><span class="identifier">B</span><span class="plain">;</span>

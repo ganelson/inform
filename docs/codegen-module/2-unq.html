@@ -63,7 +63,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Pipeline stage. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::Uniqueness::create_pipeline_stage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">CodeGen::Stage::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"make-identifiers-unique"</span><span class="plain">, </span><span class="functiontext">CodeGen::Uniqueness::run_pipeline_stage</span><span class="plain">, </span><span class="constant">NO_STAGE_ARG</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
@@ -71,7 +70,7 @@
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CodeGen::Uniqueness::run_pipeline_stage</span><span class="plain">(</span><span class="reserved">pipeline_step</span><span class="plain"> *</span><span class="identifier">step</span><span class="plain">) {</span>
         <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">Dictionaries::new</span><span class="plain">(</span><span class="identifier">INITIAL_INTER_SYMBOLS_ID_RANGE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-</span><span class="element">&gt;repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Uniqueness::visitor</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+        <span class="identifier">Inter::Tree::traverse</span><span class="plain">(</span><span class="identifier">step</span><span class="plain">-&gt;</span><span class="element">repository</span><span class="plain">, </span><span class="functiontext">CodeGen::Uniqueness::visitor</span><span class="plain">, </span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -94,13 +93,13 @@
                         <span class="identifier">U</span><span class="plain"> = (</span><span class="reserved">uniqueness_count</span><span class="plain"> *) </span><span class="identifier">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                         <span class="identifier">U</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">uniqueness_count</span><span class="plain">);</span>
-                        <span class="identifier">U</span><span class="plain">-</span><span class="element">&gt;count</span><span class="plain"> = 0;</span>
+                        <span class="identifier">U</span><span class="plain">-&gt;</span><span class="element">count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                         <span class="identifier">Dictionaries::create</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">);</span>
                         <span class="identifier">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">U</span><span class="plain">);</span>
                     <span class="plain">}</span>
-                    <span class="identifier">U</span><span class="plain">-</span><span class="element">&gt;count</span><span class="plain">++;</span>
+                    <span class="identifier">U</span><span class="plain">-&gt;</span><span class="element">count</span><span class="plain">++;</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
-                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S_U%d"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">U</span><span class="plain">-</span><span class="element">&gt;count</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S_U%d"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">U</span><span class="plain">-&gt;</span><span class="element">count</span><span class="plain">);</span>
                     <span class="identifier">Inter::Symbols::set_translate</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
                     <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
                     <span class="identifier">Inter::Symbols::clear_flag</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">MAKE_NAME_UNIQUE</span><span class="plain">);</span>

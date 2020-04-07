@@ -66,13 +66,12 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>This represents the tokens being used when invoking a phrase:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">tokens_packet</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tokens_count</span><span class="plain">; </span>    <span class="comment">number of arguments to phrase</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">[32]; </span>    <span class="comment">what they are</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_required</span><span class="plain">[32]; </span>    <span class="comment">what pointer kinds of value, if they are</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">as_requested</span><span class="plain">; </span>    <span class="comment">kind for the function call</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tokens_count</span><span class="plain">; </span><span class="comment">number of arguments to phrase</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">[32]; </span><span class="comment">what they are</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">kind_required</span><span class="plain">[32]; </span><span class="comment">what pointer kinds of value, if they are</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">as_requested</span><span class="plain">; </span><span class="comment">kind for the function call</span>
     <span class="plain">} </span><span class="reserved">tokens_packet</span><span class="plain">;</span>
 </pre>
 
@@ -96,15 +95,14 @@ unless the decision on this block is one that we recognise from an
 earlier invocation list (in what may be another setting entirely).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Invocations::Compiler::compile_invocation_list</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">invl</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_wanted</span><span class="plain"> == </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">) </span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_provided</span><span class="plain"> = </span><span class="identifier">INTER_VAL_VHMODE</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">VH</span><span class="plain">-&gt;</span><span class="identifier">vhmode_provided</span><span class="plain"> = </span><span class="identifier">INTER_VOID_VHMODE</span><span class="plain">;</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">wn</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">) &gt; 0) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Compiling from %d invocations\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Compiling from %d invocations\n"</span><span class="plain">, </span><span class="functiontext">Invocations::length_of_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">));</span>
             <span class="identifier">source_location</span><span class="plain"> </span><span class="identifier">sl</span><span class="plain"> = </span><span class="identifier">Lexer::word_location</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_to_save_self</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">))) {</span>
@@ -139,10 +137,10 @@ earlier invocation list (in what may be another setting entirely).
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">;</span>
         <span class="identifier">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">invl</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"C%d: $e\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"C%d: $e\n"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_say_verb</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) {</span>
                 <span class="functiontext">NewVerbs::ConjugateVerb_invoke_emit</span><span class="plain">(</span>
                     <span class="identifier">ParseTree::get_say_verb</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">),</span>
@@ -187,25 +185,25 @@ earlier invocation list (in what may be another setting entirely).
 
 
 <pre class="displaydefn">
-        <span class="identifier">tokens</span><span class="element">.tokens_count</span><span class="plain"> = </span><span class="functiontext">Invocations::get_no_tokens_needed</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="element">.tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="identifier">tokens</span><span class="plain">.</span><span class="element">tokens_count</span><span class="plain"> = </span><span class="functiontext">Invocations::get_no_tokens_needed</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="plain">.</span><span class="element">tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">val</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_as_parsed</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span>
-                <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.to_match</span><span class="plain">);</span>
+                <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">to_match</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Phrases::TypeData::invoked_inline</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">(</span><span class="identifier">Kinds::Behaviour::definite</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">))</span>
-                <span class="identifier">tokens</span><span class="element">.kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">);</span>
+                <span class="identifier">tokens</span><span class="plain">.</span><span class="element">kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">val</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="identifier">tokens</span><span class="element">.kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">K</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
-                <span class="identifier">tokens</span><span class="element">.args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Rvalues::new_nothing_object_constant</span><span class="plain">();</span>
+                <span class="identifier">tokens</span><span class="plain">.</span><span class="element">kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">K</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
+                <span class="identifier">tokens</span><span class="plain">.</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Rvalues::new_nothing_object_constant</span><span class="plain">();</span>
             <span class="reserved">else</span>
-                <span class="identifier">tokens</span><span class="element">.args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">val</span><span class="plain">;</span>
+                <span class="identifier">tokens</span><span class="plain">.</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">val</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">return_kind</span><span class="plain"> = </span><span class="identifier">ParseTree::get_kind_resulting</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">return_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ph</span><span class="plain">)) </span><span class="identifier">return_kind</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.return_kind</span><span class="plain">;</span>
-        <span class="identifier">tokens</span><span class="element">.as_requested</span><span class="plain"> =</span>
-            <span class="identifier">Kinds::function_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="element">.tokens_count</span><span class="plain">, </span><span class="identifier">tokens</span><span class="element">.kind_required</span><span class="plain">, </span><span class="identifier">return_kind</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">return_kind</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ph</span><span class="plain">)) </span><span class="identifier">return_kind</span><span class="plain"> = </span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">return_kind</span><span class="plain">;</span>
+        <span class="identifier">tokens</span><span class="plain">.</span><span class="element">as_requested</span><span class="plain"> =</span>
+            <span class="identifier">Kinds::function_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">.</span><span class="element">tokens_count</span><span class="plain">, </span><span class="identifier">tokens</span><span class="plain">.</span><span class="element">kind_required</span><span class="plain">, </span><span class="identifier">return_kind</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -230,18 +228,18 @@ earlier invocation list (in what may be another setting entirely).
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">manner_expected</span><span class="plain"> = </span><span class="identifier">phrase_being_compiled</span><span class="plain">-</span><span class="element">&gt;type_data.manner_of_return</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">manner_expected</span><span class="plain"> = </span><span class="identifier">phrase_being_compiled</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">manner_of_return</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">returned_in_manner</span><span class="plain"> != </span><span class="identifier">manner_expected</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">manner_expected</span><span class="plain"> != </span><span class="constant">DECIDES_NOTHING_AND_RETURNS_MOR</span><span class="plain">)) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"C%d: $e: returned in manner %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">returned_in_manner</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"vs Phrase being compiled: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">manner_expected</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"C%d: $e: returned in manner %d\n"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">returned_in_manner</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"vs Phrase being compiled: %d\n"</span><span class="plain">, </span><span class="identifier">manner_expected</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(2,</span>
                 <span class="functiontext">Phrases::TypeData::describe_manner_of_return</span><span class="plain">(</span><span class="identifier">returned_in_manner</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">));</span>
             <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(3,</span>
                 <span class="functiontext">Phrases::TypeData::describe_manner_of_return</span><span class="plain">(</span><span class="identifier">manner_expected</span><span class="plain">,</span>
-                    <span class="plain">&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-</span><span class="element">&gt;type_data</span><span class="plain">), &amp;</span><span class="identifier">K</span><span class="plain">));</span>
+                    <span class="plain">&amp;(</span><span class="identifier">phrase_being_compiled</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">), &amp;</span><span class="identifier">K</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">) </span><span class="functiontext">Problems::quote_kind</span><span class="plain">(4, </span><span class="identifier">K</span><span class="plain">);</span>
             <span class="identifier">Problems::Issue::handmade_problem</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="identifier">_p_</span><span class="plain">(</span><span class="identifier">PM_WrongEndToPhrase</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">K</span><span class="plain">)</span>
@@ -286,7 +284,7 @@ will be expressions being evaluated.
         <span class="functiontext">Frames::need_at_least_this_many_formals</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">);</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">void_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">) </span><span class="identifier">void_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">manner_of_return</span><span class="plain"> == </span><span class="constant">DECIDES_NOTHING_MOR</span><span class="plain">) </span><span class="identifier">void_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Compile the resolution</span> <span class="cwebmacronumber">3.2.3</span>&gt;<span class="plain">;</span>
 </pre>
@@ -304,7 +302,6 @@ as soon as one of them does. The first thought is this:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1(T1, ..., Tm);</span>
         <span class="plain">else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);</span>
@@ -319,7 +316,6 @@ compile this instead:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1(T1, ..., Tm);</span>
@@ -342,7 +338,6 @@ scheme like so:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">formal_par1 = T1;</span>
@@ -392,16 +387,16 @@ the context of a value.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">TERNARYSEQUENTIAL_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditions_tested</span><span class="plain"> = 0;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditions_tested</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 &lt;<span class="cwebmacro">Emit code to set the formal parameters in expression mode</span> <span class="cwebmacronumber">3.2.3.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> != </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">())) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"formal parameter expression error"</span><span class="plain">);</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NC</span><span class="plain"> = 0, </span><span class="identifier">unprov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">prov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">NC</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">unprov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">prov</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                 &lt;<span class="cwebmacro">Count the applicability conditions</span> <span class="cwebmacronumber">3.2.3.5</span>&gt;<span class="plain">;</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">); </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="string">"Think %d unprov %d prov %d"</span><span class="plain">, </span><span class="identifier">NC</span><span class="plain">, </span><span class="identifier">unprov</span><span class="plain">, </span><span class="identifier">prov</span><span class="plain">); </span><span class="functiontext">Emit::code_comment</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">); </span><span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unprov</span><span class="plain">) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OR_BIP</span><span class="plain">); </span><span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
                 &lt;<span class="cwebmacro">Compile code to apply the first invocation which is applicable, as expression</span> <span class="cwebmacronumber">3.2.3.4</span>&gt;<span class="plain">;</span>
-                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NC</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
+                <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NC</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prov</span><span class="plain">) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">unprov</span><span class="plain">) {</span>
                     &lt;<span class="cwebmacro">Compile code for the execution path where no invocations were applicable</span> <span class="cwebmacronumber">3.2.3.6</span>&gt;<span class="plain">;</span>
@@ -421,7 +416,6 @@ the context of a value.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">formal_par1 = T1;</span>
@@ -445,7 +439,6 @@ serial comma at the cost of a fruitless addition,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(formal_parn = Tn) + ... + (formal_par1 = T1)</span>
 </pre>
@@ -462,7 +455,7 @@ right to left: we want T1 to evaluate first, then T2, and so on.
 
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">N</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;=0; </span><span class="identifier">i</span><span class="plain">--) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PLUS_BIP</span><span class="plain">); </span><span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PLUS_BIP</span><span class="plain">); </span><span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); }</span>
             &lt;<span class="cwebmacro">Compile the actual assignment</span> <span class="cwebmacronumber">3.2.3.1.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">N</span><span class="plain">-1; </span><span class="identifier">i</span><span class="plain">&gt;0; </span><span class="identifier">i</span><span class="plain">--) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -487,15 +480,15 @@ at run-time; we assign 0 to it for the sake of tidiness.
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">STORE_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">NonlocalVariables::formal_par</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">));</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">construct</span><span class="plain"> == </span><span class="constant">KIND_NAME_PT_CONSTRUCT</span><span class="plain">)</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
             <span class="reserved">else</span><span class="plain"> {</span>
                 <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
                 <span class="identifier">COMPILATION_MODE_ENTER</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain"> =</span>
                     <span class="functiontext">Invocations::get_token_as_parsed</span><span class="plain">(</span><span class="functiontext">Invocations::first_in_list</span><span class="plain">(</span><span class="identifier">invl</span><span class="plain">), </span><span class="identifier">i</span><span class="plain">);</span>
                 <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">to_be_used_as</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span>
-                    <span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;type_data.token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]</span><span class="element">.to_match</span><span class="plain">);</span>
+                    <span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">type_data</span><span class="plain">.</span><span class="element">token_sequence</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">to_match</span><span class="plain">);</span>
                 <span class="functiontext">Specifications::Compiler::emit_to_kind</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="identifier">to_be_used_as</span><span class="plain">);</span>
                 <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -512,7 +505,6 @@ it will look like so:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1;</span>
         <span class="plain">else if (condition for I2 to be valid) invoke I2;</span>
@@ -524,7 +516,6 @@ it will look like so:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">((condition for I1 to be valid) &amp;&amp; ((formal_rv = I1) bitwise-or 1))</span>
@@ -549,14 +540,14 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditions_tested</span><span class="plain"> = 0, </span><span class="identifier">if_depth</span><span class="plain"> = 0;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditions_tested</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">if_depth</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">last_inv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">;</span>
         <span class="identifier">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">invl</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"RC%d: $e\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"RC%d: $e\n"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
             <span class="identifier">last_inv</span><span class="plain"> = </span><span class="identifier">inv</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
                     <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -568,7 +559,7 @@ no subsequent lines are looked at.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Invocations::is_marked_unproven</span><span class="plain">(</span><span class="identifier">last_inv</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Compile code for the execution path where no invocations were applicable</span> <span class="cwebmacronumber">3.2.3.6</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">if_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">if_depth</span><span class="plain">--; }</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">if_depth</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">if_depth</span><span class="plain">--; }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -581,11 +572,11 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">last_inv</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">;</span>
         <span class="identifier">LOOP_THROUGH_INVOCATION_LIST</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">invl</span><span class="plain">) {</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"RC%d: $e\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"RC%d: $e\n"</span><span class="plain">, </span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">pos</span><span class="plain">++;</span>
             <span class="identifier">last_inv</span><span class="plain"> = </span><span class="identifier">inv</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile code to apply this invocation if it's applicable, expression version</span> <span class="cwebmacronumber">3.2.3.4.1</span>&gt;<span class="character">;</span>
         <span class="plain">}</span>
@@ -625,7 +616,7 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"condition proof error"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_conditions_tested</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"condition proof error"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -635,7 +626,7 @@ no subsequent lines are looked at.
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">line_number</span><span class="plain">);</span>
             <span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain"> = </span><span class="identifier">Extensions::corresponding_to</span><span class="plain">(</span><span class="identifier">sl</span><span class="plain">.</span><span class="identifier">file_of_origin</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain">) </span><span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, (</span><span class="identifier">inter_t</span><span class="plain">) </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
 </pre>
 
@@ -688,7 +679,7 @@ no subsequent lines are looked at.
             <span class="reserved">tokens_packet</span><span class="plain"> </span><span class="identifier">tokens</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">First construct an arguments packet</span> <span class="cwebmacronumber">3.1.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Substitute the formal parameter variables into the tokens</span> <span class="cwebmacronumber">3.2.3.3.1.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()), </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">ands_made</span><span class="plain"> = 0;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">Produce::level</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()), </span><span class="identifier">or_made</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">ands_made</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile the check on invocation applicability, expression version</span> <span class="cwebmacronumber">3.2.3.4.1.1</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Compile the invocation part, emission version</span> <span class="cwebmacronumber">3.2.3.3.1.3</span>&gt;<span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">ands_made</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -708,10 +699,10 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="element">.tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">tokens</span><span class="plain">.</span><span class="element">tokens_count</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain"> = </span><span class="functiontext">NonlocalVariables::temporary_formal</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
-            <span class="functiontext">NonlocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">tokens</span><span class="element">.kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="identifier">tokens</span><span class="element">.args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Lvalues::new_actual_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">);</span>
+            <span class="functiontext">NonlocalVariables::set_kind</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">, </span><span class="identifier">tokens</span><span class="plain">.</span><span class="element">kind_required</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
+            <span class="identifier">tokens</span><span class="plain">.</span><span class="element">args</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="functiontext">Lvalues::new_actual_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">nlv</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -725,13 +716,13 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">check_needed</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">check_needed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">check_against</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_check_to_do</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_against</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">check_needed</span><span class="plain">++;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">void_mode</span><span class="plain">) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IFELSE_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -759,13 +750,13 @@ no subsequent lines are looked at.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">check_needed</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">check_needed</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">check_against</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_check_to_do</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_against</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">check_needed</span><span class="plain">++;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_needed</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">no_conditions_tested</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_conditions_tested</span><span class="plain"> &lt; </span><span class="identifier">NC</span><span class="plain">) || (</span><span class="identifier">prov</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">OR_BIP</span><span class="plain">);</span>
@@ -802,11 +793,11 @@ a list divided by logical-and <code class="display"><span class="extract">&amp;&
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">and_depth</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">and_depth</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">check_count</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0, </span><span class="identifier">check_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Invocations::get_no_tokens</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">check_against</span><span class="plain"> = </span><span class="functiontext">Invocations::get_token_check_to_do</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">check_against</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
                 <span class="identifier">check_count</span><span class="plain">++;</span>
@@ -822,7 +813,7 @@ a list divided by logical-and <code class="display"><span class="extract">&amp;&
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">and_depth</span><span class="plain"> &gt; 0) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">and_depth</span><span class="plain">--; }</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">and_depth</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">()); </span><span class="identifier">and_depth</span><span class="plain">--; }</span>
 
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
 </pre>
@@ -885,7 +876,6 @@ In case we test if X is 10, in the other that X matches the description
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">invoke(formal-vars)</span>
 </pre>
@@ -894,7 +884,6 @@ In case we test if X is 10, in the other that X matches the description
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">((formal_rv = invoke(formal-vars)) bitwise-or 1)</span>
@@ -925,7 +914,7 @@ evaluate to "true" with a minimum of branches in the compiled code.
 
         <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">void_mode</span><span class="plain">) {</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 
@@ -943,11 +932,10 @@ evaluate to "true" with a minimum of branches in the compiled code.
 we need to ensure there are round brackets around.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Invocations::Compiler::compile_single_invocation</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inv</span><span class="plain">,</span>
         <span class="identifier">source_location</span><span class="plain"> *</span><span class="identifier">where_from</span><span class="plain">, </span><span class="reserved">tokens_packet</span><span class="plain"> *</span><span class="identifier">tokens</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Compiling single invocation: $e\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Compiling single invocation: $e\n"</span><span class="plain">, </span><span class="identifier">inv</span><span class="plain">);</span>
         <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
 
         <span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain"> = </span><span class="identifier">ParseTree::get_phrase_invoked</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">);</span>
@@ -959,7 +947,7 @@ we need to ensure there are round brackets around.
 
         <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">manner_of_return</span><span class="plain"> != </span><span class="constant">DONT_KNOW_MOR</span><span class="plain">)</span>
-            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Single invocation return manner: %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">manner_of_return</span><span class="plain">);</span>
+            <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"Single invocation return manner: %d\n"</span><span class="plain">, </span><span class="identifier">manner_of_return</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">manner_of_return</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1006,12 +994,12 @@ stop automatically generates a newline:
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Invocations::implies_newline</span><span class="plain">(</span><span class="identifier">inv</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;tokens_count</span><span class="plain"> &gt; 0) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0], </span><span class="identifier">K_text</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">Word::text_ending_sentence</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-</span><span class="element">&gt;args</span><span class="plain">[0]))))) {</span>
+            <span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">tokens_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp;</span>
+            <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_of_kind</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0], </span><span class="identifier">K_text</span><span class="plain">)) &amp;&amp;</span>
+            <span class="plain">(</span><span class="identifier">Word::text_ending_sentence</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[0]))))) {</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">PRINT_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">Produce::val_text</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">I</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="plain">}</span>
 </pre>

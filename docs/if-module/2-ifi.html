@@ -76,7 +76,7 @@ cases the UUID is empty.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_UUID_LENGTH</span><span class="plain"> 128 </span>    <span class="comment">the UUID is truncated to this if necessary</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_UUID_LENGTH</span><span class="plain"> </span><span class="constant">128</span><span class="plain"> </span><span class="comment">the UUID is truncated to this if necessary</span>
 </pre>
 
 <pre class="display">
@@ -84,13 +84,13 @@ cases the UUID is empty.
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">uuid_read</span><span class="plain"> = -1;</span>
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">PL::Bibliographic::IFID::read_uuid</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uuid_read</span><span class="plain"> &gt;= 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">uuid_text</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">uuid_read</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">uuid_text</span><span class="plain">;</span>
         <span class="identifier">uuid_text</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">uuid_read</span><span class="plain"> = 0;</span>
+        <span class="identifier">uuid_read</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">xf</span><span class="plain"> = </span><span class="identifier">Filenames::fopen</span><span class="plain">(</span><span class="identifier">Task::uuid_file</span><span class="plain">(), </span><span class="string">"r"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">uuid_text</span><span class="plain">; </span>    <span class="comment">the UUID is the empty string if the file is missing</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">xf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">uuid_text</span><span class="plain">; </span><span class="comment">the UUID is the empty string if the file is missing</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">fgetc</span><span class="plain">(</span><span class="identifier">xf</span><span class="plain">)) != </span><span class="identifier">EOF</span><span class="plain">) </span>    <span class="comment">the UUID file is plain text, not Unicode</span>
+        <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">fgetc</span><span class="plain">(</span><span class="identifier">xf</span><span class="plain">)) != </span><span class="identifier">EOF</span><span class="plain">) </span><span class="comment">the UUID file is plain text, not Unicode</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">uuid_read</span><span class="plain">++ &lt; </span><span class="constant">MAX_UUID_LENGTH</span><span class="plain">-1))</span>
             <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">uuid_text</span><span class="plain">, </span><span class="identifier">Characters::toupper</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">));</span>
         <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">xf</span><span class="plain">);</span>
@@ -108,7 +108,6 @@ that it can still be identified even if it loses touch with its iFiction
 record. We store the IFID in plain text, with a "magic string" identifier
 around it, in byte-accessible memory.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PL::Bibliographic::IFID::define_UUID</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

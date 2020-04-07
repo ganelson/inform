@@ -66,7 +66,6 @@ named so because their definitions are explicit in the source text. Initially,
 there are none.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::REL_create_initial_stock</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">}</span>
@@ -83,7 +82,6 @@ there are none.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>They typecheck by the default rule only:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::REL_typecheck</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
             <span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_of_terms</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> **</span><span class="identifier">kinds_required</span><span class="plain">, </span><span class="reserved">tc_problem_kit</span><span class="plain"> *</span><span class="identifier">tck</span><span class="plain">) {</span>
@@ -99,7 +97,6 @@ there are none.
 to behave as if B(y, x) had also been asserted whenever B(x, y) has, if
 x!= y.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::REL_assert</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">,</span>
@@ -186,7 +183,6 @@ both R(x,y) and R(x,z) will result in contradictory property value
 inferences for y and z.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::infer_property_based_relation</span><span class="plain">(</span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">relation</span><span class="plain">,</span>
         <span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs0</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs1</span><span class="plain">) {</span>
@@ -205,7 +201,6 @@ inferences for y and z.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>We need do nothing special: these relations can be compiled from their schemas.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::REL_compile</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">task</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">, </span><span class="reserved">annotated_i6_schema</span><span class="plain"> *</span><span class="identifier">asch</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -218,7 +213,6 @@ inferences for y and z.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Problem message text:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Relations::Explicit::REL_describe_for_problems</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">binary_predicate</span><span class="plain"> *</span><span class="identifier">bp</span><span class="plain">) {</span>

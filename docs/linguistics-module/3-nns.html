@@ -78,24 +78,24 @@ be high priority, and proper names (i.e., names of instances) will be low.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">HIGH_NOUN_PRIORITY</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LOW_NOUN_PRIORITY</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_NOUN_PRIORITY</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HIGH_NOUN_PRIORITY</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">LOW_NOUN_PRIORITY</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_NOUN_PRIORITY</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">noun</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">name_cluster</span><span class="plain"> *</span><span class="identifier">names</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">tagged_to</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_priority</span><span class="plain">; </span>    <span class="comment">in the range 1 up to <code class="display"><span class="extract">MAX_NOUN_PRIORITY</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">match_exactly</span><span class="plain">; </span>    <span class="comment">do not allow subset parsing matches, e.g., "bottle" for "glass bottle"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">range_number</span><span class="plain">; </span>    <span class="comment">used to enumerate</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">search_priority</span><span class="plain">; </span><span class="comment">in the range 1 up to <code class="display"><span class="extract">MAX_NOUN_PRIORITY</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">match_exactly</span><span class="plain">; </span><span class="comment">do not allow subset parsing matches, e.g., "bottle" for "glass bottle"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">range_number</span><span class="plain">; </span><span class="comment">used to enumerate</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">registration_category</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">registration_to</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">nt_I6_identifier</span><span class="plain">; </span>    <span class="comment">Name to be used in Inform 6 output</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">nt_I6_identifier</span><span class="plain">; </span><span class="comment">Name to be used in Inform 6 output</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">nt_iname</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">name_resolution_data</span><span class="plain"> </span><span class="identifier">name_resolution</span><span class="plain">; </span>    <span class="comment">see the Headings section on this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">name_resolution_data</span><span class="plain"> </span><span class="identifier">name_resolution</span><span class="plain">; </span><span class="comment">see the Headings section on this</span>
         <span class="plain">#</span><span class="identifier">endif</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">noun</span><span class="plain">;</span>
@@ -123,10 +123,10 @@ the actual medallion object.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PARSE_EXACTLY_NTOPT</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REGISTER_SINGULAR_NTOPT</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">REGISTER_PLURAL_NTOPT</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain"> 8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PARSE_EXACTLY_NTOPT</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REGISTER_SINGULAR_NTOPT</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">REGISTER_PLURAL_NTOPT</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain"> </span><span class="constant">8</span>
 </pre>
 
 <pre class="display">
@@ -145,20 +145,20 @@ the actual medallion object.
     <span class="reserved">noun</span><span class="plain"> *</span><span class="functiontext">Nouns::new_inner</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">owner</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">options</span><span class="plain">,</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mc</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">gender</span><span class="plain">) {</span>
         <span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain">);</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;tagged_to</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_to</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mc</span><span class="plain"> == </span><span class="constant">NOUN_MC</span><span class="plain">) </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_to</span><span class="plain"> = </span><span class="identifier">STORE_POINTER_noun</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_category</span><span class="plain"> = </span><span class="identifier">mc</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;range_number</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + 1;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;match_exactly</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain"> = </span><span class="identifier">Clusters::new</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">PARSE_EXACTLY_NTOPT</span><span class="plain">) </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;match_exactly</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">tagged_to</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_to</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mc</span><span class="plain"> == </span><span class="constant">NOUN_MC</span><span class="plain">) </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_to</span><span class="plain"> = </span><span class="identifier">STORE_POINTER_noun</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_category</span><span class="plain"> = </span><span class="identifier">mc</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">range_number</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">search_priority</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">match_exactly</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain"> = </span><span class="identifier">Clusters::new</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">PARSE_EXACTLY_NTOPT</span><span class="plain">) </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">match_exactly</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
-            <span class="functiontext">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="identifier">gender</span><span class="plain">, 1, </span><span class="identifier">options</span><span class="plain">);</span>
+            <span class="functiontext">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="identifier">gender</span><span class="plain">, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">options</span><span class="plain">);</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;nt_I6_identifier</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;nt_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">nt_I6_identifier</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">nt_iname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">ATTACH_TO_SEARCH_LIST_NTOPT</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Insert this noun into the relevant heading search list</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
@@ -200,20 +200,20 @@ we add a new one.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NOUN_HAS_NO_MC</span><span class="plain"> 0</span><span class="identifier">xffffffff</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOUN_HAS_NO_MC</span><span class="plain"> </span><span class="constant">0xffffffff</span>
 </pre>
 
 <pre class="display">
     <span class="identifier">individual_name</span><span class="plain"> *</span><span class="functiontext">Nouns::add_to_noun_and_reg</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">,</span>
         <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">gender</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">number</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">options</span><span class="plain">) {</span>
-        <span class="identifier">individual_name</span><span class="plain"> *</span><span class="identifier">in</span><span class="plain"> = </span><span class="identifier">Clusters::add</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="identifier">gender</span><span class="plain">, </span><span class="identifier">number</span><span class="plain">,</span>
-            <span class="plain">(</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">REGISTER_PLURAL_NTOPT</span><span class="plain">)?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">individual_name</span><span class="plain"> *</span><span class="identifier">in</span><span class="plain"> = </span><span class="identifier">Clusters::add</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">foreign_language</span><span class="plain">, </span><span class="identifier">gender</span><span class="plain">, </span><span class="identifier">number</span><span class="plain">,</span>
+            <span class="plain">(</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">REGISTER_PLURAL_NTOPT</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">in</span><span class="plain">; </span><span class="identifier">in</span><span class="plain"> = </span><span class="identifier">in</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">REGISTER_SINGULAR_NTOPT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_category</span><span class="plain"> != </span><span class="constant">NOUN_HAS_NO_MC</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">options</span><span class="plain"> &amp; </span><span class="constant">REGISTER_SINGULAR_NTOPT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_category</span><span class="plain"> != </span><span class="constant">NOUN_HAS_NO_MC</span><span class="plain">)) {</span>
                 <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="identifier">em</span><span class="plain"> = </span><span class="functiontext">ExcerptMeanings::register</span><span class="plain">(</span>
-                    <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_category</span><span class="plain">,</span>
+                    <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_category</span><span class="plain">,</span>
                     <span class="identifier">Declensions::in_case</span><span class="plain">(&amp;(</span><span class="identifier">in</span><span class="plain">-&gt;</span><span class="identifier">name</span><span class="plain">), </span><span class="identifier">NOMINATIVE_CASE</span><span class="plain">),</span>
-                    <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;registration_to</span><span class="plain">);</span>
+                    <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">registration_to</span><span class="plain">);</span>
                 <span class="identifier">Clusters::set_principal_meaning</span><span class="plain">(</span><span class="identifier">in</span><span class="plain">, </span><span class="identifier">STORE_POINTER_excerpt_meaning</span><span class="plain">(</span><span class="identifier">em</span><span class="plain">));</span>
             <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">in</span><span class="plain">;</span>
@@ -227,11 +227,10 @@ we add a new one.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The English singular nominative form:
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Nouns::nominative</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -240,7 +239,6 @@ we add a new one.
 <p class="endnote">The function Nouns::nominative appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Logging. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nouns::log</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
@@ -263,18 +261,17 @@ we add a new one.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Name access. </b></p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Nouns::get_name</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural_flag</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">, </span><span class="identifier">plural_flag</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">, </span><span class="identifier">plural_flag</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">Nouns::get_name_in_play</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plural_flag</span><span class="plain">, </span><span class="identifier">PREFORM_LANGUAGE_TYPE</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name_in_play</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">, </span><span class="identifier">plural_flag</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Clusters::get_name_in_play</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">, </span><span class="identifier">plural_flag</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nouns::set_plural_name</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
-        <span class="identifier">Clusters::set_plural_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">);</span>
+        <span class="identifier">Clusters::set_plural_name</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">language_of_source_text</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nouns::full_name_includes</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">vocabulary_entry</span><span class="plain"> *</span><span class="identifier">wd</span><span class="plain">) {</span>
@@ -299,26 +296,25 @@ we add a new one.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Other utilities. </b></p>
 
-
 <pre class="display">
     <span class="identifier">general_pointer</span><span class="plain"> </span><span class="functiontext">Nouns::tag_holder</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL_GENERAL_POINTER</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;tagged_to</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">tagged_to</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nouns::priority</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">search_priority</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nouns::range_number</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;range_number</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">range_number</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Nouns::set_range_number</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">t</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;range_number</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
+        <span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">range_number</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Nouns::exactitude</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
@@ -326,11 +322,11 @@ we add a new one.
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_exact_parsing_option</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;match_exactly</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="identifier">match_exactly</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">excerpt_meaning</span><span class="plain"> *</span><span class="functiontext">Nouns::get_principal_meaning</span><span class="plain">(</span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_excerpt_meaning</span><span class="plain">(</span><span class="identifier">Clusters::get_principal_meaning</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;names</span><span class="plain">));</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">RETRIEVE_POINTER_excerpt_meaning</span><span class="plain">(</span><span class="identifier">Clusters::get_principal_meaning</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">names</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -362,30 +358,29 @@ thus determined by which of the blue and red chairs ranks highest in the
 search list: and that is why the search list is so important.
 </p>
 
-
 <pre class="display">
     <span class="reserved">noun</span><span class="plain"> *</span><span class="functiontext">Nouns::disambiguate</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">priority</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">candidates</span><span class="plain"> = 0; </span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">first_nt</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">candidates</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">first_nt</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">p2</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
             <span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_noun</span><span class="plain">(</span>
                 <span class="functiontext">ExcerptMeanings::data</span><span class="plain">(</span><span class="identifier">ParseTree::get_meaning</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">)));</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nt</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain"> &gt;= 1) &amp;&amp; (</span><span class="identifier">nt</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain"> &lt;= </span><span class="identifier">priority</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="element">search_priority</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="element">search_priority</span><span class="plain"> &lt;= </span><span class="identifier">priority</span><span class="plain">)) {</span>
                 <span class="identifier">first_nt</span><span class="plain"> = </span><span class="identifier">nt</span><span class="plain">; </span><span class="identifier">candidates</span><span class="plain">++;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">candidates</span><span class="plain"> &lt;= 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">first_nt</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">candidates</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">first_nt</span><span class="plain">;</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="identifier">Sentences::Headings::construct_noun_search_list</span><span class="plain">();</span>
         <span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="reserved">noun</span><span class="plain">)</span>
-            <span class="identifier">Sentences::Headings::set_noun_search_score</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, 0);</span>
+            <span class="identifier">Sentences::Headings::set_noun_search_score</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain">; </span><span class="identifier">p2</span><span class="plain"> = </span><span class="identifier">p2</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
             <span class="reserved">noun</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain"> = </span><span class="identifier">RETRIEVE_POINTER_noun</span><span class="plain">(</span>
                 <span class="functiontext">ExcerptMeanings::data</span><span class="plain">(</span><span class="identifier">ParseTree::get_meaning</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">)));</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nt</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain"> &gt;= 1) &amp;&amp; (</span><span class="identifier">nt</span><span class="plain">-</span><span class="element">&gt;search_priority</span><span class="plain"> &lt;= </span><span class="identifier">priority</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="element">search_priority</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">nt</span><span class="plain">-&gt;</span><span class="element">search_priority</span><span class="plain"> &lt;= </span><span class="identifier">priority</span><span class="plain">))</span>
                 <span class="identifier">Sentences::Headings::set_noun_search_score</span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">,</span>
                     <span class="identifier">ParseTree::get_score</span><span class="plain">(</span><span class="identifier">p2</span><span class="plain">));</span>
         <span class="plain">}</span>

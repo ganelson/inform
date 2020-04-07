@@ -83,7 +83,6 @@ So for example, if:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">package Double _code</span>
         <span class="plain">    symbol private misc x</span>
@@ -104,7 +103,6 @@ final statement in the package, and contains the actual body code.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">package HelloWorld _code</span>
         <span class="plain">    code</span>
@@ -124,7 +122,6 @@ declared a number of primitives, with the notation:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">primitive PRIMITIVE IN -&gt; OUT</span>
 </pre>
@@ -137,7 +134,6 @@ can be a list of one or more terms which are all either <code class="display"><s
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">primitive !plus val val -&gt; val</span>
 </pre>
@@ -147,7 +143,6 @@ meaning that it takes two values and produces another as result, while
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">primitive !ifelse val code code -&gt; void</span>
@@ -171,7 +166,6 @@ effect an lvalue rather than an rvalue: for example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">primitive !pull ref -&gt; void</span>
 </pre>
@@ -194,7 +188,6 @@ indented one tab stop in. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">inv !plus</span>
         <span class="plain">    val K_number 2</span>
@@ -208,7 +201,6 @@ expected to produce or do. In this example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">inv !print</span>
         <span class="plain">    val K_text "Hello World!\n"</span>
@@ -221,7 +213,6 @@ It is an error to use a statement in the wrong context. For example, this:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">    code</span>
@@ -237,7 +228,6 @@ primitive. Comparing the declarations of <code class="display"><span class="extr
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">primitive !print val -&gt; void</span>
@@ -258,7 +248,6 @@ done as follows. Suppose:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">kind K_number int32</span>
         <span class="plain">kind K_number_to_number K_number -&gt; K_number</span>
@@ -278,7 +267,6 @@ can invoke. Thus:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv Double</span>
@@ -307,7 +295,6 @@ this kind is appropriate in the current context. For example, the primitive
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">inv !print</span>
         <span class="plain">    val K_number 7</span>
@@ -318,7 +305,6 @@ inter code. This code, on the other hand, will throw an error:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv !print</span>
@@ -332,7 +318,6 @@ to compile shim code converting values between kinds. The statement:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">cast KIND1 &lt;- KIND2</span>
 </pre>
@@ -343,7 +328,6 @@ imagine something like this:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv !times</span>
@@ -362,7 +346,6 @@ For example, suppose the following signatures:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">primitive !jump lab -&gt; void</span>
         <span class="plain">primitive !pull ref -&gt; val</span>
@@ -373,7 +356,6 @@ For example, suppose the following signatures:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv !jump</span>
@@ -388,7 +370,6 @@ because labels are not values, and therefore do not have kinds.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">inv !pull</span>
         <span class="plain">    ref K_number x</span>
@@ -400,7 +381,6 @@ isn't possible to write to the number 10: that is an rvalue but not an lvalue.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv !if</span>
@@ -427,7 +407,6 @@ but for a side-effect. To get around that, we have:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">evaluation</span>
         <span class="plain">    ...</span>
@@ -445,7 +424,6 @@ following, for example -
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">inv !store</span>

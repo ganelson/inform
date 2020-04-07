@@ -65,7 +65,6 @@
 contradiction of some kind:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::two_sentences_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">other_sentence</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
@@ -92,7 +91,6 @@ contradiction of some kind:
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Almost exactly the same thing, but happening at arbitrary positions in the
 parse tree, and concerning an instance:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::contradiction_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">,</span>
@@ -140,14 +138,13 @@ for a table can be enormous: so we need something which can show which
 table we are in, yet still only cite a small part of it &mdash;
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::table_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">data</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
-        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-</span><span class="element">&gt;headline_fragment</span><span class="plain">;</span>
+        <span class="identifier">current_sentence</span><span class="plain"> = </span><span class="identifier">t</span><span class="plain">-&gt;</span><span class="element">headline_fragment</span><span class="plain">;</span>
         <span class="functiontext">Problems::quote_table</span><span class="plain">(1, </span><span class="identifier">t</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tc</span><span class="plain">) </span><span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">Nouns::nominative</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">data</span><span class="plain">) </span><span class="identifier">Problems::quote_source</span><span class="plain">(3, </span><span class="identifier">data</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">);</span>
@@ -162,12 +159,11 @@ table we are in, yet still only cite a small part of it &mdash;
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Equation problems. </b>So this is where hopes are generically dashed about equations:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::equation_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-&gt;</span><span class="element">equation_text</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"In %1, you define an equation '%2': but "</span><span class="plain">);</span>
@@ -178,7 +174,7 @@ table we are in, yet still only cite a small part of it &mdash;
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::equation_problem_S</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">equation</span><span class="plain"> *</span><span class="identifier">eqn</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-</span><span class="element">&gt;equation_text</span><span class="plain">);</span>
+        <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">eqn</span><span class="plain">-&gt;</span><span class="element">equation_text</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(3, </span><span class="identifier">p</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="string">"In %1, you define an equation '%2': but "</span><span class="plain">);</span>
@@ -208,14 +204,13 @@ table we are in, yet still only cite a small part of it &mdash;
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Inline definition problems. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::inline_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">phrase</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="reserved">definition</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
         <span class="identifier">Problems::quote_stream</span><span class="plain">(2, </span><span class="reserved">definition</span><span class="plain">);</span>
-        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_preamble_text</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-</span><span class="element">&gt;usage_data</span><span class="plain">));</span>
+        <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">XW</span><span class="plain"> = </span><span class="functiontext">Phrases::Usage::get_preamble_text</span><span class="plain">(&amp;(</span><span class="identifier">ph</span><span class="plain">-&gt;</span><span class="element">usage_data</span><span class="plain">));</span>
         <span class="identifier">Problems::quote_wording_as_source</span><span class="plain">(3, </span><span class="identifier">XW</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
         <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
@@ -235,21 +230,20 @@ table we are in, yet still only cite a small part of it &mdash;
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Proposition type-checking problems. </b>Are mostly issued thus:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::tcp_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">tc_problem_kit</span><span class="plain"> *</span><span class="identifier">tck</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;issue_error</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">issue_error</span><span class="plain">) {</span>
             <span class="identifier">ACT_ON_SIGIL</span>
             <span class="identifier">Problems::quote_source</span><span class="plain">(1, </span><span class="identifier">current_sentence</span><span class="plain">);</span>
-            <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;ew_text</span><span class="plain">);</span>
-            <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;intention</span><span class="plain">);</span>
+            <span class="identifier">Problems::quote_wording</span><span class="plain">(2, </span><span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">ew_text</span><span class="plain">);</span>
+            <span class="identifier">Problems::quote_text</span><span class="plain">(3, </span><span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">intention</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_begin</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">""</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span>
                 <span class="string">"In the sentence %1, it looks as if you intend '%2' to %3, but "</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_segment</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">);</span>
             <span class="identifier">Problems::issue_problem_end</span><span class="plain">();</span>
         <span class="plain">}</span>
-        <span class="identifier">tck</span><span class="plain">-</span><span class="element">&gt;flag_problem</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">tck</span><span class="plain">-&gt;</span><span class="element">flag_problem</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -262,7 +256,6 @@ assemblies of other instances), and their properties are sometimes inferred
 from information in sentences far distant, so we can't always locate
 these problems at any particular sentence.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::object_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">,</span>
@@ -315,7 +308,6 @@ more tact (and in particular, we don't assert very confidently that what
 we are dealing with is genuinely an object).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::subject_creation_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">subj</span><span class="plain">,</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
@@ -350,7 +342,6 @@ are implied which necessarily make no sense, rather than merely contingently
 making no sense.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::inference_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">, </span><span class="reserved">inference</span><span class="plain"> *</span><span class="identifier">inf</span><span class="plain">,</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
@@ -375,7 +366,6 @@ making no sense.
 abstract, rather than with the actual property of some specific object.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::property_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">explanation</span><span class="plain">) {</span>
         <span class="identifier">ACT_ON_SIGIL</span>
@@ -394,7 +384,6 @@ abstract, rather than with the actual property of some specific object.
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Extension problems. </b>These are generated when the user tries to employ a malformed extension.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::extension_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">inform_extension</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
@@ -416,7 +405,6 @@ abstract, rather than with the actual property of some specific object.
 possible to pin down an exact place where the difficulty occurs, but
 sometimes not.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::release_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
@@ -471,7 +459,6 @@ sometimes not.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Cartographical problems. </b>The map-maker used for the World index and also the EPS-file output has its
 own quaint syntax, and where there is syntax, there are error messages:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::Issue::map_problem</span><span class="plain">(</span><span class="identifier">SIGIL_ARGUMENTS</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>

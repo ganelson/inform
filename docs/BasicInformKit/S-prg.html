@@ -15,7 +15,7 @@
 <li><a href="../other.html">other tools</a></li>
 <li><a href="../extensions.html"><b>extensions and kits</b></a></li>
 <li><a href="../units.html">unit test tools</a></li>
-/ul>
+</ul>
 <h2>Extensions</h2>
 <ul>
 <li><a href="../basic_inform/index.html">Basic Inform</a></li>
@@ -63,7 +63,6 @@ those positions we look for <code class="display"><span class="extract">say__p</
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">&gt; WAIT</span>
         <span class="plain">The clock ticks ominously.</span>
@@ -87,7 +86,6 @@ Ordinarily, the first paragraph of any turn appears straight after the prompt:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">&gt; EXAMINE DOG</span>
         <span class="plain">Mme Tourmalet's borzoi looks as if it means fashion, not business.</span>
@@ -102,7 +100,6 @@ room description for the new room. Thus:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">&gt; SOUTH</span>
         <span class="plain">    </span>
@@ -113,7 +110,6 @@ room description for the new room. Thus:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">&gt; LOOK</span>
@@ -136,7 +132,6 @@ command such as OPEN DOOR is clarified. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">(first unlocking the oak door)</span>
      ...now a command clarification break    <span class="plain">You open the oak door.</span>
@@ -149,7 +144,6 @@ to merge two or more paragraphs together.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">&gt; TAKE ALL</span>
@@ -167,7 +161,6 @@ we don't want a skipped line:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Villa Christiane</span>
      ...a special look spacing break    <span class="plain">The walled garden of a villa in Cap d'Agde.</span>
@@ -181,7 +174,6 @@ we want no skip:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Villa Christiane</span>
      ...a special look spacing break    <span class="plain">Mme Tourmalet's borzoi lazes in the long grass.</span>
@@ -192,7 +184,6 @@ only by the prompt:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">Villa Christiane</span>
@@ -263,9 +254,8 @@ before resuming printing to the old stream.
 below.
 </p>
 
-
 <pre class="display">
-    <span class="comment">!Constant TRACE_I7_SPACING;</span>
+    <span class="comment">onstant TRACE_I7_SPACING;</span>
 
     <span class="plain">[ </span><span class="identifier">ClearParagraphing</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">;</span>
         <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -276,8 +266,8 @@ below.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__p</span><span class="plain">) {</span>
             <span class="reserved">new_line</span><span class="plain">; </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_COMPLETED</span><span class="plain">;</span>
             <span class="identifier">say__pc_save</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> - </span><span class="identifier">PARA_PROMPTSKIP</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">) </span><span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> - </span><span class="identifier">PARA_SUPPRESSPROMPTSKIP</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">TRACE_I7_SPACING</span><span class="plain">; </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"[--&gt;"</span><span class="plain">, </span><span class="identifier">say__p</span><span class="plain">, </span><span class="identifier">say__pc</span><span class="plain">, </span><span class="string">"]"</span><span class="plain">; #</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> | </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">;</span>
@@ -291,7 +281,7 @@ below.
 
     <span class="plain">[ </span><span class="identifier">ParaContent</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__pc</span><span class="plain"> &amp; </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">) {</span>
-            <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> </span><span class="constant">-</span><span class="plain"> </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">;</span>
+            <span class="identifier">say__pc</span><span class="plain"> = </span><span class="identifier">say__pc</span><span class="plain"> - </span><span class="identifier">PARA_CONTENTEXPECTED</span><span class="plain">;</span>
             <span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -342,7 +332,6 @@ printed, and this is used for the text substitution "[s]", so that
 "You have been awake for [turn count] turn[s]." will expand correctly.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">STextSubstitution</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">say__n</span><span class="plain"> ~= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"s"</span><span class="plain">;</span>
@@ -355,14 +344,13 @@ printed, and this is used for the text substitution "[s]", so that
 whatever is the current language of play.
 </p>
 
-
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">EnglishNumber</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">LanguageNumber</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">); ];</span>
 
 
     <span class="plain">[ </span><span class="identifier">LanguageNumber</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> </span><span class="identifier">f</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)    { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"zero"</span><span class="plain">; </span><span class="reserved">rfalse</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)     { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"minus "</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">-</span><span class="identifier">n</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)     { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"minus "</span><span class="plain">; </span><span class="identifier">n</span><span class="plain"> = -</span><span class="identifier">n</span><span class="plain">; }</span>
     <span class="plain">#</span><span class="identifier">Iftrue</span><span class="plain"> (</span><span class="identifier">WORDSIZE</span><span class="plain"> == </span><span class="constant">4</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &gt;= </span><span class="constant">1000000000</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">f</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">", "</span><span class="plain">;</span>

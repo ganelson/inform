@@ -63,7 +63,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Indexing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::produce_index</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">inform_project</span><span class="plain"> *</span><span class="identifier">project</span><span class="plain"> = </span><span class="functiontext">Task::project</span><span class="plain">();</span>
@@ -90,7 +89,6 @@
 bundle for that language during its initial scan.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">natural</span><span class="plain">-</span><span class="identifier">language</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">;</span>
@@ -113,7 +111,6 @@ interesting question whether the possibility of the game having been written
 in German "belongs" in the model world, if in fact the game wasn't written
 in German; but this is how we'll do it, anyway.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::stock_nl_kind</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -145,7 +142,6 @@ this one:
 this because we need access to it very quickly when parsing text substitutions.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::adaptive_person</span><span class="plain">(</span><span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">IF_MODULE</span>
@@ -172,13 +168,12 @@ this because we need access to it very quickly when parsing text substitutions.)
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Including Preform syntax. </b>At present we do this only for English, but some day...
 </p>
 
-
 <pre class="display">
     <span class="identifier">wording</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::load_preform</span><span class="plain">(</span><span class="identifier">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't load preform from null language"</span><span class="plain">);</span>
         <span class="identifier">language_being_read_by_Preform</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">preform_file</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Languages::path_to_bundle</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"Syntax.preform"</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Reading language definition from &lt;%f&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">preform_file</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Reading language definition from &lt;%f&gt;\n"</span><span class="plain">, </span><span class="identifier">preform_file</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Preform::load_from_file</span><span class="plain">(</span><span class="identifier">preform_file</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -190,13 +185,12 @@ this because we need access to it very quickly when parsing text substitutions.)
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Preform errors are handled here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">NaturalLanguages::preform_error</span><span class="plain">(</span><span class="identifier">word_assemblage</span><span class="plain"> </span><span class="identifier">base_text</span><span class="plain">, </span><span class="identifier">nonterminal</span><span class="plain"> *</span><span class="identifier">nt</span><span class="plain">,</span>
         <span class="identifier">production</span><span class="plain"> *</span><span class="identifier">pr</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pr</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"The production at fault is:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">Preform::log_production</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"The production at fault is:\n"</span><span class="plain">);</span>
+            <span class="identifier">Preform::log_production</span><span class="plain">(</span><span class="identifier">pr</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">); </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">nt</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">Problems::quote_text</span><span class="plain">(1, </span><span class="string">"(no nonterminal)"</span><span class="plain">);</span>

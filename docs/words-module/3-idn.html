@@ -66,12 +66,11 @@ which must be alphanumeric or else underscores, except that the leading
 character must not be a 0:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Identifiers::valid</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == 0) || (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; 31)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) &gt; </span><span class="constant">31</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == 0) &amp;&amp; (</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == 0) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="character">'_'</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]) == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] != </span><span class="character">'_'</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[0])) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -84,7 +83,6 @@ character must not be a 0:
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The following flattens characters into shape:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Identifiers::purify</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">) {</span>
@@ -124,7 +122,6 @@ a 0 digit.
 concatenate our identifier with up to 3 further characters, if they choose.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Identifiers::compose</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">nature_character</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id_number</span><span class="plain">, </span><span class="reserved">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="identifier">Str::clear</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
@@ -132,13 +129,13 @@ concatenate our identifier with up to 3 further characters, if they choose.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) {</span>
                 <span class="comment">identifier is at this point 32 chars or fewer in length: add at most 30 more</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">)) &gt; 30)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">)) &gt; </span><span class="constant">30</span><span class="plain">)</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">" etc"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">" %N"</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">) &gt; 32) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">) &gt; </span><span class="constant">32</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, 28); </span>    <span class="comment">it was at worst 62 chars in size, but is now truncated to 28</span>
+        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="constant">28</span><span class="plain">); </span><span class="comment">it was at worst 62 chars in size, but is now truncated to 28</span>
         <span class="functiontext">Identifiers::purify</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -147,13 +144,13 @@ concatenate our identifier with up to 3 further characters, if they choose.
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) {</span>
             <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) {</span>
                 <span class="comment">identifier is at this point 32 chars or fewer in length: add at most 30 more</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">)) &gt; 30)</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">)) &gt; </span><span class="constant">30</span><span class="plain">)</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">" etc"</span><span class="plain">);</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="string">" %N"</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">) &gt; 32) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">) &gt; </span><span class="constant">32</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, 28); </span>    <span class="comment">it was at worst 62 chars in size, but is now truncated to 28</span>
+        <span class="identifier">Str::truncate</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">, </span><span class="constant">28</span><span class="plain">); </span><span class="comment">it was at worst 62 chars in size, but is now truncated to 28</span>
         <span class="functiontext">Identifiers::purify</span><span class="plain">(</span><span class="identifier">identifier</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

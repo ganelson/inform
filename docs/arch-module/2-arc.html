@@ -63,10 +63,9 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Architectures. </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inter_architecture</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">shorthand</span><span class="plain">; </span>    <span class="comment">such as <code class="display"><span class="extract">32d</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">shorthand</span><span class="plain">; </span><span class="comment">such as <code class="display"><span class="extract">32d</span></code></span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sixteen_bit</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">debug_enabled</span><span class="plain">;</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
@@ -74,9 +73,9 @@
 
     <span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="functiontext">Architectures::new</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">code</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">d</span><span class="plain">) {</span>
         <span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inter_architecture</span><span class="plain">);</span>
-        <span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;shorthand</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">code</span><span class="plain">);</span>
-        <span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;sixteen_bit</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
-        <span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;debug_enabled</span><span class="plain"> = </span><span class="identifier">d</span><span class="plain">;</span>
+        <span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">shorthand</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">code</span><span class="plain">);</span>
+        <span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">sixteen_bit</span><span class="plain"> = </span><span class="identifier">s</span><span class="plain">;</span>
+        <span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">debug_enabled</span><span class="plain"> = </span><span class="identifier">d</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -90,7 +89,7 @@
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Architectures::canonical_binary</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no arch"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"arch-%S.interb"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;shorthand</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"arch-%S.interb"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">shorthand</span><span class="plain">);</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
@@ -99,7 +98,7 @@
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Architectures::canonical_textual</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no arch"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"arch-%S.intert"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;shorthand</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"arch-%S.intert"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">shorthand</span><span class="plain">);</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
@@ -107,24 +106,24 @@
 
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Architectures::to_codename</span><span class="plain">(</span><span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;shorthand</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="identifier">shorthand</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="functiontext">Architectures::from_codename</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">inter_architecture</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;shorthand</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">shorthand</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Architectures::is_16_bit</span><span class="plain">(</span><span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no arch"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;sixteen_bit</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="identifier">sixteen_bit</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Architectures::debug_enabled</span><span class="plain">(</span><span class="reserved">inter_architecture</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no arch"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;debug_enabled</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="identifier">debug_enabled</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

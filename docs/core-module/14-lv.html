@@ -124,7 +124,6 @@ all in the <code class="display"><span class="extract">VALUE</span></code> famil
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>And here are some convenient creators. Variables:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::new_LOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">);</span>
@@ -137,7 +136,7 @@ all in the <code class="display"><span class="extract">VALUE</span></code> famil
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::new_actual_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">nlv</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_constant_nonlocal_variable</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">nlv</span><span class="plain">);</span>
-        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">nlv</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+        <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">nlv</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -151,7 +150,6 @@ all in the <code class="display"><span class="extract">VALUE</span></code> famil
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Table entries have their arguments filled in by the relevant routines in
 "Meaning List Conversion":
 </p>
-
 
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::new_TABLE_ENTRY</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">) {</span>
@@ -167,12 +165,11 @@ all in the <code class="display"><span class="extract">VALUE</span></code> famil
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>List entries:
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::new_LIST_ENTRY</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">index</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">LIST_ENTRY_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">index</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">index</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -190,12 +187,11 @@ and "trunk". This is not very scientific, perhaps, but it's done only to
 make problem messages more readable.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::new_PROPERTY_VALUE</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">prop</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">);</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">prop</span><span class="plain">;</span>
-        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">prop</span><span class="plain">;</span>
+        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">owner</span><span class="plain">;</span>
         <span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">,</span>
             <span class="identifier">Wordings::union</span><span class="plain">(</span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">prop</span><span class="plain">), </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">)));</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
@@ -209,12 +205,11 @@ make problem messages more readable.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>On the other hand we sometimes want to refer to the property in abstract.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">Lvalues::underlying_property</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_self_object_constant</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_self_object_constant</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">))</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">spec</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no underlying property"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -226,7 +221,6 @@ make problem messages more readable.
 <p class="endnote">The function Lvalues::underlying_property is used in 26/ts (<a href="26-ts.html#SP12">&#167;12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Testing. </b></p>
-
 
 <pre class="display">
     <span class="identifier">node_type_t</span><span class="plain"> </span><span class="functiontext">Lvalues::get_storage_form</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -241,7 +235,6 @@ make problem messages more readable.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>More specifically:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lvalues::is_actual_NONLOCAL_VARIABLE</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -274,7 +267,6 @@ make problem messages more readable.
 actions and the like:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Lvalues::is_global_variable</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Lvalues::get_nonlocal_variable_if_any</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -288,29 +280,28 @@ actions and the like:
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Pretty-printing. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lvalues::write_out_in_English</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a temporary named value"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a temporary named value"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
                     <span class="identifier">Kinds::Textual::write_articled</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ParseTree::get_kind_of_value</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">));</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" that varies"</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a non-temporary variable"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a table entry"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a list entry"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">:</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == 2) &amp;&amp;</span>
-                    <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">CON_property</span><span class="plain">))) {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a table entry"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a list entry"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="constant">2</span><span class="plain">) &amp;&amp;</span>
+                    <span class="plain">(</span><span class="functiontext">Rvalues::is_CONSTANT_construction</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">CON_property</span><span class="plain">))) {</span>
                     <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span>
-                        <span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+                        <span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
                     <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a property whose value is "</span><span class="plain">);</span>
                     <span class="identifier">Kinds::Textual::write_articled</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">));</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a property belonging to something"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a stored value"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"a stored value"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -322,16 +313,15 @@ actions and the like:
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>And the log.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lvalues::log</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> {</span>
                 <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">ParseTree::get_constant_local_variable</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(%~L;$u)"</span><span class="plain">, </span><span class="identifier">lvar</span><span class="plain">, </span><span class="functiontext">LocalVariables::unproblematic_kind</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">));</span>
                 <span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: {</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> {</span>
                 <span class="reserved">nonlocal_variable</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain"> = </span><span class="identifier">ParseTree::get_constant_nonlocal_variable</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"($Z)"</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
@@ -346,18 +336,17 @@ actions and the like:
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Compilation. </b></p>
 
-
 <pre class="display">
     <span class="identifier">kind</span><span class="plain"> *</span><span class="functiontext">Lvalues::to_kind</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Rvalues::to_kind on NULL"</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Return the kind of a local variable</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Return the kind of a non-local variable</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Return the kind of a table entry</span> <span class="cwebmacronumber">12.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Return the kind of a list entry</span> <span class="cwebmacronumber">12.4</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Return the kind of a property value</span> <span class="cwebmacronumber">12.5</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return the kind of a local variable</span> <span class="cwebmacronumber">12.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return the kind of a non-local variable</span> <span class="cwebmacronumber">12.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return the kind of a table entry</span> <span class="cwebmacronumber">12.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return the kind of a list entry</span> <span class="cwebmacronumber">12.4</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Return the kind of a property value</span> <span class="cwebmacronumber">12.5</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span>    <span class="comment">a generic answer for storage of an unknown sort</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span><span class="comment">a generic answer for storage of an unknown sort</span>
     <span class="plain">}</span>
 </pre>
 
@@ -372,7 +361,7 @@ actions and the like:
 
 <pre class="displaydefn">
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">ParseTree::get_constant_local_variable</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span>    <span class="comment">for "existing"</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span><span class="comment">for "existing"</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">LocalVariables::unproblematic_kind</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">);</span>
 </pre>
 
@@ -405,12 +394,12 @@ is enough to determine the kind:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) &gt; 0) { </span>    <span class="comment">i.e., always, for actual table entry specifications</span>
-            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fts</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) { </span><span class="comment">i.e., always, for actual table entry specifications</span>
+            <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">fts</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
             <span class="reserved">table_column</span><span class="plain"> *</span><span class="identifier">tc</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_table_column</span><span class="plain">(</span><span class="identifier">fts</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Tables::Columns::get_kind</span><span class="plain">(</span><span class="identifier">tc</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">can happen when scanning phrase arguments, which are generic</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">can happen when scanning phrase arguments, which are generic</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -423,12 +412,12 @@ is enough to determine the kind:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == 2) { </span>    <span class="comment">i.e., always, for actual list entry specifications</span>
-            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="constant">2</span><span class="plain">) { </span><span class="comment">i.e., always, for actual list entry specifications</span>
+            <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K1</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">Kinds::unary_construction_material</span><span class="plain">(</span><span class="identifier">K1</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span>    <span class="comment">to help the type-checker produce better problem messages</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span><span class="comment">to help the type-checker produce better problem messages</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">can happen when scanning phrase arguments, which are generic</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">can happen when scanning phrase arguments, which are generic</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -441,12 +430,12 @@ is enough to determine the kind:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == 2) {</span>
-            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">) == </span><span class="constant">2</span><span class="plain">) {</span>
+            <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prn</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Properties::Valued::kind</span><span class="plain">(</span><span class="identifier">prn</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span>    <span class="comment">to help the type-checker produce better problem messages</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">K_value</span><span class="plain">; </span><span class="comment">to help the type-checker produce better problem messages</span>
         <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">can happen when scanning phrase arguments, which are generic</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">can happen when scanning phrase arguments, which are generic</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -454,7 +443,6 @@ is enough to determine the kind:
 <p class="endnote">This code is used in <a href="#SP12">&#167;12</a>.</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">local_variable</span><span class="plain"> *</span><span class="functiontext">Lvalues::get_local_variable_if_any</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
@@ -472,16 +460,15 @@ is enough to determine the kind:
 evaluating to the contents of the storage item specified.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Lvalues::compile</span><span class="plain">(</span><span class="identifier">value_holster</span><span class="plain"> *</span><span class="identifier">VH</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec_found</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a local variable specification</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a non-local variable specification</span> <span class="cwebmacronumber">14.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a property value specification</span> <span class="cwebmacronumber">14.3</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a list entry specification</span> <span class="cwebmacronumber">14.4</span>&gt;<span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span>&lt;<span class="cwebmacro">Compile a table entry specification</span> <span class="cwebmacronumber">14.5</span>&gt;<span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Offender: $P\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a local variable specification</span> <span class="cwebmacronumber">14.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a non-local variable specification</span> <span class="cwebmacronumber">14.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a property value specification</span> <span class="cwebmacronumber">14.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a list entry specification</span> <span class="cwebmacronumber">14.4</span>&gt;<span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Compile a table entry specification</span> <span class="cwebmacronumber">14.5</span>&gt;<span class="plain">;</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Offender: $P\n"</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">);</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to compile this STORAGE species"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -498,9 +485,9 @@ evaluating to the contents of the storage item specified.
 
 <pre class="displaydefn">
         <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">lvar</span><span class="plain"> = </span><span class="identifier">ParseTree::get_constant_local_variable</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">);</span>
-        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+        <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">lvar_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">lvar</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lvar</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad: %08x\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Bad: %08x\n"</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Compiled never-specified LOCAL VARIABLE SP"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lvar_s</span><span class="plain">);</span>
@@ -532,13 +519,13 @@ evaluating to the contents of the storage item specified.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != 2) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed PROPERTY_OF SP"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"PROPERTY_OF with null arg 0"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"PROPERTY_OF with null arg 1"</span><span class="plain">);</span>
-        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed PROPERTY_OF SP"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"PROPERTY_OF with null arg 0"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"PROPERTY_OF with null arg 1"</span><span class="plain">);</span>
+        <span class="reserved">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_property</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"PROPERTY_OF with null property"</span><span class="plain">);</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">prop_spec</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">prop_spec</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">owner</span><span class="plain"> = </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">owner_kind</span><span class="plain"> = </span><span class="functiontext">Specifications::to_kind</span><span class="plain">(</span><span class="identifier">owner</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Reinterpret the "self" for what are unambiguously conditions of single things</span> <span class="cwebmacronumber">14.3.1</span>&gt;<span class="plain">;</span>
@@ -647,9 +634,9 @@ object as produced the original text containing the substitution.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != 2) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed LIST_OF SP"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"LIST_OF with null arg 0"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"LIST_OF with null arg 1"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">) != </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"malformed LIST_OF SP"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"LIST_OF with null arg 0"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"LIST_OF with null arg 1"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
             <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">LIST_OF_TY_GETITEM_HL</span><span class="plain">));</span>
@@ -660,9 +647,9 @@ object as produced the original text containing the substitution.
             <span class="plain">}</span>
             <span class="constant">BEGIN_COMPILATION_MODE</span><span class="plain">;</span>
             <span class="identifier">COMPILATION_MODE_EXIT</span><span class="plain">(</span><span class="constant">DEREFERENCE_POINTERS_CMODE</span><span class="plain">);</span>
-            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
             <span class="constant">END_COMPILATION_MODE</span><span class="plain">;</span>
-            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+            <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="plain">}</span>
@@ -692,7 +679,7 @@ object as produced the original text containing the substitution.
         <span class="plain">}</span>
 
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">ParseTree::no_children</span><span class="plain">(</span><span class="identifier">spec_found</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> 1:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -703,24 +690,24 @@ object as produced the original text containing the substitution.
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
                     <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">ct_0_lv</span><span class="plain"> = </span><span class="functiontext">LocalVariables::by_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ct_0"</span><span class="plain">);</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_0_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_0_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_0_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_0_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
                     <span class="reserved">local_variable</span><span class="plain"> *</span><span class="identifier">ct_1_lv</span><span class="plain"> = </span><span class="functiontext">LocalVariables::by_name</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"ct_1"</span><span class="plain">);</span>
-                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_1_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_1_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, 8);</span>
+                    <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">ct_1_s</span><span class="plain"> = </span><span class="functiontext">LocalVariables::declare_this</span><span class="plain">(</span><span class="identifier">ct_1_lv</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="constant">8</span><span class="plain">);</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ct_0_s</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
                     <span class="identifier">Produce::val_symbol</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">ct_1_s</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">BLANK_OUT_CMODE</span><span class="plain">)) {</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 4);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2: </span>    <span class="comment">never here except when printing debugging code</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 0);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">: </span><span class="comment">never here except when printing debugging code</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_truth_state</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 3:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">3</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -728,18 +715,18 @@ object as produced the original text containing the substitution.
                         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">lookup</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">BLANK_OUT_CMODE</span><span class="plain">)) {</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 4);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 4:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">4</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">JUST_ROUTINE_CMODE</span><span class="plain">)) {</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">lookup_corr</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -747,19 +734,19 @@ object as produced the original text containing the substitution.
                         <span class="identifier">Produce::inv_call_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">lookup_corr</span><span class="plain">);</span>
                         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
-                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">-</span><span class="element">&gt;next</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
+                    <span class="functiontext">Specifications::Compiler::emit_as_val</span><span class="plain">(</span><span class="identifier">K_value</span><span class="plain">, </span><span class="identifier">spec_found</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">BLANK_OUT_CMODE</span><span class="plain">)) {</span>
-                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 4);</span>
+                        <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">4</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">TEST_COMPILATION_MODE</span><span class="plain">(</span><span class="constant">TREAT_AS_LVALUE_CMODE</span><span class="plain">))) {</span>
                         <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"TABLE REFERENCE with bad number of args"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"TABLE REFERENCE with bad number of args"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
@@ -788,108 +775,108 @@ change if arbitrary-precision integers are ever added to Inform, for instance.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">STORE_WORD_TO_WORD</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">STORE_WORD_TO_POINTER</span><span class="plain"> 2</span>
-    <span class="definitionkeyword">define</span> <span class="constant">STORE_POINTER_TO_POINTER</span><span class="plain"> 3</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_WORD</span><span class="plain"> 4</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_REAL</span><span class="plain"> 5</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_POINTER</span><span class="plain"> 6</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_WORD</span><span class="plain"> 7</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_REAL</span><span class="plain"> 8</span>
-    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_POINTER</span><span class="plain"> 9</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STORE_WORD_TO_WORD</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STORE_WORD_TO_POINTER</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">STORE_POINTER_TO_POINTER</span><span class="plain"> </span><span class="constant">3</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_WORD</span><span class="plain"> </span><span class="constant">4</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_REAL</span><span class="plain"> </span><span class="constant">5</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INCREASE_BY_POINTER</span><span class="plain"> </span><span class="constant">6</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_WORD</span><span class="plain"> </span><span class="constant">7</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_REAL</span><span class="plain"> </span><span class="constant">8</span>
+    <span class="definitionkeyword">define</span> <span class="constant">DECREASE_BY_POINTER</span><span class="plain"> </span><span class="constant">9</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Lvalues::storage_class_schema</span><span class="plain">(</span><span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">storage_class</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind_of_store</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reducing_modulo_1440</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">kind_of_store</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STORE_WORD_TO_WORD</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STORE_WORD_TO_WORD:</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *&lt;2"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *&lt;2"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,*&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *&lt;2"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *&lt;2"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,*&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*&lt;2)"</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STORE_WORD_TO_POINTER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STORE_WORD_TO_POINTER:</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*$1(*%1, 5), *#2, *!2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*+1, *#2, *!2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*$1(*%1, 5), *#2, *!2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*+1, *#2, *!2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCast(*1, *#2, *!2)"</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">STORE_POINTER_TO_POINTER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">STORE_POINTER_TO_POINTER:</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*$1(*%1, 5), *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*+1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*$1(*%1, 5), *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*+1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-BlkValueCopy(*1, *&lt;2)"</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INCREASE_BY_WORD</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INCREASE_BY_WORD:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reducing_modulo_1440</span><span class="plain">) {</span>
                     <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 + *&lt;2))"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 + *&lt;2))"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 + *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 + *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 + *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 + *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 + *&lt;2))"</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 + *&lt;2"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 + *&lt;2"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1, 1, *1 + *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*+1 + *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*1 + *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 + *&lt;2"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 + *&lt;2"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1, 1, *1 + *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*+1 + *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*1 + *&lt;2)"</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INCREASE_BY_REAL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INCREASE_BY_REAL:</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Plus(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Plus(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,REAL_NUMBER_TY_Plus(*1, *&lt;2))"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,REAL_NUMBER_TY_Plus(*+1, *&lt;2))"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Plus(*1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Plus(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Plus(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,REAL_NUMBER_TY_Plus(*1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,REAL_NUMBER_TY_Plus(*+1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Plus(*1, *&lt;2))"</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INCREASE_BY_POINTER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INCREASE_BY_POINTER:</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"pointer value increments not implemented"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECREASE_BY_WORD</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECREASE_BY_WORD:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">reducing_modulo_1440</span><span class="plain">) {</span>
                     <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 - *&lt;2))"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 - *&lt;2))"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 - *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = NUMBER_TY_to_TIME_TY(*1 - *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,NUMBER_TY_to_TIME_TY(*1 - *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,NUMBER_TY_to_TIME_TY(*+1 - *&lt;2))"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,NUMBER_TY_to_TIME_TY(*1 - *&lt;2))"</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                     <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 - *&lt;2"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 - *&lt;2"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,*1 - *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*+1 - *&lt;2)"</span><span class="plain">;</span>
-                        <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*1 - *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 - *&lt;2"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = *1 - *&lt;2"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,*1 - *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,*+1 - *&lt;2)"</span><span class="plain">;</span>
+                        <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,*1 - *&lt;2)"</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECREASE_BY_REAL</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECREASE_BY_REAL:</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">storage_class</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Minus(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">NONLOCAL_VARIABLE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Minus(*1, *&lt;2)"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">TABLE_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,REAL_NUMBER_TY_Minus(*1, *&lt;2))"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROPERTY_VALUE_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,REAL_NUMBER_TY_Minus(*+1, *&lt;2))"</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">LIST_ENTRY_NT</span><span class="plain">: </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Minus(*1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Minus(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NONLOCAL_VARIABLE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*1 = REAL_NUMBER_TY_Minus(*1, *&lt;2)"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TABLE_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-*$1(*%1,1,REAL_NUMBER_TY_Minus(*1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROPERTY_VALUE_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteGProperty(*|1,REAL_NUMBER_TY_Minus(*+1, *&lt;2))"</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LIST_ENTRY_NT:</span><span class="plain"> </span><span class="reserved">return</span><span class="plain"> </span><span class="string">"*=-WriteLIST_OF_TY_GetItem(*%1,REAL_NUMBER_TY_Minus(*1, *&lt;2))"</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DECREASE_BY_POINTER</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DECREASE_BY_POINTER:</span>
                 <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"pointer value decrements not implemented"</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="string">""</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -906,30 +893,29 @@ positive if we're incrementing what's there, negative if decrementing, zero
 if simply setting.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Lvalues::interpret_store</span><span class="plain">(</span><span class="identifier">node_type_t</span><span class="plain"> </span><span class="identifier">storage_class</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">right</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">inc</span><span class="plain">) {</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Interpreting assignment of kinds $u, $u\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">KIND_CHECKING</span><span class="plain">, </span><span class="string">"Interpreting assignment of kinds $u, $u\n"</span><span class="plain">, </span><span class="identifier">left</span><span class="plain">, </span><span class="identifier">right</span><span class="plain">);</span>
         <span class="identifier">kind_constructor</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right</span><span class="plain">)) { </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">; </span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-</span><span class="element">&gt;construct</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">left</span><span class="plain">) &amp;&amp; (</span><span class="identifier">right</span><span class="plain">)) { </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">left</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">; </span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">right</span><span class="plain">-&gt;</span><span class="element">construct</span><span class="plain">; }</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">STORE_WORD_TO_WORD</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_WORD</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">)) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_REAL</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_WORD</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::FloatingPoint::uses_floating_point</span><span class="plain">(</span><span class="identifier">left</span><span class="plain">)) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_REAL</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Constructors::uses_pointer_values</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Kinds::Constructors::allow_word_as_pointer</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">)) {</span>
                 <span class="identifier">form</span><span class="plain"> = </span><span class="constant">STORE_WORD_TO_POINTER</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; 0) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_POINTER</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; 0) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_POINTER</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_POINTER</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_POINTER</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">form</span><span class="plain"> = </span><span class="constant">STORE_POINTER_TO_POINTER</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; 0) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_POINTER</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; 0) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_POINTER</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">INCREASE_BY_POINTER</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">inc</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">DECREASE_BY_POINTER</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">reduce</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>

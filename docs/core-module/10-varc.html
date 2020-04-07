@@ -66,7 +66,6 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>This is a global mode for the S-parser: see below.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">force_all_SP_noun_phrases_to_be_physical</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -104,7 +103,6 @@ placeholder to stand for a missing noun phrase:
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following parses a sentence with an active verb.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt; ::=</span>
@@ -147,8 +145,8 @@ so ambiguous &mdash; a bad decision in about 2003.)
 
 <pre class="displaydefn">
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">op</span><span class="plain"> = </span><span class="identifier">RP</span><span class="plain">[2];</span>
-        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">test</span><span class="plain"> = </span><span class="identifier">test</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">test</span><span class="plain"> = </span><span class="identifier">op</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) </span><span class="identifier">test</span><span class="plain"> = </span><span class="identifier">test</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Specifications::is_description_like</span><span class="plain">(</span><span class="identifier">test</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FAIL_NONTERMINAL</span><span class="plain">;</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ExParser::Subtrees::to_specification</span><span class="plain">(</span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">op</span><span class="plain">);</span>
 </pre>
@@ -193,7 +191,6 @@ but for Inform, it's handled at the syntax level.
 handle its extra object: see below.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">general</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">universal</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">universal</span><span class="plain">-</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">term</span><span class="plain">&gt; |								==&gt; </span><span class="functiontext">ExParser::Subtrees::verb_marker</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[2])</span>
@@ -208,13 +205,12 @@ usage; it's attached to the tree only briefly before sentence conversion
 removes it again.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="functiontext">ExParser::Subtrees::verb_marker</span><span class="plain">(</span><span class="identifier">verb_usage</span><span class="plain"> *</span><span class="identifier">vu</span><span class="plain">, </span><span class="identifier">preposition_identity</span><span class="plain"> *</span><span class="identifier">prep</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">np</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">VP_part</span><span class="plain"> = </span><span class="identifier">ParseTree::new</span><span class="plain">(</span><span class="constant">UNKNOWN_NT</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_vu</span><span class="plain">(</span><span class="identifier">VP_part</span><span class="plain">, </span><span class="identifier">vu</span><span class="plain">);</span>
         <span class="identifier">ParseTree::set_prep</span><span class="plain">(</span><span class="identifier">VP_part</span><span class="plain">, </span><span class="identifier">prep</span><span class="plain">);</span>
-        <span class="identifier">VP_part</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">np</span><span class="plain">;</span>
+        <span class="identifier">VP_part</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">np</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">VP_part</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -237,7 +233,6 @@ us to require the presence of the heap, since combinations are stored on the
 heap; and that would effectively make "relates" of limited use on Z-machine
 works.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">universal</span><span class="plain">-</span><span class="identifier">relation</span><span class="plain">-</span><span class="identifier">term</span><span class="plain">&gt; ::=</span>
@@ -274,7 +269,6 @@ grammar has to differ from the sentence grammar above.
 relevant noun subtree with a representation of the player-object for those.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">-</span><span class="identifier">with</span><span class="plain">-</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">clause</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">-</span><span class="identifier">nounless</span><span class="plain">&gt; &lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">implied</span><span class="plain">-</span><span class="identifier">relative</span><span class="plain">-</span><span class="identifier">verb</span><span class="plain">-</span><span class="identifier">tail</span><span class="plain">&gt; |							==&gt; </span>&lt;<span class="cwebmacro">Make SN</span> <span class="cwebmacronumber">8.1</span>&gt;
@@ -298,8 +292,8 @@ relevant noun subtree with a representation of the player-object for those.
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"So uncorrectedly RP[1] = $T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[1]);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"and uncorrectedly RP[2] = $T\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[2]);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"So uncorrectedly RP[1] = $T\n"</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[1]);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">MATCHING</span><span class="plain">, </span><span class="string">"and uncorrectedly RP[2] = $T\n"</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[2]);</span>
         <span class="functiontext">ExParser::Subtrees::correct_for_adjectives</span><span class="plain">(</span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2]);</span>
         <span class="plain">*</span><span class="identifier">XP</span><span class="plain"> = </span><span class="functiontext">ExParser::Subtrees::to_specification</span><span class="plain">(</span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">RP</span><span class="plain">[1], </span><span class="identifier">RP</span><span class="plain">[2]);</span>
 </pre>
@@ -313,7 +307,6 @@ and also makes one useful correction when it sees a wrong guess as to whether
 an adjective is meant as a noun.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExParser::Subtrees::correct_for_adjectives</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">subject_phrase_subtree</span><span class="plain">, *</span><span class="identifier">object_phrase_subtree</span><span class="plain">, *</span><span class="identifier">verb_phrase_subtree</span><span class="plain">;</span>
@@ -323,10 +316,10 @@ an adjective is meant as a noun.
         <span class="identifier">subject_phrase_subtree</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">;</span>
         <span class="identifier">verb_phrase_subtree</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase_subtree</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"SV childless"</span><span class="plain">);</span>
 
-        <span class="identifier">object_phrase_subtree</span><span class="plain"> = </span><span class="identifier">verb_phrase_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">;</span>
+        <span class="identifier">object_phrase_subtree</span><span class="plain"> = </span><span class="identifier">verb_phrase_subtree</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Modify the object from a noun to an adjective if the subject is also a noun</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -356,7 +349,7 @@ is orange" so that "orange" will be used not as a noun but as an adjective.
                 <span class="identifier">adjective_usage</span><span class="plain"> *</span><span class="identifier">ale</span><span class="plain"> = </span><span class="identifier">AdjectiveUsages::new</span><span class="plain">(</span><span class="functiontext">Instances::get_adjectival_phrase</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">), </span><span class="identifier">TRUE</span><span class="plain">);</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Descriptions::from_proposition</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">ParseTree::get_text</span><span class="plain">(</span><span class="identifier">adjq</span><span class="plain">));</span>
                 <span class="functiontext">Descriptions::add_to_adjective_list</span><span class="plain">(</span><span class="identifier">ale</span><span class="plain">, </span><span class="identifier">spec</span><span class="plain">);</span>
-                <span class="identifier">verb_phrase_subtree</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
+                <span class="identifier">verb_phrase_subtree</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">spec</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -378,7 +371,6 @@ turn may, if there's a relative clause, call &lt;s-np-with-relative-clause&gt; a
 stack, we simply give &lt;s-noun-phrase&gt; a global mode of operation.
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">purely</span><span class="plain">-</span><span class="identifier">physical</span><span class="plain">-</span><span class="identifier">description</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="identifier">force_all_SP_noun_phrases_to_be_physical</span><span class="plain">;</span>
@@ -390,7 +382,7 @@ stack, we simply give &lt;s-noun-phrase&gt; a global mode of operation.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">forced</span><span class="plain">-</span><span class="identifier">physical</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> 0 {</span>
+    <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">forced</span><span class="plain">-</span><span class="identifier">physical</span><span class="plain">&gt; </span><span class="identifier">internal</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">force_all_SP_noun_phrases_to_be_physical</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -403,7 +395,6 @@ physical mode" when it will later be called outside that mode in any event,
 and that therefore the set of excerpts matched by &lt;s-noun-phrase&gt; genuinely
 is the same as that matched by &lt;s-value&gt;.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="reserved">phrase</span><span class="plain">&gt; ::=</span>
@@ -422,7 +413,6 @@ is the same as that matched by &lt;s-value&gt;.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Finally, the following is needed for conditions ("if fixed in place
 scenery, ...") where the object referred to is understood from context.
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">s</span><span class="plain">-</span><span class="identifier">descriptive</span><span class="plain">-</span><span class="identifier">np</span><span class="plain">&gt; ::=</span>
@@ -480,7 +470,6 @@ subject of the sentence phrase, <code class="display"><span class="extract">B</s
 object.
 </p>
 
-
 <pre class="display">
     <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">PM_DescLocalPast_location</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -496,7 +485,7 @@ object.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">)) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">amb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">poss</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">poss</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">one</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">poss</span><span class="plain">);</span>
                 <span class="identifier">one</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">new_poss</span><span class="plain"> = </span><span class="functiontext">ExParser::Subtrees::to_specification</span><span class="plain">(</span><span class="identifier">SV_not_SN</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">one</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
@@ -506,12 +495,12 @@ object.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">amb</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">amb</span><span class="plain"> = </span><span class="functiontext">Specifications::new_UNKNOWN</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">amb</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">B</span><span class="plain">) &amp;&amp; (</span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">))) {</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">B</span><span class="plain">) &amp;&amp; (</span><span class="identifier">B</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">, </span><span class="identifier">AMBIGUITY_NT</span><span class="plain">))) {</span>
             <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">amb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">poss</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="identifier">down</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain">; </span><span class="identifier">poss</span><span class="plain"> = </span><span class="identifier">poss</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain">) {</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">hmm</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">);</span>
-                <span class="identifier">hmm</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">poss</span><span class="plain">);</span>
-                <span class="identifier">hmm</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                <span class="identifier">hmm</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> = </span><span class="identifier">ParseTree::duplicate</span><span class="plain">(</span><span class="identifier">poss</span><span class="plain">);</span>
+                <span class="identifier">hmm</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="identifier">next_alternative</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">new_poss</span><span class="plain"> = </span><span class="functiontext">ExParser::Subtrees::to_specification</span><span class="plain">(</span><span class="identifier">SV_not_SN</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">hmm</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">ParseTree::is</span><span class="plain">(</span><span class="identifier">new_poss</span><span class="plain">, </span><span class="constant">UNKNOWN_NT</span><span class="plain">)))</span>
                     <span class="identifier">amb</span><span class="plain"> = </span><span class="identifier">ParseTree::add_possible_reading</span><span class="plain">(</span><span class="identifier">amb</span><span class="plain">, </span><span class="identifier">new_poss</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
@@ -576,14 +565,14 @@ has the standard form, but we check it anyway.
         <span class="identifier">subject_noun_phrase</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">;</span>
         <span class="identifier">verb_phrase</span><span class="plain"> = </span><span class="identifier">B</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase</span><span class="plain">-</span><span class="element">&gt;down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"VP childless"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verb_phrase</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"VP childless"</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">) != </span><span class="constant">UNKNOWN_NT</span><span class="plain">)</span>
             <span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"VP not a VP"</span><span class="plain">);</span>
 
         <span class="identifier">vu</span><span class="plain"> = </span><span class="identifier">ParseTree::get_vu</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vu</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Problems::Issue::s_subtree_error</span><span class="plain">(</span><span class="functiontext">Task::syntax_tree</span><span class="plain">(), </span><span class="string">"verb null"</span><span class="plain">);</span>
-        <span class="identifier">verb_phrase_negated</span><span class="plain"> = (</span><span class="identifier">VerbUsages::is_used_negatively</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">))?</span><span class="identifier">TRUE</span><span class="plain">:</span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="identifier">verb_phrase_negated</span><span class="plain"> = (</span><span class="identifier">VerbUsages::is_used_negatively</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">))?</span><span class="identifier">TRUE:FALSE</span><span class="plain">;</span>
         <span class="identifier">prep</span><span class="plain"> = </span><span class="identifier">ParseTree::get_prep</span><span class="plain">(</span><span class="identifier">verb_phrase</span><span class="plain">);</span>
 </pre>
 
@@ -628,7 +617,7 @@ using a tense other than the present, and all is well.
         <span class="identifier">ParseTree::set_subject_term</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">subj</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">ParseTree::set_text</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">VerbUsages::get_tense_used</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">) != </span><span class="identifier">IS_TENSE</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Variables::detect_locals</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">) &gt; 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Calculus::Variables::detect_locals</span><span class="plain">(</span><span class="functiontext">Specifications::to_proposition</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">Issue a problem for referring to temporary values at a time when they did not exist</span> <span class="cwebmacronumber">13.3.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">spec</span><span class="plain"> = </span><span class="functiontext">Conditions::attach_tense</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="identifier">VerbUsages::get_tense_used</span><span class="plain">(</span><span class="identifier">vu</span><span class="plain">));</span>
         <span class="plain">}</span>
@@ -707,7 +696,6 @@ pattern) plus "in the Home" (a description).
 <p class="endnote">This code is used in <a href="#SP13_4">&#167;13.4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ExParser::Subtrees::throw_past_problem</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">desc</span><span class="plain">) {</span>

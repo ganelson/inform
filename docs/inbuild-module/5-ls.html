@@ -73,36 +73,35 @@ extension is only included for English.
 of the following structure.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inform_language</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">as_copy</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">semantic_version_number</span><span class="plain"> </span><span class="identifier">version</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">instance_name</span><span class="plain">; </span>    <span class="comment">instance name, e.g., "German language"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">nl_instance</span><span class="plain">; </span>    <span class="comment">instance, e.g., "German language"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">language_field</span><span class="plain">[</span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">]; </span>    <span class="comment">contents of the <code class="display"><span class="extract">about.txt</span></code> fields</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">adaptive_person</span><span class="plain">; </span>    <span class="comment">which person (one of constants below) text subs are written from</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">instance_name</span><span class="plain">; </span><span class="comment">instance name, e.g., "German language"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">nl_instance</span><span class="plain">; </span><span class="comment">instance, e.g., "German language"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">language_field</span><span class="plain">[</span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">]; </span><span class="comment">contents of the <code class="display"><span class="extract">about.txt</span></code> fields</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">adaptive_person</span><span class="plain">; </span><span class="comment">which person (one of constants below) text subs are written from</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">inform_language</span><span class="plain">;</span>
 
     <span class="reserved">inform_language</span><span class="plain"> *</span><span class="functiontext">Languages::new_il</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">inform_language</span><span class="plain">);</span>
-        <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain"> = </span><span class="identifier">VersionNumbers::null</span><span class="plain">();</span>
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">version</span><span class="plain"> = </span><span class="identifier">VersionNumbers::null</span><span class="plain">();</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">sentence_format</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">sentence_format</span><span class="plain">, </span><span class="string">"%S language"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;instance_name</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">sentence_format</span><span class="plain">);</span>
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">instance_name</span><span class="plain"> = </span><span class="identifier">Feeds::feed_stream</span><span class="plain">(</span><span class="identifier">sentence_format</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">sentence_format</span><span class="plain">);</span>
-        <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;nl_instance</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;adaptive_person</span><span class="plain"> = -1; </span>    <span class="comment">i.e., none yet specified</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">=0; </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">++) </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">] = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">nl_instance</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">adaptive_person</span><span class="plain"> = -1; </span><span class="comment">i.e., none yet specified</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">=0; </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">; </span><span class="identifier">n</span><span class="plain">++) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="identifier">n</span><span class="plain">] = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Read the about.txt file for the bundle</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Found language bundle '%S' (%p)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Found language bundle '%S' (%p)\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Languages::path_to_bundle</span><span class="plain">(</span><span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -120,13 +119,13 @@ fields to excerpts of text. The following are the field numbers:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NAME_IN_ENGLISH_LFIELD</span><span class="plain"> 1		</span>    <span class="comment">e.g. "German"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NAME_NATIVE_LFIELD</span><span class="plain"> 2			</span>    <span class="comment">e.g. "Deutsch"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CUE_NATIVE_LFIELD</span><span class="plain"> 3			</span>    <span class="comment">e.g. "in deutscher Sprache"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ISO_639_CODE_LFIELD</span><span class="plain"> 4		</span>    <span class="comment">e.g. "de": an ISO 639-1 code</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRANSLATOR_LFIELD</span><span class="plain"> 5			</span>    <span class="comment">e.g. "Team GerX"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">KIT_LFIELD</span><span class="plain"> 6					</span>    <span class="comment">e.g. "GermanLanguageKit"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain"> 7		</span>    <span class="comment">one more than the highest number above</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NAME_IN_ENGLISH_LFIELD</span><span class="plain"> </span><span class="constant">1</span><span class="plain">		</span><span class="comment">e.g. "German"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NAME_NATIVE_LFIELD</span><span class="plain"> </span><span class="constant">2</span><span class="plain">			</span><span class="comment">e.g. "Deutsch"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CUE_NATIVE_LFIELD</span><span class="plain"> </span><span class="constant">3</span><span class="plain">			</span><span class="comment">e.g. "in deutscher Sprache"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ISO_639_CODE_LFIELD</span><span class="plain"> </span><span class="constant">4</span><span class="plain">		</span><span class="comment">e.g. "de": an ISO 639-1 code</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRANSLATOR_LFIELD</span><span class="plain"> </span><span class="constant">5</span><span class="plain">			</span><span class="comment">e.g. "Team GerX"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">KIT_LFIELD</span><span class="plain"> </span><span class="constant">6</span><span class="plain">					</span><span class="comment">e.g. "GermanLanguageKit"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain"> </span><span class="constant">7</span><span class="plain">		</span><span class="comment">one more than the highest number above</span>
 </pre>
 <p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b>If we can't find the file, it doesn't matter except that all of the excerpts
 remain empty. But we may as well tell the debugging log.
@@ -134,7 +133,7 @@ remain empty. But we may as well tell the debugging log.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_BUNDLE_ABOUT_LINE_LENGTH</span><span class="plain"> 256  </span>    <span class="comment">which is far more than necessary, really</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_BUNDLE_ABOUT_LINE_LENGTH</span><span class="plain"> </span><span class="constant">256</span><span class="plain">  </span><span class="comment">which is far more than necessary, really</span>
 </pre>
 
 <p class="macrodefinition"><code class="display">
@@ -147,7 +146,7 @@ remain empty. But we may as well tell the debugging log.
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">about_file</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">,</span>
             <span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="functiontext">Languages::about_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Can't find about file: %f\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">about_file</span><span class="plain">);</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Can't find about file: %f\n"</span><span class="plain">, </span><span class="identifier">about_file</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -159,7 +158,6 @@ from 1 to <code class="display"><span class="extract">MAX_LANGUAGE_FIELDS</span>
 extends for the rest of the line.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Languages::about_helper</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">item_name</span><span class="plain">,</span>
         <span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vnl</span><span class="plain">) {</span>
@@ -170,10 +168,10 @@ extends for the rest of the line.
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">field</span><span class="plain"> = -1;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ve</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Vocabulary::test_vflags</span><span class="plain">(</span><span class="identifier">ve</span><span class="plain">, </span><span class="identifier">NUMBER_MC</span><span class="plain">)))</span>
                 <span class="identifier">field</span><span class="plain"> = </span><span class="identifier">Vocabulary::get_literal_number_value</span><span class="plain">(</span><span class="identifier">ve</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">field</span><span class="plain"> &gt;= 1) &amp;&amp; (</span><span class="identifier">field</span><span class="plain"> &lt; </span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">)) {</span>
-                <span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="identifier">field</span><span class="plain">] =</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">field</span><span class="plain"> &gt;= </span><span class="constant">1</span><span class="plain">) &amp;&amp; (</span><span class="identifier">field</span><span class="plain"> &lt; </span><span class="constant">MAX_LANGUAGE_FIELDS</span><span class="plain">)) {</span>
+                <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="identifier">field</span><span class="plain">] =</span>
                     <span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)+1, </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Warning: couldn't read about.txt line: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Warning: couldn't read about.txt line: %S\n"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -184,12 +182,11 @@ extends for the rest of the line.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Languages::log</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">opts</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vL</span><span class="plain">) {</span>
         <span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = (</span><span class="reserved">inform_language</span><span class="plain"> *) </span><span class="identifier">vL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"&lt;null-language&gt;"</span><span class="plain">); }</span>
-        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">); }</span>
+        <span class="reserved">else</span><span class="plain"> { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">); }</span>
     <span class="plain">}</span>
 </pre>
 
@@ -202,14 +199,13 @@ making; this enables online databases like IFDB, and smart interpreters, to
 detect the language of play for a story file without actually running it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Languages::write_ISO_code</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">English_language</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">endif</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="constant">ISO_639_CODE_LFIELD</span><span class="plain">]))</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="constant">ISO_639_CODE_LFIELD</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="constant">ISO_639_CODE_LFIELD</span><span class="plain">]))</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="constant">ISO_639_CODE_LFIELD</span><span class="plain">]);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"en"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -221,14 +217,13 @@ detect the language of play for a story file without actually running it.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Kit. </b>Each language needs its own kit of Inter code, named as follows:
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="functiontext">Languages::kit_name</span><span class="plain">(</span><span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="constant">KIT_LFIELD</span><span class="plain">]))</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="constant">KIT_LFIELD</span><span class="plain">]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="constant">KIT_LFIELD</span><span class="plain">]))</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+W"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">language_field</span><span class="plain">[</span><span class="constant">KIT_LFIELD</span><span class="plain">]);</span>
         <span class="reserved">else</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+WLanguageKit"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;language_field</span><span class="plain">[</span><span class="constant">NAME_IN_ENGLISH_LFIELD</span><span class="plain">]);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%+WLanguageKit"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">language_field</span><span class="plain">[</span><span class="constant">NAME_IN_ENGLISH_LFIELD</span><span class="plain">]);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -242,12 +237,11 @@ corresponding structure, if it exists. We perform this check case
 insensitively.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_language</span><span class="plain"> *</span><span class="functiontext">Languages::from_name</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">inform_language</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">inform_language</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">-</span><span class="element">&gt;edition</span><span class="plain">-</span><span class="element">&gt;work</span><span class="plain">-</span><span class="element">&gt;title</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">-&gt;</span><span class="element">edition</span><span class="plain">-&gt;</span><span class="element">work</span><span class="plain">-&gt;</span><span class="element">title</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -260,7 +254,6 @@ insensitively.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. English. </b>This finds the built-in definition of the English language.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_language</span><span class="plain"> *</span><span class="functiontext">Languages::internal_English</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">inbuild_requirement</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> =</span>
@@ -270,7 +263,7 @@ insensitively.
             <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">inbuild_nest</span><span class="plain">);</span>
             <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="reserved">inbuild_nest</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="reserved">inbuild_search_result</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">Nests::search_for_best</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">LanguageManager::from_copy</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-</span><span class="element">&gt;copy</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">LanguageManager::from_copy</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="element">copy</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>

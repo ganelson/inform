@@ -86,7 +86,6 @@ a single file:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter INTERFILE</span>
 </pre>
@@ -109,7 +108,6 @@ and <code class="display"><span class="extract">-textual X</span></code> writes 
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter my.intert -binary my.interb</span>
 </pre>
@@ -119,7 +117,6 @@ and <code class="display"><span class="extract">-textual X</span></code> writes 
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter my.interb -textual my.intert</span>
@@ -134,7 +131,6 @@ one stage, can be quite elaborate (see later), but for example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">read &lt;- myfile.inter, resolve-conditional-compilation, generate inform6 -&gt; myfile.i6</span>
 </pre>
@@ -143,7 +139,6 @@ one stage, can be quite elaborate (see later), but for example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -pipeline-text 'PIPELINE'</span>
@@ -156,7 +151,6 @@ one can also put it into a text file:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -pipeline-file mypl.interpipeline</span>
 </pre>
@@ -167,7 +161,6 @@ line with e.g.:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-variable '*out=myfile.i6'</span>
 </pre>
@@ -176,7 +169,6 @@ line with e.g.:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">-domain D</span>
@@ -204,7 +196,6 @@ which is wanted. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inter/Tangled/inter -architecture 16 -assimilate K</span>
         <span class="plain">$ inter/Tangled/inter -architecture 32d -assimilate K</span>
@@ -216,7 +207,6 @@ the Unix tool <code class="display"><span class="extract">make</span></code>, bu
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -build K</span>
 </pre>
@@ -227,7 +217,6 @@ multiple kits can be managed with a single command:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">$ inbuild/Tangled/inbuild -build -contents-of inform7/Internal/Inter</span>

@@ -89,7 +89,6 @@
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>With allocation functions:
 </p>
 
-
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_location</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hierarchy_attachment_point</span><span class="plain">)</span>
@@ -103,8 +102,8 @@
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_node</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">inter_schema_token</span><span class="plain">)</span>
 
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain">, 1000)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain">, 1000)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">inter_name_generator</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
 
     <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">CORE_MODULE</span>
     <span class="identifier">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain">(</span><span class="identifier">explicit_iname</span><span class="plain">, </span><span class="reserved">inter_name</span><span class="plain">)</span>
@@ -117,7 +116,6 @@
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. The beginning. </b>(The client doesn't need to call the start and end routines, because the
 foundation module does that automatically.)
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildingModule::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -210,7 +208,6 @@ foundation module does that automatically.)
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. The end. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildingModule::end</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

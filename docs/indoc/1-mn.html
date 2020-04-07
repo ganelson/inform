@@ -41,32 +41,31 @@
 chosen format, a process we'll call "rendering". We do this in two passes.
 </p>
 
-
 <pre class="display">
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_indoc</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where we are installed</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_indoc_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the materials pathname</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_indoc</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where we are installed</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_indoc_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the materials pathname</span>
 
     <span class="reserved">settings_block</span><span class="plain"> *</span><span class="identifier">indoc_settings</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_volumes</span><span class="plain"> = 0;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_examples</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_volumes</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_examples</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         <span class="functiontext">Basics::start</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Start up indoc</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Make a first-pass scan of the rawtext</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Render the rawtext as documentation</span> <span class="cwebmacronumber">1.3</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;html_for_Inform_application</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">html_for_Inform_application</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Work out cross-references for the in-application documentation only</span> <span class="cwebmacronumber">1.4</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Produce the indexes</span> <span class="cwebmacronumber">1.5</span>&gt;<span class="plain">;</span>
         <span class="functiontext">HTMLUtilities::copy_images</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;wrapper</span><span class="plain"> == </span><span class="constant">WRAPPER_epub</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">wrapper</span><span class="plain"> == </span><span class="constant">WRAPPER_epub</span><span class="plain">) {</span>
             <span class="functiontext">HTMLUtilities::note_images</span><span class="plain">();</span>
             <span class="functiontext">Scanner::mark_up_ebook</span><span class="plain">();</span>
-            <span class="functiontext">Epub::end_construction</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;ebook</span><span class="plain">);</span>
+            <span class="functiontext">Epub::end_construction</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">ebook</span><span class="plain">);</span>
         <span class="plain">}</span>
         &lt;<span class="cwebmacro">Shut down indoc</span> <span class="cwebmacronumber">1.6</span>&gt;<span class="plain">;</span>
         <span class="functiontext">Basics::end</span><span class="plain">();</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -83,24 +82,24 @@ chosen format, a process we'll call "rendering". We do this in two passes.
 
 
 <pre class="displaydefn">
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc [[Version Number]] (Inform Tools Suite)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc [[Version Number]] (Inform Tools Suite)\n"</span><span class="plain">);</span>
         <span class="functiontext">Nav::start</span><span class="plain">();</span>
         <span class="functiontext">Symbols::start_up_symbols</span><span class="plain">();</span>
         <span class="identifier">indoc_settings</span><span class="plain"> = </span><span class="functiontext">Instructions::clean_slate</span><span class="plain">();</span>
         <span class="functiontext">Configuration::read_command_line</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">indoc_settings</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;wrapper</span><span class="plain"> == </span><span class="constant">WRAPPER_epub</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">wrapper</span><span class="plain"> == </span><span class="constant">WRAPPER_epub</span><span class="plain">) {</span>
             <span class="functiontext">HTMLUtilities::image_URL</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">,</span>
-                <span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;book_cover_image</span><span class="plain">));</span>
-            <span class="functiontext">Instructions::apply_ebook_metadata</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;ebook</span><span class="plain">);</span>
+                <span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">book_cover_image</span><span class="plain">));</span>
+            <span class="functiontext">Instructions::apply_ebook_metadata</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">ebook</span><span class="plain">);</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"images"</span><span class="plain">);</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">cover_in_situ</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">,</span>
-                <span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;book_cover_image</span><span class="plain">));</span>
-            <span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;destination</span><span class="plain"> = </span><span class="functiontext">Epub::begin_construction</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;ebook</span><span class="plain">,</span>
-                <span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;destination</span><span class="plain">, </span><span class="identifier">cover_in_situ</span><span class="plain">);</span>
+                <span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">book_cover_image</span><span class="plain">));</span>
+            <span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">destination</span><span class="plain"> = </span><span class="functiontext">Epub::begin_construction</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">ebook</span><span class="plain">,</span>
+                <span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">destination</span><span class="plain">, </span><span class="identifier">cover_in_situ</span><span class="plain">);</span>
         <span class="plain">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">volume</span><span class="plain">) == 0) { </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: nothing to do\</span><span class="plain">n</span><span class="string">"</span><span class="plain">); </span><span class="identifier">exit</span><span class="plain">(0); }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="identifier">exit</span><span class="plain">(1);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">volume</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: nothing to do\n"</span><span class="plain">); </span><span class="identifier">exit</span><span class="plain">(0); }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">exit</span><span class="plain">(1);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -121,7 +120,7 @@ point, nothing is being output.
 <pre class="displaydefn">
         <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain">) </span><span class="functiontext">Scanner::scan_rawtext_for_section_titles</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;book_contains_examples</span><span class="plain">) </span><span class="functiontext">Examples::scan_examples</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">book_contains_examples</span><span class="plain">) </span><span class="functiontext">Examples::scan_examples</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -139,7 +138,7 @@ section by section.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) </span><span class="functiontext">CSS::write_CSS_files</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;css_source_file</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) </span><span class="functiontext">CSS::write_CSS_files</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">css_source_file</span><span class="plain">);</span>
         <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">TO</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain">) </span><span class="identifier">TO</span><span class="plain"> = </span><span class="functiontext">Rawtext::process_large_rawtext_file</span><span class="plain">(</span><span class="identifier">TO</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">);</span>
@@ -162,9 +161,9 @@ to go inside the Inform user interface application.
 
 <pre class="displaydefn">
         <span class="functiontext">Scanner::write_manifest_file</span><span class="plain">(</span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="reserved">volume</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;definitions_filename</span><span class="plain">) </span><span class="functiontext">Updater::write_definitions_file</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;xrefs_filename</span><span class="plain">)</span>
-            <span class="functiontext">Updater::write_xrefs_file</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;xrefs_filename</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">definitions_filename</span><span class="plain">) </span><span class="functiontext">Updater::write_definitions_file</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">xrefs_filename</span><span class="plain">)</span>
+            <span class="functiontext">Updater::write_xrefs_file</span><span class="plain">(</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">xrefs_filename</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -181,13 +180,13 @@ to go inside the Inform user interface application.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_examples</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indoc_settings</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain"> == </span><span class="constant">HTML_FORMAT</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_examples</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="functiontext">ExamplesIndex::write_alphabetical_examples_index</span><span class="plain">();</span>
                 <span class="functiontext">ExamplesIndex::write_numerical_examples_index</span><span class="plain">();</span>
                 <span class="functiontext">ExamplesIndex::write_thematic_examples_index</span><span class="plain">();</span>
             <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">index_lemma</span><span class="plain">) &gt; 0) </span><span class="functiontext">Indexes::write_general_index</span><span class="plain">();</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="reserved">index_lemma</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Indexes::write_general_index</span><span class="plain">();</span>
         <span class="plain">}</span>
 </pre>
 
@@ -204,16 +203,16 @@ to go inside the Inform user interface application.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: ended with error%s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, (</span><span class="identifier">problem_count</span><span class="plain"> == 1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: ended with error%s\n"</span><span class="plain">, (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
             <span class="identifier">exit</span><span class="plain">(1);</span>
         <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = 0;</span>
-        <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">; </span><span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain">) </span><span class="identifier">s</span><span class="plain"> += </span><span class="identifier">V</span><span class="plain">-</span><span class="element">&gt;vol_section_count</span><span class="plain">;</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: done (%d volume%s, %d section%s, %d example%s)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="identifier">no_volumes</span><span class="plain">, (</span><span class="identifier">problem_count</span><span class="plain"> == 1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">,</span>
-            <span class="identifier">s</span><span class="plain">, (</span><span class="identifier">s</span><span class="plain"> == 1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">,</span>
-            <span class="identifier">no_examples</span><span class="plain">, (</span><span class="identifier">no_examples</span><span class="plain"> == 1)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">s</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">; </span><span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">volume</span><span class="plain">) </span><span class="identifier">s</span><span class="plain"> += </span><span class="identifier">V</span><span class="plain">-&gt;</span><span class="element">vol_section_count</span><span class="plain">;</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"indoc: done (%d volume%s, %d section%s, %d example%s)\n"</span><span class="plain">,</span>
+            <span class="identifier">no_volumes</span><span class="plain">, (</span><span class="identifier">problem_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">,</span>
+            <span class="identifier">s</span><span class="plain">, (</span><span class="identifier">s</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">,</span>
+            <span class="identifier">no_examples</span><span class="plain">, (</span><span class="identifier">no_examples</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)?</span><span class="string">""</span><span class="plain">:</span><span class="string">"s"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

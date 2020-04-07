@@ -49,7 +49,6 @@
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">;</span>
     <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K_value</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -71,9 +70,9 @@
         <span class="functiontext">BuildingModule::start</span><span class="plain">();</span>
         <span class="functiontext">InterModule::start</span><span class="plain">();</span>
 
-        <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"building-test: a tool for testing the building module\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_heading</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"building-test: a tool for testing the building module\n"</span><span class="plain">);</span>
 
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"perform unit tests from file X"</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::respond</span><span class="plain">, &amp;</span><span class="functiontext">Main::ignore</span><span class="plain">);</span>
@@ -82,12 +81,12 @@
         <span class="functiontext">BuildingModule::end</span><span class="plain">();</span>
         <span class="functiontext">InterModule::end</span><span class="plain">();</span>
         <span class="functiontext">Foundation::end</span><span class="plain">();</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::respond</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_CLSW</span><span class="plain">: </span><span class="functiontext">Unit::run</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_CLSW:</span><span class="plain"> </span><span class="functiontext">Unit::run</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

@@ -65,7 +65,6 @@ automated with macros, but that would be a nuisance because the tangler then
 wouldn't auto-predeclare them; and there aren't so very many of them.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_spec</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">Problems::problem_quote</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">p</span><span class="plain">, </span><span class="functiontext">Problems::expand_spec</span><span class="plain">);</span>
@@ -149,7 +148,6 @@ names, for instance by sentences like
 this as some kind of marginal will-never-happen case.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::expand_object</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = (</span><span class="reserved">instance</span><span class="plain"> *) </span><span class="identifier">p</span><span class="plain">;</span>
@@ -177,7 +175,7 @@ this as some kind of marginal will-never-happen case.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::nonempty</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) { </span><span class="identifier">Problems::quote_wording</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
         <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">InferenceSubjects::as_object_instance</span><span class="plain">(</span><span class="identifier">infs</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain">) { </span><span class="functiontext">Problems::quote_object</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"something nameless"</span><span class="plain">); </span>    <span class="comment">this never actually happens</span>
+        <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"something nameless"</span><span class="plain">); </span><span class="comment">this never actually happens</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_invocation</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">Problems::problem_quote</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">p</span><span class="plain">, </span><span class="functiontext">Problems::expand_invocation</span><span class="plain">);</span>
@@ -191,7 +189,7 @@ this as some kind of marginal will-never-happen case.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::expand_extension_id</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">Works::write_to_HTML_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, (</span><span class="identifier">inbuild_work</span><span class="plain"> *) </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_property</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) { </span><span class="identifier">Problems::quote_wording</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">); }</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_property</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">property</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) { </span><span class="identifier">Problems::quote_wording</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">); }</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_table</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">table</span><span class="plain"> *</span><span class="identifier">tab</span><span class="plain">) {</span>
         <span class="identifier">Problems::quote_source</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="functiontext">Tables::get_headline</span><span class="plain">(</span><span class="identifier">tab</span><span class="plain">));</span>
     <span class="plain">}</span>
@@ -218,7 +216,6 @@ this as some kind of marginal will-never-happen case.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>To quote a kind is straightforward enough:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_kind</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">K</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">Kinds::Compare::eq</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">K_nil</span><span class="plain">))) </span><span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"nothing"</span><span class="plain">);</span>
@@ -241,15 +238,14 @@ we quote not a literal constant but its kind of value, changing (say) the
 actual constant 15 to the generic constant "number":
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Problems::quote_kind_of</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">spec</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Rvalues::is_object</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">self_object_ANNOT</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"implicit object"</span><span class="plain">); </span>    <span class="comment">this is probably never seen, but just in case</span>
+                <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"implicit object"</span><span class="plain">); </span><span class="comment">this is probably never seen, but just in case</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ParseTree::int_annotation</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">, </span><span class="constant">nothing_object_ANNOT</span><span class="plain">)) {</span>
-                <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"the 'nothing' non-object"</span><span class="plain">); </span>    <span class="comment">whereas this can certainly happen</span>
+                <span class="identifier">Problems::quote_text</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="string">"the 'nothing' non-object"</span><span class="plain">); </span><span class="comment">whereas this can certainly happen</span>
                 <span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">instance</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Rvalues::to_instance</span><span class="plain">(</span><span class="identifier">spec</span><span class="plain">);</span>

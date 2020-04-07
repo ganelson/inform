@@ -46,20 +46,20 @@ and then sees that they are carried out. The requests divide as follows:
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">COPY_REQ</span><span class="definitionkeyword"> from </span><span class="constant">0</span>    <span class="comment">a miscellaneous file</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">IFICTION_REQ</span><span class="plain"> </span>    <span class="comment">the iFiction record of a project</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">RELEASE_FILE_REQ</span><span class="plain"> </span>    <span class="comment">a template file</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">RELEASE_SOURCE_REQ</span><span class="plain"> </span>    <span class="comment">the source text in HTML form</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SOLUTION_REQ</span><span class="plain"> </span>    <span class="comment">a solution file generated from the skein</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SOURCE_REQ</span><span class="plain"> </span>    <span class="comment">the source text of a project</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">WEBSITE_REQ</span><span class="plain"> </span>    <span class="comment">a whole website</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">INTERPRETER_REQ</span><span class="plain"> </span>    <span class="comment">an in-browser interpreter</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">BASE64_REQ</span><span class="plain"> </span>    <span class="comment">a base64-encoded copy of a binary file</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">INSTRUCTION_REQ</span><span class="plain"> </span>    <span class="comment">a release instruction copied to inblorb for reporting only</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ALTERNATIVE_REQ</span><span class="plain"> </span>    <span class="comment">an unused release instruction copied to inblorb for reporting only</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">IFICTION_REQ</span><span class="plain"> </span><span class="comment">the iFiction record of a project</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">RELEASE_FILE_REQ</span><span class="plain"> </span><span class="comment">a template file</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">RELEASE_SOURCE_REQ</span><span class="plain"> </span><span class="comment">the source text in HTML form</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SOLUTION_REQ</span><span class="plain"> </span><span class="comment">a solution file generated from the skein</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SOURCE_REQ</span><span class="plain"> </span><span class="comment">the source text of a project</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">WEBSITE_REQ</span><span class="plain"> </span><span class="comment">a whole website</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INTERPRETER_REQ</span><span class="plain"> </span><span class="comment">an in-browser interpreter</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BASE64_REQ</span><span class="plain"> </span><span class="comment">a base64-encoded copy of a binary file</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">INSTRUCTION_REQ</span><span class="plain"> </span><span class="comment">a release instruction copied to inblorb for reporting only</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ALTERNATIVE_REQ</span><span class="plain"> </span><span class="comment">an unused release instruction copied to inblorb for reporting only</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">website_requested</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span>    <span class="comment">has a <code class="display"><span class="extract">WEBSITE_REQ</span></code> been made?</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">website_requested</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment">has a <code class="display"><span class="extract">WEBSITE_REQ</span></code> been made?</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -67,15 +67,14 @@ and then sees that they are carried out. The requests divide as follows:
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Each request produces an instance of:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">request</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">what_is_requested</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_REQ</span></code> values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">what_is_requested</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_REQ</span></code> values above</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">details1</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">details2</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">details3</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">private</span><span class="plain">; </span>    <span class="comment">is this request private, i.e., not to contribute to a website?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">outcome_data</span><span class="plain">; </span>    <span class="comment">e.g. number of bytes copied</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">private</span><span class="plain">; </span><span class="comment">is this request private, i.e., not to contribute to a website?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">outcome_data</span><span class="plain">; </span><span class="comment">e.g. number of bytes copied</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">request</span><span class="plain">;</span>
 </pre>
@@ -87,38 +86,37 @@ and then sees that they are carried out. The requests divide as follows:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Receiving requests. </b>These can have from 0 to 3 textual details attached:
 </p>
 
-
 <pre class="display">
     <span class="reserved">request</span><span class="plain"> *</span><span class="functiontext">Requests::request_0</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">privacy</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">request</span><span class="plain">);</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain"> = </span><span class="identifier">kind</span><span class="plain">;</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;private</span><span class="plain"> = </span><span class="identifier">privacy</span><span class="plain">;</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain"> = 0;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain"> = </span><span class="identifier">kind</span><span class="plain">;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">private</span><span class="plain"> = </span><span class="identifier">privacy</span><span class="plain">;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">kind</span><span class="plain"> == </span><span class="constant">WEBSITE_REQ</span><span class="plain">) </span><span class="identifier">website_requested</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">request</span><span class="plain"> *</span><span class="functiontext">Requests::request_1</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text1</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">privacy</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">Requests::request_0</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain">, </span><span class="identifier">privacy</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">request</span><span class="plain"> *</span><span class="functiontext">Requests::request_2</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">privacy</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">Requests::request_0</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain">, </span><span class="identifier">privacy</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">, </span><span class="identifier">text2</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">, </span><span class="identifier">text2</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">request</span><span class="plain"> *</span><span class="functiontext">Requests::request_3</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">kind</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text2</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text3</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">privacy</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain"> = </span><span class="functiontext">Requests::request_0</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain">, </span><span class="identifier">privacy</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">, </span><span class="identifier">text2</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">, </span><span class="identifier">text3</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="identifier">text1</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">, </span><span class="identifier">text2</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">, </span><span class="identifier">text3</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">req</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -136,7 +134,6 @@ and then sees that they are carried out. The requests divide as follows:
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>A convenient abbreviation:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::request_copy</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">subfolder</span><span class="plain">) {</span>
         <span class="functiontext">Requests::request_3</span><span class="plain">(</span><span class="constant">COPY_REQ</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">subfolder</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
@@ -152,13 +149,12 @@ script. At the end of that process, though, the following routine may add
 further requests as consequences:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::any_last_requests</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Links::request_copy_of_auxiliaries</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">default_cover_used</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">BIGCOVER</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BIGCOVER"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">BIGCOVER</span><span class="plain">) &gt; 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">BIGCOVER</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cover_is_in_JPEG_format</span><span class="plain">)</span>
                     <span class="functiontext">Requests::request_copy</span><span class="plain">(</span><span class="identifier">BIGCOVER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.jpg"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"--"</span><span class="plain">);</span>
                 <span class="reserved">else</span>
@@ -166,7 +162,7 @@ further requests as consequences:
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">website_requested</span><span class="plain">) {</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">SMALLCOVER</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SMALLCOVER"</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">SMALLCOVER</span><span class="plain">) &gt; 0) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">SMALLCOVER</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cover_is_in_JPEG_format</span><span class="plain">)</span>
                         <span class="functiontext">Requests::request_copy</span><span class="plain">(</span><span class="identifier">SMALLCOVER</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Small Cover.jpg"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"--"</span><span class="plain">);</span>
                     <span class="reserved">else</span>
@@ -183,27 +179,26 @@ further requests as consequences:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Carrying out requests. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::create_requested_material</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">release_folder</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Release folder: &lt;%p&gt;\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">release_folder</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blorb_file_size</span><span class="plain"> &gt; 0) </span><span class="functiontext">Requests::declare_where_blorb_should_be_copied</span><span class="plain">(</span><span class="identifier">release_folder</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Release folder: &lt;%p&gt;\n"</span><span class="plain">, </span><span class="identifier">release_folder</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">blorb_file_size</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Requests::declare_where_blorb_should_be_copied</span><span class="plain">(</span><span class="identifier">release_folder</span><span class="plain">);</span>
         <span class="functiontext">Requests::any_last_requests</span><span class="plain">();</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">ALTERNATIVE_REQ</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">BASE64_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Copy a base64-encoded file across</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">COPY_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Copy a file into the release folder</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFICTION_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create an iFiction file</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INSTRUCTION_REQ</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERPRETER_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create an in-browser interpreter</span> <span class="cwebmacronumber">6.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELEASE_FILE_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Release a file into the release folder</span> <span class="cwebmacronumber">6.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELEASE_SOURCE_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Release source text as HTML into the release folder</span> <span class="cwebmacronumber">6.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOLUTION_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create a Solution::walkthrough file</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOURCE_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create a plain text source file</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">WEBSITE_REQ</span><span class="plain">: </span>&lt;<span class="cwebmacro">Create a website</span> <span class="cwebmacronumber">6.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain">) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">ALTERNATIVE_REQ:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">BASE64_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Copy a base64-encoded file across</span> <span class="cwebmacronumber">6.5</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COPY_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Copy a file into the release folder</span> <span class="cwebmacronumber">6.4</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFICTION_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create an iFiction file</span> <span class="cwebmacronumber">6.3</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INSTRUCTION_REQ:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTERPRETER_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create an in-browser interpreter</span> <span class="cwebmacronumber">6.8</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELEASE_FILE_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Release a file into the release folder</span> <span class="cwebmacronumber">6.6</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELEASE_SOURCE_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Release source text as HTML into the release folder</span> <span class="cwebmacronumber">6.7</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOLUTION_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create a Solution::walkthrough file</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create a plain text source file</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WEBSITE_REQ:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Create a website</span> <span class="cwebmacronumber">6.9</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -266,12 +261,12 @@ further requests as consequences:
 
 <pre class="displaydefn">
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">release_folder</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"--"</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-            <span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">write_to</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"--"</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+            <span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">details3</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">write_to</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">size</span><span class="plain"> = </span><span class="functiontext">BinaryFiles::copy</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">write_to</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">;</span>
+        <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain"> = </span><span class="identifier">size</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">size</span><span class="plain"> == -1)</span>
             <span class="functiontext">BlorbErrors::errorf_1S</span><span class="plain">(</span>
                 <span class="string">"You asked to release along with a file called '%S', which ought "</span>
@@ -289,7 +284,7 @@ further requests as consequences:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Base64::encode</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">), </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">),</span>
+        <span class="functiontext">Base64::encode</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">), </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">),</span>
             <span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BASESIXTYFOURTOP"</span><span class="plain">), </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"BASESIXTYFOURTAIL"</span><span class="plain">));</span>
 </pre>
 
@@ -303,7 +298,7 @@ further requests as consequences:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -316,12 +311,12 @@ further requests as consequences:
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCEPREFIX"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"source"</span><span class="plain">, 0);</span>
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCELOCATION"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, 0);</span>
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">, 0);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">HTML_template</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">HTML_template</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">BlorbErrors::error_1S</span><span class="plain">(</span><span class="string">"can't find HTML template file"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Web page %f from template %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">HTML_template</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCEPREFIX"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"source"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCELOCATION"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">HTML_template</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">HTML_template</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">BlorbErrors::error_1S</span><span class="plain">(</span><span class="string">"can't find HTML template file"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Web page %f from template %s\n"</span><span class="plain">, </span><span class="identifier">HTML_template</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">);</span>
         <span class="functiontext">Websites::web_copy_source</span><span class="plain">(</span><span class="identifier">HTML_template</span><span class="plain">, </span><span class="identifier">release_folder</span><span class="plain">);</span>
 </pre>
 
@@ -344,11 +339,11 @@ The necessary code exists in Inform already, so we'll do it there.)
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INTERPRETER"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, 0);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INTERPRETER"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INTERPRETER"</span><span class="plain">);</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"(manifest).txt"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) { </span>    <span class="comment">i.e., if the "(manifest).txt" file exists</span>
-            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open (manifest) file"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="functiontext">Requests::read_requested_ifile</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) { </span><span class="comment">i.e., if the "(manifest).txt" file exists</span>
+            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open (manifest) file"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="functiontext">Requests::read_requested_ifile</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -368,9 +363,9 @@ the template to add more if it wants to.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">, 0);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details1</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">use_css_code_styles</span><span class="plain">) {</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"style.css"</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -379,24 +374,24 @@ the template to add more if it wants to.
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"index.html"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;private</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
-                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERPRETER_REQ</span><span class="plain">:</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">private</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
+                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTERPRETER_REQ:</span>
                         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"play.html"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOURCE_REQ</span><span class="plain">:</span>
-                        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCEPREFIX"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"source"</span><span class="plain">, 0);</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_REQ:</span>
+                        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCEPREFIX"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"source"</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">Source</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">project_folder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Source"</span><span class="plain">);</span>
                         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">story</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">Source</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"story.ni"</span><span class="plain">);</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">source_text</span><span class="plain">);</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">source_text</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">story</span><span class="plain">);</span>
-                        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCELOCATION"</span><span class="plain">, </span><span class="identifier">source_text</span><span class="plain">, 0);</span>
+                        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"SOURCELOCATION"</span><span class="plain">, </span><span class="identifier">source_text</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">source_text</span><span class="plain">);</span>
                         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"source.html"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"TEMPLATE is %S\n"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Add further material as requested by the template</span> <span class="cwebmacronumber">6.9.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -416,8 +411,8 @@ including a manifest called "(extras).txt":
 
 <pre class="displaydefn">
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="functiontext">Templates::find_file_in_specific_template</span><span class="plain">(</span><span class="identifier">t</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"(extras).txt"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) { </span>    <span class="comment">i.e., if the "(extras).txt" file exists</span>
-            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open (extras) file"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="functiontext">Requests::read_requested_file</span><span class="plain">, 0, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain">) { </span><span class="comment">i.e., if the "(extras).txt" file exists</span>
+            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open (extras) file"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="functiontext">Requests::read_requested_file</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -430,11 +425,10 @@ We trim white space and expect the result to be a filename of something
 within the template.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::read_requested_file</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="reserved">filename</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">,</span>
             <span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">), </span><span class="identifier">NULL</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -467,7 +461,6 @@ Parchment, interpreter.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">[INTERPRETERVERSION]</span>
         <span class="plain">Parchment for Inform 7</span>
@@ -483,17 +476,16 @@ if so, then it's the name of the one being set. Thus the code to handle
 the opening and closing lines can be identical.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">current_placeholder</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cp_written</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::read_requested_ifile</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">manifestline</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp_written</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) { </span><span class="identifier">cp_written</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="identifier">current_placeholder</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">(); }</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">manifestline</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%c*?) *"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">manifestline</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%c*?) *"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">manifestline</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%[(%c+)%]"</span><span class="plain">))</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">) == 0)</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">We're outside placeholder mode, so it's a comment or a manifested filename</span> <span class="cwebmacronumber">8.1</span>&gt;
         <span class="reserved">else</span>
             &lt;<span class="cwebmacro">We're inside placeholder mode, so it's content to be spooled into the named placeholder</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
@@ -516,7 +508,7 @@ character <code class="display"><span class="extract">!</span></code> are skippe
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">) == 0) || (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) || (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="identifier">manifestline</span><span class="plain">, </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"INTERPRETER"</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"interpreter"</span><span class="plain">);</span>
 </pre>
 
@@ -537,10 +529,10 @@ each line.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"INTERPRETERVM"</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"INTERPRETERVM"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Check the value being given against the actual VM we're blorbing up</span> <span class="cwebmacronumber">8.2.1</span>&gt;<span class="character">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">))</span>
-            <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">current_placeholder</span><span class="plain">, </span><span class="identifier">manifestline</span><span class="plain">);</span>
 </pre>
 
@@ -593,7 +585,6 @@ but otherwise copy as a single item, or we can use it to make a mass
 generation of source pages.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::release_file_into_website</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">t</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sub</span><span class="plain">) {</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">release_folder</span><span class="plain">;</span>
@@ -629,8 +620,8 @@ to the experts.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, 0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Web page %S from template %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="functiontext">Placeholders::set_to</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"TEMPLATE"</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Web page %S from template %S\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"source.html"</span><span class="plain">))</span>
             <span class="functiontext">Websites::web_copy_source</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">release_folder</span><span class="plain">);</span>
         <span class="reserved">else</span>
@@ -647,7 +638,7 @@ to the experts.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Binary file %S from template %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">verbose_mode</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"! Binary file %S from template %S\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">t</span><span class="plain">);</span>
         <span class="functiontext">BinaryFiles::copy</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">write_to</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
 </pre>
 
@@ -659,30 +650,29 @@ to the experts.
 is where those are added (to the other links already present, that is).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::add_links_to_requested_resources</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;private</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
-                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">WEBSITE_REQ</span><span class="plain">: </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERPRETER_REQ</span><span class="plain">:</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">private</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
+                <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain">) {</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WEBSITE_REQ:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTERPRETER_REQ:</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
                         <span class="functiontext">Links::download_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Play In-Browser"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"play.html"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"link"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOURCE_REQ</span><span class="plain">:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_REQ:</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
                         <span class="functiontext">Links::download_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Source Text"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"source.html"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"link"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOLUTION_REQ</span><span class="plain">:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOLUTION_REQ:</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
                         <span class="functiontext">Links::download_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Solution"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"solution.txt"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"link"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="constant">IFICTION_REQ</span><span class="plain">:</span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="identifier">IFICTION_REQ:</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
                         <span class="functiontext">Links::download_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Library Card"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"iFiction.xml"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"link"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
@@ -699,13 +689,12 @@ is where those are added (to the other links already present, that is).
 Inform 7 more seamless: see the manual for an explanation.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::declare_where_blorb_should_be_copied</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain"> = </span><span class="functiontext">Placeholders::read</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"STORYFILE"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">leaf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">leaf</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"Story"</span><span class="plain">;</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">path</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Copy blorb to: [[%f]]\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
+        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Copy blorb to: [[%f]]\n"</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -720,10 +709,9 @@ look through the requests.) Rather than attempt to write to the file here,
 we copy the necessary HTML into the placeholder <code class="display"><span class="extract">ph</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Requests::report_requested_material</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ph</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">release_folder</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span>    <span class="comment">this should never happen</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">release_folder</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">this should never happen</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">launch_website</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">launch_play</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
 
@@ -754,7 +742,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_pictures_included</span><span class="plain"> &gt; 1) || (</span><span class="identifier">no_sounds_included</span><span class="plain"> &gt; 0))</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">no_pictures_included</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) || (</span><span class="identifier">no_sounds_included</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
                 <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"&lt;li&gt;The blorb file &lt;b&gt;[STORYFILE]&lt;/b&gt; ([BLORBFILESIZE]K in size, "</span>
                     <span class="identifier">L</span><span class="string">"including [BLORBFILEPICTURES] figures(s) and [BLORBFILESOUNDS] "</span>
@@ -773,7 +761,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">WEBSITE_REQ</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">WEBSITE_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;A website (generated from the [TEMPLATE] template) of "</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pcount</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pcount</span><span class="plain">, </span><span class="string">"%d page%s"</span><span class="plain">, </span><span class="identifier">HTML_pages_created</span><span class="plain">, (</span><span class="identifier">HTML_pages_created</span><span class="plain">!=1)?</span><span class="string">"s"</span><span class="plain">:</span><span class="string">""</span><span class="plain">);</span>
@@ -794,7 +782,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">INTERPRETER_REQ</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">INTERPRETER_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">launch_play</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;A play-in-browser page (generated from the [INTERPRETER] interpreter)&lt;/li&gt;"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -810,7 +798,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">IFICTION_REQ</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">IFICTION_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;The library card (stored as an iFiction record)&lt;/li&gt;"</span><span class="plain">);</span>
 </pre>
 
@@ -824,7 +812,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">SOLUTION_REQ</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">SOLUTION_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;A solution file&lt;/li&gt;"</span><span class="plain">);</span>
 </pre>
 
@@ -838,8 +826,8 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">SOURCE_REQ</span><span class="plain">) &gt; 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_HTML_pages_created</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">SOURCE_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">source_HTML_pages_created</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;The source text (as plain text and as "</span><span class="plain">);</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pcount</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pcount</span><span class="plain">, </span><span class="string">"%d web page%s"</span><span class="plain">,</span>
@@ -849,7 +837,7 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pcount</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">RELEASE_SOURCE_REQ</span><span class="plain">) &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">RELEASE_SOURCE_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;The source text (as part of the website)&lt;/li&gt;"</span><span class="plain">);</span>
 </pre>
 
@@ -863,29 +851,29 @@ we copy the necessary HTML into the placeholder <code class="display"><span clas
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">COPY_REQ</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="constant">COPY_REQ</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;The following additional file(s):&lt;ul&gt;"</span><span class="plain">);</span>
             <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain"> == </span><span class="constant">COPY_REQ</span><span class="plain">) {</span>
-                    <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details2</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain"> == </span><span class="constant">COPY_REQ</span><span class="plain">) {</span>
+                    <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details2</span><span class="plain">;</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain"> &gt;= 4096) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain"> &gt;= </span><span class="constant">4096</span><span class="plain">) {</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">);</span>
-                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">, </span><span class="string">" (%dK)"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain">/1024);</span>
+                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">, </span><span class="string">" (%dK)"</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain">/1024);</span>
                         <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">filesize</span><span class="plain">);</span>
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">);</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain"> &gt;= 0) {</span>
+                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
                         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">);</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">, </span><span class="string">" (%d byte%s)"</span><span class="plain">,</span>
-                            <span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain">, (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;outcome_data</span><span class="plain">!=1)?</span><span class="string">"s"</span><span class="plain">:</span><span class="string">""</span><span class="plain">);</span>
+                            <span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain">, (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">outcome_data</span><span class="plain">!=1)?</span><span class="string">"s"</span><span class="plain">:</span><span class="string">""</span><span class="plain">);</span>
                         <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">filesize</span><span class="plain">);</span>
                         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">filesize</span><span class="plain">);</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"--"</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">details3</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"--"</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
                         <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" to subfolder "</span><span class="plain">);</span>
-                        <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details3</span><span class="plain">);</span>
+                        <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">details3</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
                 <span class="plain">}</span>
@@ -914,18 +902,18 @@ application, called <code class="display"><span class="extract">openUrl</span></
         <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;p&gt;&lt;center&gt;"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">launch_website</span><span class="plain">) {</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
-                <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"&lt;a href=\</span><span class="plain">"</span><span class="string">[JAVASCRIPTPRELUDE]"</span>
-                    <span class="string">"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/index.html')\</span><span class="plain">"</span><span class="string">&gt;"</span>
-                    <span class="string">"&lt;img src='inform:/outcome_images/browse.png' border=0&gt;&lt;/a&gt; home page"</span><span class="plain">));</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">launch_website</span><span class="plain">) &amp;&amp; (</span><span class="identifier">launch_play</span><span class="plain">))</span>
-            <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" : "</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">launch_play</span><span class="plain">)</span>
-            <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
-                <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"&lt;a href=\</span><span class="plain">"</span><span class="string">[JAVASCRIPTPRELUDE]"</span>
-                    <span class="identifier">L</span><span class="string">"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/play.html')\</span><span class="plain">"</span><span class="string">&gt;"</span>
-                    <span class="identifier">L</span><span class="string">"&lt;img src='inform:/outcome_images/browse.png' border=0&gt;&lt;/a&gt; play-in-browser page"</span><span class="plain">));</span>
-        <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;/center&gt;&lt;/p&gt;"</span><span class="plain">);</span>
+                <span class="functiontext">Str::literal</span><span class="plain">(</span><span class="identifier">L</span><span class="string">"&lt;a href=\"[JAVASCRIPTPRELUDE]"</span>
+                    <span class="string">"openUrl('file:</span><span class="comment">[**MATERIALSFOLDERPATHOPEN]/Release/index.html')\"&gt;"</span>
+                    <span class="string">"</span><span class="plain">&lt;</span><span class="identifier">img</span><span class="plain"> </span><span class="identifier">src</span><span class="plain">=</span><span class="character">'inform:/outcome_images/browse.png'</span><span class="plain"> </span><span class="identifier">border</span><span class="plain">=0&gt;&lt;/</span><span class="identifier">a</span><span class="plain">&gt; </span><span class="identifier">home</span><span class="plain"> </span><span class="identifier">page</span><span class="string">"));</span>
+        <span class="string">}</span>
+        <span class="string">if ((launch_website) &amp;&amp; (launch_play))</span>
+            <span class="string">Placeholders::append_to(ph, I"</span><span class="plain"> : </span><span class="string">");</span>
+        <span class="string">if (launch_play)</span>
+            <span class="string">Placeholders::append_to(ph,</span>
+                <span class="string">Str::literal(L"</span><span class="plain">&lt;</span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">href</span><span class="plain">=\</span><span class="string">"[JAVASCRIPTPRELUDE]"</span>
+                    <span class="identifier">L</span><span class="string">"openUrl('file:</span><span class="comment">[**MATERIALSFOLDERPATHOPEN]/Release/play.html')\"&gt;"</span>
+                    <span class="string">L"</span><span class="plain">&lt;</span><span class="identifier">img</span><span class="plain"> </span><span class="identifier">src</span><span class="plain">=</span><span class="character">'inform:/outcome_images/browse.png'</span><span class="plain"> </span><span class="identifier">border</span><span class="plain">=0&gt;&lt;/</span><span class="identifier">a</span><span class="plain">&gt; </span><span class="identifier">play</span><span class="plain">-</span><span class="identifier">in</span><span class="plain">-</span><span class="identifier">browser</span><span class="plain"> </span><span class="identifier">page</span><span class="string">"));</span>
+        <span class="string">Placeholders::append_to(ph, I"</span><span class="plain">&lt;/</span><span class="identifier">center</span><span class="plain">&gt;&lt;/</span><span class="identifier">p</span><span class="plain">&gt;</span><span class="string">");</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -947,19 +935,19 @@ which have by now become <code class="display"><span class="extract">INSTRUCTION
 
 <pre class="displaydefn">
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain"> == </span><span class="constant">INSTRUCTION_REQ</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain"> == </span><span class="constant">INSTRUCTION_REQ</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
                         <span class="identifier">I</span><span class="string">"&lt;p&gt;The source text gives release instructions "</span><span class="plain">);</span>
                 <span class="reserved">else</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" and "</span><span class="plain">);</span>
-                <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">);</span>
+                <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">details1</span><span class="plain">);</span>
                 <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" here"</span><span class="plain">);</span>
                 <span class="identifier">count</span><span class="plain">++;</span>
             <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".&lt;/p&gt;"</span><span class="plain">);</span>
 </pre>
 
@@ -981,18 +969,18 @@ requests.
 
 <pre class="displaydefn">
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain"> == </span><span class="constant">ALTERNATIVE_REQ</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain"> == </span><span class="constant">ALTERNATIVE_REQ</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                     <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">,</span>
                         <span class="identifier">I</span><span class="string">"&lt;p&gt;Here are some other possibilities you might want to consider:&lt;p&gt;&lt;ul&gt;"</span><span class="plain">);</span>
                 <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
-                <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;details1</span><span class="plain">);</span>
+                <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="identifier">details1</span><span class="plain">);</span>
                 <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
                 <span class="identifier">count</span><span class="plain">++;</span>
             <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
             <span class="functiontext">Placeholders::append_to</span><span class="plain">(</span><span class="identifier">ph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"&lt;/ul&gt;&lt;/p&gt;"</span><span class="plain">);</span>
 </pre>
 
@@ -1003,13 +991,12 @@ requests.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>A convenient way to see if we've received requests of any given type:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Requests::count_requests_of_type</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">) {</span>
         <span class="reserved">request</span><span class="plain"> *</span><span class="identifier">req</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">req</span><span class="plain">, </span><span class="reserved">request</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-</span><span class="element">&gt;what_is_requested</span><span class="plain"> == </span><span class="identifier">t</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">req</span><span class="plain">-&gt;</span><span class="element">what_is_requested</span><span class="plain"> == </span><span class="identifier">t</span><span class="plain">)</span>
                 <span class="identifier">count</span><span class="plain">++;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">count</span><span class="plain">;</span>
     <span class="plain">}</span>

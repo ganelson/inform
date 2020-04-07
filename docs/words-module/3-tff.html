@@ -65,15 +65,14 @@
 in a <code class="display"><span class="extract">source_file</span></code> structure, as follows.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_file</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_of_source</span><span class="plain">; </span>    <span class="comment">word count, omitting comments and verbatim matter</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_of_source</span><span class="plain">; </span><span class="comment">word count, omitting comments and verbatim matter</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">wording</span><span class="plain"> </span><span class="identifier">text_read</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_of_quoted_text</span><span class="plain">; </span>    <span class="comment">word count for text in double-quotes</span>
-        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">handle</span><span class="plain">; </span>    <span class="comment">file handle while open</span>
-        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">your_ref</span><span class="plain">; </span>    <span class="comment">for the client to attach some meaning</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">words_of_quoted_text</span><span class="plain">; </span><span class="comment">word count for text in double-quotes</span>
+        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">handle</span><span class="plain">; </span><span class="comment">file handle while open</span>
+        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">your_ref</span><span class="plain">; </span><span class="comment">for the client to attach some meaning</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">source_file</span><span class="plain">;</span>
 </pre>
@@ -94,53 +93,52 @@ as if spaces in most contexts, but not when parsing formatted tables, for
 instance, so they are not similarly converted.
 </p>
 
-
 <pre class="display">
     <span class="reserved">source_file</span><span class="plain"> *</span><span class="functiontext">TextFromFiles::feed_open_file_into_lexer</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">handle</span><span class="plain">,</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">documentation_only</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">ref</span><span class="plain">) {</span>
         <span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain">);</span>
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_source</span><span class="plain"> = 0;</span>
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_quoted_text</span><span class="plain"> = 0;</span>
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;your_ref</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;handle</span><span class="plain"> = </span><span class="identifier">handle</span><span class="plain">;</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">words_of_source</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">words_of_quoted_text</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">your_ref</span><span class="plain"> = </span><span class="identifier">ref</span><span class="plain">;</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">handle</span><span class="plain"> = </span><span class="identifier">handle</span><span class="plain">;</span>
         <span class="reserved">source_location</span><span class="plain"> </span><span class="identifier">top_of_file</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">, </span><span class="identifier">read_cr</span><span class="plain">, </span><span class="identifier">newline_char</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">, </span><span class="identifier">read_cr</span><span class="plain">, </span><span class="identifier">newline_char</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="identifier">unicode_file_buffer</span><span class="plain"> </span><span class="identifier">ufb</span><span class="plain"> = </span><span class="identifier">TextFiles::create_ufb</span><span class="plain">();</span>
 
-        <span class="identifier">top_of_file</span><span class="element">.file_of_origin</span><span class="plain"> = </span><span class="identifier">sf</span><span class="plain">;</span>
-        <span class="identifier">top_of_file</span><span class="element">.line_number</span><span class="plain"> = 1;</span>
+        <span class="identifier">top_of_file</span><span class="plain">.</span><span class="element">file_of_origin</span><span class="plain"> = </span><span class="identifier">sf</span><span class="plain">;</span>
+        <span class="identifier">top_of_file</span><span class="plain">.</span><span class="element">line_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 
         <span class="functiontext">Lexer::feed_begins</span><span class="plain">(</span><span class="identifier">top_of_file</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">documentation_only</span><span class="plain">) </span><span class="identifier">lexer_wait_for_dashes</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
 
-        <span class="identifier">last_cr</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_cr</span><span class="plain"> == 0</span><span class="identifier">xFEFF</span><span class="plain">) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">); </span>    <span class="comment">Unicode BOM code</span>
+        <span class="identifier">last_cr</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">; </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_cr</span><span class="plain"> == </span><span class="constant">0xFEFF</span><span class="plain">) </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">); </span><span class="comment">Unicode BOM code</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_cr</span><span class="plain"> != </span><span class="identifier">EOF</span><span class="plain">)</span>
-            <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">read_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">)), </span><span class="identifier">next_cr</span><span class="plain">) != </span><span class="identifier">EOF</span><span class="plain">) {</span>
+            <span class="reserved">while</span><span class="plain"> (((</span><span class="identifier">read_cr</span><span class="plain"> = </span><span class="identifier">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">handle</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, &amp;</span><span class="identifier">ufb</span><span class="plain">)), </span><span class="identifier">next_cr</span><span class="plain">) != </span><span class="identifier">EOF</span><span class="plain">) {</span>
                 <span class="identifier">last_cr</span><span class="plain"> = </span><span class="identifier">cr</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="identifier">next_cr</span><span class="plain">; </span><span class="identifier">next_cr</span><span class="plain"> = </span><span class="identifier">read_cr</span><span class="plain">;</span>
                 <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">cr</span><span class="plain">) {</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="character">'\</span><span class="plain">x</span><span class="character">0a'</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newline_char</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">) {</span>
-                            <span class="identifier">newline_char</span><span class="plain"> = 0; </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">suppress <code class="display"><span class="extract">0x000A</span></code> when it follows <code class="display"><span class="extract">0x000D</span></code></span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="character">'\x0a'</span><span class="plain">:</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newline_char</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">) {</span>
+                            <span class="identifier">newline_char</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">suppress <code class="display"><span class="extract">0x000A</span></code> when it follows <code class="display"><span class="extract">0x000D</span></code></span>
                         <span class="plain">}</span>
-                        <span class="identifier">newline_char</span><span class="plain"> = </span><span class="identifier">cr</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">; </span>    <span class="comment">and otherwise convert to <code class="display"><span class="extract">'\n'</span></code></span>
+                        <span class="identifier">newline_char</span><span class="plain"> = </span><span class="identifier">cr</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">'\n'</span><span class="plain">; </span><span class="comment">and otherwise convert to <code class="display"><span class="extract">'\n'</span></code></span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">case</span><span class="plain"> </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">:</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newline_char</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0a'</span><span class="plain">) {</span>
-                            <span class="identifier">newline_char</span><span class="plain"> = 0; </span><span class="reserved">continue</span><span class="plain">; </span>    <span class="comment">suppress <code class="display"><span class="extract">0x000D</span></code> when it follows <code class="display"><span class="extract">0x000A</span></code></span>
+                    <span class="reserved">case</span><span class="plain"> </span><span class="character">'\x0d'</span><span class="plain">:</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">newline_char</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) {</span>
+                            <span class="identifier">newline_char</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">continue</span><span class="plain">; </span><span class="comment">suppress <code class="display"><span class="extract">0x000D</span></code> when it follows <code class="display"><span class="extract">0x000A</span></code></span>
                         <span class="plain">}</span>
-                        <span class="identifier">newline_char</span><span class="plain"> = </span><span class="identifier">cr</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">; </span>    <span class="comment">and otherwise convert to <code class="display"><span class="extract">'\n'</span></code></span>
+                        <span class="identifier">newline_char</span><span class="plain"> = </span><span class="identifier">cr</span><span class="plain">; </span><span class="identifier">cr</span><span class="plain"> = </span><span class="character">'\n'</span><span class="plain">; </span><span class="comment">and otherwise convert to <code class="display"><span class="extract">'\n'</span></code></span>
                         <span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">default</span><span class="plain">:</span>
-                        <span class="identifier">newline_char</span><span class="plain"> = 0;</span>
+                    <span class="identifier">default:</span>
+                        <span class="identifier">newline_char</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
                 <span class="functiontext">Lexer::feed_triplet</span><span class="plain">(</span><span class="identifier">last_cr</span><span class="plain">, </span><span class="identifier">cr</span><span class="plain">, </span><span class="identifier">next_cr</span><span class="plain">);</span>
             <span class="plain">}</span>
 
-        <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;text_read</span><span class="plain"> = </span><span class="functiontext">Lexer::feed_ends</span><span class="plain">(</span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
+        <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">text_read</span><span class="plain"> = </span><span class="functiontext">Lexer::feed_ends</span><span class="plain">(</span><span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Word count the new material</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">;</span>
@@ -162,8 +160,8 @@ quoted text (i.e., their text within double-quotes).
 
 
 <pre class="displaydefn">
-        <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;text_read</span><span class="plain">)</span>
-            <span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_source</span><span class="plain"> += </span><span class="functiontext">TextFromFiles::word_count</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">);</span>
+        <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">text_read</span><span class="plain">)</span>
+            <span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">words_of_source</span><span class="plain"> += </span><span class="functiontext">TextFromFiles::word_count</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -172,7 +170,6 @@ quoted text (i.e., their text within double-quotes).
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A much simpler version:
 </p>
-
 
 <pre class="display">
     <span class="reserved">source_file</span><span class="plain"> *</span><span class="functiontext">TextFromFiles::feed_into_lexer</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">ref</span><span class="plain">) {</span>
@@ -191,25 +188,24 @@ quoted text (i.e., their text within double-quotes).
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFromFiles::word_count</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">wc</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Lexer::word_text</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (*</span><span class="identifier">p</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) {</span>
             <span class="comment">inside quoted text, each run of non-whitespace counts as 1 word</span>
-            <span class="identifier">p</span><span class="plain">++; </span>    <span class="comment">skip opening quotation mark</span>
-            <span class="reserved">while</span><span class="plain"> (*</span><span class="identifier">p</span><span class="plain"> != 0) {</span>
-                <span class="reserved">while</span><span class="plain"> ((*</span><span class="identifier">p</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (*</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">++; </span>    <span class="comment">move past white space</span>
-                <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">p</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) || (*</span><span class="identifier">p</span><span class="plain"> == 0)) </span><span class="reserved">break</span><span class="plain">; /* </span><span class="identifier">stop</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> </span><span class="identifier">this</span><span class="plain"> </span><span class="identifier">reaches</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> */</span>
-                <span class="identifier">N</span><span class="plain">++; </span>    <span class="comment">otherwise we have a word</span>
+            <span class="identifier">p</span><span class="plain">++; </span><span class="comment">skip opening quotation mark</span>
+            <span class="reserved">while</span><span class="plain"> (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="reserved">while</span><span class="plain"> ((*</span><span class="identifier">p</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (*</span><span class="identifier">p</span><span class="plain"> == </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">++; </span><span class="comment">move past white space</span>
+                <span class="reserved">if</span><span class="plain"> ((*</span><span class="identifier">p</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) || (*</span><span class="identifier">p</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">stop if this reaches the end</span>
+                <span class="identifier">N</span><span class="plain">++; </span><span class="comment">otherwise we have a word</span>
                 <span class="reserved">while</span><span class="plain"> ((*</span><span class="identifier">p</span><span class="plain"> != </span><span class="character">' '</span><span class="plain">) &amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">)</span>
-                    <span class="plain">&amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="character">'"'</span><span class="plain">) &amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != 0)) </span><span class="identifier">p</span><span class="plain">++; /* </span><span class="identifier">move</span><span class="plain"> </span><span class="identifier">to</span><span class="plain"> </span><span class="identifier">white</span><span class="plain"> </span><span class="identifier">space</span><span class="plain"> </span><span class="identifier">or</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> */</span>
+                    <span class="plain">&amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="character">'"'</span><span class="plain">) &amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">++; </span><span class="comment">move to white space or end</span>
             <span class="plain">}</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="comment">outside quoted text, each lexer word not wholly composed of punctuation scores 1</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Lexer::word</span><span class="plain">(</span><span class="identifier">wc</span><span class="plain">) != </span><span class="identifier">PARBREAK_V</span><span class="plain">)</span>
-                <span class="reserved">for</span><span class="plain"> (; *</span><span class="identifier">p</span><span class="plain"> != 0; </span><span class="identifier">p</span><span class="plain">++)</span>
+                <span class="reserved">for</span><span class="plain"> (; *</span><span class="identifier">p</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">p</span><span class="plain">++)</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Lexer::is_punctuation</span><span class="plain">(*</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (*</span><span class="identifier">p</span><span class="plain"> != </span><span class="character">'|'</span><span class="plain">)) {</span>
                         <span class="identifier">N</span><span class="plain">++;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
@@ -227,15 +223,14 @@ quoted text (i.e., their text within double-quotes).
 the following routine, which combines them into one.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFromFiles::total_word_count</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> 0;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_source</span><span class="plain"> + </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;words_of_quoted_text</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="identifier">words_of_source</span><span class="plain"> + </span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="identifier">words_of_quoted_text</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFromFiles::last_lexed_word</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;text_read</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">text_read</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -251,11 +246,10 @@ looks vulnerable to case-insensitive filename issues, but isn't, because
 each filename is present in NI in only one form.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">TextFromFiles::get_filename</span><span class="plain">(</span><span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sf</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to read filename of null source file"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="identifier">name</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">source_file</span><span class="plain"> *</span><span class="functiontext">TextFromFiles::filename_to_source_file</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">name2</span><span class="plain">) {</span>
@@ -263,9 +257,9 @@ each filename is present in NI in only one form.
         <span class="reserved">source_file</span><span class="plain"> *</span><span class="identifier">sf</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">sf</span><span class="plain">, </span><span class="reserved">source_file</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">name1</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name1</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">-</span><span class="element">&gt;name</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">name1</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">sf</span><span class="plain">-&gt;</span><span class="element">name</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">l1</span><span class="plain"> = </span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">name1</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">minl</span><span class="plain"> = (</span><span class="identifier">l1</span><span class="plain">&lt;</span><span class="identifier">l2</span><span class="plain">)?</span><span class="identifier">l1</span><span class="plain">:</span><span class="identifier">l2</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">minl</span><span class="plain"> = (</span><span class="identifier">l1</span><span class="plain">&lt;</span><span class="identifier">l2</span><span class="plain">)?</span><span class="identifier">l1:l2</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::suffix_eq</span><span class="plain">(</span><span class="identifier">name1</span><span class="plain">, </span><span class="identifier">name2</span><span class="plain">, </span><span class="identifier">minl</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">sf</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>

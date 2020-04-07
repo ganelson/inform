@@ -102,7 +102,6 @@ before we can add the <code class="display"><span class="extract">#eg5</span></c
 by a number. I believe I can live with the guilt.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::Documentation::href_of_example</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">base_leafname</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_example_variant</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_example_anchor</span><span class="plain">) {</span>
@@ -111,9 +110,9 @@ by a number. I believe I can live with the guilt.
                 <span class="plain">(</span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">base_leafname</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+3)))) </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">Str::get_at</span><span class="plain">(</span><span class="identifier">base_leafname</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">));</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_example_variant</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-eg%d"</span><span class="plain">, </span><span class="identifier">to_example_variant</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_example_variant</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"-eg%d"</span><span class="plain">, </span><span class="identifier">to_example_variant</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">".html"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_example_anchor</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#eg%d"</span><span class="plain">, </span><span class="identifier">to_example_anchor</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_example_anchor</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"#eg%d"</span><span class="plain">, </span><span class="identifier">to_example_anchor</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -135,22 +134,20 @@ to see if it might be a heading. For instance, a paragraph consisting of
 "Black Gold".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">heading</span><span class="plain">&gt; ::=</span>
-        <span class="identifier">chapter</span><span class="plain"> : ... |			==&gt; 1</span>
-        <span class="identifier">section</span><span class="plain"> : ...			==&gt; 2</span>
+        <span class="identifier">chapter</span><span class="plain"> : ... |			==&gt; </span><span class="constant">1</span>
+        <span class="identifier">section</span><span class="plain"> : ...			==&gt; </span><span class="constant">2</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">HTML::Documentation::extension_documentation_heading</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">level</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">HW</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">heading</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 10) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">not enough space: this runs into the end-of-file padding</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">not enough space: this runs into the end-of-file padding</span>
             <span class="plain">*</span><span class="identifier">level</span><span class="plain"> = &lt;&lt;</span><span class="identifier">r</span><span class="plain">&gt;&gt;;</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">Wordings::trim_first_word</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">));</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">end</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -180,31 +177,29 @@ more exacting specification: a paragraph in the shape
 an asterisk count of 3, and the rubric being "A Tale of the Texas Oilmen".
 </p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt; ::=</span>
         <span class="identifier">example</span><span class="plain"> : &lt;</span><span class="identifier">row</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">asterisks</span><span class="plain">&gt; ... - ... |	==&gt; </span><span class="identifier">R</span><span class="plain">[1]</span>
-        <span class="identifier">example</span><span class="plain"> : ... - ...							==&gt; 0</span>
+        <span class="identifier">example</span><span class="plain"> : ... - ...							==&gt; </span><span class="constant">0</span>
 
     <span class="plain">&lt;</span><span class="identifier">row</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">asterisks</span><span class="plain">&gt; ::=</span>
-        <span class="plain">* |					==&gt; 1</span>
-        <span class="plain">** |				==&gt; 2</span>
-        <span class="plain">\*** |				==&gt; 3</span>
-        <span class="plain">****				==&gt; 4</span>
+        <span class="plain">* |					==&gt; </span><span class="constant">1</span>
+        <span class="plain">** |				==&gt; </span><span class="constant">2</span>
+        <span class="plain">\*** |				==&gt; </span><span class="constant">3</span>
+        <span class="plain">****				==&gt; </span><span class="constant">4</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">HTML::Documentation::extension_documentation_example</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">asterisks</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">egn</span><span class="plain">, </span><span class="identifier">wording</span><span class="plain"> *</span><span class="identifier">egr</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; 10) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">not enough space: this runs into the end-of-file padding</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Wordings::length</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">) &gt; </span><span class="constant">10</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">not enough space: this runs into the end-of-file padding</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;(</span><span class="identifier">W</span><span class="plain">)) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;, 1);</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RW</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;, 2));</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">RW</span><span class="plain"> = </span><span class="identifier">Wordings::first_word</span><span class="plain">(</span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">example</span><span class="plain">-</span><span class="identifier">header</span><span class="plain">&gt;, </span><span class="constant">2</span><span class="plain">));</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">r2</span><span class="plain"> = </span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">RW</span><span class="plain">);</span>
             <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">r2</span><span class="plain"> &lt;= </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) &amp;&amp; ((</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">r2</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)) </span><span class="identifier">r2</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">r2</span><span class="plain"> &gt;= </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
@@ -241,34 +236,33 @@ the first heading, which I think is reasonable enough: there can be at most
 26 per extension, enabling them to be lettered as Example A to Example Z.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::Documentation::set_table_of_contents</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">base_leafname</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain"> = 0, </span><span class="identifier">chapter_count</span><span class="plain"> = 0, </span><span class="identifier">section_count</span><span class="plain"> = 0, </span><span class="identifier">example_count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">edhl</span><span class="plain">, </span><span class="identifier">asterisks</span><span class="plain">;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">RUBW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) { </span>    <span class="comment">the lexer records this to mean a paragraph break</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) { </span><span class="comment">the lexer records this to mean a paragraph break</span>
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">++; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">HTML::Documentation::extension_documentation_heading</span><span class="plain">(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">), &amp;</span><span class="identifier">edhl</span><span class="plain">, &amp;</span><span class="identifier">NW</span><span class="plain">)) {</span>
                     <span class="identifier">heading_count</span><span class="plain">++;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_count</span><span class="plain"> == 1) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-                        <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span>    <span class="comment">ruled line at top of TOC</span>
+                        <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="comment">ruled line at top of TOC</span>
                         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == 1) {</span>
-                        <span class="identifier">chapter_count</span><span class="plain">++; </span><span class="identifier">section_count</span><span class="plain"> = 0;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; 1) </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span>    <span class="comment">skip a line between chapters in TOC</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+                        <span class="identifier">chapter_count</span><span class="plain">++; </span><span class="identifier">section_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">); </span><span class="comment">skip a line between chapters in TOC</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == 2) </span><span class="identifier">section_count</span><span class="plain">++;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">section_count</span><span class="plain">++;</span>
                     &lt;<span class="cwebmacro">Typeset the table of contents entry for this heading</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
                     <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">); </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">heading_count</span><span class="plain"> &gt; 0) &amp;&amp; (</span><span class="identifier">example_count</span><span class="plain"> &lt; 26) &amp;&amp;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">heading_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">example_count</span><span class="plain"> &lt; </span><span class="constant">26</span><span class="plain">) &amp;&amp;</span>
                     <span class="plain">(</span><span class="functiontext">HTML::Documentation::extension_documentation_example</span><span class="plain">(</span>
                         <span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">), &amp;</span><span class="identifier">asterisks</span><span class="plain">, &amp;</span><span class="identifier">NW</span><span class="plain">, &amp;</span><span class="identifier">RUBW</span><span class="plain">))) {</span>
-                    <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">example_count</span><span class="plain"> == 1) {</span>
+                    <span class="reserved">if</span><span class="plain"> (++</span><span class="identifier">example_count</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
                         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
                         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Examples"</span><span class="plain">);</span>
@@ -280,9 +274,9 @@ the first heading, which I think is reasonable enough: there can be at most
                 <span class="plain">}</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_count</span><span class="plain"> &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">heading_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-            <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span>    <span class="comment">ruled line at foot of TOC, if there is one</span>
+            <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="comment">ruled line at foot of TOC, if there is one</span>
             <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
@@ -306,29 +300,29 @@ These are the destinations of links from heading lines in the TOC.
 
 <pre class="displaydefn">
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                 <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">text-decoration: none\</span><span class="plain">"</span><span class="string"> href=#docsec%d"</span><span class="plain">, </span><span class="identifier">heading_count</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"style=\"text-decoration: none\" href=#docsec%d"</span><span class="plain">, </span><span class="identifier">heading_count</span><span class="plain">);</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"000000"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Chapter %d: "</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">);</span>
                 <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2:</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; 0) </span>    <span class="comment">if there are chapters as well as sections...</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); </span>    <span class="comment">...then set an indentation before entry</span>
-                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">text-decoration: none\</span><span class="plain">"</span><span class="string"> href=#docsec%d"</span><span class="plain">, </span><span class="identifier">heading_count</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="comment">if there are chapters as well as sections...</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); </span><span class="comment">...then set an indentation before entry</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"style=\"text-decoration: none\" href=#docsec%d"</span><span class="plain">, </span><span class="identifier">heading_count</span><span class="plain">);</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"000000"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Section "</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; 0) </span>    <span class="comment">if there are chapters as well as sections...</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d.%d: "</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain">); </span>    <span class="comment">quote in form S.C</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="comment">if there are chapters as well as sections...</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d.%d: "</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain">); </span><span class="comment">quote in form S.C</span>
                 <span class="reserved">else</span>
-                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d: "</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain">); </span>    <span class="comment">otherwise quote section number only</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d: "</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain">); </span><span class="comment">otherwise quote section number only</span>
                 <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">default</span><span class="plain">: </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to set this heading level in extension TOC"</span><span class="plain">);</span>
+            <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unable to set this heading level in extension TOC"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">HTML::Documentation::set_body_text</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
@@ -351,14 +345,14 @@ far as the user is concerned it opens the example and goes there.
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); </span>    <span class="comment">always indent TOC entries for examples</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;&amp;nbsp;&amp;nbsp;"</span><span class="plain">); </span><span class="comment">always indent TOC entries for examples</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">, </span><span class="string">"style=\</span><span class="plain">"</span><span class="string">text-decoration: none\</span><span class="plain">"</span><span class="string"> href=\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">, </span><span class="string">"style=\"text-decoration: none\" href=\""</span><span class="plain">);</span>
         <span class="functiontext">HTML::Documentation::href_of_example</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">, </span><span class="identifier">base_leafname</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">, </span><span class="string">"\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">link</span><span class="plain">, </span><span class="string">"\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">link</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"000000"</span><span class="plain">);</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">example_count</span><span class="plain">-1); </span>    <span class="comment">the letter A to Z</span>
+        <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'A'</span><span class="plain">+</span><span class="identifier">example_count</span><span class="plain">-1); </span><span class="comment">the letter A to Z</span>
         <span class="functiontext">HTML::Documentation::set_body_text</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
@@ -371,7 +365,6 @@ far as the user is concerned it opens the example and goes there.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">table</span><span class="plain">-</span><span class="identifier">sentence</span><span class="plain">&gt; ::=</span>
         <span class="plain">&lt;</span><span class="reserved">if</span><span class="plain">-</span><span class="identifier">start</span><span class="plain">-</span><span class="identifier">of</span><span class="plain">-</span><span class="identifier">paragraph</span><span class="plain">&gt; </span><span class="identifier">table</span><span class="plain"> ...</span>
@@ -383,40 +376,40 @@ far as the user is concerned it opens the example and goes there.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">EDOC_ALL_EXAMPLES_CLOSED</span><span class="plain"> -1 </span>    <span class="comment">do not change this without also changing Extensions</span>
-    <span class="definitionkeyword">define</span> <span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain"> -2 </span>    <span class="comment">must differ from this and from all example variant numbers</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EDOC_ALL_EXAMPLES_CLOSED</span><span class="plain"> -1 </span><span class="comment">do not change this without also changing Extensions</span>
+    <span class="definitionkeyword">define</span> <span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain"> -2 </span><span class="comment">must differ from this and from all example variant numbers</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">HTML::Documentation::set_body_text</span><span class="plain">(</span><span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">OUTPUT_STREAM</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">example_which_is_open</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">base_leafname</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain"> = 0, </span><span class="identifier">chapter_count</span><span class="plain"> = 0, </span><span class="identifier">section_count</span><span class="plain"> = 0, </span><span class="identifier">example_count</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">heading_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mid_example</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">skipping_text_of_an_example</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">,</span>
             <span class="identifier">start_table_next_line</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">mid_I7_table</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">row_of_table_is_empty</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">,</span>
-            <span class="identifier">mid_displayed_source_text</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain"> = 0, </span><span class="identifier">close_I6_position</span><span class="plain"> = -1;</span>
+            <span class="identifier">mid_displayed_source_text</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">indentation</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">close_I6_position</span><span class="plain"> = -1;</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">LOOP_THROUGH_WORDING</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">edhl</span><span class="plain">, </span><span class="identifier">asterisks</span><span class="plain">;</span>
             <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">NW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">, </span><span class="identifier">RUBW</span><span class="plain"> = </span><span class="identifier">EMPTY_WORDING</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) { </span>    <span class="comment">the lexer records this to mean a paragraph break</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) { </span><span class="comment">the lexer records this to mean a paragraph break</span>
                 &lt;<span class="cwebmacro">Handle a paragraph break</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">; </span>    <span class="comment">treat multiple paragraph breaks as one</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">treat multiple paragraph breaks as one</span>
                 &lt;<span class="cwebmacro">Determine indentation of new paragraph</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">HTML::Documentation::extension_documentation_heading</span><span class="plain">(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">), &amp;</span><span class="identifier">edhl</span><span class="plain">, &amp;</span><span class="identifier">NW</span><span class="plain">)) {</span>
                     <span class="identifier">heading_count</span><span class="plain">++;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == 1) {</span>
-                        <span class="identifier">chapter_count</span><span class="plain">++; </span><span class="identifier">section_count</span><span class="plain"> = 0;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; 1) {</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+                        <span class="identifier">chapter_count</span><span class="plain">++; </span><span class="identifier">section_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">) {</span>
                             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-                            <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span>    <span class="comment">rule a line between chapters</span>
+                            <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="comment">rule a line between chapters</span>
                         <span class="plain">}</span>
                     <span class="plain">}</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == 2) </span><span class="identifier">section_count</span><span class="plain">++;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain"> == </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">section_count</span><span class="plain">++;</span>
                     &lt;<span class="cwebmacro">Typeset the heading of this chapter or section</span> <span class="cwebmacronumber">9.6</span>&gt;<span class="plain">;</span>
                     <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">); </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">example_count</span><span class="plain"> &lt; 26) &amp;&amp; (</span><span class="functiontext">HTML::Documentation::extension_documentation_example</span><span class="plain">(</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">example_count</span><span class="plain"> &lt; </span><span class="constant">26</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">HTML::Documentation::extension_documentation_example</span><span class="plain">(</span>
                         <span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">), &amp;</span><span class="identifier">asterisks</span><span class="plain">, &amp;</span><span class="identifier">NW</span><span class="plain">, &amp;</span><span class="identifier">RUBW</span><span class="plain">))) {</span>
                     <span class="identifier">skipping_text_of_an_example</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mid_example</span><span class="plain">) </span>&lt;<span class="cwebmacro">Close the previous example's text</span> <span class="cwebmacronumber">9.9</span>&gt;<span class="character">;</span>
@@ -466,7 +459,7 @@ break, and a chance to restore our tired variables.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
         <span class="identifier">mid_displayed_source_text</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="identifier">mid_I7_table</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
@@ -490,7 +483,7 @@ paragraph.
 
 
 <pre class="displaydefn">
-        <span class="identifier">indentation</span><span class="plain"> = 0; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) </span><span class="identifier">indentation</span><span class="plain"> = 1;</span>
+        <span class="identifier">indentation</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\t'</span><span class="plain">) </span><span class="identifier">indentation</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -500,7 +493,6 @@ paragraph.
 <p class="inwebparagraph"><a id="SP9_3"></a><b>&#167;9.3.  </b>Positions for paste icons in extension documentation are marked with
 asterisk and colon:
 </p>
-
 
 <pre class="display">
     <span class="plain">&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">paste</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt; ::=</span>
@@ -522,16 +514,16 @@ can move on to the subsequent word.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) &gt; 0) </span><span class="identifier">indentation</span><span class="plain"> = </span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">indentation</span><span class="plain"> = </span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indentation</span><span class="plain"> &gt; 0) </span>&lt;<span class="cwebmacro">Handle the start of a line which is indented</span> <span class="cwebmacronumber">9.4.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indentation</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Handle the start of a line which is indented</span> <span class="cwebmacronumber">9.4.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">paste</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt;(</span><span class="identifier">Wordings::from</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">))) {</span>
-            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">paste</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt;, 1);</span>
+            <span class="identifier">wording</span><span class="plain"> </span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">GET_RW</span><span class="plain">(&lt;</span><span class="identifier">extension</span><span class="plain">-</span><span class="identifier">documentation</span><span class="plain">-</span><span class="identifier">paste</span><span class="plain">-</span><span class="identifier">marker</span><span class="plain">&gt;, </span><span class="constant">1</span><span class="plain">);</span>
             &lt;<span class="cwebmacro">Incorporate an icon linking to a Javascript function to paste the text which follows</span> <span class="cwebmacronumber">9.4.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">indentation</span><span class="plain"> = 0;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mid_I7_table</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == 1))) {</span>
+        <span class="identifier">indentation</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mid_I7_table</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="character">'\t'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">))) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">row_of_table_is_empty</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 &lt;<span class="cwebmacro">End table cell for I7 table in extension documentation</span> <span class="cwebmacronumber">9.4.3</span>&gt;<span class="plain">;</span>
             &lt;<span class="cwebmacro">Begin table cell for I7 table in extension documentation</span> <span class="cwebmacronumber">9.4.4</span>&gt;<span class="plain">;</span>
@@ -555,12 +547,12 @@ can move on to the subsequent word.
 <pre class="displaydefn">
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">Lexer::word_raw_text</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">); </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain">&gt;</span><span class="identifier">Wordings::first_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">))</span>
-            <span class="plain">&amp;&amp; ((</span><span class="identifier">p</span><span class="plain">[1] != 0) || (</span><span class="identifier">Lexer::is_punctuation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[0]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
+            <span class="plain">&amp;&amp; ((</span><span class="identifier">p</span><span class="plain">[1] != </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">Lexer::is_punctuation</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">[0]) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                 <span class="plain">|| (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'('</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'{'</span><span class="plain">) || (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'}'</span><span class="plain">))</span>
             <span class="plain">&amp;&amp; (</span><span class="identifier">compare_word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">-1, </span><span class="identifier">OPENBRACKET_V</span><span class="plain">)==</span><span class="identifier">FALSE</span><span class="plain">))</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">); </span>    <span class="comment">restore normal spacing around punctuation</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]; </span><span class="identifier">j</span><span class="plain">++) </span><span class="functiontext">HTMLFiles::char_out</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]); </span>    <span class="comment">set the actual word</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">OPENI6_V</span><span class="plain">) </span><span class="identifier">close_I6_position</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">+1; </span>    <span class="comment">ensure I6 literals are closed</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">); </span><span class="comment">restore normal spacing around punctuation</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]; </span><span class="identifier">j</span><span class="plain">++) </span><span class="functiontext">HTMLFiles::char_out</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">]); </span><span class="comment">set the actual word</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">) == </span><span class="identifier">OPENI6_V</span><span class="plain">) </span><span class="identifier">close_I6_position</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">+1; </span><span class="comment">ensure I6 literals are closed</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -584,11 +576,11 @@ but does not advance <code class="display"><span class="extract">i</span></code>
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">+2, </span><span class="identifier">y</span><span class="plain"> = </span><span class="identifier">Wordings::last_wn</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">), </span><span class="identifier">j</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">&lt;=</span><span class="identifier">y</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) </span>    <span class="comment">first find the end of the quoted passage</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">&lt;=</span><span class="identifier">y</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) </span><span class="comment">first find the end of the quoted passage</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">possible_end</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">-1;</span>
                 <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Lexer::word</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) == </span><span class="identifier">PARBREAK_V</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">++;</span>
-                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">y</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) &gt; 0))) </span><span class="reserved">continue</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">y</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">Lexer::break_before</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) == </span><span class="character">'\t'</span><span class="plain">) || (</span><span class="identifier">Lexer::indentation_level</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">))) </span><span class="reserved">continue</span><span class="plain">;</span>
                 <span class="identifier">y</span><span class="plain"> = </span><span class="identifier">possible_end</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="functiontext">HTML::Javascript::paste_W</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wordings::new</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">, </span><span class="identifier">y</span><span class="plain">));</span>
@@ -658,14 +650,14 @@ anchor <code class="display"><span class="extract">#docsecN</span></code>.
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"name=docsec%d"</span><span class="plain">, </span><span class="identifier">heading_count</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">edhl</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> 1:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">1</span><span class="plain">:</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"800000"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Chapter %d: "</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> 2:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">2</span><span class="plain">:</span>
                 <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"000000"</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Section "</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; 0) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d."</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">chapter_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d."</span><span class="plain">, </span><span class="identifier">chapter_count</span><span class="plain">);</span>
                 <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d: "</span><span class="plain">, </span><span class="identifier">section_count</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -692,22 +684,22 @@ in the next section.
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span>    <span class="comment">rule a line before the example heading</span>
+        <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"hr"</span><span class="plain">); </span><span class="comment">rule a line before the example heading</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"name=eg%d"</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">); </span>    <span class="comment">provide the anchor point</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"name=eg%d"</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">); </span><span class="comment">provide the anchor point</span>
         <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">);</span>
 
         <span class="comment">Left hand cell: the oval icon</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"halign=\</span><span class="plain">"</span><span class="string">left\</span><span class="plain">"</span><span class="string"> valign=\</span><span class="plain">"</span><span class="string">top\</span><span class="plain">"</span><span class="string"> cellpadding=0 cellspacing=0 width=38px"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"halign=\"left\" valign=\"top\" cellpadding=0 cellspacing=0 width=38px"</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Typeset the lettered oval example icon</span> <span class="cwebmacronumber">9.7.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">);</span>
 
         <span class="comment">Right hand cell: the asterisks and title, with rubric underneath</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"cellpadding=0 cellspacing=0 halign=\</span><span class="plain">"</span><span class="string">left\</span><span class="plain">"</span><span class="string"> valign=\</span><span class="plain">"</span><span class="string">top\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"cellpadding=0 cellspacing=0 halign=\"left\" valign=\"top\""</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Incorporate link to the example opened up</span> <span class="cwebmacronumber">9.7.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">asterisks</span><span class="plain">-- &gt; 0)</span>
-            <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\</span><span class="plain">"</span><span class="string">0\</span><span class="plain">"</span><span class="string"> src='inform:/doc_images/asterisk.png'"</span><span class="plain">);</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">asterisks</span><span class="plain">-- &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"border=\"0\" src='inform:/doc_images/asterisk.png'"</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"505050"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&amp;nbsp;Example&amp;nbsp;"</span><span class="plain">);</span>
@@ -716,7 +708,7 @@ in the next section.
         <span class="functiontext">HTML::Documentation::set_body_text</span><span class="plain">(</span><span class="identifier">NW</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain">, </span><span class="identifier">base_leafname</span><span class="plain">);</span>
         <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
-        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">); </span>    <span class="comment">end the textual link</span>
+        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">); </span><span class="comment">end the textual link</span>
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
         <span class="functiontext">HTML::Documentation::set_body_text</span><span class="plain">(</span><span class="identifier">RUBW</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">EDOC_FRAGMENT_ONLY</span><span class="plain">, </span><span class="identifier">base_leafname</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
@@ -748,15 +740,15 @@ had its infamous PNG transparency bug.)
 
 <pre class="displaydefn">
         <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">oval\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"width=38px height=30px align=\</span><span class="plain">"</span><span class="string">left\</span><span class="plain">"</span><span class="string"> valign=\</span><span class="plain">"</span><span class="string">center\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"tr"</span><span class="plain">, </span><span class="string">"class=\"oval\""</span><span class="plain">);</span>
+        <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"td"</span><span class="plain">, </span><span class="string">"width=38px height=30px align=\"left\" valign=\"center\""</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Incorporate link to the example opened up</span> <span class="cwebmacronumber">9.7.2</span>&gt;<span class="plain">;</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">,</span>
-            <span class="string">"class=\</span><span class="plain">"</span><span class="string">paragraph Body\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">line-height: 1px; margin-bottom: 0px; "</span>
+            <span class="string">"class=\"paragraph Body\" style=\"line-height: 1px; margin-bottom: 0px; "</span>
             <span class="string">"margin-top: 0px; padding-bottom: 0pt; padding-top: 0px; text-align: center; "</span>
-            <span class="string">"color: #202020; font-size: 14px; line-height: 1px;\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+            <span class="string">"color: #202020; font-size: 14px; line-height: 1px;\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">example_count</span><span class="plain"> - 1);</span>
+        <span class="identifier">PUT</span><span class="plain">(</span><span class="character">'A'</span><span class="plain"> + </span><span class="identifier">example_count</span><span class="plain"> - </span><span class="constant">1</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"b"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"div"</span><span class="plain">);</span>
         <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">);</span>
@@ -781,12 +773,12 @@ closes it up, if it's currently open.
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="string">"href=\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example_count</span><span class="plain"> == </span><span class="identifier">example_which_is_open</span><span class="plain">) </span>    <span class="comment">this example currently open</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="string">"href=\""</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">example_count</span><span class="plain"> == </span><span class="identifier">example_which_is_open</span><span class="plain">) </span><span class="comment">this example currently open</span>
             <span class="functiontext">HTML::Documentation::href_of_example</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">base_leafname</span><span class="plain">, </span><span class="constant">EDOC_ALL_EXAMPLES_CLOSED</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span>    <span class="comment">this example not yet open</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="comment">this example not yet open</span>
             <span class="functiontext">HTML::Documentation::href_of_example</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">base_leafname</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">, </span><span class="identifier">example_count</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="string">"\</span><span class="plain">"</span><span class="string"> style=\</span><span class="plain">"</span><span class="string">text-decoration: none\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="string">"\" style=\"text-decoration: none\""</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"a"</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">url</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
 </pre>
@@ -809,7 +801,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
         <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">HTML_TAG</span><span class="plain">(</span><span class="string">"br"</span><span class="plain">);</span>
         <span class="identifier">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -827,7 +819,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 
 <pre class="displaydefn">
         <span class="identifier">HTML::end_colour</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::next_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -862,7 +854,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 
 <pre class="displaydefn">
         <span class="identifier">HTML::end_html_row</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -900,8 +892,8 @@ cell. Here the inset table begins:
 
 
 <pre class="displaydefn">
-        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#f0f0f0"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, 0, 0, 0, 0, 0);</span>
-        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, 0);</span>
+        <span class="identifier">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"#f0f0f0"</span><span class="plain">, </span><span class="identifier">TRUE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+        <span class="identifier">HTML::first_html_column</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">);</span>
 </pre>
 

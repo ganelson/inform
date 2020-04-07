@@ -124,7 +124,6 @@ out of turn.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Startup phase. </b>The following is called when the <code class="display"><span class="extract">inbuild</span></code> module starts up.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">extension_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">inbuild_genre</span><span class="plain"> *</span><span class="identifier">kit_genre</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -165,7 +164,6 @@ so that we can define further options &mdash; this provides the large set of
 common options found in both <code class="display"><span class="extract">inform7</span></code> and <code class="display"><span class="extract">inbuild</span></code>, our two possible clients.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inbuild::declare_options</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_IN_PHASE</span><span class="plain">(</span><span class="constant">CONFIGURATION_INBUILD_PHASE</span><span class="plain">)</span>
@@ -204,21 +202,21 @@ better way to choose a virtual machine to compile to.
 
 <pre class="displaydefn">
         <span class="identifier">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">INBUILD_INFORM_CLSG</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for translating Inform source text to Inter"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PROJECT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"project"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"work within the Inform project X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">DEBUG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debug"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">DEBUG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debug"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"compile with debugging features even on a Release"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">RELEASE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"release"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">RELEASE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"release"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"compile a version suitable for a Release build"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_textual_switch</span><span class="plain">(</span><span class="constant">FORMAT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"format"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_textual_switch</span><span class="plain">(</span><span class="constant">FORMAT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"format"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"compile I6 code suitable for the virtual machine X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">SOURCE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"source"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">SOURCE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"source"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use file X as the Inform source text"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CENSUS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"census"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CENSUS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"census"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"perform an extensions census"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">RNG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"rng"</span><span class="plain">, 1,</span>
+        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">RNG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"rng"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"fix the random number generator of the story file (for testing)"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">CASE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"case"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">CASE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"case"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"make any source links refer to the source in extension example X"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::end_group</span><span class="plain">();</span>
 </pre>
@@ -245,13 +243,13 @@ better way to choose a virtual machine to compile to.
 
 <pre class="displaydefn">
         <span class="identifier">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">INBUILD_RESOURCES_CLSG</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for locating resources in the file system"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">NEST_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"nest"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">NEST_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"nest"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"add the nest at pathname X to the search list"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">INTERNAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"internal"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">INTERNAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"internal"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use X as the location of built-in material such as the Standard Rules"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">EXTERNAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"external"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">EXTERNAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"external"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use X as the user's home for installed material such as extensions"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TRANSIENT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"transient"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TRANSIENT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"transient"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"use X for transient data such as the extensions census"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::end_group</span><span class="plain">();</span>
 </pre>
@@ -279,13 +277,13 @@ but <code class="display"><span class="extract">-pipeline-file</span></code> and
 
 <pre class="displaydefn">
         <span class="identifier">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">INBUILD_INTER_CLSG</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"for tweaking code generation from Inter"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">KIT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"kit"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">KIT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"kit"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"include Inter code from the kit called X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline"</span><span class="plain">, 2,</span>
-            <span class="identifier">L</span><span class="string">"specify code-generation pipeline by name (default is \</span><span class="plain">"</span><span class="string">compile\</span><span class="plain">"</span><span class="string">)"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-file"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"specify code-generation pipeline by name (default is \"compile\")"</span><span class="plain">);</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"pipeline-file"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify code-generation pipeline as file X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"variable"</span><span class="plain">, 2,</span>
+        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"variable"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"set pipeline variable X (in form name=value)"</span><span class="plain">);</span>
         <span class="identifier">CommandLine::end_group</span><span class="plain">();</span>
 </pre>
@@ -298,16 +296,15 @@ but <code class="display"><span class="extract">-pipeline-file</span></code> and
 set appropriately.
 </p>
 
-
 <pre class="display">
     <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">inter_pipeline_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">dictionary</span><span class="plain"> *</span><span class="identifier">pipeline_vars</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">shared_transient_resources</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_is_a_debug_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Destined to be compiled with debug features</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_is_a_release_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Omit sections of source text marked not for release</span>
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">What story file we will eventually have</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span>    <span class="comment">Running only to update extension documentation</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = 0; </span>    <span class="comment">The seed value, or 0 if not seeded</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_is_a_debug_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">Destined to be compiled with debug features</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">this_is_a_release_compile</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">Omit sections of source text marked not for release</span>
+    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">What story file we will eventually have</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">; </span><span class="comment">Running only to update extension documentation</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">The seed value, or 0 if not seeded</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inbuild::set_defaults</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_IN_PHASE</span><span class="plain">(</span><span class="constant">CONFIGURATION_INBUILD_PHASE</span><span class="plain">)</span>
@@ -331,7 +328,6 @@ later on (way past the configuration stage), if it reads a sentence like:
 
 </blockquote>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">inter_pipeline_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -349,7 +345,6 @@ later on (way past the configuration stage), if it reads a sentence like:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b><code class="display"><span class="extract">inform7</span></code> needs to know this:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inbuild::currently_releasing</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">this_is_a_release_compile</span><span class="plain">;</span>
@@ -365,37 +360,36 @@ the client to do, using code from Foundation. When the client finds an option
 it doesn't know about, that will be one of ourse, so it should call the following:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inbuild::option</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_IN_PHASE</span><span class="plain">(</span><span class="constant">CONFIGURATION_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DEBUG_CLSW</span><span class="plain">: </span><span class="identifier">this_is_a_debug_compile</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">FORMAT_CLSW</span><span class="plain">: </span><span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RELEASE_CLSW</span><span class="plain">: </span><span class="identifier">this_is_a_release_compile</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">NEST_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEBUG_CLSW:</span><span class="plain"> </span><span class="identifier">this_is_a_debug_compile</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">FORMAT_CLSW:</span><span class="plain"> </span><span class="identifier">story_filename_extension</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RELEASE_CLSW:</span><span class="plain"> </span><span class="identifier">this_is_a_release_compile</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">NEST_CLSW:</span>
                 <span class="functiontext">Inbuild::add_nest</span><span class="plain">(</span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">), </span><span class="constant">GENERIC_NEST_TAG</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTERNAL_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTERNAL_CLSW:</span>
                 <span class="functiontext">Inbuild::add_nest</span><span class="plain">(</span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">), </span><span class="constant">INTERNAL_NEST_TAG</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTERNAL_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTERNAL_CLSW:</span>
                 <span class="functiontext">Inbuild::add_nest</span><span class="plain">(</span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">), </span><span class="constant">EXTERNAL_NEST_TAG</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TRANSIENT_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRANSIENT_CLSW:</span>
                 <span class="identifier">shared_transient_resources</span><span class="plain"> = </span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">KIT_CLSW</span><span class="plain">: </span><span class="functiontext">Inbuild::request_kit</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PROJECT_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">KIT_CLSW:</span><span class="plain"> </span><span class="functiontext">Inbuild::request_kit</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PROJECT_CLSW:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inbuild::set_I7_bundle</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"can't specify the project twice: '%S'"</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SOURCE_CLSW</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SOURCE_CLSW:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Inbuild::set_I7_source</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
                     <span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"can't specify the source file twice: '%S'"</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CENSUS_CLSW</span><span class="plain">: </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_CLSW</span><span class="plain">: </span><span class="identifier">inter_pipeline_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_FILE_CLSW</span><span class="plain">: </span><span class="identifier">inter_pipeline_file</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">PIPELINE_VARIABLE_CLSW</span><span class="plain">: </span>&lt;<span class="cwebmacro">Set a pipeline variable</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">RNG_CLSW</span><span class="plain">: </span>&lt;<span class="cwebmacro">Seed the random number generator</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CASE_CLSW</span><span class="plain">: </span><span class="identifier">HTMLFiles::set_source_link_case</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CENSUS_CLSW:</span><span class="plain"> </span><span class="identifier">census_mode</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_CLSW:</span><span class="plain"> </span><span class="identifier">inter_pipeline_name</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_FILE_CLSW:</span><span class="plain"> </span><span class="identifier">inter_pipeline_file</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">PIPELINE_VARIABLE_CLSW:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Set a pipeline variable</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">RNG_CLSW:</span><span class="plain"> </span>&lt;<span class="cwebmacro">Seed the random number generator</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CASE_CLSW:</span><span class="plain"> </span><span class="identifier">HTMLFiles::set_source_link_case</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -446,7 +440,7 @@ such as the one used in the Z-machine VM. It works fine in 32-bit cases too.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">val</span><span class="plain">) </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = -16339;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = 0;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -476,7 +470,6 @@ that but <code class="display"><span class="extract">inbuild</span></code> does 
 which continues until the client calls <code class="display"><span class="extract">Inbuild::go_operational</span></code> (see below).
 </p>
 
-
 <pre class="display">
     <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="functiontext">Inbuild::optioneering_complete</span><span class="plain">(</span><span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">compile_only</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">preform_callback</span><span class="plain">)(</span><span class="reserved">inform_language</span><span class="plain"> *)) {</span>
@@ -494,7 +487,7 @@ which continues until the client calls <code class="display"><span class="extrac
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) {</span>
             <span class="functiontext">Inbuild::pass_kit_requests</span><span class="plain">();</span>
-            <span class="functiontext">Copies::get_source_text</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
+            <span class="functiontext">Copies::get_source_text</span><span class="plain">(</span><span class="identifier">project</span><span class="plain">-&gt;</span><span class="identifier">as_copy</span><span class="plain">);</span>
         <span class="plain">}</span>
 
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">PROJECTED_INBUILD_PHASE</span><span class="plain">;</span>
@@ -503,7 +496,7 @@ which continues until the client calls <code class="display"><span class="extrac
                 <span class="functiontext">Inbuild::current_vm</span><span class="plain">(), </span><span class="identifier">this_is_a_release_compile</span><span class="plain">, </span><span class="identifier">compile_only</span><span class="plain">);</span>
 
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">TARGETED_INBUILD_PHASE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">project</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">project</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">project</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -525,7 +518,7 @@ line, which is why we couldn't work this out earlier:
 
 <pre class="displaydefn">
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">story_filename_extension</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">) == 0) </span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"ulx"</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">ext</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"ulx"</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">with_debugging</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_is_a_release_compile</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) || (</span><span class="identifier">this_is_a_debug_compile</span><span class="plain">))</span>
             <span class="identifier">with_debugging</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -576,7 +569,6 @@ we would attempt to detect the language of syntax if we could.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="identifier">target_vm</span><span class="plain"> *</span><span class="identifier">current_target_VM</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">target_vm</span><span class="plain"> *</span><span class="functiontext">Inbuild::current_vm</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -608,16 +600,15 @@ We do that copy by copy. The shared project, if there is one, goes first;
 then everything else known to us.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_project</span><span class="plain"> *</span><span class="functiontext">Inbuild::go_operational</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_IN_PHASE</span><span class="plain">(</span><span class="constant">TARGETED_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">GRAPH_CONSTRUCTION_INBUILD_PHASE</span><span class="plain">;</span>
         <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Inbuild::project</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="functiontext">Copies::construct_graph</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="functiontext">Copies::construct_graph</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">);</span>
         <span class="reserved">inbuild_copy</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">inbuild_copy</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">C</span><span class="plain"> != </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;as_copy</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">C</span><span class="plain"> != </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">as_copy</span><span class="plain">))</span>
                 <span class="functiontext">Copies::construct_graph</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">);</span>
         <span class="identifier">inbuild_phase</span><span class="plain"> = </span><span class="constant">OPERATIONAL_INBUILD_PHASE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">census_mode</span><span class="plain">) </span><span class="functiontext">Extensions::Census::handle_census_mode</span><span class="plain">();</span>
@@ -663,7 +654,6 @@ nests, respectively.
 <p class="inwebparagraph">The following hold the nests in declaration order.
 </p>
 
-
 <pre class="display">
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">unsorted_nest_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">shared_internal_nest</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -695,7 +685,6 @@ extension with a given name, then results in a project's materials folder
 are given precedence over those in the external folder, and so on.
 </p>
 
-
 <pre class="display">
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">shared_nest_list</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Inbuild::sort_nest_list</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -724,7 +713,6 @@ are given precedence over those in the external folder, and so on.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>And the rest of Inform or Inbuild can now use:
 </p>
 
-
 <pre class="display">
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="functiontext">Inbuild::nest_list</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">NESTED_INBUILD_PHASE</span><span class="plain">)</span>
@@ -745,7 +733,7 @@ are given precedence over those in the external folder, and so on.
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Inbuild::materials</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">NESTED_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shared_materials_nest</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_materials_nest</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_materials_nest</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="functiontext">Inbuild::materials_nest</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -771,13 +759,12 @@ written documentation and telemetry files. <code class="display"><span class="ex
 the external nest is used.
 </p>
 
-
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Inbuild::transient</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">PROJECTED_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shared_transient_resources</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shared_external_nest</span><span class="plain">)</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_external_nest</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">;</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_external_nest</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_transient_resources</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -798,14 +785,13 @@ specify a file somewhere else to be the source text. What you can't do is
 specify the bundle twice, or specify the file twice.
 </p>
 
-
 <pre class="display">
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">project_bundle_request</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">project_file_request</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inbuild::set_I7_source</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">CONFIGURATION_INBUILD_PHASE</span><span class="plain">)</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">project_file_request</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -822,11 +808,10 @@ of the client, i.e., it will be <code class="display"><span class="extract">info
 depending on who's asking.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Inbuild::set_I7_bundle</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">loc</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">CONFIGURATION_INBUILD_PHASE</span><span class="plain">)</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">project_bundle_request</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">loc</span><span class="plain">);</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">pathname_of_bundle</span><span class="plain"> = </span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">);</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">materials</span><span class="plain"> = </span><span class="functiontext">Inbuild::pathname_of_materials</span><span class="plain">(</span><span class="identifier">pathname_of_bundle</span><span class="plain">);</span>
@@ -849,7 +834,6 @@ depending on who's asking.
 "natural Inform", the working title for Inform 7 in the early 2000s.
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_project</span><span class="plain"> *</span><span class="identifier">shared_project</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -857,15 +841,15 @@ depending on who's asking.
         <span class="identifier">RUN_ONLY_IN_PHASE</span><span class="plain">(</span><span class="constant">PRETINKERING_INBUILD_PHASE</span><span class="plain">)</span>
         <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">filename_of_i7_source</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">pathname_of_bundle</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">pathname_of_bundle</span><span class="plain"> = </span><span class="identifier">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">project_bundle_request</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">filename_of_i7_source</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">) {</span>
-            <span class="identifier">pathname_of_bundle</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_path</span><span class="plain">;</span>
-            <span class="identifier">filename_of_i7_source</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;location_if_file</span><span class="plain">;</span>
+            <span class="identifier">pathname_of_bundle</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_path</span><span class="plain">;</span>
+            <span class="identifier">filename_of_i7_source</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">location_if_file</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pathname_of_bundle</span><span class="plain">) &amp;&amp; (</span><span class="identifier">filename_of_i7_source</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
             <span class="identifier">filename_of_i7_source</span><span class="plain"> =</span>
@@ -882,11 +866,11 @@ depending on who's asking.
         &lt;<span class="cwebmacro">Create the default externals nest</span> <span class="cwebmacronumber">19.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Create the materials nest</span> <span class="cwebmacronumber">19.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shared_project</span><span class="plain">) {</span>
-            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = (</span><span class="identifier">shared_materials_nest</span><span class="plain">)?(</span><span class="identifier">shared_materials_nest</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = (</span><span class="identifier">shared_materials_nest</span><span class="plain">)?(</span><span class="identifier">shared_materials_nest</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Source"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; 0) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">project_file_request</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="functiontext">Projects::set_source_filename</span><span class="plain">(</span><span class="identifier">shared_project</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">filename_of_i7_source</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> != 0)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="functiontext">Projects::fix_rng</span><span class="plain">(</span><span class="identifier">shared_project</span><span class="plain">, </span><span class="identifier">rng_seed_at_start_of_play</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">shared_project</span><span class="plain">;</span>
@@ -947,7 +931,6 @@ depending on who's asking.
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>And the rest of Inform or Inbuild can now use:
 </p>
 
-
 <pre class="display">
     <span class="reserved">inform_project</span><span class="plain"> *</span><span class="functiontext">Inbuild::project</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">RUN_ONLY_FROM_PHASE</span><span class="plain">(</span><span class="constant">TINKERING_INBUILD_PHASE</span><span class="plain">)</span>
@@ -962,7 +945,6 @@ depending on who's asking.
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>The materials folder sits alongside the project folder and has the same name,
 but ending <code class="display"><span class="extract">.materials</span></code> instead of <code class="display"><span class="extract">.inform</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="identifier">pathname</span><span class="plain"> *</span><span class="functiontext">Inbuild::pathname_of_materials</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">pathname_of_bundle</span><span class="plain">) {</span>
@@ -988,7 +970,6 @@ but ending <code class="display"><span class="extract">.materials</span></code> 
 For timing reasons, we store those up in the configuration phase and then
 add them as dependencies only when a project exists.
 </p>
-
 
 <pre class="display">
     <span class="identifier">linked_list</span><span class="plain"> *</span><span class="identifier">kits_requested_at_command_line</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -1051,33 +1032,33 @@ but they're just plain old files, and are not managed by Inbuild as "copies".
     <span class="identifier">filename</span><span class="plain"> *</span><span class="functiontext">Inbuild::file_from_installation</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ires</span><span class="plain">) {</span>
         <span class="reserved">inbuild_nest</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain"> = </span><span class="functiontext">Inbuild::internal</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">I</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"Did not set -internal when calling"</span><span class="plain">);</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">misc</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Miscellany"</span><span class="plain">);</span>
-        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">models</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-</span><span class="element">&gt;location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"HTML"</span><span class="plain">);</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">misc</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Miscellany"</span><span class="plain">);</span>
+        <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">models</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">-&gt;</span><span class="element">location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"HTML"</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">ires</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOCUMENTATION_SNIPPETS_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOCUMENTATION_SNIPPETS_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"definitions.html"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTRO_BOOKLET_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTRO_BOOKLET_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"IntroductionToIF.pdf"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">INTRO_POSTCARD_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">INTRO_POSTCARD_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Postcard.pdf"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">LARGE_DEFAULT_COVER_ART_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">LARGE_DEFAULT_COVER_ART_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Cover.jpg"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SMALL_DEFAULT_COVER_ART_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SMALL_DEFAULT_COVER_ART_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">misc</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Small Cover.jpg"</span><span class="plain">);</span>
 
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CBLORB_REPORT_MODEL_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CBLORB_REPORT_MODEL_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"CblorbModel.html"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">DOCUMENTATION_XREFS_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DOCUMENTATION_XREFS_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"xrefs.txt"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">JAVASCRIPT_FOR_STANDARD_PAGES_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">JAVASCRIPT_FOR_STANDARD_PAGES_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"main.js"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">JAVASCRIPT_FOR_EXTENSIONS_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">JAVASCRIPT_FOR_EXTENSIONS_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"extensions.js"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">JAVASCRIPT_FOR_ONE_EXTENSION_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">JAVASCRIPT_FOR_ONE_EXTENSION_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"extensionfile.js"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">CSS_FOR_STANDARD_PAGES_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CSS_FOR_STANDARD_PAGES_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"main.css"</span><span class="plain">);</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">EXTENSION_DOCUMENTATION_MODEL_IRES</span><span class="plain">:</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">EXTENSION_DOCUMENTATION_MODEL_IRES:</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">models</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"extensionfile.html"</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"unknown installation resource file"</span><span class="plain">);</span>

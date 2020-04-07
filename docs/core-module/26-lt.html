@@ -79,12 +79,11 @@ routine. The code here manages that.
 <p class="inwebparagraph">The only data stored is a single bit, saying whether to give articles or not:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">list_together_routine</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_array_iname</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">inter_name</span><span class="plain"> *</span><span class="identifier">ltr_routine_iname</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">articles_bit</span><span class="plain">; </span>    <span class="comment">if false, add <code class="display"><span class="extract">NOARTICLE_BIT</span></code> to the I6 listing style</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">articles_bit</span><span class="plain">; </span><span class="comment">if false, add <code class="display"><span class="extract">NOARTICLE_BIT</span></code> to the I6 listing style</span>
         <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">list_together_routine</span><span class="plain">;</span>
 </pre>
@@ -97,16 +96,15 @@ routine. The code here manages that.
 prints the name of a routine to be compiled later.
 </p>
 
-
 <pre class="display">
     <span class="identifier">inter_name</span><span class="plain"> *</span><span class="functiontext">ListTogether::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">include_articles</span><span class="plain">) {</span>
         <span class="reserved">list_together_routine</span><span class="plain"> *</span><span class="identifier">ltr</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">list_together_routine</span><span class="plain">);</span>
         <span class="identifier">package_request</span><span class="plain"> *</span><span class="identifier">PR</span><span class="plain"> = </span><span class="functiontext">Hierarchy::local_package</span><span class="plain">(</span><span class="constant">LISTS_TOGETHER_HAP</span><span class="plain">);</span>
-        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
-        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ARRAY_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_routine_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_FN_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
+        <span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_array_iname</span><span class="plain"> = </span><span class="functiontext">Hierarchy::make_iname_in</span><span class="plain">(</span><span class="constant">LIST_TOGETHER_ARRAY_HL</span><span class="plain">, </span><span class="identifier">PR</span><span class="plain">);</span>
 
-        <span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;articles_bit</span><span class="plain"> = </span><span class="identifier">include_articles</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">;</span>
+        <span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">articles_bit</span><span class="plain"> = </span><span class="identifier">include_articles</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_array_iname</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -121,12 +119,11 @@ distinct values of the <code class="display"><span class="extract">list_together
 is significant to the run-time list-printing code.
 </p>
 
-
 <pre class="display">
     <span class="reserved">list_together_routine</span><span class="plain"> *</span><span class="identifier">latest_ltr_compiled</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ListTogether::compilation_coroutine</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 0;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">TRUE</span><span class="plain">) {</span>
             <span class="reserved">list_together_routine</span><span class="plain"> *</span><span class="identifier">ltr</span><span class="plain"> = </span><span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="reserved">list_together_routine</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">latest_ltr_compiled</span><span class="plain">)</span>
@@ -154,13 +151,13 @@ is significant to the run-time list-printing code.
 
 
 <pre class="displaydefn">
-        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
+        <span class="identifier">packaging_state</span><span class="plain"> </span><span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Routines::begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_routine_iname</span><span class="plain">);</span>
         <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">IF_BIP</span><span class="plain">);</span>
         <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">EQ_BIP</span><span class="plain">);</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                 <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">INVENTORY_STAGE_HL</span><span class="plain">));</span>
-                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, 1);</span>
+                <span class="identifier">Produce::val</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_number</span><span class="plain">, </span><span class="identifier">LITERAL_IVAL</span><span class="plain">, </span><span class="constant">1</span><span class="plain">);</span>
             <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::code</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
             <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
@@ -169,7 +166,7 @@ is significant to the run-time list-printing code.
                     <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
                     <span class="identifier">Produce::val_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">ENGLISH_BIT_HL</span><span class="plain">));</span>
                 <span class="identifier">Produce::up</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
-                <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;articles_bit</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (!(</span><span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="identifier">articles_bit</span><span class="plain">)) {</span>
                 <span class="identifier">Produce::inv_primitive</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">SETBIT_BIP</span><span class="plain">);</span>
                 <span class="identifier">Produce::down</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
                     <span class="identifier">Produce::ref_iname</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">(), </span><span class="identifier">K_value</span><span class="plain">, </span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">C_STYLE_HL</span><span class="plain">));</span>
@@ -193,9 +190,9 @@ is significant to the run-time list-printing code.
         <span class="identifier">Produce::rfalse</span><span class="plain">(</span><span class="functiontext">Emit::tree</span><span class="plain">());</span>
         <span class="functiontext">Routines::end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 
-        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
+        <span class="identifier">save</span><span class="plain"> = </span><span class="functiontext">Emit::named_array_begin</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_array_iname</span><span class="plain">, </span><span class="identifier">K_value</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="functiontext">Hierarchy::find</span><span class="plain">(</span><span class="constant">CONSTANT_PACKED_TEXT_STORAGE_HL</span><span class="plain">));</span>
-        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-</span><span class="element">&gt;ltr_routine_iname</span><span class="plain">);</span>
+        <span class="functiontext">Emit::array_iname_entry</span><span class="plain">(</span><span class="identifier">ltr</span><span class="plain">-&gt;</span><span class="element">ltr_routine_iname</span><span class="plain">);</span>
         <span class="functiontext">Emit::array_end</span><span class="plain">(</span><span class="identifier">save</span><span class="plain">);</span>
 </pre>
 
