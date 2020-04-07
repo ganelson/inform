@@ -237,9 +237,9 @@ void Extensions::read_source_text_for(inform_extension *E) {
 }
 
 @ We concoct a textual synopsis in the form
-
-	|"Pantomime Sausages by Mr Punch"|
-
+= (text)
+	"Pantomime Sausages by Mr Punch"
+=
 to be used by |SourceFiles::read_extension_source_text| for printing to |stdout|. Since
 we dare not assume |stdout| can manage characters outside the basic ASCII
 range, we flatten them from general ISO to plain ASCII.
@@ -268,9 +268,9 @@ then its sentences will go to the extension's own tree.
 	E->body_text_unbroken = FALSE;
 
 @  If an extension file contains the special text (outside literal mode) of
-
-	|---- Documentation ----|
-
+= (text as Inform 6)
+	---- Documentation ----
+=
 then this is taken as the end of the Inform source, and the beginning of a
 snippet of documentation about the extension; text from that point on is
 saved until later, but not broken into sentences for the parse tree, and it

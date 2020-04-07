@@ -252,10 +252,8 @@ active or passive. Each production is a step in this program, and it consists
 of a "selector" followed by a "line". For example, the production:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">a3 ( t1 avoir ) 3+*</span>
+        <span class="identifier">a3</span><span class="plain"> ( </span><span class="identifier">t1</span><span class="plain"> </span><span class="identifier">avoir</span><span class="plain"> ) </span><span class="constant">3</span><span class="plain">+*</span>
 </pre>
 
 <p class="inwebparagraph">contains six tokens; the selector is <code class="display"><span class="extract">a3</span></code>, and the line is made up from the
@@ -458,10 +456,8 @@ consists of a (possibly empty) pattern to match, followed by the name of a
 nonterminal to use as the conjugation if it matches. For example, in
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">-querir &lt;fr-querir-conjugation&gt;</span>
+        <span class="plain">-</span><span class="identifier">querir</span><span class="plain"> &lt;</span><span class="identifier">fr</span><span class="plain">-</span><span class="identifier">querir</span><span class="plain">-</span><span class="identifier">conjugation</span><span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">the pattern part is a single token, <code class="display"><span class="extract">-querir</span></code>, which matches if the base text
@@ -469,10 +465,8 @@ is a single word whose last six characters are "querir". A more complicated
 case is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">be able to ... &lt;to-be-able-to-auxiliary&gt;</span>
+        <span class="identifier">be</span><span class="plain"> </span><span class="identifier">able</span><span class="plain"> </span><span class="identifier">to</span><span class="plain"> ... &lt;</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">be</span><span class="plain">-</span><span class="identifier">able</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">auxiliary</span><span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">Here the wildcard <code class="display"><span class="extract">...</span></code> matches one or more words, and the "auxiliary
@@ -590,17 +584,22 @@ tokens.
 <p class="endnote">This code is used in <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4_2_1"></a><b>&#167;4.2.1.  </b>So here we check the more interesting case. The number identifies which
-verb form to set, and the token which follows it provides the content.
+verb form to set, and the token which follows it provides the content. For
+example:
 </p>
 
-<p class="inwebparagraph"></p>
+<p class="inwebparagraph"><code class="display"><span class="extract">2 having</span></code> set to the literal text "having"
+<code class="display"><span class="extract">3 1+ed</span></code> set to verb form 1 with "ed" suffixed
+<code class="display"><span class="extract">3 &lt;en-trie-past-participle&gt;</span></code> run this trie on the base text and take the result
+</p>
 
-<pre class="display">
-        <span class="plain">2 having</span>
-    		set to the literal text "having"    <span class="plain">3 1+ed</span>
-    		set to verb form 1 with "ed" suffixed    <span class="plain">3 &lt;en-trie-past-participle&gt;</span>
-    	run this trie on the base text and take the result
-    &lt;<span class="cwebmacrodefn">Set a verb form from the conjugation line</span> <span class="cwebmacronumber">4.2.1</span>&gt; =
+
+<p class="macrodefinition"><code class="display">
+&lt;<span class="cwebmacrodefn">Set a verb form from the conjugation line</span> <span class="cwebmacronumber">4.2.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
         <span class="identifier">ptoken</span><span class="plain"> *</span><span class="identifier">number_token</span><span class="plain"> = </span><span class="identifier">pr</span><span class="plain">-&gt;</span><span class="identifier">first_ptoken</span><span class="plain">;</span>
         <span class="identifier">ptoken</span><span class="plain"> *</span><span class="identifier">content_token</span><span class="plain"> = </span><span class="identifier">number_token</span><span class="plain">-&gt;</span><span class="identifier">next_ptoken</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="functiontext">Conjugation::ptoken_to_verb_form_number</span><span class="plain">(</span><span class="identifier">number_token</span><span class="plain">);</span>
@@ -631,19 +630,15 @@ of special syntaxes which can go into the row of text. For example, if <code cla
 is only
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">will not do</span>
+        <span class="identifier">will</span><span class="plain"> </span><span class="identifier">not</span><span class="plain"> </span><span class="reserved">do</span>
 </pre>
 
 <p class="inwebparagraph">then the word assemblage comes out to just "will not do"; but if it is
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">( t1 auxiliary-have ) done</span>
+        <span class="plain">( </span><span class="identifier">t1</span><span class="plain"> </span><span class="identifier">auxiliary</span><span class="plain">-</span><span class="identifier">have</span><span class="plain"> ) </span><span class="identifier">done</span>
 </pre>
 
 <p class="inwebparagraph">then we consult tense 1 (present) of the verb "auxiliary-have", extract
@@ -741,10 +736,8 @@ make use of the same fancy features we're allowing here.
 <p class="inwebparagraph"><a id="SP5_3"></a><b>&#167;5.3.  </b>A number followed by a verb in brackets, like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">3 ( avoir )</span>
+        <span class="constant">3</span><span class="plain"> ( </span><span class="identifier">avoir</span><span class="plain"> )</span>
 </pre>
 
 <p class="inwebparagraph">expands to verb form 3 of this verb &mdash; the past participle of "avoir", which
@@ -777,10 +770,8 @@ we should lift an ordinary usage, such as third-person singular in a particular
 tense. A lift can optionally change tense or sense: for example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">( t1 have )</span>
+        <span class="plain">( </span><span class="identifier">t1</span><span class="plain"> </span><span class="identifier">have</span><span class="plain"> )</span>
 </pre>
 
 <p class="inwebparagraph">lifts from the present tense of "to have". If there's no tense indicator,
@@ -901,38 +892,30 @@ following, which attends to contractions. (Most of the time it does nothing.)
 For example, suppose we have:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">ne-' ai pas</span>
+        <span class="identifier">ne</span><span class="plain">-</span><span class="character">' ai pas</span>
 </pre>
 
 <p class="inwebparagraph">The <code class="display"><span class="extract">-'</span></code> marker tells us that the word it attaches to should contract if a
 vowel follows it. In this case that's what happens, so we convert to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">n'ai pas</span>
+        <span class="identifier">n</span><span class="character">'ai pas</span>
 </pre>
 
 <p class="inwebparagraph">On the other hand,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">ne-' jette pas</span>
+        <span class="identifier">ne</span><span class="plain">-</span><span class="character">' jette pas</span>
 </pre>
 
 <p class="inwebparagraph">would convert to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">ne jette pas</span>
+        <span class="identifier">ne</span><span class="plain"> </span><span class="identifier">jette</span><span class="plain"> </span><span class="identifier">pas</span>
 </pre>
 
 <p class="inwebparagraph">with no contraction. Either way, though, we have to take some action when

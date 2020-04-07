@@ -75,7 +75,7 @@ extensions (by 33 different authors) contained 2223 entries, the longest of
 which formed a line 95 characters long: the most prolific extension made 380
 definitions. The total file size was about 130K. Some typical entries:
 
-= (not code)
+= (text)
 ...
 |Emily Short|Plurality|20110130181823:Sun 30 January 2011 18:18|indexing|
 |Emily Short|Plurality|prior named noun|value|
@@ -336,10 +336,10 @@ void Extensions::Dictionary::write_back(void) {
 @ We needn't worry overmuch about exceeding the maximum length, since any such
 lines are handled safely by the loading code above. In any case, they could
 only occur if it were true that
-
-	|4 + MAX_ED_CATEGORY_LENGTH + MAX_ED_HEADWORD_LENGTH +|
-	|    MAX_EXTENSION_TITLE_LENGTH + MAX_EXTENSION_AUTHOR_LENGTH >= MAX_ED_LINE_LENGTH|
-
+= (text)
+	4 + MAX_ED_CATEGORY_LENGTH + MAX_ED_HEADWORD_LENGTH +
+	    MAX_EXTENSION_TITLE_LENGTH + MAX_EXTENSION_AUTHOR_LENGTH >= MAX_ED_LINE_LENGTH
+=
 and this is not nearly the case. (|MAX_ED_LINE_LENGTH| is larger than
 strictly necessary since it costs us only temporary stack space and allows
 for any future increase of the above maxima without fuss.)

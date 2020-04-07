@@ -40,9 +40,9 @@ pointers to specific vocabulary, or can be null, which implies that
 arbitrary non-empty text can appear in the given position. (It is forbidden
 for the token list to contain two nulls in a row.) For instance, the
 token list:
-
-	|drink # milk #|
-
+= (text)
+	drink # milk #
+#
 matches "drink more milk today and every day", but not "drink milk". (The
 sharp symbol |#| is printed in place of a null token, both in this documentation
 and in the debugging log.)
@@ -508,9 +508,9 @@ sensitivity.)
 
 and transcribe it into the token list, collapsing bracketed parts into |#|
 tokens denoting gaps, to result in something like:
-
-	|award # points|
-
+= (text)
+	award # points
+=
 with a token count of 3.
 
 @<Build the token list for the new EM@> =

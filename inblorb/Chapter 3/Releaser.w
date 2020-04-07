@@ -271,11 +271,11 @@ to get an idea of this is to read the manifest file for the default,
 Parchment, interpreter.
 
 Placeholders are set thus:
-
-	|[INTERPRETERVERSION]|
-	|Parchment for Inform 7|
-	|[]|
-
+= (text)
+	[INTERPRETERVERSION]
+	Parchment for Inform 7
+	[]
+=
 where the opening line names the placeholder, then one or more lines give
 the contents, and the box line ends the definition.
 

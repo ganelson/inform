@@ -169,21 +169,21 @@ carry out. Suppose we have invocations I1, ..., In, and tokens T1, ..., Tm.
 (In a group like this, every invocation will have the same number of tokens.)
 We want each invocation in turn to try to handle the situation, and to stop
 as soon as one of them does. The first thought is this:
-
-	|if (condition for I1 to be valid) invoke I1(T1, ..., Tm);|
-	|else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);|
-	|...|
-	|else run-time-error-message();|
-
+= (text)
+	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
+	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
+	...
+	else run-time-error-message();
+=
 where the chain of execution runs into the error message code only if none
 of I1, ..., In can be applied. In fact, it will sometimes happen that the
 final invocation can be proved applicable at compile time, and then we'll
 compile this instead:
-
-	|if (condition for I1 to be valid) invoke I1(T1, ..., Tm);|
-	|else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);|
-	|else invoke In(T1, ..., Tm);|
-
+= (text)
+	if (condition for I1 to be valid) invoke I1(T1, ..., Tm);
+	else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);
+	else invoke In(T1, ..., Tm);
+=
 Note that it's not possible for an intermediate invocation in the group to
 be provably correct, because if it is then we wouldn't have collected any
 further possibilities.
@@ -195,15 +195,15 @@ multiple evaluation would be incorrect if token evaluation had side-effects,
 as it easily might (for example if T1 were a call to some phrase to decide
 something, and that phrase had side-effects). So in fact we modify our
 scheme like so:
-
-	|formal_par1 = T1;|
-	|formal_par2 = T2;|
-	|...|
-	|if (condition for I1 to be valid) invoke I1(formal_par1, ..., formal_parm);|
-	|else if (condition for I2 to be valid) invoke I2(formal_par1, ..., formal_parm);|
-	|...|
-	|else run-time-error-message();|
-
+= (text)
+	formal_par1 = T1;
+	formal_par2 = T2;
+	...
+	if (condition for I1 to be valid) invoke I1(formal_par1, ..., formal_parm);
+	else if (condition for I2 to be valid) invoke I2(formal_par1, ..., formal_parm);
+	...
+	else run-time-error-message();
+=
 This fixes the side-effect problem, provided we compile the conditions so
 that they measure the "formal parameters" instead of the original T1, T2, ...
 But another possible trap is that the |formal_par1|, ..., variables need
@@ -254,11 +254,11 @@ the context of a value.
 	}
 
 @ In void mode, this code is simple: it just produces a list of assignments:
-
-	|formal_par1 = T1;|
-	|formal_par2 = T2;|
-	|...|
-
+= (text)
+	formal_par1 = T1;
+	formal_par2 = T2;
+	...
+=
 @<Compile code to set the formal parameters in void mode@> =
 	for (int i=0; i<N; i++) {
 		@<Compile the actual assignment@>;
@@ -267,9 +267,9 @@ the context of a value.
 @ In value mode, we exploit the fact that, as in C, assignments return a value
 and are therefore legal in an expression context; but, again avoiding the
 serial comma at the cost of a fruitless addition,
-
-	|(formal_parn = Tn) + ... + (formal_par1 = T1)|
-
+= (text)
+	(formal_parn = Tn) + ... + (formal_par1 = T1)
+=
 Again, this is written in reverse order because I6 will evaluate this from
 right to left: we want T1 to evaluate first, then T2, and so on.
 
@@ -304,18 +304,18 @@ at run-time; we assign 0 to it for the sake of tidiness.
 
 @ So now we come to the part which switches the execution stream. In void mode,
 it will look like so:
-
-	|if (condition for I1 to be valid) invoke I1;|
-	|else if (condition for I2 to be valid) invoke I2;|
-	|...|
-	|else run-time-error-message();|
-
+= (text)
+	if (condition for I1 to be valid) invoke I1;
+	else if (condition for I2 to be valid) invoke I2;
+	...
+	else run-time-error-message();
+=
 but in value mode, where invocations return values,
-
-	|((condition for I1 to be valid) && ((formal_rv = I1) bitwise-or 1))|
-	|logical-or ((condition for I2 to be valid) && ((formal_rv = I2) bitwise-or 1))|
-	|...|
-
+= (text)
+	((condition for I1 to be valid) && ((formal_rv = I1) bitwise-or 1))
+	logical-or ((condition for I2 to be valid) && ((formal_rv = I2) bitwise-or 1))
+	...
+=
 The key here is that I6, like C, evaluates operands of |&&| left to right
 and short-circuits: if the left operand is false, the right is never evaluated,
 and its side-effect (of invoking a phrase and setting |formal_rv|) never
@@ -537,13 +537,13 @@ In case we test if X is 10, in the other that X matches the description
 	}
 
 @ ...and the actual invocation is now simple. In void mode, simply:
-
-	|invoke(formal-vars)|
-
+= (text)
+	invoke(formal-vars)
+=
 whereas in value mode,
-
-	|((formal_rv = invoke(formal-vars)) bitwise-or 1)|
-
+= (text)
+	((formal_rv = invoke(formal-vars)) bitwise-or 1)
+=
 As noted above, the bitwise-or is a clumsy way to force the condition to
 evaluate to "true" with a minimum of branches in the compiled code.
 

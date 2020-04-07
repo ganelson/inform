@@ -42,8 +42,6 @@ each volume is a single UTF-8 encoded plain text file. In the core Inform
 repository, there are two volumes, with the files being
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Documentation/Writing with Inform.txt</span>
         <span class="plain">Documentation/The Recipe Book.txt</span>
@@ -58,8 +56,6 @@ between the two volumes.
 <p class="inwebparagraph">The project can also include a number of "Examples", each being a single
 text file such as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Documentation/Examples/Prague.txt</span>
@@ -83,8 +79,6 @@ and also in section "Scripted Scenes" of chapter "Time and Plot" of volume
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Project instructions. </b>The main instructions file for an Indoc project is, as noted earlier, at:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Documentation/indoc-instructions.txt</span>
 </pre>
@@ -99,8 +93,6 @@ will contain Examples in the above sense, by giving the special <code class="dis
 instruction. Inform opens thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">volume: Writing with Inform</span>
         <span class="plain">volume: The Inform Recipe Book (RB) = The Recipe Book.txt</span>
@@ -109,8 +101,6 @@ instruction. Inform opens thus:
 
 <p class="inwebparagraph">But a simpler, single-volume project might have just:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">volume: Pandemonium 2.0 for Fun and Profit</span>
@@ -142,8 +132,6 @@ adds the directory <code class="display"><span class="extract">X</span></code> t
 such as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">cover: combined_cover.png</span>
 </pre>
@@ -155,8 +143,6 @@ mentioned above.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Durham Core metadata. </b>If the project needs to generate Epub books, then these will need to have
 some basic DC ("Durham Core") metadata supplied. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">dc:title: Inform - A Design System for Interactive Fiction</span>
@@ -174,11 +160,9 @@ eventually gets around to describing one or more targets. A target
 looks like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">IDENTIFIER {</span>
-        <span class="plain">	...</span>
+            <span class="plain">...</span>
         <span class="plain">}</span>
 </pre>
 
@@ -190,13 +174,11 @@ on disc (though they are) but that they have finicky little differences
 in settings. The <code class="display"><span class="extract">...</span></code> stretch of lines can specify these. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">ebook {</span>
-        <span class="plain">	granularity = 2</span>
-        <span class="plain">	examples_mode = open</span>
-        <span class="plain">	follow: epub-css-tweaks.txt</span>
+            <span class="plain">granularity = 2</span>
+            <span class="plain">examples_mode = open</span>
+            <span class="plain">follow: epub-css-tweaks.txt</span>
         <span class="plain">}</span>
 </pre>
 
@@ -213,20 +195,16 @@ only some of the targets.
 in the Linux version of a manual. To do that, we'll need the symbol:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">linux_app {</span>
-        <span class="plain">	...</span>
-        <span class="plain">	declare: Linux</span>
-        <span class="plain">	...</span>
+            <span class="plain">...</span>
+            <span class="plain">declare: Linux</span>
+            <span class="plain">...</span>
         <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph">In the documentation, we could then mark up a paragraph like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">{Linux:}To install, first...</span>
@@ -248,11 +226,9 @@ in which different categories of index entry need different visual styling.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">css: span.indextitle ++ {</span>
-        <span class="plain">	font-style: italic;</span>
+            <span class="plain">font-style: italic;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -264,8 +240,6 @@ created; <code class="display"><span class="extract">+</span></code> would suppl
 <p class="inwebparagraph"><code class="display"><span class="extract">index: NOTATION = CATEGORY OPTION</span></code> defines a new indexing markup notation;
 for example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">index: ^{@headword} = name (invert)</span>
@@ -280,8 +254,6 @@ in the prototype is where the entry text should appear in the notation.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Miscellaneous settings. </b>There are a great many of these, but most are set to sensible defaults,
 and it is not compulsory to set any of them. Lines such as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">SETTING = VALUE</span>

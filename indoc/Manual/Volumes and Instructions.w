@@ -6,10 +6,10 @@ Dual- versus single-volume mode, and how to write instructions files.
 Conceptually, an Indoc project has either one or two volumes. The source for
 each volume is a single UTF-8 encoded plain text file. In the core Inform
 repository, there are two volumes, with the files being
-
-	|Documentation/Writing with Inform.txt|
-	|Documentation/The Recipe Book.txt|
-
+= (text)
+	Documentation/Writing with Inform.txt
+	Documentation/The Recipe Book.txt
+=
 These are independent books, with individual titles. It would seem simpler
 just to make them two different Indoc projects, but in dual-volume mode,
 Indoc can generate joint contents pages, and provide crosswise HTML links
@@ -17,9 +17,9 @@ between the two volumes.
 
 The project can also include a number of "Examples", each being a single
 text file such as:
-
-	|Documentation/Examples/Prague.txt|
-
+= (text)
+	Documentation/Examples/Prague.txt
+=
 which is the source for an Inform example called "The Prague Job".
 (These same text files are also used by Intest to test that all of the code
 samples included in the Inform documentation actually work as claimed.)
@@ -35,9 +35,9 @@ and also in section "Scripted Scenes" of chapter "Time and Plot" of volume
 
 @h Project instructions.
 The main instructions file for an Indoc project is, as noted earlier, at:
-
-	|Documentation/indoc-instructions.txt|
-
+= (text)
+	Documentation/indoc-instructions.txt
+=
 An instruction file is a UTF-8 encoded plain text file. Single instructions
 occupy single lines (i.e., line breaks are significant). A white-space line,
 or a line whose first non-white-space character is a |#|, are ignored.
@@ -45,15 +45,15 @@ or a line whose first non-white-space character is a |#|, are ignored.
 The file should begin by specifying one or two volumes, and then, if they
 will contain Examples in the above sense, by giving the special |examples|
 instruction. Inform opens thus:
-
-	|volume: Writing with Inform|
-	|volume: The Inform Recipe Book (RB) = The Recipe Book.txt|
-	|examples|
-
+= (text)
+	volume: Writing with Inform
+	volume: The Inform Recipe Book (RB) = The Recipe Book.txt
+	examples
+=
 But a simpler, single-volume project might have just:
-
-	|volume: Pandemonium 2.0 for Fun and Profit|
-
+= (text)
+	volume: Pandemonium 2.0 for Fun and Profit
+=
 Each volume has a title, and Indoc automatically generates an abbreviation
 for it: by default, it takes the capital letters from the title, so that it
 abbreviates "Writing with Inform" to WI. That same method would have made
@@ -74,21 +74,21 @@ adds the directory |X| to this source list.
 
 Lastly, the cover image for the project can be specified with an instruction
 such as:
-
-	|cover: combined_cover.png|
-
+= (text)
+	cover: combined_cover.png
+=
 This specifies a leafname which must exist in one of the image sources
 mentioned above.
 
 @h Durham Core metadata.
 If the project needs to generate Epub books, then these will need to have
 some basic DC ("Durham Core") metadata supplied. For example:
-
-	|dc:title: Inform - A Design System for Interactive Fiction|
-	|dc:creator: Graham Nelson and Emily Short|
-	|dc:subject: Interactive Fiction|
-	|dc:identifier: wwi-rb-combined|
-
+= (text)
+	dc:title: Inform - A Design System for Interactive Fiction
+	dc:creator: Graham Nelson and Emily Short
+	dc:subject: Interactive Fiction
+	dc:identifier: wwi-rb-combined
+=
 The instruction |dc:KEY: VALUE| supplies a DC key-value pair.
 
 @h Targets.
@@ -96,24 +96,24 @@ The instructions file typically begins as above, but then goes into a
 block of general settings or instructions (for which see below); and
 eventually gets around to describing one or more targets. A target
 looks like so:
-
-	|IDENTIFIER {|
-	|	...|
-	|}|
-
+= (text)
+	IDENTIFIER {
+		...
+	}
+=
 where |IDENTIFIER| is its name. Targets, as noted in the introduction,
 are different forms of the documentation we might need to produce: Inform,
 for example, has targets called |plain|, |website|, |linux_app| and so on.
 What's important here is not that these are written to different locations
 on disc (though they are) but that they have finicky little differences
 in settings. The |...| stretch of lines can specify these. For example:
-
-	|ebook {|
-	|	granularity = 2|
-	|	examples_mode = open|
-	|	follow: epub-css-tweaks.txt|
-	|}|
-
+= (text)
+	ebook {
+		granularity = 2
+		examples_mode = open
+		follow: epub-css-tweaks.txt
+	}
+=
 makes two specific settings and one instruction, all applying only for the
 target |ebook|.
 
@@ -124,17 +124,17 @@ only some of the targets.
 
 For example, we might want Linux installation instructions to appear only
 in the Linux version of a manual. To do that, we'll need the symbol:
-
-	|linux_app {|
-	|	...|
-	|	declare: Linux|
-	|	...|
-	|}|
-
+= (text)
+	linux_app {
+		...
+		declare: Linux
+		...
+	}
+=
 In the documentation, we could then mark up a paragraph like so:
-
-	|{Linux:}To install, first...|
-
+= (text as Indoc)
+	{Linux:}To install, first...
+=
 The symbol |indoc| is always declared, but by default no other symbols are.
 Lastly, |undeclare: SYMBOL| removes a symbol.
 
@@ -148,20 +148,20 @@ other targets, the file |I| won't even be opened, and need never exist.
 will be needed only if, for example, unusual indexing features are used,
 in which different categories of index entry need different visual styling.
 For example,
-
-	|css: span.indextitle ++ {|
-	|	font-style: italic;|
-	|}|
-
+= (text)
+	css: span.indextitle ++ {
+		font-style: italic;
+	}
+=
 Here the material between the braces is pure CSS, not Indoc syntax. The
 notation |++| here tells Indoc that an entirely new CSS style is being
 created; |+| would supply new lines to an existing style.
 
 |index: NOTATION = CATEGORY OPTION| defines a new indexing markup notation;
 for example,
-
-	|index: ^{@headword} = name (invert)|
-
+= (text)
+	index: ^{@headword} = name (invert)
+=
 says that markup notations like |^{@Andrew Plotkin}| put a name into the index,
 which should be an index entry of category |name|, and should be inverted,
 in that it will be alphabetised under "Plotkin, Andrew". The text |headword|
@@ -170,9 +170,9 @@ in the prototype is where the entry text should appear in the notation.
 @h Miscellaneous settings.
 There are a great many of these, but most are set to sensible defaults,
 and it is not compulsory to set any of them. Lines such as
-
-	|SETTING = VALUE|
-
+= (text)
+	SETTING = VALUE
+=
 change the default settings if need be. Here is an A-Z list; they're really
 too miscellaneous to be grouped usefully by subject matter.
 

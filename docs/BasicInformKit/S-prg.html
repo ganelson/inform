@@ -61,15 +61,13 @@ those positions we look for <code class="display"><span class="extract">say__p</
 <code class="display"><span class="extract">say__p</span></code> again) if we find it. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">&gt; WAIT</span>
-        <span class="plain">The clock ticks ominously.</span>
-     ...first rule    <span class="plain">    </span>
-     ...skipped line printed at a Divide Paragraph point    <span class="plain">Mme Tourmalet rises from her chair and slips out.</span>
-     second rule    <span class="plain">    </span>
-     ...skipped line printed at a Divide Paragraph point    <span class="plain">&gt; </span>
+        <span class="plain">The clock ticks ominously.  ...first rule</span>
+                            <span class="plain"> ...skipped line printed at a Divide Paragraph point</span>
+        <span class="plain">Mme Tourmalet rises from her chair and slips out.   ...second rule</span>
+                            <span class="plain"> ...skipped line printed at a Divide Paragraph point</span>
+        <span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">A divide paragraph point occurs between any two rules in an action rulebook,
@@ -84,8 +82,6 @@ of the first paragraph to appear after the prompt, but only in one situation.
 Ordinarily, the first paragraph of any turn appears straight after the prompt:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">&gt; EXAMINE DOG</span>
         <span class="plain">Mme Tourmalet's borzoi looks as if it means fashion, not business.</span>
@@ -98,18 +94,14 @@ the player to go to a new location, when a skipped line is printed before the
 room description for the new room. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">&gt; SOUTH</span>
-        <span class="plain">    </span>
-     ...the "going look break"    <span class="plain">Rocky Beach</span>
+            <span class="plain">...the "going look break" here</span>
+        <span class="plain">Rocky Beach</span>
 </pre>
 
 <p class="inwebparagraph">(Note that this is not inherent in the looking action:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">&gt; LOOK</span>
@@ -130,11 +122,9 @@ no skipped line: as the name implies, it's traditionally used when a
 command such as OPEN DOOR is clarified. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">(first unlocking the oak door)</span>
-     ...now a command clarification break    <span class="plain">You open the oak door.</span>
+        <span class="plain">(first unlocking the oak door)   ...now a command clarification break</span>
+        <span class="plain">You open the oak door.</span>
 </pre>
 
 <p class="inwebparagraph">This is not quite the same thing as a "run paragraph on" break, in which
@@ -143,15 +133,13 @@ the skipped line which ought to appear last before the prompt: the idea is
 to merge two or more paragraphs together.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">&gt; TAKE ALL</span>
-        <span class="plain">marmot: Taken.</span>
-     ...we run paragraph on here    <span class="plain">weasel: Taken.</span>
-     ...and also here    <span class="plain">    </span>
-     ...despite which the final skip does occur    <span class="plain">&gt; </span>
-     ...before the next prompt</pre>
+        <span class="plain">marmot: Taken.   ...we run paragraph on here</span>
+        <span class="plain">weasel: Taken.   ...and also here</span>
+                        <span class="plain"> ...despite which the final skip does occur</span>
+        <span class="plain">&gt;                ...before the next prompt</span>
+</pre>
 
 <p class="inwebparagraph">A more complicated case is "special look spacing", used for the break which
 occurs after the (boldface) short name of a room description is printed. This
@@ -159,36 +147,30 @@ is tricky because it is sometimes followed directly by a long description, and
 we don't want a skipped line:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Villa Christiane</span>
-     ...a special look spacing break    <span class="plain">The walled garden of a villa in Cap d'Agde.</span>
-        <span class="plain">    </span>
-     ...a Divide Paragraph break    <span class="plain">Mme Tourmalet's borzoi lazes in the long grass.</span>
+        <span class="plain">Villa Christiane    ...a special look spacing break</span>
+        <span class="plain">The walled garden of a villa in Cap d'Agde.</span>
+                            <span class="plain">...a Divide Paragraph break</span>
+        <span class="plain">Mme Tourmalet's borzoi lazes in the long grass.</span>
 </pre>
 
 <p class="inwebparagraph">But sometimes it is followed directly by a subsequent paragraph, and again
 we want no skip:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Villa Christiane</span>
-     ...a special look spacing break    <span class="plain">Mme Tourmalet's borzoi lazes in the long grass.</span>
+        <span class="plain">Villa Christiane    ...a special look spacing break</span>
+        <span class="plain">Mme Tourmalet's borzoi lazes in the long grass.</span>
 </pre>
 
 <p class="inwebparagraph">And sometimes it is the only content of the room description and is followed
 only by the prompt:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Villa Christiane</span>
-     ...a special look spacing break    <span class="plain">    </span>
-     ...a break inserted before the prompt    <span class="plain">&gt; </span>
+        <span class="plain">Villa Christiane    ...a special look spacing break</span>
+                            <span class="plain">...a break inserted before the prompt</span>
+        <span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">To recap, we have five kinds of paragraph break:
@@ -389,25 +371,25 @@ whatever is the current language of play.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">%10 ~= </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"-"</span><span class="plain">, (</span><span class="identifier">LanguageNumber</span><span class="plain">) </span><span class="identifier">n</span><span class="plain">%10;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">) {</span>
-            <span class="constant">1</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"one"</span><span class="plain">;</span>
-            <span class="constant">2</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"two"</span><span class="plain">;</span>
-            <span class="constant">3</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"three"</span><span class="plain">;</span>
-            <span class="constant">4</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"four"</span><span class="plain">;</span>
-            <span class="constant">5</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"five"</span><span class="plain">;</span>
-            <span class="constant">6</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"six"</span><span class="plain">;</span>
-            <span class="constant">7</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"seven"</span><span class="plain">;</span>
-            <span class="constant">8</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eight"</span><span class="plain">;</span>
-            <span class="constant">9</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nine"</span><span class="plain">;</span>
-            <span class="constant">10</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"ten"</span><span class="plain">;</span>
-            <span class="constant">11</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eleven"</span><span class="plain">;</span>
-            <span class="constant">12</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"twelve"</span><span class="plain">;</span>
-            <span class="constant">13</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"thirteen"</span><span class="plain">;</span>
-            <span class="constant">14</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"fourteen"</span><span class="plain">;</span>
-            <span class="constant">15</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"fifteen"</span><span class="plain">;</span>
-            <span class="constant">16</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"sixteen"</span><span class="plain">;</span>
-            <span class="constant">17</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"seventeen"</span><span class="plain">;</span>
-            <span class="constant">18</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eighteen"</span><span class="plain">;</span>
-            <span class="constant">19</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nineteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">1</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"one"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">2</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"two"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">3</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"three"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">4</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"four"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">5</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"five"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">6</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"six"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">7</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"seven"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">8</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eight"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">9</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nine"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">10</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"ten"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">11</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eleven"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">12</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"twelve"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">13</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"thirteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">14</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"fourteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">15</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"fifteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">16</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"sixteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">17</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"seventeen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">18</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"eighteen"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="constant">19</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"nineteen"</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">];</span>

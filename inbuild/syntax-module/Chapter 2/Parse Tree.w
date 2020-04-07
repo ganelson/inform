@@ -87,11 +87,11 @@ the value "124" is stored as a single specification node, of node type
 >> tally is 124 and the player is in the Library
 
 is stored as a tree of three specification nodes:
-
-	|LOGICAL_AND_NT|
-		|TEST_PROPOSITION_NT "tally is 124"|
-		|TEST_PROPOSITION_NT "the player is in the Library"|
-
+= (text)
+	LOGICAL_AND_NT
+		TEST_PROPOSITION_NT "tally is 124"
+		TEST_PROPOSITION_NT "the player is in the Library"
+=
 The tree is heavily annotated, so that nodes can carry more meaning than
 just their type alone. For example, the |CONSTANT_NT| node for "124"
 is annotated with the kind |K_number|, showing what kind of constant it

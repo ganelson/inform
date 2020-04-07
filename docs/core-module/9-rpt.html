@@ -1189,27 +1189,23 @@ the two sentences above, yet a very different meaning, since "openable" is a
 property whereas "bat" was an object. We perform surgery on:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">AND_NT</span>
-        <span class="plain">    ADJECTIVE_NT prop:p46_openable</span>
-        <span class="plain">    WITH_NT</span>
-        <span class="plain">        COMMON_NOUN_NT K4_door</span>
-        <span class="plain">        ADJECTIVE_NT prop:p44_open</span>
+            <span class="plain">ADJECTIVE_NT prop:p46_openable</span>
+            <span class="plain">WITH_NT</span>
+                <span class="plain">COMMON_NOUN_NT K4_door</span>
+                <span class="plain">ADJECTIVE_NT prop:p44_open</span>
 </pre>
 
 <p class="inwebparagraph">to restructure the nodes as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">WITH_NT</span>
-        <span class="plain">    COMMON_NOUN_NT K4_door</span>
-        <span class="plain">    AND_NT</span>
-        <span class="plain">        ADJECTIVE_NT prop:p46_openable</span>
-        <span class="plain">        ADJECTIVE_NT prop:p44_open</span>
+            <span class="plain">COMMON_NOUN_NT K4_door</span>
+            <span class="plain">AND_NT</span>
+                <span class="plain">ADJECTIVE_NT prop:p46_openable</span>
+                <span class="plain">ADJECTIVE_NT prop:p44_open</span>
 </pre>
 
 <p class="inwebparagraph">This innocent-looking little routine involved drawing a lot of diagrams
@@ -1258,27 +1254,23 @@ of <code class="display"><span class="extract">WITH_NT</span></code> later on. S
 terms of the tree,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">WITH_NT</span>
-        <span class="plain">    WITH_NT</span>
-        <span class="plain">        COMMON_NOUN_NT K4_container</span>
-        <span class="plain">        ADJECTIVE_NT prop:p44_open</span>
-        <span class="plain">    PROPERTY_LIST_NT "The box..."</span>
+            <span class="plain">WITH_NT</span>
+                <span class="plain">COMMON_NOUN_NT K4_container</span>
+                <span class="plain">ADJECTIVE_NT prop:p44_open</span>
+            <span class="plain">PROPERTY_LIST_NT "The box..."</span>
 </pre>
 
 <p class="inwebparagraph">is reconstructed as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">WITH_NT</span>
-        <span class="plain">    COMMON_NOUN_NT K4_container</span>
-        <span class="plain">    AND_NT</span>
-        <span class="plain">        ADJECTIVE_NT prop:p44_open</span>
-        <span class="plain">        PROPERTY_LIST_NT "The box..."</span>
+            <span class="plain">COMMON_NOUN_NT K4_container</span>
+            <span class="plain">AND_NT</span>
+                <span class="plain">ADJECTIVE_NT prop:p44_open</span>
+                <span class="plain">PROPERTY_LIST_NT "The box..."</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Refiner::perform_with_surgery</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">inst</span><span class="plain">, *</span><span class="identifier">prop_1</span><span class="plain">, *</span><span class="identifier">prop_2</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">) == </span><span class="identifier">WITH_NT</span><span class="plain">)) {</span>
@@ -1307,24 +1299,22 @@ here work:
 </blockquote>
 
 <pre class="display">
-        <span class="plain">    RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
-        <span class="plain">        AND_NT</span>
-        <span class="plain">            PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
-        <span class="plain">            RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
-        <span class="plain">                PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
+            <span class="plain">RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
+                <span class="plain">AND_NT</span>
+                    <span class="plain">PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
+                    <span class="plain">RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
+                        <span class="plain">PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
 </pre>
 
 <p class="inwebparagraph">into:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">    AND_NT</span>
-        <span class="plain">        RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
-        <span class="plain">            PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
-        <span class="plain">        RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
-        <span class="plain">            PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
+            <span class="plain">AND_NT</span>
+                <span class="plain">RELATIONSHIP_NT &lt;below&gt; (CONTAINS_THINGS_INF)</span>
+                    <span class="plain">PROPER_NOUN_NT &lt;kudamm&gt; (definite)</span>
+                <span class="plain">RELATIONSHIP_NT &lt;above&gt; (CONTAINS_THINGS_INF)</span>
+                    <span class="plain">PROPER_NOUN_NT &lt;u-bahn&gt; (definite)</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Refiner::perform_location_surgery</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">old_and</span><span class="plain">, *</span><span class="identifier">old_np1</span><span class="plain">, *</span><span class="identifier">old_loc2</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ParseTree::get_type</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">) == </span><span class="identifier">RELATIONSHIP_NT</span><span class="plain">) &amp;&amp;</span>
@@ -1354,37 +1344,23 @@ here work:
 the two clauses are the wrong way around, so we perform surgery to turn:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">CALLED_NT  &lt;called&gt;</span>
-        <span class="plain">	RELATIONSHIP_NT  &lt;north of a room&gt; (type:direction)</span>
-</pre>
-
-<p class="inwebparagraph">    <code class="display"><span class="extract">		PROPER_NOUN_NT  &lt;room&gt; (indefinite)</span></code>
-</p>
-
-<pre class="display">
-        <span class="plain">		PROPER_NOUN_NT  &lt;north&gt; (no article)</span>
-        <span class="plain">	PROPER_NOUN_NT  &lt;hot and cold room&gt; (definite)</span>
+            <span class="plain">RELATIONSHIP_NT  &lt;north of a room&gt; (type:direction)</span>
+                <span class="plain">PROPER_NOUN_NT  &lt;room&gt; (indefinite)</span>
+                <span class="plain">PROPER_NOUN_NT  &lt;north&gt; (no article)</span>
+            <span class="plain">PROPER_NOUN_NT  &lt;hot and cold room&gt; (definite)</span>
 </pre>
 
 <p class="inwebparagraph">into:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">RELATIONSHIP_NT  &lt;called&gt; (type:direction)</span>
-        <span class="plain">	CALLED_NT  &lt;north of a room&gt;</span>
-</pre>
-
-<p class="inwebparagraph">    <code class="display"><span class="extract">		COMMON_NOUN_NT  &lt;room&gt;</span></code>
-    <code class="display"><span class="extract">		CREATED_NT  &lt;hot and cold room&gt;</span></code>
-    <code class="display"><span class="extract">	PROPER_NOUN_NT  &lt;north&gt; (no article)</span></code>
-</p>
-
-<pre class="display">
+            <span class="plain">CALLED_NT  &lt;north of a room&gt;</span>
+                <span class="plain">COMMON_NOUN_NT  &lt;room&gt;</span>
+                <span class="plain">CREATED_NT  &lt;hot and cold room&gt;</span>
+            <span class="plain">PROPER_NOUN_NT  &lt;north&gt; (no article)</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Assertions::Refiner::perform_called_surgery</span><span class="plain">(</span><span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">x_pn</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="comment">"north" in the example</span>
         <span class="identifier">parse_node</span><span class="plain"> *</span><span class="identifier">name_pn</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-&gt;</span><span class="element">down</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">; </span><span class="comment">"hot and cold room" in the example</span>

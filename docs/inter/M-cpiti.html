@@ -81,12 +81,10 @@ earliest-defined locals will hold any arguments from the function call.
 So for example, if:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package Double _code</span>
-        <span class="plain">    symbol private misc x</span>
-        <span class="plain">    local x K_number</span>
+        <span class="reserved">package</span><span class="plain"> Double _code</span>
+            <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">private</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> x</span>
+            <span class="reserved">local</span><span class="plain"> x </span><span class="identifier">K_number</span>
 </pre>
 
 <p class="inwebparagraph">then a call <code class="display"><span class="extract">Double(6)</span></code> would begin executing with <code class="display"><span class="extract">x</span></code> equal to 6.
@@ -101,13 +99,11 @@ in the package's symbols table, and must begin with a full stop <code class="dis
 final statement in the package, and contains the actual body code.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package HelloWorld _code</span>
-        <span class="plain">    code</span>
-        <span class="plain">        inv !print</span>
-        <span class="plain">            val K_text "Hello World!\n"</span>
+        <span class="reserved">package</span><span class="plain"> HelloWorld _code</span>
+            <span class="reserved">code</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"Hello World!\n"</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -120,10 +116,8 @@ is a use of either another function, or of a primitive.
 declared a number of primitives, with the notation:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive PRIMITIVE IN -&gt; OUT</span>
+        <span class="reserved">primitive</span><span class="plain"> PRIMITIVE IN -&gt; OUT</span>
 </pre>
 
 <p class="inwebparagraph">Primitives are, in effect, built-in functions. <code class="display"><span class="extract">IN</span></code> can either be <code class="display"><span class="extract">void</span></code> or
@@ -132,20 +126,16 @@ can be a list of one or more terms which are all either <code class="display"><s
 <code class="display"><span class="extract">ref</span></code> or <code class="display"><span class="extract">val</span></code>. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !plus val val -&gt; val</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!plus</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> -&gt; </span><span class="reserved">val</span>
 </pre>
 
 <p class="inwebparagraph">declares that the signature of the primitive <code class="display"><span class="extract">!plus</span></code> is <code class="display"><span class="extract">val val -&gt; val</span></code>,
 meaning that it takes two values and produces another as result, while
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !ifelse val code code -&gt; void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!ifelse</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> </span><span class="reserved">code</span><span class="plain"> </span><span class="reserved">code</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
 </pre>
 
 <p class="inwebparagraph">says that <code class="display"><span class="extract">!ifelse</span></code> consumes a value and two blocks of code, and produces
@@ -164,10 +154,8 @@ explicit name: labels are not values, which is why the signature for
 effect an lvalue rather than an rvalue: for example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !pull ref -&gt; void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!pull</span><span class="plain"> </span><span class="reserved">ref</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
 </pre>
 
 <p class="inwebparagraph">is the prototype of a primitive which pulls a value from the stack and
@@ -186,12 +174,10 @@ matching the <code class="display"><span class="extract">IN</span></code> part o
 indented one tab stop in. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !plus</span>
-        <span class="plain">    val K_number 2</span>
-        <span class="plain">    val K_number 2</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!plus</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">2</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <p class="inwebparagraph">would compute <code class="display"><span class="extract">2+2</span></code>. This brings up the issue of "context". Code statements
@@ -199,11 +185,9 @@ are always parsed in a given context, the context being what they are
 expected to produce or do. In this example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !print</span>
-        <span class="plain">    val K_text "Hello World!\n"</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"Hello World!\n"</span>
 </pre>
 
 <p class="inwebparagraph">the invocation of <code class="display"><span class="extract">!print</span></code> occurs at the top level of the function, in what
@@ -212,13 +196,11 @@ because it appears where the <code class="display"><span class="extract">!print<
 It is an error to use a statement in the wrong context. For example, this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">    code</span>
-        <span class="plain">        inv !plus</span>
-        <span class="plain">            val K_number 2</span>
-        <span class="plain">            val K_number 2</span>
+            <span class="reserved">code</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!plus</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">2</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 
 <p class="inwebparagraph">is an error, because it makes no sense to evaluate <code class="display"><span class="extract">!plus</span></code> in a void context:
@@ -227,11 +209,9 @@ statement is allowed depends on the <code class="display"><span class="extract">
 primitive. Comparing the declarations of <code class="display"><span class="extract">!print</span></code> and <code class="display"><span class="extract">!plus</span></code>, we see:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !print val -&gt; void</span>
-        <span class="plain">primitive !plus val val -&gt; val</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!print</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!plus</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> -&gt; </span><span class="reserved">val</span>
 </pre>
 
 <p class="inwebparagraph">so that <code class="display"><span class="extract">!print</span></code> can only be invoked in a void context, and <code class="display"><span class="extract">!plus</span></code> in a
@@ -246,31 +226,27 @@ primitive: that is, functions which are defined by code packages.
 done as follows. Suppose:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_number int32</span>
-        <span class="plain">kind K_number_to_number K_number -&gt; K_number</span>
-        <span class="plain">package Double_B _code</span>
-        <span class="plain">    symbol private misc x</span>
-        <span class="plain">    local x K_number</span>
-        <span class="plain">    code</span>
-        <span class="plain">        inv !return</span>
-        <span class="plain">            inv !plus</span>
-        <span class="plain">                val K_number x</span>
-        <span class="plain">                val K_number x</span>
-        <span class="plain">constant Double K_number_to_number = Double_B</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="reserved">int32</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_number_to_number</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> -&gt; </span><span class="identifier">K_number</span>
+        <span class="reserved">package</span><span class="plain"> Double_B _code</span>
+            <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">private</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> x</span>
+            <span class="reserved">local</span><span class="plain"> x </span><span class="identifier">K_number</span>
+            <span class="reserved">code</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!return</span>
+                    <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!plus</span>
+                        <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> x</span>
+                        <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> x</span>
+        <span class="reserved">constant</span><span class="plain"> Double </span><span class="identifier">K_number_to_number</span><span class="plain"> = Double_B</span>
 </pre>
 
 <p class="inwebparagraph">The value <code class="display"><span class="extract">Double</span></code> now evaluates to this function, and that's what we
 can invoke. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv Double</span>
-        <span class="plain">    val K_number 17</span>
+        <span class="reserved">inv</span><span class="plain"> Double</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">17</span>
 </pre>
 
 <p class="inwebparagraph">compiles to a function call returning the number 34.
@@ -293,22 +269,18 @@ this kind is appropriate in the current context. For example, the primitive
 <code class="display"><span class="extract">!print</span></code> requires its one value to be textual, so that the following:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !print</span>
-        <span class="plain">    val K_number 7</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">7</span>
 </pre>
 
 <p class="inwebparagraph">has undefined behaviour at run-time. Though a terrible idea, this is valid
 inter code. This code, on the other hand, will throw an error:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !print</span>
-        <span class="plain">    val K_number "Seven"</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="string">"Seven"</span>
 </pre>
 
 <p class="inwebparagraph">The inter language does nevertheless provide for compilers which want to
@@ -316,10 +288,8 @@ produce much stricter type-checked code, or which need their code-generators
 to compile shim code converting values between kinds. The statement:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">cast KIND1 &lt;- KIND2</span>
+        <span class="reserved">cast</span><span class="plain"> KIND1 &lt;- KIND2</span>
 </pre>
 
 <p class="inwebparagraph">is valid only in value context, and marks that a value of <code class="display"><span class="extract">KIND2</span></code> needs to
@@ -327,14 +297,12 @@ be interpreted in some way as a value of <code class="display"><span class="extr
 imagine something like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !times</span>
-        <span class="plain">    cast K_number &lt;- K_truth_state</span>
-        <span class="plain">        val K_truth_state flag1</span>
-        <span class="plain">    cast K_number &lt;- K_truth_state</span>
-        <span class="plain">        val K_truth_state flag2</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!times</span>
+            <span class="reserved">cast</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> &lt;- </span><span class="identifier">K_truth_state</span>
+                <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_truth_state</span><span class="plain"> flag1</span>
+            <span class="reserved">cast</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> &lt;- </span><span class="identifier">K_truth_state</span>
+                <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_truth_state</span><span class="plain"> flag2</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -344,22 +312,18 @@ signature, so <code class="display"><span class="extract">ref</span></code>, <co
 For example, suppose the following signatures:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !jump lab -&gt; void</span>
-        <span class="plain">primitive !pull ref -&gt; val</span>
-        <span class="plain">primitive !if val code -&gt; void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!jump</span><span class="plain"> </span><span class="reserved">lab</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!pull</span><span class="plain"> </span><span class="reserved">ref</span><span class="plain"> -&gt; </span><span class="reserved">val</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!if</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> </span><span class="reserved">code</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
 </pre>
 
 <p class="inwebparagraph">These might be invoked as follows:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !jump</span>
-        <span class="plain">    lab .end</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!jump</span>
+            <span class="reserved">lab</span><span class="plain"> .end</span>
 </pre>
 
 <p class="inwebparagraph">Here <code class="display"><span class="extract">.end</span></code> is the name of a label in the current function. References to
@@ -368,11 +332,9 @@ to the current symbols table. No kind is mentioned in a <code class="display"><s
 because labels are not values, and therefore do not have kinds.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !pull</span>
-        <span class="plain">    ref K_number x</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!pull</span>
+            <span class="reserved">ref</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> x</span>
 </pre>
 
 <p class="inwebparagraph">Here <code class="display"><span class="extract">x</span></code> is the name of a variable, but it could be the name of any form of
@@ -380,14 +342,12 @@ storage. On the other hand, <code class="display"><span class="extract">ref K_nu
 isn't possible to write to the number 10: that is an rvalue but not an lvalue.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !if</span>
-        <span class="plain">    val K_truth_state flag</span>
-        <span class="plain">    code</span>
-        <span class="plain">        inv !print</span>
-        <span class="plain">            val K_text "Yes!"</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!if</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_truth_state</span><span class="plain"> flag</span>
+            <span class="reserved">code</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"Yes!"</span>
 </pre>
 
 <p class="inwebparagraph">compiles to something like <code class="display"><span class="extract">if (flag) { print "Yes!"; }</span></code>. The <code class="display"><span class="extract">code</span></code> statement
@@ -405,11 +365,9 @@ That's unfortunate if we want to evaluate something not for its result
 but for a side-effect. To get around that, we have:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">evaluation</span>
-        <span class="plain">    ...</span>
+        <span class="reserved">evaluation</span>
+            <span class="plain">...</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">evaluation</span></code> causes any number of indented values to be evaluated,
@@ -423,13 +381,11 @@ This is not in general a safe thing to do: consider the consequences of the
 following, for example -
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !store</span>
-        <span class="plain">    reference</span>
-        <span class="plain">        val K_number 7</span>
-        <span class="plain">    val K_number 3</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!store</span>
+            <span class="reserved">reference</span>
+                <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">7</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">3</span>
 </pre>
 
 <p class="inwebparagraph">In general <code class="display"><span class="extract">reference</span></code> must only be used where it can be proved that its

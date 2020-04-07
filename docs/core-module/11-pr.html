@@ -90,8 +90,6 @@ propositions, so we have to build carefully.
 produces:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">1. no man can see the box</span>
         <span class="plain">[ DoesNotExist x IN[ man(x) IN] : can-see(x, 'box') ]</span>
@@ -99,8 +97,6 @@ produces:
 
 <p class="inwebparagraph">The proposition is stored as a linked list of atoms, of elements like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; PREDICATE --&gt; DOMAIN_CLOSE --&gt; PREDICATE</span>
@@ -211,8 +207,6 @@ is understood to mean multiplication of x by y, and of w by (v-1).
 Note that if we were to write it out as a sequence of symbols
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">x y + w ( v - 1 )</span>
 </pre>
@@ -315,14 +309,16 @@ only (i).
 syntactically valid:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">DOMAIN_OPEN_ATOM --&gt; NEGATION_CLOSE_ATOM --&gt; NEGATION_CLOSE_ATOM</span></code>
-</p>
+<pre class="display">
+    <span class="plain">|DOMAIN_OPEN_ATOM --&gt; NEGATION_CLOSE_ATOM --&gt; NEGATION_CLOSE_ATOM|</span>
+</pre>
 
 <p class="inwebparagraph">This one is syntactically valid, but not well-formed:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">EVERYWHERE_ATOM(x) --&gt; QUANTIFIER=for-all(x) --&gt; PREDICATE=open(x)</span></code>
-</p>
+<pre class="display">
+    <span class="plain">|EVERYWHERE_ATOM(x) --&gt; QUANTIFIER=for-all(x) --&gt; PREDICATE=open(x)|</span>
+</pre>
 
 <p class="inwebparagraph">(If <code class="display"><span class="extract">x</span></code> ranges over all objects at the middle of the proposition, it had
 better not already have a value, but if it doesn't, what can that first
@@ -333,8 +329,9 @@ where clearly two different things have been called n.)
 <p class="inwebparagraph">And this proposition is well-formed but not type-safe:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">QUANTIFIER=for-all(x) --&gt; KIND=number(x) --&gt; EVERYWHERE(x)</span></code>
-</p>
+<pre class="display">
+    <span class="plain">|QUANTIFIER=for-all(x) --&gt; KIND=number(x) --&gt; EVERYWHERE(x)|</span>
+</pre>
 
 <p class="inwebparagraph">(Here <code class="display"><span class="extract">x</span></code> is supposed to be a number, and therefore has no location, but
 <code class="display"><span class="extract">EVERYWHERE</span></code> can validly be applied only to backdrop objects, so what
@@ -579,17 +576,16 @@ which has been simplified.
 detect subsequences within a proposition: say, the sequence
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">QUANTIFIER --&gt; PREDICATE --&gt; anything --&gt; CALLED</span></code>
-</p>
+<pre class="display">
+        <span class="plain">QUANTIFIER --&gt; PREDICATE --&gt; anything --&gt; CALLED</span>
+</pre>
 
 <p class="inwebparagraph">starting at the current position, which could be tested with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Calculus::Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,</span>
-        <span class="plain">	ANY_ATOM_HERE, NULL, CALLED_ATOM, &amp;cp);</span>
+            <span class="plain">ANY_ATOM_HERE, NULL, CALLED_ATOM, &amp;cp);</span>
 </pre>
 
 <p class="inwebparagraph">As can be seen, each atom is tested with an element number and an optional
@@ -860,8 +856,9 @@ following are useful for looping through them:
 bracketed group. For instance:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">NEGATION_OPEN --&gt; PREDICATE --&gt; KIND --&gt; NEGATION_CLOSE</span></code>
-</p>
+<pre class="display">
+        <span class="plain">NEGATION_OPEN --&gt; PREDICATE --&gt; KIND --&gt; NEGATION_CLOSE</span>
+</pre>
 
 <p class="inwebparagraph">would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.

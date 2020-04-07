@@ -28,14 +28,14 @@ propositions, so we have to build carefully.
 
 For instance, "Test sentence (internal) with no man can see the box."
 produces:
-
-	|1. no man can see the box|
-	|[ DoesNotExist x IN[ man(x) IN] : can-see(x, 'box') ]|
-
+= (text)
+	1. no man can see the box
+	[ DoesNotExist x IN[ man(x) IN] : can-see(x, 'box') ]
+=
 The proposition is stored as a linked list of atoms, of elements like so:
-
-	|QUANTIFIER --> DOMAIN_OPEN --> PREDICATE --> DOMAIN_CLOSE --> PREDICATE|
-
+= (text)
+	QUANTIFIER --> DOMAIN_OPEN --> PREDICATE --> DOMAIN_CLOSE --> PREDICATE
+=
 In short: a proposition is a linked list of |pcalc_prop| atoms, joined by
 their |next| fields. The present section contains routines to help build
 and edit such lists.
@@ -127,9 +127,9 @@ in algebra, where the formula
 $$ xy+w(v-1) $$
 is understood to mean multiplication of $x$ by $y$, and of $w$ by $(v-1)$.
 Note that if we were to write it out as a sequence of symbols
-
-	|x y + w ( v - 1 )|
-
+= (text)
+	x y + w ( v - 1 )
+=
 then multiplication would only be understood at two positions, not between
 every pair of symbols. In the same way, the following routine looks at a
 pair of adjacent atoms and decides whether or not conjunction should be
@@ -205,22 +205,22 @@ only (i).
 
 @ The following examples illustrate the differences. This one is not even
 syntactically valid:
-
+= (text)
 |DOMAIN_OPEN_ATOM --> NEGATION_CLOSE_ATOM --> NEGATION_CLOSE_ATOM|
-
+=
 This one is syntactically valid, but not well-formed:
-
+= (text)
 |EVERYWHERE_ATOM(x) --> QUANTIFIER=for-all(x) --> PREDICATE=open(x)|
-
+=
 (If |x| ranges over all objects at the middle of the proposition, it had
 better not already have a value, but if it doesn't, what can that first
 atom mean? It would be like writing the formula $n + \sum_{n=1}^{10} n^2$,
 where clearly two different things have been called $n$.)
 
 And this proposition is well-formed but not type-safe:
-
+= (text)
 |QUANTIFIER=for-all(x) --> KIND=number(x) --> EVERYWHERE(x)|
-
+=
 (Here |x| is supposed to be a number, and therefore has no location, but
 |EVERYWHERE| can validly be applied only to backdrop objects, so what
 could |EVERYWHERE(x)| possibly mean?)
@@ -405,14 +405,14 @@ int Calculus::Propositions::length(pcalc_prop *prop) {
 @h Matching sequences of atoms.
 The following sneakily variable-argument-length function can be used to
 detect subsequences within a proposition: say, the sequence
-
-|QUANTIFIER --> PREDICATE --> anything --> CALLED|
-
+= (text)
+	QUANTIFIER --> PREDICATE --> anything --> CALLED
+=
 starting at the current position, which could be tested with:
-
-	|Calculus::Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,|
-	|	ANY_ATOM_HERE, NULL, CALLED_ATOM, &cp);|
-
+= (text)
+	Calculus::Propositions::match(p, 4, QUANTIFIER_ATOM, NULL, PREDICATE_ATOM, NULL,
+		ANY_ATOM_HERE, NULL, CALLED_ATOM, &cp);
+=
 As can be seen, each atom is tested with an element number and an optional
 pointer; when a successful match is made, the optional pointer is set to
 the atom making the match. (So if the routine returns |TRUE| then we can
@@ -612,9 +612,9 @@ adjective_usage *Calculus::Propositions::next_adjective_usage(pcalc_prop **ppp) 
 @h Bracketed groups.
 The following routine tests whether the entire proposition is a single
 bracketed group. For instance:
-
-|NEGATION_OPEN --> PREDICATE --> KIND --> NEGATION_CLOSE|
-
+= (text)
+	NEGATION_OPEN --> PREDICATE --> KIND --> NEGATION_CLOSE
+=
 would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.
 

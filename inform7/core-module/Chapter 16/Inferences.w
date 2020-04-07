@@ -500,9 +500,9 @@ The following routine is a little like |strcmp|, the standard C routine
 for comparing strings, in that it compares two inferences and returns a
 value useful for sorting algorithms: 0 if equal, positive if |i1 < i2|,
 negative if |i2 < i1|. This is a stable trichotomy; in particular,
-
-	|World::Inferences::compare_inferences(I, J) == -World::Inferences::compare_inferences(J, I)|
-
+= (text as code)
+	World::Inferences::compare_inferences(I, J) == -World::Inferences::compare_inferences(J, I)
+=
 for all pairs of inference pointers |I| and |J|.
 
 More importantly, though, it measures how similar the two inferences are,
@@ -672,9 +672,9 @@ is not possible here.)
 
 The threshold depends on what type of inference we're looking at, but it's
 always at least half-way down the list, so we can be certain that
-
-	|i->inference_type == list->inference_type|
-
+= (text as InC)
+	i->inference_type == list->inference_type
+=
 (and therefore it's unambiguous what we mean by the type of inference being
 looked at). For two property inferences to be talking about the same fact,
 they might still differ in the property value -- one might say the carrying

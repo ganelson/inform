@@ -67,7 +67,7 @@ number which cannot be negated in 32-bit twos complement arithmetic.
             <span class="plain">@</span><span class="identifier">ftonumz</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">num</span><span class="plain">;</span>
         <span class="plain">}</span>
-    <span class="plain">#</span><span class="identifier">endif</span><span class="plain">;</span>
+    <span class="plain">   #</span><span class="identifier">endif</span><span class="plain">;</span>
         <span class="identifier">op</span><span class="plain"> = </span><span class="identifier">num</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">num</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_NEGATIVEROOT</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">; }</span>
         <span class="comment">"one" starts at the highest power of four &lt;= the argument.</span>

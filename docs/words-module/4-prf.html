@@ -164,10 +164,8 @@ with result 2.
 stored. Within each production, word ranges are numbered upwards from 1. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">man with ... on his ...</span>
+        <span class="identifier">man</span><span class="plain"> </span><span class="identifier">with</span><span class="plain"> ... </span><span class="identifier">on</span><span class="plain"> </span><span class="identifier">his</span><span class="plain"> ...</span>
 </pre>
 
 <p class="inwebparagraph">would, if it matched successfully, generate two word ranges, numbered 1 and 2.
@@ -288,10 +286,8 @@ see the examples above. A production is another list, of "ptokens" (the
 "p" is silent). For example, the production
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">runner no &lt;cardinal-number&gt;</span>
+        <span class="identifier">runner</span><span class="plain"> </span><span class="identifier">no</span><span class="plain"> &lt;</span><span class="identifier">cardinal</span><span class="plain">-</span><span class="identifier">number</span><span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">contains three ptokens. (Note that the stroke sign and the defined-by sign are
@@ -307,10 +303,8 @@ ptokens in the interior of the production whose position relative to the
 ends is not known. For example, if we match:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">frogs like ... but not ... to eat</span>
+        <span class="identifier">frogs</span><span class="plain"> </span><span class="identifier">like</span><span class="plain"> ... </span><span class="identifier">but</span><span class="plain"> </span><span class="identifier">not</span><span class="plain"> ... </span><span class="identifier">to</span><span class="plain"> </span><span class="identifier">eat</span>
 </pre>
 
 <p class="inwebparagraph">then we know that in a successful match, "frogs" and "like" must be the
@@ -383,10 +377,8 @@ or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">make ... from {rice ... onions} and peppers</span>
+        <span class="identifier">make</span><span class="plain"> ... </span><span class="identifier">from</span><span class="plain"> {</span><span class="identifier">rice</span><span class="plain"> ... </span><span class="identifier">onions</span><span class="plain">} </span><span class="identifier">and</span><span class="plain"> </span><span class="identifier">peppers</span>
 </pre>
 
 <p class="inwebparagraph">the first <code class="display"><span class="extract">...</span></code> ptoken has start and end set to 1; <code class="display"><span class="extract">rice</span></code> has start 2; <code class="display"><span class="extract">onions</span></code>
@@ -2378,10 +2370,8 @@ paragraph break. Internally, it's a list of productions divided by stroke symbol
     the final ones. For example, if the production is
     </p>
 
-    <p class="inwebparagraph"></p>
-
     <pre class="display">
-            <span class="plain">adjust the &lt;achingly-slow&gt; to the &lt;exhaustive&gt; at once</span>
+            <span class="identifier">adjust</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> &lt;</span><span class="identifier">achingly</span><span class="plain">-</span><span class="identifier">slow</span><span class="plain">&gt; </span><span class="identifier">to</span><span class="plain"> </span><span class="identifier">the</span><span class="plain"> &lt;</span><span class="identifier">exhaustive</span><span class="plain">&gt; </span><span class="identifier">at</span><span class="plain"> </span><span class="identifier">once</span>
     </pre>
 
     <p class="inwebparagraph">then the fast scan verifies the presence of "adjust the" and "at once";
@@ -2783,10 +2773,8 @@ paragraph break. Internally, it's a list of productions divided by stroke symbol
     <p class="inwebparagraph">This is why two elastic nonterminals in a row won't parse correctly:
     </p>
 
-    <p class="inwebparagraph"></p>
-
     <pre class="display">
-            <span class="plain">frog &lt;amphibian&gt; &lt;pond-preference&gt; toad</span>
+            <span class="identifier">frog</span><span class="plain"> &lt;</span><span class="identifier">amphibian</span><span class="plain">&gt; &lt;</span><span class="identifier">pond</span><span class="plain">-</span><span class="identifier">preference</span><span class="plain">&gt; </span><span class="identifier">toad</span>
     </pre>
 
     <p class="inwebparagraph">Preform is unable to work out where the central boundary will occur. In theory
@@ -2843,10 +2831,8 @@ paragraph break. Internally, it's a list of productions divided by stroke symbol
     the strut might run up right to the end of the input text: for example, in
     </p>
 
-    <p class="inwebparagraph"></p>
-
     <pre class="display">
-            <span class="plain">neckties ... tied ***</span>
+            <span class="identifier">neckties</span><span class="plain"> ... </span><span class="identifier">tied</span><span class="plain"> ***</span>
     </pre>
 
     <p class="inwebparagraph">the word "tied" is a strut, because the <code class="display"><span class="extract">***</span></code> makes its position uncertain,

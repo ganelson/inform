@@ -675,10 +675,8 @@ value useful for sorting algorithms: 0 if equal, positive if <code class="displa
 negative if <code class="display"><span class="extract">i2 &lt; i1</span></code>. This is a stable trichotomy; in particular,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">World::Inferences::compare_inferences(I, J) == -World::Inferences::compare_inferences(J, I)</span>
+        <span class="functiontext">World::Inferences::compare_inferences</span><span class="plain">(</span><span class="identifier">I</span><span class="plain">, </span><span class="identifier">J</span><span class="plain">) == -</span><span class="functiontext">World::Inferences::compare_inferences</span><span class="plain">(</span><span class="identifier">J</span><span class="plain">, </span><span class="identifier">I</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">for all pairs of inference pointers <code class="display"><span class="extract">I</span></code> and <code class="display"><span class="extract">J</span></code>.
@@ -738,7 +736,7 @@ was probably a good thing.
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pr1</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">pr1</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">pr2</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Properties::is_either_or</span><span class="plain">(</span><span class="identifier">pr2</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">((</span><span class="identifier">pr1</span><span class="plain"> == </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">pr2</span><span class="plain">)) ||</span>
-            <span class="plain">(</span><span class="identifier">pr2</span><span class="plain"> == </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">pr1</span><span class="plain">)))) </span><span class="identifier">pr2</span><span class="plain"> = </span><span class="identifier">pr1</span><span class="plain">;</span>
+            <span class="plain"> (</span><span class="identifier">pr2</span><span class="plain"> == </span><span class="functiontext">Properties::EitherOr::get_negation</span><span class="plain">(</span><span class="identifier">pr1</span><span class="plain">)))) </span><span class="identifier">pr2</span><span class="plain"> = </span><span class="identifier">pr1</span><span class="plain">;</span>
         <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">World::Inferences::measure_property</span><span class="plain">(</span><span class="identifier">pr1</span><span class="plain">) - </span><span class="functiontext">World::Inferences::measure_property</span><span class="plain">(</span><span class="identifier">pr2</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">CI_DIFFER_IN_PROPERTY</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -</span><span class="constant">CI_DIFFER_IN_PROPERTY</span><span class="plain">;</span>
         <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">World::Inferences::measure_infs</span><span class="plain">(</span><span class="identifier">i1</span><span class="plain">-&gt;</span><span class="element">infs_ref2</span><span class="plain">) - </span><span class="functiontext">World::Inferences::measure_infs</span><span class="plain">(</span><span class="identifier">i2</span><span class="plain">-&gt;</span><span class="element">infs_ref2</span><span class="plain">);</span>
@@ -895,10 +893,8 @@ is not possible here.)
 always at least half-way down the list, so we can be certain that
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">i-&gt;inference_type == list-&gt;inference_type</span>
+        <span class="identifier">i</span><span class="plain">-&gt;</span><span class="element">inference_type</span><span class="plain"> == </span><span class="identifier">list</span><span class="plain">-&gt;</span><span class="element">inference_type</span>
 </pre>
 
 <p class="inwebparagraph">(and therefore it's unambiguous what we mean by the type of inference being

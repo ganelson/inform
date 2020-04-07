@@ -716,21 +716,21 @@ neither of which is altered by and surgery. The difficulty arises with
 which, we notice, has exactly the same grammatical structure as the first of
 the two sentences above, yet a very different meaning, since "openable" is a
 property whereas "bat" was an object. We perform surgery on:
-
-	|AND_NT|
-	|    ADJECTIVE_NT prop:p46_openable|
-	|    WITH_NT|
-	|        COMMON_NOUN_NT K4_door|
-	|        ADJECTIVE_NT prop:p44_open|
-
+= (text)
+	AND_NT
+	    ADJECTIVE_NT prop:p46_openable
+	    WITH_NT
+	        COMMON_NOUN_NT K4_door
+	        ADJECTIVE_NT prop:p44_open
+=
 to restructure the nodes as:
-
-	|WITH_NT|
-	|    COMMON_NOUN_NT K4_door|
-	|    AND_NT|
-	|        ADJECTIVE_NT prop:p46_openable|
-	|        ADJECTIVE_NT prop:p44_open|
-
+= (text)
+	WITH_NT
+	    COMMON_NOUN_NT K4_door
+	    AND_NT
+	        ADJECTIVE_NT prop:p46_openable
+	        ADJECTIVE_NT prop:p44_open
+=
 This innocent-looking little routine involved drawing a lot of diagrams
 on the back of an envelope. Change at your peril.
 
@@ -766,20 +766,21 @@ with description ..." -- but which is inconvenient for our implementation
 of |WITH_NT| later on. So we construe the sentence instead with a single
 "with", as "a container with properties open and description ..." In
 terms of the tree,
-
-	|WITH_NT|
-	|    WITH_NT|
-	|        COMMON_NOUN_NT K4_container|
-	|        ADJECTIVE_NT prop:p44_open|
-	|    PROPERTY_LIST_NT "The box..."|
-
+= (text)
+	WITH_NT
+	    WITH_NT
+	        COMMON_NOUN_NT K4_container
+	        ADJECTIVE_NT prop:p44_open
+	    PROPERTY_LIST_NT "The box..."
+=
 is reconstructed as:
-
-	|WITH_NT|
-	|    COMMON_NOUN_NT K4_container|
-	|    AND_NT|
-	|        ADJECTIVE_NT prop:p44_open|
-	|        PROPERTY_LIST_NT "The box..."|
+= (text)
+	WITH_NT
+	    COMMON_NOUN_NT K4_container
+	    AND_NT
+	        ADJECTIVE_NT prop:p44_open
+	        PROPERTY_LIST_NT "The box..."
+=
 
 =
 void Assertions::Refiner::perform_with_surgery(parse_node *p) {
@@ -800,19 +801,21 @@ here work:
 
 >> The escalator is a door. It is below the Kudamm and above the U-Bahn.
 
-	|    RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)|
-	|        AND_NT|
-	|            PROPER_NOUN_NT <kudamm> (definite)|
-	|            RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)|
-	|                PROPER_NOUN_NT <u-bahn> (definite)|
-
+= (text)
+	    RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)
+	        AND_NT
+	            PROPER_NOUN_NT <kudamm> (definite)
+	            RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)
+	                PROPER_NOUN_NT <u-bahn> (definite)
+=
 into:
-
-	|    AND_NT|
-	|        RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)|
-	|            PROPER_NOUN_NT <kudamm> (definite)|
-	|        RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)|
-	|            PROPER_NOUN_NT <u-bahn> (definite)|
+= (text)
+	    AND_NT
+	        RELATIONSHIP_NT <below> (CONTAINS_THINGS_INF)
+	            PROPER_NOUN_NT <kudamm> (definite)
+	        RELATIONSHIP_NT <above> (CONTAINS_THINGS_INF)
+	            PROPER_NOUN_NT <u-bahn> (definite)
+=
 
 =
 void Assertions::Refiner::perform_location_surgery(parse_node *p) {
@@ -838,20 +841,21 @@ void Assertions::Refiner::perform_location_surgery(parse_node *p) {
 The following case occurs very rarely, on a noun phrase such as
 "north of a room called the Hot and Cold Room". The problem, as usual, is
 the two clauses are the wrong way around, so we perform surgery to turn:
-
-	|CALLED_NT  <called>|
-	|	RELATIONSHIP_NT  <north of a room> (type:direction)|
-    |		PROPER_NOUN_NT  <room> (indefinite)|
-	|		PROPER_NOUN_NT  <north> (no article)|
-	|	PROPER_NOUN_NT  <hot and cold room> (definite)|
-
+= (text)
+	CALLED_NT  <called>
+		RELATIONSHIP_NT  <north of a room> (type:direction)
+			PROPER_NOUN_NT  <room> (indefinite)
+			PROPER_NOUN_NT  <north> (no article)
+		PROPER_NOUN_NT  <hot and cold room> (definite)
+=
 into:
-
-	|RELATIONSHIP_NT  <called> (type:direction)|
-	|	CALLED_NT  <north of a room>|
-    |		COMMON_NOUN_NT  <room>|
-    |		CREATED_NT  <hot and cold room>|
-    |	PROPER_NOUN_NT  <north> (no article)|
+= (text)
+	RELATIONSHIP_NT  <called> (type:direction)
+		CALLED_NT  <north of a room>
+			COMMON_NOUN_NT  <room>
+			CREATED_NT  <hot and cold room>
+		PROPER_NOUN_NT  <north> (no article)
+=
 
 =
 void Assertions::Refiner::perform_called_surgery(parse_node *p) {

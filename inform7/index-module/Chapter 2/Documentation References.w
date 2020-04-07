@@ -179,8 +179,9 @@ void Index::DocReferences::doc_mark_used(text_stream *symb, int at_word) {
 
 @ The following dumps the result. This is not useful for a single run,
 especially, but to be accumulated over a whole corpus of source texts, e.g.:
-
-	|intest --keep-log=USAGE -log=phrase-usage examples|
+= (text as ConsoleText)
+	$ intest/Tangled/intest --keep-log=USAGE -log=phrase-usage examples
+=
 
 =
 void Index::DocReferences::log_statistics(void) {

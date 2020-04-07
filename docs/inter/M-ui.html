@@ -84,10 +84,8 @@ for Inform then the Inter executable will be at <code class="display"><span clas
 a single file:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter INTERFILE</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="plain"> INTERFILE</span>
 </pre>
 
 <p class="inwebparagraph">Inter simply verifies this file for correctness: that is, to see if the inter
@@ -106,20 +104,16 @@ versa. The option <code class="display"><span class="extract">-binary X</span></
 and <code class="display"><span class="extract">-textual X</span></code> writes a text form. So, for example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter my.intert -binary my.interb</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="plain"> my.intert</span><span class="identifier"> -binary</span><span class="plain"> my.interb</span>
 </pre>
 
 <p class="inwebparagraph">converts <code class="display"><span class="extract">my.intert</span></code> (a textual inter file) to its binary equivalent
 <code class="display"><span class="extract">my.interb</span></code>, and conversely:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter my.interb -textual my.intert</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="plain"> my.interb</span><span class="identifier"> -textual</span><span class="plain"> my.intert</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -129,19 +123,15 @@ a pipeline of processing stages. The pipeline, which must contain at least
 one stage, can be quite elaborate (see later), but for example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">read &lt;- myfile.inter, resolve-conditional-compilation, generate inform6 -&gt; myfile.i6</span>
+        <span class="plain">read </span><span class="reserved">&lt;-</span><span class="plain"> myfile.inter, resolve-conditional-compilation, generate inform6 </span><span class="reserved">-&gt;</span><span class="plain"> myfile.i6</span>
 </pre>
 
 <p class="inwebparagraph">is a valid three-stage pipeline. The command to do this is then:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter -pipeline-text 'PIPELINE'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="identifier"> -pipeline-text</span><span class="plain"> 'PIPELINE'</span>
 </pre>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">PIPELINE</span></code> is a textual description like the one above. In practice,
@@ -149,17 +139,13 @@ it may not be convenient to spell the pipeline out on the command line, so
 one can also put it into a text file:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter -pipeline-file mypl.interpipeline</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="identifier"> -pipeline-file</span><span class="plain"> mypl.interpipeline</span>
 </pre>
 
 <p class="inwebparagraph">Pipelines can contain variables, and their values can be set at the command
 line with e.g.:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-variable '*out=myfile.i6'</span>
@@ -167,8 +153,6 @@ line with e.g.:
 
 <p class="inwebparagraph">It is also possible to set the default directory for reading and writing files:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-domain D</span>
@@ -194,21 +178,17 @@ assimilate for only one architecture at a time, so a command must specify
 which is wanted. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inter/Tangled/inter -architecture 16 -assimilate K</span>
-        <span class="plain">$ inter/Tangled/inter -architecture 32d -assimilate K</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="identifier"> -architecture</span><span class="plain"> 16</span><span class="identifier"> -assimilate</span><span class="plain"> K</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inter/Tangled/inter</span><span class="identifier"> -architecture</span><span class="plain"> 32d</span><span class="identifier"> -assimilate</span><span class="plain"> K</span>
 </pre>
 
 <p class="inwebparagraph">Incrementally assimilating kits as needed could be done with something like
 the Unix tool <code class="display"><span class="extract">make</span></code>, but in fact Inbuild has this ability: the command
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -build K</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -build</span><span class="plain"> K</span>
 </pre>
 
 <p class="inwebparagraph">looks at the kit, works out which architectures need re-assimilation, and
@@ -216,10 +196,8 @@ then issues commands like the above to instruct <code class="display"><span clas
 multiple kits can be managed with a single command:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -build -contents-of inform7/Internal/Inter</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -build -contents-of</span><span class="plain"> inform7/Internal/Inter</span>
 </pre>
 
 <p class="inwebparagraph"></p>

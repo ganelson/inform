@@ -152,9 +152,9 @@ void Phrases::create_from_preamble(parse_node *p) {
 	phod = Phrases::Options::parse_declared_options(OW);
 
 @ The stack frame needs to know the kind of this phrase -- something like
-
-	|phrase number -> text|
-
+= (text as Inform 6)
+	phrase number -> text
+=
 -- in order to work out what happens when values are decided by it later on.
 We also tell the stack frame if there are phrase options, because then a
 special parameter called |{phrase options}| is available when expanding

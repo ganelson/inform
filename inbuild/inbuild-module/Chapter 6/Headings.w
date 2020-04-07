@@ -68,18 +68,18 @@ heading pseudo_heading; /* The entire source falls under this top-level heading 
 @ As an example, a sequence in the primary source text of (Chapter I, Book
 Two, Section 5, Chapter I, Section 1, Chapter III) would be formed up into
 the heading tree:
-
-	|(the pseudo-heading)  level -1, indentation -1|
-	|    (File: Standard Rules)  level 0, indentation 0|
-	|        ...|
-	|    (File: primary source text)  level 0, indentation 0|
-	|        Chapter I  level 4, indentation 1|
-	|        Book Two  level 2, indentation 1|
-	|            Section 5  level 5, indentation 2|
-	|            Chapter I  level 4, indentation 2|
-	|                Section 1  level 5, indentation 3|
-	|            Chapter III  level 4, indentation 2|
-
+= (text)
+	(the pseudo-heading)  level -1, indentation -1
+	    (File: Standard Rules)  level 0, indentation 0
+	        ...
+	    (File: primary source text)  level 0, indentation 0
+	        Chapter I  level 4, indentation 1
+	        Book Two  level 2, indentation 1
+	            Section 5  level 5, indentation 2
+	            Chapter I  level 4, indentation 2
+	                Section 1  level 5, indentation 3
+	            Chapter III  level 4, indentation 2
+=
 Note that the level of a heading is not the same thing as its depth in this
 tree, which we call the "indentation", and there is no simple relationship
 between the two numbers. Clearly we want to start at the left margin. If a
@@ -118,20 +118,20 @@ storage: we call it the "last indentation above level $K$".
 
 This leads to the following algorithm when looking at the headings in any
 individual file of source text: at the top of file,
-
-	|for (i=0; i<NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;|
-
+= (text as C)
+	for (i=0; i<NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;
+=
 Then parse for headings (they have an easily recognised lexical form); each
 time one is found, work out its |level| as 1, ..., 5 for Volume down to Section,
 and call:
-
-	|int find_indentation(int level) {|
-	|    int i, ind = last_indentation_above_level[level] + 1;|
-	|    for (i=level+1; i<NO_HEADING_LEVELS; i++)|
-	|        last_indentation_above_level[i] = ind;|
-	|    return ind;|
-	|}|
-
+= (text as C)
+	int find_indentation(int level) {
+	    int i, ind = last_indentation_above_level[level] + 1;
+	    for (i=level+1; i<NO_HEADING_LEVELS; i++)
+	        last_indentation_above_level[i] = ind;
+	    return ind;
+	}
+=
 While this algorithm is trivially equivalent to finding the depth of a
 heading in the tree which we are going to build anyway, it is worth noting
 here for the benefit of anyone writing a tool to (let's say) typeset an
@@ -411,13 +411,13 @@ at the top of the tree.
 deep in the tree as we can see they need to be from h's perspective alone".
 This isn't always the final position. For instance, given the sequence
 Volume 1, Chapter I, Section A, Chapter II, the tree is adjusted twice:
-
-	|when h = Volume 1:        then when h = Chapter I:|
-	|Volume 1                  Volume 1|
-	|    Chapter I                 Chapter I|
-	|    Section A                     Section A|
-	|    Chapter II                Chapter II|
-
+= (text)
+	when h = Volume 1:        then when h = Chapter I:
+	Volume 1                  Volume 1
+	    Chapter I                 Chapter I
+	    Section A                     Section A
+	    Chapter II                Chapter II
+=
 since Section A is demoted twice, once by Volume 1, then by Chapter I.
 (This algorithm would in principle be quadratic in the number of headings if
 the possible depth of the tree were unbounded -- every heading might have to

@@ -141,12 +141,12 @@ has in this version: for example, given the definition
 
 the invocation
 
-	judge 2 against "two";
+>> judge 2 against "two";
 
 would result in a call to this routine where K was set to:
-
-	|phrase (number, text) -> nothing|
-
+= (text)
+	phrase (number, text) -> nothing
+=
 If the kind involves variables, the caller must also supply the current
 values in force, so that there is no possible ambiguity in how we read K.
 

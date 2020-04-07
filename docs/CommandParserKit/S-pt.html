@@ -595,7 +595,7 @@ fairly thorough description of its output, which is written into the
             <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">ReParse</span><span class="plain">;</span>
         <span class="plain">}</span>
 
-    <span class="plain">.</span><span class="identifier">ReType</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">ReType</span><span class="plain">;</span>
 
         <span class="identifier">cobj_flag</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">actors_location</span><span class="plain"> = </span><span class="identifier">ScopeCeiling</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">);</span>
@@ -604,7 +604,7 @@ fairly thorough description of its output, which is written into the
             <span class="identifier">num_words</span><span class="plain"> = </span><span class="identifier">WordCount</span><span class="plain">(); </span><span class="identifier">players_command</span><span class="plain"> = </span><span class="constant">100</span><span class="plain"> + </span><span class="identifier">num_words</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">EndActivity</span><span class="plain">(</span><span class="identifier">READING_A_COMMAND_ACT</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">ReType</span><span class="plain">;</span>
 
-    <span class="plain">.</span><span class="identifier">ReParse</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">ReParse</span><span class="plain">;</span>
 
         <span class="identifier">parser_inflection</span><span class="plain"> = </span><span class="identifier">name</span><span class="plain">;</span>
 
@@ -640,7 +640,7 @@ fairly thorough description of its output, which is written into the
                     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">UnsignedCompare</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">HDR_DICTIONARY</span><span class="plain">--&gt;0) &gt;= </span><span class="constant">0</span><span class="plain"> &amp;&amp;</span>
                         <span class="identifier">UnsignedCompare</span><span class="plain">(</span><span class="identifier">j</span><span class="plain">, </span><span class="identifier">HDR_HIGHMEMORY</span><span class="plain">--&gt;0) &lt; </span><span class="constant">0</span><span class="plain">)</span>
-                        <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">;</span>
+                        <span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">;</span>
                     <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">Ifnot</span><span class="plain">; </span><span class="comment">TARGET_GLULX</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">-&gt;0 == </span><span class="constant">$60</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">j</span><span class="plain">;</span>
@@ -657,14 +657,14 @@ fairly thorough description of its output, which is written into the
         <span class="identifier">actors_location</span><span class="plain"> = </span><span class="identifier">ScopeCeiling</span><span class="plain">(</span><span class="identifier">player</span><span class="plain">);</span>
         <span class="identifier">usual_grammar_after</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
-    <span class="plain">.</span><span class="identifier">AlmostReParse</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">AlmostReParse</span><span class="plain">;</span>
 
         <span class="identifier">scope_token</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">action_to_be</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
         <span class="comment">Begin from what we currently think is the verb word</span>
 
-    <span class="plain">.</span><span class="identifier">BeginCommand</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">BeginCommand</span><span class="plain">;</span>
 
         <span class="identifier">wn</span><span class="plain"> = </span><span class="identifier">verb_wordnum</span><span class="plain">;</span>
         <span class="identifier">verb_word</span><span class="plain"> = </span><span class="identifier">NextWordStopped</span><span class="plain">();</span>
@@ -1017,7 +1017,7 @@ most common) case:
                             <span class="reserved">do</span><span class="plain"> {</span>
                                 <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
                             <span class="plain">} </span><span class="reserved">until</span><span class="plain"> ((</span><span class="identifier">wn</span><span class="plain"> &gt; </span><span class="identifier">num_words</span><span class="plain">) ||</span>
-                                    <span class="plain">(</span><span class="identifier">l</span><span class="plain"> &amp;&amp; (</span><span class="identifier">l</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">8</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">));</span>
+                                    <span class="plain"> (</span><span class="identifier">l</span><span class="plain"> &amp;&amp; (</span><span class="identifier">l</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">8</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">));</span>
 
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt; </span><span class="identifier">num_words</span><span class="plain">) {</span>
                                 <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
@@ -1033,7 +1033,7 @@ most common) case:
                                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">line_token</span><span class="plain">--&gt;</span><span class="identifier">pcount</span><span class="plain">)-&gt;0 &amp; </span><span class="constant">$20</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
                                         <span class="identifier">pcount</span><span class="plain">++;</span>
                                         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">line_token</span><span class="plain">--&gt;</span><span class="identifier">pcount</span><span class="plain"> ~= </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">) &amp;&amp;</span>
-                                            <span class="plain">((</span><span class="identifier">line_token</span><span class="plain">--&gt;</span><span class="identifier">pcount</span><span class="plain">)-&gt;0 &amp; </span><span class="constant">$10</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">))</span>
+                                            <span class="plain">   ((</span><span class="identifier">line_token</span><span class="plain">--&gt;</span><span class="identifier">pcount</span><span class="plain">)-&gt;0 &amp; </span><span class="constant">$10</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">))</span>
                                             <span class="identifier">pcount</span><span class="plain">++;</span>
                                     <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                                         <span class="identifier">pcount</span><span class="plain">++;</span>
@@ -1043,7 +1043,7 @@ most common) case:
                                     <span class="reserved">do</span><span class="plain"> {</span>
                                         <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
                                     <span class="plain">} </span><span class="reserved">until</span><span class="plain"> ((</span><span class="identifier">wn</span><span class="plain"> &gt;= </span><span class="identifier">num_words</span><span class="plain">) ||</span>
-                                            <span class="plain">(</span><span class="identifier">l</span><span class="plain"> &amp;&amp; (</span><span class="identifier">l</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">8</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">));</span>
+                                            <span class="plain"> (</span><span class="identifier">l</span><span class="plain"> &amp;&amp; (</span><span class="identifier">l</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">8</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">));</span>
 
                                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain"> &amp;&amp; (</span><span class="identifier">l</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">8</span><span class="plain">) </span><span class="reserved">continue</span><span class="plain">;</span>
 
@@ -1155,7 +1155,7 @@ so that it may be reprinted by the parser later on.
                 <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">2</span><span class="plain">)</span>
                     <span class="reserved">print</span><span class="plain"> </span><span class="string">" [line "</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="string">" token "</span><span class="plain">, </span><span class="identifier">pcount</span><span class="plain">, </span><span class="string">" word "</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">, </span><span class="string">" : "</span><span class="plain">, (</span><span class="identifier">DebugToken</span><span class="plain">) </span><span class="identifier">token</span><span class="plain">,</span>
-                    <span class="string">"]^"</span><span class="plain">;</span>
+                    <span class="plain">  </span><span class="string">"]^"</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
 
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">token</span><span class="plain"> ~= </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">) {</span>
@@ -1345,7 +1345,7 @@ fake action <code class="display"><span class="extract">##NotUnderstood</span></
 </p>
 
 <pre class="display">
-    <span class="plain">.</span><span class="identifier">GiveError</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">GiveError</span><span class="plain">;</span>
 
         <span class="identifier">etype</span><span class="plain"> = </span><span class="identifier">best_etype</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">actor</span><span class="plain"> ~= </span><span class="identifier">player</span><span class="plain">) {</span>
@@ -1473,19 +1473,19 @@ fake action <code class="display"><span class="extract">##NotUnderstood</span></
         <span class="comment">At this point, the return value is all prepared, and we are only looking</span>
         <span class="comment">to see if there is a "then" followed by subsequent instruction(s).</span>
 
-    <span class="plain">.</span><span class="identifier">LookForMore</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">LookForMore</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt; </span><span class="identifier">num_words</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;</span>
 
         <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="identifier">THEN1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN3__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">comma_word</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &gt; </span><span class="identifier">num_words</span><span class="plain">) {</span>
-            <span class="identifier">held_back_mode</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain">;</span>
+            <span class="plain">   </span><span class="identifier">held_back_mode</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+            <span class="plain">   </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="identifier">hb_wn</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">;</span>
             <span class="identifier">held_back_mode</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain">;</span>
+        <span class="plain">   </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">best_etype</span><span class="plain"> = </span><span class="identifier">UPTO_PE</span><span class="plain">;</span>
         <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">GiveError</span><span class="plain">;</span>
@@ -1572,7 +1572,7 @@ break down others into elementary tokens
                 <span class="identifier">t</span><span class="plain"> = </span><span class="identifier">match_scores</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">; @</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">t</span><span class="plain">;</span>
             <span class="plain">}</span>
             <span class="plain">@</span><span class="identifier">push</span><span class="plain"> </span><span class="identifier">number_matched</span><span class="plain">;</span>
-        <span class="plain">}</span>
+        <span class="plain"> }</span>
 
         <span class="identifier">parsetoken_nesting</span><span class="plain">++;</span>
         <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">ParseToken__</span><span class="plain">(</span><span class="identifier">given_ttype</span><span class="plain">, </span><span class="identifier">given_tdata</span><span class="plain">, </span><span class="identifier">token_n</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">);</span>
@@ -1607,9 +1607,9 @@ break down others into elementary tokens
         <span class="identifier">parser_inflection</span><span class="plain"> = </span><span class="identifier">name</span><span class="plain">;</span>
 
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">given_ttype</span><span class="plain">) {</span>
-        <span class="identifier">ELEMENTARY_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ELEMENTARY_TT</span><span class="plain">:</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">given_tdata</span><span class="plain">) {</span>
-            <span class="identifier">SPECIAL_TOKEN</span><span class="plain">:</span>
+            <span class="plain">  </span><span class="identifier">SPECIAL_TOKEN</span><span class="plain">:</span>
                 <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">TryNumber</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">);</span>
                 <span class="identifier">special_word</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
                 <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
@@ -1625,7 +1625,7 @@ break down others into elementary tokens
                 <span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_NUMBER</span><span class="plain">;</span>
 
-            <span class="identifier">NUMBER_TOKEN</span><span class="plain">:</span>
+            <span class="plain">  </span><span class="identifier">NUMBER_TOKEN</span><span class="plain">:</span>
                 <span class="identifier">l</span><span class="plain">=</span><span class="identifier">TryNumber</span><span class="plain">(</span><span class="identifier">wn</span><span class="plain">++);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain"> == -1000) {</span>
                     <span class="identifier">etype</span><span class="plain"> = </span><span class="identifier">NUMBER_PE</span><span class="plain">;</span>
@@ -1637,14 +1637,14 @@ break down others into elementary tokens
                 <span class="identifier">parsed_number</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_NUMBER</span><span class="plain">;</span>
 
-            <span class="identifier">CREATURE_TOKEN</span><span class="plain">:</span>
+            <span class="plain">  </span><span class="identifier">CREATURE_TOKEN</span><span class="plain">:</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">action_to_be</span><span class="plain"> == ##</span><span class="identifier">Answer</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> ##</span><span class="identifier">Ask</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> ##</span><span class="identifier">AskFor</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> ##</span><span class="identifier">Tell</span><span class="plain">)</span>
                     <span class="identifier">scope_reason</span><span class="plain"> = </span><span class="identifier">TALKING_REASON</span><span class="plain">;</span>
 
-            <span class="identifier">TOPIC_TOKEN</span><span class="plain">:</span>
+            <span class="plain">  </span><span class="identifier">TOPIC_TOKEN</span><span class="plain">:</span>
                 <span class="identifier">consult_from</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">line_ttype</span><span class="plain">--&gt;(</span><span class="identifier">token_n</span><span class="plain">+1) ~= </span><span class="identifier">PREPOSITION_TT</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="identifier">line_token</span><span class="plain">--&gt;(</span><span class="identifier">token_n</span><span class="plain">+1) ~= </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">)) {</span>
+                <span class="plain">   (</span><span class="identifier">line_token</span><span class="plain">--&gt;(</span><span class="identifier">token_n</span><span class="plain">+1) ~= </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">)) {</span>
                     <span class="identifier">RunTimeProblem</span><span class="plain">(</span><span class="identifier">RTP_TEXTTOKENTOOHARD</span><span class="plain">);</span>
                     <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_PREPOSITION</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -1663,7 +1663,7 @@ break down others into elementary tokens
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_PREPOSITION</span><span class="plain">;</span>
             <span class="plain">}</span>
 
-        <span class="identifier">PREPOSITION_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">PREPOSITION_TT</span><span class="plain">:</span>
             <span class="comment">Is it an unnecessary alternative preposition, when a previous choice</span>
             <span class="comment">has already been matched?</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">token</span><span class="plain">-&gt;0) &amp; </span><span class="constant">$10</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_PREPOSITION</span><span class="plain">;</span>
@@ -1700,14 +1700,14 @@ break down others into elementary tokens
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">PrepositionChain</span><span class="plain">(</span><span class="identifier">o</span><span class="plain">, </span><span class="identifier">token_n</span><span class="plain">) ~= -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">GPR_PREPOSITION</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain"> -1;</span>
 
-        <span class="identifier">GPR_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">GPR_TT</span><span class="plain">:</span>
             <span class="identifier">l</span><span class="plain"> = </span><span class="reserved">indirect</span><span class="plain">(</span><span class="identifier">given_tdata</span><span class="plain">);</span>
             <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  [Outside parsing routine returned "</span><span class="plain">, </span><span class="identifier">l</span><span class="plain">, </span><span class="string">"]^"</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="identifier">l</span><span class="plain">;</span>
 
-        <span class="identifier">SCOPE_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">SCOPE_TT</span><span class="plain">:</span>
             <span class="identifier">scope_token</span><span class="plain"> = </span><span class="identifier">given_tdata</span><span class="plain">;</span>
             <span class="identifier">scope_stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
@@ -1719,11 +1719,11 @@ break down others into elementary tokens
             <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">given_tdata</span><span class="plain"> = </span><span class="identifier">MULTI_TOKEN</span><span class="plain">; </span><span class="reserved">else</span><span class="plain"> </span><span class="identifier">given_tdata</span><span class="plain"> = </span><span class="identifier">NOUN_TOKEN</span><span class="plain">;</span>
 
-        <span class="identifier">ATTR_FILTER_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ATTR_FILTER_TT</span><span class="plain">:</span>
             <span class="identifier">token_filter</span><span class="plain"> = </span><span class="constant">1</span><span class="plain"> + </span><span class="identifier">given_tdata</span><span class="plain">;</span>
             <span class="identifier">given_tdata</span><span class="plain"> = </span><span class="identifier">NOUN_TOKEN</span><span class="plain">;</span>
 
-        <span class="identifier">ROUTINE_FILTER_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ROUTINE_FILTER_TT</span><span class="plain">:</span>
             <span class="identifier">token_filter</span><span class="plain"> = </span><span class="identifier">given_tdata</span><span class="plain">;</span>
             <span class="identifier">given_tdata</span><span class="plain"> = </span><span class="identifier">NOUN_TOKEN</span><span class="plain">;</span>
 
@@ -1763,7 +1763,7 @@ break down others into elementary tokens
 <pre class="display">
         <span class="comment">We expect to find a list of objects next in what the player's typed.</span>
 
-    <span class="plain">.</span><span class="identifier">ObjectList</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">ObjectList</span><span class="plain">;</span>
 
         <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"  [Object list from word "</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">, </span><span class="string">"]^"</span><span class="plain">;</span>
@@ -1794,19 +1794,19 @@ break down others into elementary tokens
             <span class="plain">}</span>
         <span class="plain">}</span>
 
-    <span class="plain">.</span><span class="identifier">AssumeDescriptor</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">AssumeDescriptor</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="identifier">ME1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">ME2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">ME3__WD</span><span class="plain">) { </span><span class="identifier">pronoun_word</span><span class="plain"> = </span><span class="identifier">o</span><span class="plain">; </span><span class="identifier">pronoun_obj</span><span class="plain"> = </span><span class="identifier">player</span><span class="plain">; }</span>
 
         <span class="identifier">allow_plurals</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">; </span><span class="identifier">desc_wn</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">;</span>
 
-    <span class="plain">.</span><span class="identifier">TryAgain</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">TryAgain</span><span class="plain">;</span>
 
         <span class="comment">First, we parse any descriptive words (like "the", "five" or "every"):</span>
         <span class="identifier">l</span><span class="plain"> = </span><span class="identifier">Descriptors</span><span class="plain">(</span><span class="identifier">token_allows_multiple</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">etype</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; }</span>
 
-    <span class="plain">.</span><span class="identifier">TryAgain2</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">TryAgain2</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1860,7 +1860,7 @@ break down others into elementary tokens
                     <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;0;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">+1 : </span><span class="identifier">j</span><span class="plain">&lt;=</span><span class="identifier">k</span><span class="plain"> : </span><span class="identifier">j</span><span class="plain">++)</span>
                         <span class="reserved">print</span><span class="plain"> </span><span class="string">"  Entry "</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">, </span><span class="string">": "</span><span class="plain">, (</span><span class="identifier">The</span><span class="plain">) </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">j</span><span class="plain">,</span>
-                            <span class="string">" ("</span><span class="plain">, </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">j</span><span class="plain">, </span><span class="string">")^"</span><span class="plain">;</span>
+                            <span class="plain">  </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">j</span><span class="plain">, </span><span class="string">")^"</span><span class="plain">;</span>
                     <span class="reserved">print</span><span class="plain"> </span><span class="string">"  List now has size "</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">, </span><span class="string">"]^"</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -1968,7 +1968,7 @@ break down others into elementary tokens
         <span class="comment">"and", "but" and so on?  If so, create a multiple-object list if we</span>
         <span class="comment">haven't already (and are allowed to).</span>
 
-    <span class="plain">.</span><span class="identifier">NextInList</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">NextInList</span><span class="plain">;</span>
 
         <span class="identifier">o</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
 
@@ -2009,7 +2009,7 @@ break down others into elementary tokens
 <pre class="display">
         <span class="comment">Happy or unhappy endings:</span>
 
-    <span class="plain">.</span><span class="identifier">PassToken</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">PassToken</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">many_flag</span><span class="plain">) {</span>
             <span class="identifier">single_object</span><span class="plain"> = </span><span class="identifier">GPR_MULTIPLE</span><span class="plain">;</span>
             <span class="identifier">multi_context</span><span class="plain"> = </span><span class="identifier">token</span><span class="plain">;</span>
@@ -2026,7 +2026,7 @@ break down others into elementary tokens
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">single_object</span><span class="plain">;</span>
 
-    <span class="plain">.</span><span class="identifier">FailToken</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">FailToken</span><span class="plain">;</span>
 
         <span class="comment">If we were only guessing about it being a plural, try again but only</span>
         <span class="comment">allowing singulars (so that words like "six" are not swallowed up as</span>
@@ -2091,7 +2091,7 @@ or indefinite article.
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain">=</span><span class="reserved">true</span><span class="plain"> : </span><span class="identifier">flag</span><span class="plain"> :) {</span>
             <span class="identifier">o</span><span class="plain"> = </span><span class="identifier">NextWordStopped</span><span class="plain">(); </span><span class="identifier">flag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">=1 : </span><span class="identifier">x</span><span class="plain">&lt;=</span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;0 : </span><span class="identifier">x</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">+4)</span>
+        <span class="plain">   </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">=1 : </span><span class="identifier">x</span><span class="plain">&lt;=</span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;0 : </span><span class="identifier">x</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">+4)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;</span><span class="identifier">x</span><span class="plain">) {</span>
                     <span class="identifier">type</span><span class="plain"> = </span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;(</span><span class="identifier">x</span><span class="plain">+2);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">type</span><span class="plain"> == </span><span class="identifier">DEFART_PK</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">INDEFART_PK</span><span class="plain">) </span><span class="identifier">flag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
@@ -2118,7 +2118,7 @@ is set; it returns a parser error number, or 0 if no error occurred.
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain">=</span><span class="reserved">true</span><span class="plain"> : </span><span class="identifier">flag</span><span class="plain"> :) {</span>
             <span class="identifier">o</span><span class="plain"> = </span><span class="identifier">NextWordStopped</span><span class="plain">(); </span><span class="identifier">flag</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">=1 : </span><span class="identifier">x</span><span class="plain">&lt;=</span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;0 : </span><span class="identifier">x</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">+4)</span>
+        <span class="plain">   </span><span class="reserved">for</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain">=1 : </span><span class="identifier">x</span><span class="plain">&lt;=</span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;0 : </span><span class="identifier">x</span><span class="plain">=</span><span class="identifier">x</span><span class="plain">+4)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o</span><span class="plain"> == </span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;</span><span class="identifier">x</span><span class="plain">) {</span>
                     <span class="identifier">flag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                     <span class="identifier">type</span><span class="plain"> = </span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;(</span><span class="identifier">x</span><span class="plain">+2);</span>
@@ -2129,9 +2129,9 @@ is set; it returns a parser error number, or 0 if no error occurred.
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">type</span><span class="plain"> == </span><span class="identifier">POSSESS_PK</span><span class="plain">) {</span>
                         <span class="identifier">cto</span><span class="plain"> = </span><span class="identifier">LanguageDescriptors</span><span class="plain">--&gt;(</span><span class="identifier">x</span><span class="plain">+3);</span>
                         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">cto</span><span class="plain">) {</span>
-                        <span class="constant">0</span><span class="plain">: </span><span class="identifier">indef_type</span><span class="plain"> = </span><span class="identifier">indef_type</span><span class="plain"> | </span><span class="identifier">MY_BIT</span><span class="plain">;</span>
-                        <span class="constant">1</span><span class="plain">: </span><span class="identifier">indef_type</span><span class="plain"> = </span><span class="identifier">indef_type</span><span class="plain"> | </span><span class="identifier">THAT_BIT</span><span class="plain">;</span>
-                        <span class="reserved">default</span><span class="plain">:</span>
+                        <span class="plain">  </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">indef_type</span><span class="plain"> = </span><span class="identifier">indef_type</span><span class="plain"> | </span><span class="identifier">MY_BIT</span><span class="plain">;</span>
+                        <span class="plain">  </span><span class="constant">1</span><span class="plain">: </span><span class="identifier">indef_type</span><span class="plain"> = </span><span class="identifier">indef_type</span><span class="plain"> | </span><span class="identifier">THAT_BIT</span><span class="plain">;</span>
+                        <span class="plain">  </span><span class="reserved">default</span><span class="plain">:</span>
                             <span class="identifier">indef_owner</span><span class="plain"> = </span><span class="identifier">PronounValue</span><span class="plain">(</span><span class="identifier">cto</span><span class="plain">);</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indef_owner</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">indef_owner</span><span class="plain"> = </span><span class="identifier">InformParser</span><span class="plain">;</span>
                         <span class="plain">}</span>
@@ -2293,8 +2293,8 @@ because we want to allow duplicates).
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wn</span><span class="plain"> &lt;= </span><span class="identifier">num_words</span><span class="plain">) {</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">(); </span><span class="identifier">wn</span><span class="plain">--;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> ~=  </span><span class="identifier">AND1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">AND2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">AND3__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">comma_word</span>
-                    <span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN3__WD</span>
-                    <span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT3__WD</span><span class="plain">) {</span>
+                    <span class="plain">   </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">THEN3__WD</span>
+                    <span class="plain">   </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT1__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT2__WD</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">BUT3__WD</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lookahead</span><span class="plain"> == </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -2327,7 +2327,7 @@ because we want to allow duplicates).
             <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">Adjudicate</span><span class="plain">(</span><span class="identifier">context</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == -1) </span><span class="reserved">rfalse</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">rtrue</span><span class="plain">;       </span><span class="comment">Adjudicate has made a multiple</span>
-                                <span class="comment">object, and we pass it on</span>
+                                <span class="plain"> </span><span class="comment">object, and we pass it on</span>
         <span class="plain">}</span>
 
         <span class="comment">If i is non-zero here, one of two things is happening: either</span>
@@ -2391,7 +2391,7 @@ because we want to allow duplicates).
 
         <span class="comment">...and get an answer:</span>
 
-    <span class="plain">.</span><span class="identifier">WhichOne</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">WhichOne</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=2 : </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">INPUT_BUFFER_LEN</span><span class="plain"> : </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">buffer2</span><span class="plain">-&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">TARGET_ZCODE</span>
@@ -2491,7 +2491,7 @@ because we want to allow duplicates).
         <span class="comment">and can't easily be guessed (eg, the player typed "take" and there</span>
         <span class="comment">were plenty of things which might have been meant).</span>
 
-    <span class="plain">.</span><span class="identifier">Incomplete</span><span class="plain">;</span>
+    <span class="plain">  .</span><span class="identifier">Incomplete</span><span class="plain">;</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain"> == </span><span class="identifier">CREATURE_TOKEN</span><span class="plain">) </span><span class="identifier">PARSER_CLARIF_INTERNAL_RM</span><span class="plain">(</span><span class="character">'D'</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain">                           </span><span class="identifier">PARSER_CLARIF_INTERNAL_RM</span><span class="plain">(</span><span class="character">'E'</span><span class="plain">, </span><span class="identifier">actor</span><span class="plain">);</span>
@@ -2580,7 +2580,7 @@ because we want to allow duplicates).
                     <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">buffer</span><span class="plain"> + </span><span class="identifier">i</span><span class="plain">;</span>
                     <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">TARGET_ZCODE</span><span class="plain">;</span>
                     <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
-                    <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">parse2</span><span class="plain">--&gt;1;</span>
+                    <span class="plain"> </span><span class="reserved">print</span><span class="plain"> (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">parse2</span><span class="plain">--&gt;1;</span>
                     <span class="plain">@</span><span class="identifier">output_stream</span><span class="plain"> -3;</span>
                     <span class="identifier">k</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">--&gt;0;</span>
                     <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">l</span><span class="plain">=</span><span class="identifier">i</span><span class="plain"> : </span><span class="identifier">l</span><span class="plain">&lt;</span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">k</span><span class="plain"> : </span><span class="identifier">l</span><span class="plain">++) </span><span class="identifier">buffer</span><span class="plain">-&gt;</span><span class="identifier">l</span><span class="plain"> = </span><span class="identifier">buffer</span><span class="plain">-&gt;(</span><span class="identifier">l</span><span class="plain">+2);</span>
@@ -2698,10 +2698,10 @@ routines to clear up this mess, so we can't economise on working them out).
             <span class="plain">{   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">advance_warning</span><span class="plain">==-1)</span>
                 <span class="plain">{   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain">==</span><span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain">)</span>
                     <span class="plain">{   </span><span class="identifier">good_ones</span><span class="plain">++; </span><span class="identifier">last</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">;</span>
-                    <span class="plain">}</span>
+                    <span class="plain"> }</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain">==</span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">)</span>
                     <span class="plain">{   </span><span class="reserved">if</span><span class="plain"> (</span><span class="reserved">parent</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">)~=</span><span class="identifier">actor</span><span class="plain">) { </span><span class="identifier">good_ones</span><span class="plain">++; </span><span class="identifier">last</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">; }</span>
-                    <span class="plain">}</span>
+                    <span class="plain"> }</span>
                 <span class="plain">}</span>
                 <span class="reserved">else</span>
                 <span class="plain">{   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain">==</span><span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">n</span><span class="plain">~=</span><span class="identifier">advance_warning</span><span class="plain">)</span>
@@ -2709,7 +2709,7 @@ routines to clear up this mess, so we can't economise on working them out).
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain">==</span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">n</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">advance_warning</span><span class="plain">)</span>
                     <span class="plain">{   </span><span class="identifier">good_ones</span><span class="plain">++; </span><span class="identifier">last</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">; }</span>
                 <span class="plain">}</span>
-            <span class="plain">}</span>
+            <span class="plain"> }</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain">==</span><span class="identifier">CREATURE_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">CreatureTest</span><span class="plain">(</span><span class="identifier">n</span><span class="plain">)==1)</span>
             <span class="plain">{   </span><span class="identifier">good_ones</span><span class="plain">++; </span><span class="identifier">last</span><span class="plain">=</span><span class="identifier">n</span><span class="plain">; }</span>
 
@@ -2754,7 +2754,7 @@ routines to clear up this mess, so we can't economise on working them out).
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">indef_mode</span><span class="plain"> == </span><span class="constant">1</span><span class="plain"> &amp;&amp; </span><span class="identifier">indef_type</span><span class="plain"> &amp; </span><span class="identifier">PLURAL_BIT</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">context</span><span class="plain"> ~= </span><span class="identifier">MULTI_TOKEN</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">MULTIHELD_TOKEN</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">MULTIEXCEPT_TOKEN</span>
-                        <span class="reserved">or</span><span class="plain"> </span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">) {</span>
+                        <span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">) {</span>
                 <span class="identifier">etype</span><span class="plain"> = </span><span class="identifier">MULTI_PE</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="plain">}</span>
@@ -2797,7 +2797,7 @@ routines to clear up this mess, so we can't economise on working them out).
             <span class="plain">}</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> &lt; </span><span class="identifier">indef_wanted</span><span class="plain"> &amp;&amp; </span><span class="identifier">indef_wanted</span><span class="plain"> &lt; </span><span class="identifier">INDEF_ALL_WANTED</span><span class="plain">) {</span>
                 <span class="identifier">etype</span><span class="plain"> = </span><span class="identifier">TOOFEW_PE</span><span class="plain">; </span><span class="identifier">multi_wanted</span><span class="plain"> = </span><span class="identifier">indef_wanted</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Too few found^"</span><span class="plain">;</span>
+                <span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Too few found^"</span><span class="plain">;</span>
                 <span class="identifier">multi_had</span><span class="plain">=</span><span class="identifier">i</span><span class="plain">;</span>
                 <span class="reserved">return</span><span class="plain"> -1;</span>
             <span class="plain">}</span>
@@ -2823,7 +2823,7 @@ routines to clear up this mess, so we can't economise on working them out).
                     <span class="plain">}</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">flag</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) </span><span class="identifier">match_classes</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">-</span><span class="identifier">n</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="identifier">n</span><span class="plain">--; </span><span class="identifier">number_of_classes</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
+        <span class="plain"> </span><span class="identifier">n</span><span class="plain">--; </span><span class="identifier">number_of_classes</span><span class="plain"> = </span><span class="identifier">n</span><span class="plain">;</span>
 
         <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">) {</span>
@@ -2831,7 +2831,7 @@ routines to clear up this mess, so we can't economise on working them out).
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0 : </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">number_matched</span><span class="plain"> : </span><span class="identifier">i</span><span class="plain">++)</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">match_classes</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                     <span class="reserved">print</span><span class="plain"> </span><span class="string">"   "</span><span class="plain">, (</span><span class="identifier">The</span><span class="plain">) </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">")  ---  group "</span><span class="plain">,</span>
-                    <span class="identifier">match_classes</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
+                    <span class="plain">  </span><span class="identifier">match_classes</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">"^"</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
 
@@ -2893,7 +2893,7 @@ This only ever throws things out, never adds new ones.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">multi_context</span><span class="plain"> == </span><span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">) {</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=1,</span><span class="identifier">low</span><span class="plain">=0 : </span><span class="identifier">i</span><span class="plain">&lt;=</span><span class="identifier">multiple_object</span><span class="plain">--&gt;0 : </span><span class="identifier">i</span><span class="plain">++) {</span>
                 <span class="reserved">if</span><span class="plain"> ( (</span><span class="identifier">multi_context</span><span class="plain">==</span><span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> ~= </span><span class="identifier">second_p</span><span class="plain">) ||</span>
-                    <span class="plain">(</span><span class="identifier">multi_context</span><span class="plain">==</span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">second_p</span><span class="plain">)) {</span>
+                    <span class="plain"> (</span><span class="identifier">multi_context</span><span class="plain">==</span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain"> &amp;&amp; </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> </span><span class="reserved">in</span><span class="plain"> </span><span class="identifier">second_p</span><span class="plain">)) {</span>
                     <span class="identifier">low</span><span class="plain">++;</span>
                     <span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">low</span><span class="plain"> = </span><span class="identifier">multiple_object</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -3021,7 +3021,7 @@ evaluate the possibilities is discussed in detail in the DM4.)
 
         <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"   Scoring match list: indef mode "</span><span class="plain">, </span><span class="identifier">indef_mode</span><span class="plain">, </span><span class="string">" type "</span><span class="plain">,</span>
-        <span class="identifier">indef_type</span><span class="plain">, </span><span class="string">", satisfying "</span><span class="plain">, </span><span class="identifier">threshold</span><span class="plain">, </span><span class="string">" requirements:^"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="identifier">indef_type</span><span class="plain">, </span><span class="string">", satisfying "</span><span class="plain">, </span><span class="identifier">threshold</span><span class="plain">, </span><span class="string">" requirements:^"</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
 
         <span class="plain">#</span><span class="identifier">ifdef</span><span class="plain"> </span><span class="identifier">PREFER_HELD</span><span class="plain">;</span>
@@ -3080,10 +3080,10 @@ evaluate the possibilities is discussed in detail in the DM4.)
                 <span class="identifier">match_scores</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">match_scores</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> + </span><span class="identifier">its_score</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"     "</span><span class="plain">, (</span><span class="identifier">The</span><span class="plain">) </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">" ("</span><span class="plain">, </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">,</span>
-                <span class="string">") in "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">its_owner</span><span class="plain">, </span><span class="string">" : "</span><span class="plain">, </span><span class="identifier">match_scores</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">" points^"</span><span class="plain">;</span>
+                <span class="plain">  </span><span class="string">") in "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">its_owner</span><span class="plain">, </span><span class="string">" : "</span><span class="plain">, </span><span class="identifier">match_scores</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain">, </span><span class="string">" points^"</span><span class="plain">;</span>
                 <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
             <span class="plain">}</span>
-        <span class="plain">}</span>
+        <span class="plain"> }</span>
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0 : </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">number_matched</span><span class="plain"> : </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">i</span><span class="plain"> == -1) {</span>
@@ -3117,8 +3117,8 @@ It returns -1 if there are no possible choices.
         <span class="plain">}</span>
         <span class="plain">#</span><span class="identifier">Ifdef</span><span class="plain"> </span><span class="identifier">DEBUG</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_trace</span><span class="plain"> &gt;= </span><span class="constant">4</span><span class="plain">)</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">best</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"   Best guess ran out of choices^"</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"   Best guess "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">earliest</span><span class="plain">,</span>
+        <span class="plain">  </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">best</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"   Best guess ran out of choices^"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"   Best guess "</span><span class="plain">, (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">earliest</span><span class="plain">,</span>
             <span class="string">" ("</span><span class="plain">, </span><span class="identifier">match_list</span><span class="plain">--&gt;</span><span class="identifier">earliest</span><span class="plain">, </span><span class="string">")^"</span><span class="plain">;</span>
         <span class="plain">#</span><span class="identifier">Endif</span><span class="plain">; </span><span class="comment">DEBUG</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">best</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> -1;</span>
@@ -3175,11 +3175,11 @@ for some function f.)
         <span class="comment">is used instead.</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain"> || </span><span class="identifier">o2</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain"> ~= </span><span class="constant">0</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain"> ~= </span><span class="identifier">o2</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
-        <span class="identifier">parser_action</span><span class="plain"> = ##</span><span class="identifier">TheSame</span><span class="plain">; </span><span class="identifier">parser_one</span><span class="plain"> = </span><span class="identifier">o1</span><span class="plain">; </span><span class="identifier">parser_two</span><span class="plain"> = </span><span class="identifier">o2</span><span class="plain">;</span>
-        <span class="identifier">j</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">RunRoutines</span><span class="plain">(</span><span class="identifier">o1</span><span class="plain">,</span><span class="identifier">parse_name</span><span class="plain">); </span><span class="identifier">wn</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == -1) </span><span class="reserved">rtrue</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == -2) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">o1</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain"> ~= </span><span class="identifier">o2</span><span class="plain">.</span><span class="identifier">parse_name</span><span class="plain">) </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="identifier">parser_action</span><span class="plain"> = ##</span><span class="identifier">TheSame</span><span class="plain">; </span><span class="identifier">parser_one</span><span class="plain"> = </span><span class="identifier">o1</span><span class="plain">; </span><span class="identifier">parser_two</span><span class="plain"> = </span><span class="identifier">o2</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">wn</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">RunRoutines</span><span class="plain">(</span><span class="identifier">o1</span><span class="plain">,</span><span class="identifier">parse_name</span><span class="plain">); </span><span class="identifier">wn</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == -1) </span><span class="reserved">rtrue</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain"> == -2) </span><span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
 
         <span class="comment">This is the default algorithm: do they have the same words in their</span>
@@ -3273,7 +3273,7 @@ the preposition <code class="display"><span class="extract">n</span></code>.)
                     <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">LanguageDirection</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">; </span><span class="comment">the direction name as adverb</span>
                 <span class="reserved">else</span>
                     <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">the</span><span class="plain">) </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="plain">.</span><span class="identifier">TokenPrinted</span><span class="plain">;</span>
+        <span class="plain">  .</span><span class="identifier">TokenPrinted</span><span class="plain">;</span>
             <span class="identifier">spacing_flag</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -3780,7 +3780,7 @@ if it was a match because of inadequate input).
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">wn</span><span class="plain">=</span><span class="identifier">j</span><span class="plain">+</span><span class="identifier">k</span><span class="plain">;</span>
 
-            <span class="plain">.</span><span class="identifier">MMbyPN</span><span class="plain">;</span>
+            <span class="plain">  .</span><span class="identifier">MMbyPN</span><span class="plain">;</span>
 
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">parser_action</span><span class="plain"> == ##</span><span class="identifier">PluralFound</span><span class="plain">)</span>
                     <span class="identifier">dict_flags_of_noun</span><span class="plain"> = </span><span class="identifier">dict_flags_of_noun</span><span class="plain"> | </span><span class="constant">4</span><span class="plain">;</span>
@@ -3828,7 +3828,7 @@ if it was a match because of inadequate input).
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">Refers</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">wn</span><span class="plain">-1)) {</span>
             <span class="identifier">threshold</span><span class="plain">++;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">w</span><span class="plain">)</span>
-            <span class="identifier">dict_flags_of_noun</span><span class="plain"> = </span><span class="identifier">dict_flags_of_noun</span><span class="plain"> | ((</span><span class="identifier">w</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">$$01110100</span><span class="plain">);</span>
+            <span class="plain">   </span><span class="identifier">dict_flags_of_noun</span><span class="plain"> = </span><span class="identifier">dict_flags_of_noun</span><span class="plain"> | ((</span><span class="identifier">w</span><span class="plain">-&gt;#</span><span class="identifier">dict_par1</span><span class="plain">) &amp; </span><span class="constant">$$01110100</span><span class="plain">);</span>
             <span class="identifier">w</span><span class="plain"> = </span><span class="identifier">NextWord</span><span class="plain">();</span>
         <span class="plain">}</span>
 
@@ -3953,7 +3953,7 @@ are parsed.)
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digit</span><span class="plain"> == </span><span class="character">'8'</span><span class="plain">) { </span><span class="identifier">d</span><span class="plain"> = </span><span class="constant">8</span><span class="plain">; </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">digok</span><span class="plain">; }</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">digit</span><span class="plain"> == </span><span class="character">'9'</span><span class="plain">) { </span><span class="identifier">d</span><span class="plain"> = </span><span class="constant">9</span><span class="plain">; </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">digok</span><span class="plain">; }</span>
             <span class="reserved">return</span><span class="plain"> -1000;</span>
-        <span class="plain">.</span><span class="identifier">digok</span><span class="plain">;</span>
+        <span class="plain"> .</span><span class="identifier">digok</span><span class="plain">;</span>
             <span class="identifier">tot</span><span class="plain"> = </span><span class="identifier">tot</span><span class="plain">+</span><span class="identifier">mul</span><span class="plain">*</span><span class="identifier">d</span><span class="plain">; </span><span class="identifier">mul</span><span class="plain"> = </span><span class="identifier">mul</span><span class="plain">/10;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">len</span><span class="plain"> &gt; </span><span class="constant">3</span><span class="plain">) </span><span class="identifier">tot</span><span class="plain">=10000;</span>

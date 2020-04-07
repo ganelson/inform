@@ -36,9 +36,9 @@ source_file *SourceText::read_file(inbuild_copy *C, filename *F, text_stream *sy
 }
 
 @ This is where messages like
-
-	|I've also read Standard Rules by Graham Nelson, which is 27204 words long.|
-
+= (text as ConsoleText)
+	I've also read Standard Rules by Graham Nelson, which is 27204 words long.
+=
 are printed to |stdout| (not |stderr|), in something of an affectionate nod
 to TeX's traditional console output, though occasionally I think silence is
 golden and that these messages could go. It's a moot point for almost all users,

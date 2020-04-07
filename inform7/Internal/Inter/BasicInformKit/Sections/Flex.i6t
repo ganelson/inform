@@ -58,13 +58,13 @@ might at any point overflow their current storage, so they're stored in a
 doubly linked list of blocks. The pointer to such a flexible-length array is
 by definition the pointer to the block heading this linked list. For instance,
 the data in a text
-
-	|"But now I worship a celestiall Sunne"|
-
+= (text as Inform 6)
+	"But now I worship a celestiall Sunne"
+=
 might be stored in a list of blocks like so:
-
-	|NULL <-- BN: "But now I wor" <--> BN2: "ship a celestiall Sunne" --> NULL|
-
+= (text as Inform 6)
+	NULL <-- BN: "But now I wor" <--> BN2: "ship a celestiall Sunne" --> NULL
+=
 Note that the unique pointer to |BN2| is the one in the header of the
 |BN| block. When we need to grow such a text, we add additional blocks;
 if the text should shrink, blocks at the end can at our discretion be

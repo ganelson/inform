@@ -331,11 +331,11 @@ once for every combination of possible substitutions into the bound
 variables such that $\phi$ is true. For example,
 $$ \exists x: {\it door}(x)\land{\it open}(x)\land \exists y: {\it room}(y)\land{\it in}(x, y) $$
 might compile to code in the form:
-
-	|blah, blah, blah {|
-	|    M|
-	|} rhubarb, rhubarb|
-
+= (text)
+	blah, blah, blah {
+	    M
+	} rhubarb, rhubarb
+=
 such that execution reaches |M| exactly once for each combination of open
 door $x$ and room $y$ such that $x$ is in $y$. (Position |M| is where we
 will place the case-dependent code for what to do on a successful match.)
@@ -361,9 +361,9 @@ position |M|.
 
 The restriction to syntactically valid subpropositions is important. Suppose
 $\phi$ arises from "all doors are open" and is stored in memory as:
-
-	|Forall x IN[ door(x) IN] open(x)|
-
+= (text)
+	Forall x IN[ door(x) IN] open(x)
+=
 Then |door(x)| and |Forall x IN[ door(x) IN]| are valid, for instance, but
 |IN] open(x)| is not.
 
@@ -569,11 +569,11 @@ Or, cheating Professor de Morgan.
 If we have a run of predicate-like atoms -- say X, Y, Z -- then this amounts
 to a conjunction: $X\land Y\land Z$. The obvious way to compile code for this
 would be to take one term at a time:
-
-	|if (X)|
-	|    if (Y)|
-	|        if (Z)|
-
+= (text)
+	if (X)
+	    if (Y)
+	        if (Z)
+=
 That satisfies the Invariant, and is clearly correct. But we want to use the
 same mechanism when looking at a negation, and then it would go wrong.
 
@@ -585,15 +585,15 @@ we don't crash: it will never be run.) Thus we can assume that between
 
 Between negation brackets, then, we must interpret X, Y, Z as
 $\lnot(X\land Y\land Z)$, and we need to compile that to
-
-	|if (~~(X && Y && Z))|
-
+= (text)
+	if (~~(X && Y && Z))
+=
 rather than
-
-	|if (~~X)|
-	|    if (~~Y)|
-	|        if (~~Z)|
-
+= (text)
+	if (~~X)
+	    if (~~Y)
+	        if (~~Z)
+=
 which gets de Morgan's laws wrong.
 
 @ That means a little fancy footwork to start and finish the compound |if|
@@ -645,10 +645,10 @@ It remains to deal with quantifiers, and to show that the Invariant is
 preserved by them. There are two cases: $\exists$, and everything else.
 
 The existence case is the easiest. Given $\exists v: \psi(v)$ we compile
-
-	|loop header for v to run through its domain set {|
-	|    ...|
-
+= (text)
+	loop header for v to run through its domain set {
+	    ...
+=
 and note that execution reaches the start of the loop body once for each
 possible choice of $v$, as required by the Invariant -- indeed the Invariant
 pretty much requires that this is what we compile.
@@ -667,24 +667,24 @@ so on -- make quantitative statements about the number of valid or invalid
 cases over a domain set. These need more elaborate code. Suppose we have
 $\phi = Q v\in\lbrace v\mid\psi(v)\rbrace: \theta(v)$, which in memory
 looks like this:
-
-	|QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> theta|
-
+= (text)
+	QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> theta
+=
 We compile that to code in the following shape:
-
-	|set count of domain size to 0|
-	|set count of valid cases to 0|
-	|loop header for v to run through its domain set {|
-	|    if psi holds {|
-	|        increment count of domain size|
-	|        if theta holds {|
-	|            increment count of valid cases|
-	|        }|
-	|    }|
-	|}|
-	|if the counts are such that the quantifier is satisfied {|
-	|    ...|
-
+= (text)
+	set count of domain size to 0
+	set count of valid cases to 0
+	loop header for v to run through its domain set {
+	    if psi holds {
+	        increment count of domain size
+	        if theta holds {
+	            increment count of valid cases
+	        }
+	    }
+	}
+	if the counts are such that the quantifier is satisfied {
+	    ...
+=
 We don't always need both counts. For instance, to handle "at least three
 doors are unlocked" we count both the domain size (the number of doors)
 and the number of valid cases (the number of unlocked doors), but only need
@@ -739,9 +739,9 @@ $\not\exists x: {\it person}(x)\land{\it likes}(x, W)$.
 	}
 
 @ To resume the narrative of what happens when we read:
-
-	|QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> theta|
-
+= (text)
+	QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> theta
+=
 We zeroed the counters, compiled the loop headers and pushed details to the
 Q-stack at the |QUANTIFIER| atom; pushed a filtering goal onto the R-stack
 at the |DOMAIN_OPEN| atom; popped it again as accomplished at |DOMAIN_CLOSE|,
@@ -756,13 +756,13 @@ case: in the "at least three doors are unlocked" example, it will have
 found an unlocked one among the doors making up the domain. We then need
 to record any "called" values for later retrieval by whoever called
 this proposition routine: see below. That leaves just this part:
-
-	|        }|
-	|    }|
-	|}|
-	|if the counts are such that the quantifier is satisfied {|
-	|    ...|
-
+= (text)
+	        }
+	    }
+	}
+	if the counts are such that the quantifier is satisfied {
+	    ...
+=
 left to compile, and we will be done: execution will reach the |...| if and
 only if it is true at run-time that three or more of the doors is unlocked.
 
@@ -821,17 +821,17 @@ For example, when reading:
 
 the value of "dupe" is transferred just before |M|, but the value of "lair"
 is transferred as soon as a dark room is found. The code looks like this:
-
-	|set count of domain size to 1|
-	|loop through domain (i.e., dark rooms adjacent to the person's location) {|
-	|    increment count of domain size|
-	|    record the lair value|
-	|}|
-	|if the count of domain size is 1 {|
-	|    record the dupe value|
-	|    M|
-	|}|
-
+= (text)
+	set count of domain size to 1
+	loop through domain (i.e., dark rooms adjacent to the person's location) {
+	    increment count of domain size
+	    record the lair value
+	}
+	if the count of domain size is 1 {
+	    record the dupe value
+	    M
+	}
+=
 If we waited until point |M| to record the lair value, it would have disappeared,
 because |M| is outside the loop which searches the domain of the "exactly one"
 quantifier.
@@ -1450,13 +1450,13 @@ with |x_ix| equal to 0, in case (2), it returns the first value in the
 domain.
 
 @ Snarkily, this is how we do it:
-
-	|if we're called with a valid member of the domain, go to Z|
-	|loop x over members of the domain {|
-	|    return x|
-	|    label Z is here|
-	|}|
-
+= (text)
+	if we're called with a valid member of the domain, go to Z
+	loop x over members of the domain {
+	    return x
+	    label Z is here
+	}
+=
 Which is not really a loop at all, but is a cheap way to extract either the
 initial value or the successor value from a loop header. (The trick actually
 caused some consternation for I6 hackers when early drafts of I7 came out,
@@ -1523,26 +1523,26 @@ involve loops through objects. Consider:
 >> if everyone in the Dining Room can see an animal, ...
 
 Code like this will run very slowly:
-
-	|loop over objects (x)|
-	|    loop over objects (y)|
-	|        if x is a person|
-	|            if x is in the Dining Room|
-	|                if y is an animal|
-	|                    if x can see y|
-	|                        success!|
-
+= (text)
+	loop over objects (x)
+	    loop over objects (y)
+	        if x is a person
+	            if x is in the Dining Room
+	                if y is an animal
+	                    if x can see y
+	                        success!
+=
 This is folly in so many ways. Most objects aren't people or animals, so
 almost all combinations of $x$ and $y$ are wasted. We test the eligibility
 of $x$ for every possible $y$. And there are quick ways to find what is in
 the Dining Room, so we're missing a trick there, too. What we want is:
-
-	|loop over objects in the Dining Room (x)|
-	|    if x is a person|
-	|        loop over animals (y)|
-	|            if x can see y|
-	|                success!|
-
+= (text)
+	loop over objects in the Dining Room (x)
+	    if x is a person
+	        loop over animals (y)
+	            if x can see y
+	                success!
+=
 @ Part of the work is done already: we generate propositions with
 quantifiers as far forwards as they can be, so we won't loop over $y$ before
 checking the validity of $x$. The rest of the work comes from two basic
@@ -1608,9 +1608,9 @@ pcalc_prop *Calculus::Propositions::Deferred::compile_loop_header(int var, local
 @ The following looks more complicated than it really is. Sometimes it's
 called to compile a loop arising from a quantifier with a domain, in
 which case |grouped| is set and |proposition| points to:
-
-	|QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> ...|
-
+= (text)
+	QUANTIFIER --> DOMAIN_OPEN --> psi --> DOMAIN_CLOSE --> ...
+=
 so that $\psi$, the part in the domain group, defines the range of the
 variable. But sometimes the call is to compile a loop not arising from a
 quantifier, so there is no domain group to scan; instead the whole
@@ -1656,9 +1656,9 @@ through all possible $x$ such that $R(x, t)$, by writing a schema for the
 loop in which |*1| denotes the variable $v$ and |*2| the term $t$.
 
 For example, the worn-by relation writes the schema:
-
-	|objectloop (*1 in *2) if (WearerOf(*1)==parent(*1))|
-
+= (text)
+	objectloop (*1 in *2) if (WearerOf(*1)==parent(*1))
+=
 where $v$ runs quickly through the object-tree children of $t$, but items
 carried rather than worn are skipped.
 

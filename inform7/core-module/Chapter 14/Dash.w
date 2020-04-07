@@ -480,10 +480,10 @@ sometimes the grandparent or great-grandparent; and at the start of the
 recursion, when no context has appeared yet, it will be null. In effect,
 then, the tree we're checking contains its own instructions on how it
 should be checked. For example, the subtree
-
-	|CONDITION_CONTEXT_NT|
-	|    p|
-
+= (text)
+	CONDITION_CONTEXT_NT
+	    p
+=
 tells us that when we reach |p| it should be checked as a condition.
 
 =
@@ -887,14 +887,14 @@ there are still a handful of pitfalls.
 
 @ To recap, after checking through the possible readings we have something
 like this as the result:
-
-	|f ? f g ? ? p - - -|
-
+= (text)
+	f ? f g ? ? p - - -
+=
 We can now throw away the |f|, |g| and |-| readings -- failed, grossly failed,
 or never reached -- to leave just those which will be compiled:
-
-	|? ? ? p|
-
+= (text)
+	? ? ? p
+=
 If compiled this will result in run-time code to check if the arguments
 allow the first invocation and run it if so; then the second; then the third;
 and, if those three fell through, run the fourth invocation without further

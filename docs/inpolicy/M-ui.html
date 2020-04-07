@@ -47,10 +47,8 @@ for Inform then the Inpolicy executable will be at <code class="display"><span c
 Usage is very simple:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inpolicy/Tangled/inpolicy POLICY</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inpolicy/Tangled/inpolicy</span><span class="plain"> POLICY</span>
 </pre>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">POLICY</span></code> is whatever we want to check. There are very few at present;
@@ -88,22 +86,20 @@ attempts to match these up. It prints out a report, and concludes with either
 "All is well" or a recommendation for changes. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">1009 problem name(s) have been observed:</span>
-        <span class="plain">    Problems actually existing (the source code refers to them):</span>
-        <span class="plain">        906 problem(s) are named and in principle testable</span>
-        <span class="plain">        81 problem(s) are 'BelievedImpossible', that is, no known source text causes them</span>
-        <span class="plain">        14 problem(s) are 'Untestable', that is, not mechanically testable</span>
-        <span class="plain">        8 problem(s) are '...', that is, they need to be give a name and a test case</span>
-        <span class="plain">    Problems which should have test cases:</span>
-        <span class="plain">        904 problem(s) have test cases</span>
-        <span class="plain">        2 problem(s) have no test case yet:</span>
-        <span class="plain">            PM_SuperfluousOf</span>
-        <span class="plain">            PM_MisplacedFrom</span>
-        <span class="plain">    Problems which are cross-referenced in 'Writing with Inform':</span>
-        <span class="plain">        483 problem(s) are cross-referenced</span>
+            <span class="plain">Problems actually existing (the source code refers to them):</span>
+                <span class="plain">906 problem(s) are named and in principle testable</span>
+                <span class="plain">81 problem(s) are 'BelievedImpossible', that is, no known source text causes them</span>
+                <span class="plain">14 problem(s) are 'Untestable', that is, not mechanically testable</span>
+                <span class="plain">8 problem(s) are '...', that is, they need to be give a name and a test case</span>
+            <span class="plain">Problems which should have test cases:</span>
+                <span class="plain">904 problem(s) have test cases</span>
+                <span class="plain">2 problem(s) have no test case yet:</span>
+                    <span class="plain">PM_SuperfluousOf</span>
+                    <span class="plain">PM_MisplacedFrom</span>
+            <span class="plain">Problems which are cross-referenced in 'Writing with Inform':</span>
+                <span class="plain">483 problem(s) are cross-referenced</span>
         <span class="plain">All is well.</span>
 </pre>
 

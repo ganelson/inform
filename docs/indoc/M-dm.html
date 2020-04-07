@@ -42,17 +42,15 @@ for the markup notations described below, these really are plain text,
 using skipped lines as paragraph breaks, and tabs for indented quotations:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">This is a paragraph of some text, which</span>
         <span class="plain">extends over perhaps many lines. All of the</span>
         <span class="plain">standard letters are allowed:</span>
-        
-        <span class="plain">    The quick brown fox jumped over the lazy dog.</span>
-        <span class="plain">    Jinxed wizards pluck ivy from my quilt.</span>
-        <span class="plain">    Jackdaws love my big sphinx of quartz.</span>
-        
+
+            <span class="plain">The quick brown fox jumped over the lazy dog.</span>
+            <span class="plain">Jinxed wizards pluck ivy from my quilt.</span>
+            <span class="plain">Jackdaws love my big sphinx of quartz.</span>
+
         <span class="plain">The second para begins here, after the</span>
         <span class="plain">skipped line.</span>
 </pre>
@@ -63,14 +61,12 @@ Lines in quotations can be indented still further with more tabs, and
 those margins are preserved.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">For example:</span>
-        
-        <span class="plain">    Instead of waiting when the prevailing wind is northwest:</span>
-        <span class="plain">        say "A fresh gust of wind bowls you over.";</span>
-        <span class="plain">        now the prevailing wind is east.</span>
+
+            <span class="plain">Instead of waiting when the prevailing wind is northwest:</span>
+                <span class="plain">say "A fresh gust of wind bowls you over.";</span>
+                <span class="plain">now the prevailing wind is east.</span>
 </pre>
 
 <p class="inwebparagraph">"Quotations", as this suggests, are often in fact code examples for some
@@ -85,15 +81,13 @@ an exception.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Tables are formatted automatically whenever Indoc sees a pattern like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">    {*}Table 2 - Selected Elements</span>
-        <span class="plain">    Element    Symbol  Atomic number</span>
-        <span class="plain">    "Hydrogen" "H"     1</span>
-        <span class="plain">    "Iron"     "Fe"    26</span>
-        <span class="plain">    "Zinc"     "Zn"    30</span>
-        <span class="plain">    "Uranium"  "U"     92</span>
+            <span class="plain">{*}Table 2 - Selected Elements</span>
+            <span class="plain">Element    Symbol  Atomic number</span>
+            <span class="plain">"Hydrogen" "H"     1</span>
+            <span class="plain">"Iron"     "Fe"    26</span>
+            <span class="plain">"Zinc"     "Zn"    30</span>
+            <span class="plain">"Uranium"  "U"     92</span>
 </pre>
 
 <p class="inwebparagraph">The top line is the title for the table, and then tab-delimited columns follow.
@@ -103,8 +97,6 @@ an exception.
 into sections. A line in the form:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">[Chapter: CHAPTERTITLE] SECTIONTITLE</span>
 </pre>
@@ -113,16 +105,12 @@ into sections. A line in the form:
 line of a volume file must be of this form. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">[Chapter: Things] Descriptions</span>
 </pre>
 
 <p class="inwebparagraph">When it's time for a new section within the same chapter, the simpler form:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">[x] SECTIONTITLE</span>
@@ -135,16 +123,12 @@ numbering is automatically applied by Indoc, and does not appear in the source.
 <p class="inwebparagraph">The final paragraph of a section is allowed to take a special form:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(See REFERENCE for PURPOSE.)</span>
 </pre>
 
 <p class="inwebparagraph">For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">(See Text with substitutions for more on varying what is printed.)</span>
@@ -161,8 +145,6 @@ context can be just a symbol created by <code class="display"><span class="extra
 file, so for example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{Linux:}The top secret DRM decoder ring is not included under Debian...</span>
 </pre>
@@ -176,8 +158,6 @@ the binary <code class="display"><span class="extract">+</span></code> (conjunct
 in that order. The simplest case is
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{^Linux:}The top secret DRM decoder ring is in the Goodies folder...</span>
 </pre>
@@ -186,8 +166,6 @@ in that order. The simplest case is
 examples would be:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{^alpha,beta+gamma:}</span>
 </pre>
@@ -195,8 +173,6 @@ examples would be:
 <p class="inwebparagraph">which is true if either <code class="display"><span class="extract">alpha</span></code> is undeclared, or if both <code class="display"><span class="extract">beta</span></code> and <code class="display"><span class="extract">gamma</span></code>
 are declared; and
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">{^(alpha,beta)+gamma:}</span>
@@ -221,8 +197,6 @@ paste-this-in quotation.
 marked as in this example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{defn ph_randomdesc}a/-- random (description of values) ... value</span>
         <span class="plain">This phrase makes a uniformly random choice...</span>
@@ -239,8 +213,6 @@ material which Indoc produces for the benefit of Inform.
 inside the Inform app. We can prepare for this by tagging the opening line
 of a section like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">[x] Rooms and the map {kind_room} {MAP} {PM_SameKindEquated}</span>
@@ -259,16 +231,12 @@ for this is an elaboration of a scheme devised by Knuth for the TeX Book.
 At its simplest,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">I am the ^{walrus}.</span>
 </pre>
 
 <p class="inwebparagraph">becomes simply
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">I am the walrus.</span>
@@ -279,8 +247,6 @@ new head-word in the index, "walrus". Where a double <code class="display"><span
 index entry is invisible in the text itself, and only the position is
 marked. Thus
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">I am the ^{walrus}.^^{Beatles}</span>
@@ -322,8 +288,6 @@ for the secondary.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>If no categories are defined, there's no index. The instruction needed is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">index: notation = name (options)</span>
 </pre>
@@ -334,8 +298,6 @@ about the category. There are three sorts of notation. The first is the
 caret-and-brace form, for example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">index: ^{`headword} = name (invert)</span>
         <span class="plain">index: ^{headword} = standard</span>
@@ -344,8 +306,6 @@ caret-and-brace form, for example:
 <p class="inwebparagraph">With these notations in place, a sentence in the documentation can be
 marked up like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">The inventor of ^{literate programming} is ^{`Donald Knuth}.^^{archaisms}</span>
@@ -356,8 +316,6 @@ braces. One caret means the copy in braces is part of the book; two means
 it isn't. Thus the above sentence typesets as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">The inventor of literate programming is Donald Knuth.</span>
 </pre>
@@ -366,8 +324,6 @@ it isn't. Thus the above sentence typesets as
 is why we defined ^{`headword} before ^{headword}. In general, the notation
 has to be given in the form
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">^{LheadwordR}</span>
@@ -402,16 +358,12 @@ under K not D. Inversion is not performed if the text already contains a comma.
 This can override wrong guesses. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Extensions are managed by ^{`Justin de Vesine}.</span>
 </pre>
 
 <p class="inwebparagraph">indexes "Vesine, Justin de" (filed under V); but
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Extensions are managed by Justin de Vesine.^^{`de Vesine, Justin}</span>
@@ -427,8 +379,6 @@ every index entry of that category, using the CSS span <code class="display"><sp
 entries like
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">grouping together something  activity  18.14</span>
 </pre>
@@ -441,18 +391,14 @@ material in a CSS span called <code class="display"><span class="extract">indexC
 For example, the Inform 7 Indoc instructions go on to say:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">css: span.indexphrasebracketed ++ {</span>
-        <span class="plain">	color: #8080ff;</span>
+            <span class="plain">color: #8080ff;</span>
         <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph">The practical effect is that the index entry:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">(name of kind) after (enumerated value)  phrase  11.18</span>
@@ -467,8 +413,6 @@ subentries of <code class="display"><span class="extract">{lemma}</span></code> 
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>The second sort of notation is by documentation tag. An instruction like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">index: {act_} = activity ("activity")</span>
@@ -486,8 +430,6 @@ automatically indexed.
 to be activated to appear. The Indoc instructions for Inform activate both:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">index: definition = phrase ("phrase") (bracketed)</span>
         <span class="plain">index: example = example ("example")</span>
@@ -502,8 +444,6 @@ an index entry for every example.
 that's taken as a marker that something is a subentry. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">^{reptiles: snakes}</span>
 </pre>
@@ -511,17 +451,13 @@ that's taken as a marker that something is a subentry. Thus:
 <p class="inwebparagraph">creates something like
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">reptiles</span>
-        <span class="plain">    snakes 3.7</span>
+            <span class="plain">snakes 3.7</span>
 </pre>
 
 <p class="inwebparagraph">while typesetting just "snakes". For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">"Why did it have to be ^{reptiles: snakes}?" mused Indy.</span>
@@ -529,8 +465,6 @@ that's taken as a marker that something is a subentry. Thus:
 
 <p class="inwebparagraph">comes out as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">"Why did it have to be snakes?" mused Indy.</span>
@@ -544,16 +478,12 @@ entries for the super-entry (in this case "reptiles").
 For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">index: ^{~headword} = reptilian (under {reptiles})</span>
 </pre>
 
 <p class="inwebparagraph">means that:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">"Why did it have to be ^{~snakes}?" mused Indy.</span>
@@ -565,8 +495,6 @@ For example:
 <p class="inwebparagraph">Note the difference between these two examples:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">^{people: `Donald Knuth}</span>
 </pre>
@@ -574,17 +502,13 @@ For example:
 <p class="inwebparagraph">makes
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">people    (category "standard")</span>
-        <span class="plain">    Knuth, Donald    (category "name")</span>
+            <span class="plain">Knuth, Donald    (category "name")</span>
 </pre>
 
 <p class="inwebparagraph">whereas
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">^{`Donald Knuth: literate programming}</span>
@@ -593,11 +517,9 @@ For example:
 <p class="inwebparagraph">makes
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Knuth, Donald    (category "name")</span>
-        <span class="plain">    literate programming    (category "standard")</span>
+            <span class="plain">literate programming    (category "standard")</span>
 </pre>
 
 <p class="inwebparagraph">This is because Indoc parses <code class="display"><span class="extract">{A:B}</span></code> as if it were parsing <code class="display"><span class="extract">{A}</span></code> and <code class="display"><span class="extract">{B}</span></code>
@@ -606,8 +528,6 @@ individually, to determine the categories of the superentry and subentry.
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>Lastly, an entry in the form:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">^{reptiles &lt;-- crocodiles &lt;-- alligators}</span>
@@ -623,8 +543,6 @@ sample program &mdash; has its own source file. For example, in the standard
 Inform repository, the example Alpaca Farm lives in:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Documentation/Examples/Alpaca.txt</span>
 </pre>
@@ -632,8 +550,6 @@ Inform repository, the example Alpaca Farm lives in:
 <p class="inwebparagraph">Example files are just like volume files except that they open with a
 special three-line header of metadata. In this example, it's:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">* New commands for old grammar</span>
@@ -662,8 +578,6 @@ Where should the example go in the secondary (e.g., "The Inform Recipe Book")?
 <p class="inwebparagraph">The answer is provided by the special file
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Documentation/Examples/(Recipes).txt</span>
 </pre>
@@ -678,8 +592,6 @@ Book is organised by theme.
 
 <p class="inwebparagraph">There's one special notation, for use at the top of the recipes file:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Going Going == OMIT</span>

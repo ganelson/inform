@@ -86,10 +86,8 @@ declarations are able to say something about them, so they aren't entirely
 abstract. The syntax is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind NAME CONTENT</span>
+        <span class="reserved">kind</span><span class="plain"> NAME CONTENT</span>
 </pre>
 
 <p class="inwebparagraph">The <code class="display"><span class="extract">NAME</span></code>, like all names, goes into the owning package's symbol table;
@@ -126,12 +124,10 @@ not all have to have the same kind;
 <p class="inwebparagraph">For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind k_boolean int2</span>
-        <span class="plain">kind k_list_of_bool list of k_boolean</span>
-        <span class="plain">kind K_grammatical_tense enum</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">C_egtable_col1</span><span class="plain"> </span><span class="identifier">K_column_of_number</span><span class="plain"> = { </span><span class="constant">1</span><span class="plain">, </span><span class="constant">4</span><span class="plain">, </span><span class="constant">9</span><span class="plain">, </span><span class="constant">16</span><span class="plain"> }</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">k_list_of_bool</span><span class="plain"> </span><span class="reserved">list</span><span class="plain"> </span><span class="reserved">of</span><span class="plain"> </span><span class="identifier">k_boolean</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_grammatical_tense</span><span class="plain"> </span><span class="reserved">enum</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -160,12 +156,10 @@ list. For example, <code class="display"><span class="extract">{ 2, 3, 5, 7, 11,
 also accepted for a <code class="display"><span class="extract">struct</span></code>, a <code class="display"><span class="extract">column</span></code> or a <code class="display"><span class="extract">table</span></code>. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }</span>
-        <span class="plain">constant C_egtable_col2 K_column_of_colour = { I_green, undef, I_red }</span>
-        <span class="plain">constant C_egtable K_table = { C_egtable_col1, C_egtable_col2 }</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">C_egtable_col1</span><span class="plain"> </span><span class="identifier">K_column_of_number</span><span class="plain"> = { </span><span class="constant">1</span><span class="plain">, </span><span class="constant">4</span><span class="plain">, </span><span class="constant">9</span><span class="plain">, </span><span class="constant">16</span><span class="plain"> }</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">C_egtable_col2</span><span class="plain"> </span><span class="identifier">K_column_of_colour</span><span class="plain"> = { </span><span class="identifier">I_green</span><span class="plain">, </span><span class="reserved">undef</span><span class="plain">, </span><span class="identifier">I_red</span><span class="plain"> }</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">C_egtable</span><span class="plain"> </span><span class="identifier">K_table</span><span class="plain"> = { </span><span class="identifier">C_egtable_col1</span><span class="plain">, </span><span class="identifier">C_egtable_col2</span><span class="plain"> }</span>
 </pre>
 
 <p class="inwebparagraph">A list-like notation can also be used for a "calculated literal". This is
@@ -211,11 +205,9 @@ list <code class="display"><span class="extract">{ 1, 2, ^"predictable start", 3
 but which should be compiled on two lines with the comment in between:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">1, 2, ! predictable start</span>
-        <span class="plain">3721, -11706</span>
+        <span class="constant">1</span><span class="plain">, </span><span class="constant">2</span><span class="plain">, ! predictable start</span>
+        <span class="constant">3721</span><span class="plain">, -11706</span>
 </pre>
 
 <p class="inwebparagraph">(As unnecessary as this feature seems, it does make the code produced by
@@ -245,10 +237,8 @@ For example, the default <code class="display"><span class="extract">int32</span
 <p class="inwebparagraph">This can be controlled using <code class="display"><span class="extract">defaultvalue KIND = VALUE</span></code>. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">defaultvalue K_boolean = 0</span>
+        <span class="reserved">defaultvalue</span><span class="plain"> </span><span class="identifier">K_boolean</span><span class="plain"> = </span><span class="constant">0</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -261,21 +251,17 @@ is represented in textual inter by a different name.
 <p class="inwebparagraph">These values are called "instances" and must also be declared. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_grammatical_tense enum</span>
-        <span class="plain">instance I_present_tense K_grammatical_tense</span>
-        <span class="plain">instance I_past_tense K_grammatical_tense</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_grammatical_tense</span><span class="plain"> </span><span class="reserved">enum</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">I_present_tense</span><span class="plain"> </span><span class="identifier">K_grammatical_tense</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">I_past_tense</span><span class="plain"> </span><span class="identifier">K_grammatical_tense</span>
 </pre>
 
 <p class="inwebparagraph">It is also possible to specify numerical values to be used at run-time:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">instance I_present_tense K_grammatical_tense = 1</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">I_present_tense</span><span class="plain"> </span><span class="identifier">K_grammatical_tense</span><span class="plain"> = </span><span class="constant">1</span>
 </pre>
 
 <p class="inwebparagraph">If so, then such values must all be different (for all instances of that kind).
@@ -285,11 +271,9 @@ Enum values must fit into an <code class="display"><span class="extract">int16</
 <p class="inwebparagraph">Enumerations, but no other kinds, may have "subkinds", as in this example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_object enum</span>
-        <span class="plain">kind K1_room &lt;= K_object</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_object</span><span class="plain"> </span><span class="reserved">enum</span>
+        <span class="reserved">kind</span><span class="plain"> K1_room &lt;= </span><span class="identifier">K_object</span>
 </pre>
 
 <p class="inwebparagraph">This creates a new <code class="display"><span class="extract">enum</span></code> kind <code class="display"><span class="extract">K1_room</span></code>. Values of this are a subset of
@@ -302,10 +286,8 @@ have subkinds, and so on.
 and must be created before use with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">property NAME KIND</span>
+        <span class="reserved">property</span><span class="plain"> NAME KIND</span>
 </pre>
 
 <p class="inwebparagraph">which declares that <code class="display"><span class="extract">NAME</span></code> is a property whose value has the given <code class="display"><span class="extract">KIND</span></code>;
@@ -313,19 +295,15 @@ however, it doesn't say which kind(s) can have this property, so we also
 have to give one or more "permissions", in the form
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">permission NAME KIND</span>
+        <span class="reserved">permission</span><span class="plain"> NAME KIND</span>
 </pre>
 
 <p class="inwebparagraph">And once that is done, actual values can be assigned with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">propertyvalue NAME OWNER = VALUE</span>
+        <span class="reserved">propertyvalue</span><span class="plain"> NAME OWNER = VALUE</span>
 </pre>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">OWNER</span></code> can either be the name of a whole kind, in which case this sets
@@ -342,16 +320,14 @@ another value (of the same kind).
 <p class="inwebparagraph">For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_object enum</span>
-        <span class="plain">kind K_text text</span>
-        <span class="plain">property P_printed_name K_text</span>
-        <span class="plain">permission P_printed_name K_object</span>
-        <span class="plain">propertyvalue P_printed_name K_object = "something"</span>
-        <span class="plain">instance I_ball K_object</span>
-        <span class="plain">propertyvalue P_printed_name I_ball = "beach ball"</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_object</span><span class="plain"> </span><span class="reserved">enum</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="reserved">text</span>
+        <span class="reserved">property</span><span class="plain"> </span><span class="identifier">P_printed_name</span><span class="plain"> </span><span class="identifier">K_text</span>
+        <span class="reserved">permission</span><span class="plain"> </span><span class="identifier">P_printed_name</span><span class="plain"> </span><span class="identifier">K_object</span>
+        <span class="reserved">propertyvalue</span><span class="plain"> </span><span class="identifier">P_printed_name</span><span class="plain"> </span><span class="identifier">K_object</span><span class="plain"> = </span><span class="string">"something"</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">I_ball</span><span class="plain"> </span><span class="identifier">K_object</span>
+        <span class="reserved">propertyvalue</span><span class="plain"> </span><span class="identifier">P_printed_name</span><span class="plain"> </span><span class="identifier">I_ball</span><span class="plain"> = </span><span class="string">"beach ball"</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -360,10 +336,8 @@ another value (of the same kind).
 used, it evaluates to this value. The syntax is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">constant NAME KIND = VALUE</span>
+        <span class="reserved">constant</span><span class="plain"> NAME KIND = VALUE</span>
 </pre>
 
 <p class="inwebparagraph">where the value given must itself be a constant or literal, and must conform
@@ -375,24 +349,20 @@ has an <code class="display"><span class="extract">unchecked</span></code> kind,
 <p class="inwebparagraph">For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_number int32</span>
-        <span class="plain">constant favourite_prime K_number = 16339</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="reserved">int32</span>
+        <span class="reserved">constant</span><span class="plain"> favourite_prime </span><span class="identifier">K_number</span><span class="plain"> = </span><span class="constant">16339</span>
 </pre>
 
 <p class="inwebparagraph">Constants can have any kind, including enumerated ones, but if so then that
 does not make them instances. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_colour enum</span>
-        <span class="plain">instance C_red K_colour</span>
-        <span class="plain">instance C_green K_colour</span>
-        <span class="plain">constant C_favourite K_colour = C_green</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_colour</span><span class="plain"> </span><span class="reserved">enum</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">C_red</span><span class="plain"> </span><span class="identifier">K_colour</span>
+        <span class="reserved">instance</span><span class="plain"> </span><span class="identifier">C_green</span><span class="plain"> </span><span class="identifier">K_colour</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">C_favourite</span><span class="plain"> </span><span class="identifier">K_colour</span><span class="plain"> = </span><span class="identifier">C_green</span>
 </pre>
 
 <p class="inwebparagraph">does not make <code class="display"><span class="extract">C_favourite</span></code> a new possible colour: it's only a synonym for
@@ -404,14 +374,12 @@ that there's no notation for literal functions. In fact there is, though:
 that's what code packages are. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kind K_number int32</span>
-        <span class="plain">kind K_number_to_number K_number -&gt; K_number</span>
-        <span class="plain">package R_101_B _code</span>
-        <span class="plain">    ...</span>
-        <span class="plain">constant R_101 K_number_to_number = R_101_B</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="reserved">int32</span>
+        <span class="reserved">kind</span><span class="plain"> </span><span class="identifier">K_number_to_number</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> -&gt; </span><span class="identifier">K_number</span>
+        <span class="reserved">package</span><span class="plain"> </span><span class="identifier">R_101_B</span><span class="plain"> _code</span>
+            <span class="plain">...</span>
+        <span class="reserved">constant</span><span class="plain"> </span><span class="identifier">R_101</span><span class="plain"> </span><span class="identifier">K_number_to_number</span><span class="plain"> = </span><span class="identifier">R_101_B</span>
 </pre>
 
 <p class="inwebparagraph">defines the constant <code class="display"><span class="extract">R_101</span></code>. Note that <code class="display"><span class="extract">R_101_B</span></code> is not a value, because
@@ -424,32 +392,22 @@ value, not attached to any instance in particular: it makes no sense to ask
 who the owner is. Variables must be declared as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">variable NAME KIND = VALUE</span>
+        <span class="reserved">variable</span><span class="plain"> NAME KIND = VALUE</span>
+
+    <span class="plain">The given value is just the initial state; at run-time, it can be changed to</span>
+    <span class="plain">another value (</span><span class="reserved">of</span><span class="plain"> the same </span><span class="reserved">kind</span><span class="plain">). For example,</span>
 </pre>
 
-<p class="inwebparagraph">The given value is just the initial state; at run-time, it can be changed to
-another value (of the same kind). For example,
+<p class="inwebparagraph">	variable V_score K_number = 10
 </p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">variable V_score K_number = 10</span>
-</pre>
-
-<p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Responses. </b>A "response" is a special sort of property belonging to a function rather than
 an instance: it's a piece of text. This can be set with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">response NAME MARKER FUNCTION = VALUE</span>
+        <span class="reserved">response</span><span class="plain"> NAME MARKER FUNCTION = VALUE</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">NAME</span></code> provides a unique symbol name identifying this specific response; this
@@ -465,20 +423,16 @@ the benefit of onlookers. The scheme here is that any package can have a
 dictionary of textual key-value pairs, specified by:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">metadata KEY: VALUE</span>
+        <span class="reserved">metadata</span><span class="plain"> KEY: VALUE</span>
 </pre>
 
 <p class="inwebparagraph">Here <code class="display"><span class="extract">KEY</span></code> must be a (public) symbol whose name begins with a backtick, and
 <code class="display"><span class="extract">VALUE</span></code> must be literal text. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">metadata `name: "blue book"</span>
+        <span class="reserved">metadata</span><span class="plain"> </span><span class="element">`name</span><span class="plain">: </span><span class="string">"blue book"</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -501,10 +455,8 @@ For example, the I7 source text:
 <p class="inwebparagraph">results in the following inter being generated:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">append K4_door " has door, \n"</span>
+        <span class="reserved">append</span><span class="plain"> K4_door </span><span class="string">" has door, \n"</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">link STAGE "SEGMENT" "PART" "CONTENT" "OTHER"</span></code> tells Inter that it needs
@@ -513,10 +465,8 @@ to make an alteration to the Inform 6 code inside the I6T template file
 <code class="display"><span class="extract">instead</span></code> or <code class="display"><span class="extract">after</span></code>. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""</span>
+        <span class="reserved">link</span><span class="plain"> after </span><span class="string">"Output.i6t"</span><span class="plain"> </span><span class="string">"I6 Inclusions"</span><span class="plain"> </span><span class="string">"\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"</span><span class="plain"> </span><span class="string">""</span>
 </pre>
 
 <p class="inwebparagraph"></p>

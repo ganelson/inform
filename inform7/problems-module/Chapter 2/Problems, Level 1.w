@@ -220,9 +220,9 @@ out when writing to plain text format.
 	}
 
 @ Okay, so the format for a source reference here is:
-
-	|XparaphraseXfilenameXnumberX|
-
+= (text)
+	XparaphraseXfilenameXnumberX
+=
 e.g., |Xmain textXsource/story.niX102|, where |X| is the unprintable
 |SOURCE_REF_CHAR|. The counter |i| is at the first |X|, and we must now
 convert this to something fit for printing to |stdout|, finishing up with |i|

@@ -94,19 +94,19 @@ are instances.
 
 @ The top of the inference hierarchy contains a number of "fundamental" subjects.
 Thus we have:
-
-	|model_world|
-	|    nonlocal_variables|
-	|        ...all individual globals|
-	|    global_constants|
-	|        ...all kinds, including:|
-	|        K_object|
-	|            K_thing|
-	|                K_container|
-	|                ...|
-	|            K_room|
-	|            ...|
-
+= (text)
+	model_world
+	    nonlocal_variables
+	        ...all individual globals
+	    global_constants
+	        ...all kinds, including:
+	        K_object
+	            K_thing
+	                K_container
+	                ...
+	            K_room
+	            ...
+=
 (Note that objects appear within the hierarchy of values, rather than alongside
 it, as in the class hierarchies of languages like Scala.)
 

@@ -306,19 +306,15 @@ substitution of x=v.
 <p class="inwebparagraph">For example, <code class="display"><span class="extract">R</span></code> might contain the function call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Prop_19(t_6, t_2, O13_sphinx)</span>
+        <span class="identifier">Prop_19</span><span class="plain">(</span><span class="identifier">t_6</span><span class="plain">, </span><span class="identifier">t_2</span><span class="plain">, </span><span class="identifier">O13_sphinx</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">and the function header of <code class="display"><span class="extract">Prop_19</span></code> might then look like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">[ Prop_19 const_0 const_1 x;</span>
+        <span class="plain">[ </span><span class="identifier">Prop_19</span><span class="plain"> </span><span class="identifier">const_0</span><span class="plain"> </span><span class="identifier">const_1</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">The value of <code class="display"><span class="extract">cinder_count</span></code> would then be 2.
@@ -427,10 +423,8 @@ recursive use of propositions will overwrite the list.)
 <p class="inwebparagraph">For example, <code class="display"><span class="extract">R</span></code> might this time contain a call like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">(Prop_19() &amp;&amp; (t_2=deferred_calling_list--&gt;0, t_3=deferred_calling_list--&gt;1, true))</span>
+        <span class="plain">(</span><span class="identifier">Prop_19</span><span class="plain">() &amp;&amp; (</span><span class="identifier">t_2</span><span class="plain">=</span><span class="identifier">deferred_calling_list</span><span class="plain">--&gt;0, </span><span class="identifier">t_3</span><span class="plain">=</span><span class="identifier">deferred_calling_list</span><span class="plain">--&gt;1, </span><span class="reserved">true</span><span class="plain">))</span>
 </pre>
 
 <p class="inwebparagraph">which safely transfers the values to locals <code class="display"><span class="extract">t_2</span></code> and <code class="display"><span class="extract">t_3</span></code> of <code class="display"><span class="extract">R</span></code>. Note
@@ -836,20 +830,16 @@ that it has been compiled as a multi-purpose description routine, and
 therefore compile the function call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">D(NUMBER_OF_DUSAGE)</span>
+        <span class="identifier">D</span><span class="plain">(</span><span class="identifier">NUMBER_OF_DUSAGE</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">But in case [2] it is sufficient to take φ(x) = door(x)∧closed(x),
 defer it to a proposition with reason <code class="display"><span class="extract">NUMBER_OF_DEFER</span></code>, and then compile just
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Prop_19()</span>
+        <span class="identifier">Prop_19</span><span class="plain">()</span>
 </pre>
 
 <p class="inwebparagraph">to perform the calculation. We never need a multi-purpose description routine for
@@ -1181,10 +1171,8 @@ in the same location at the end of the loop as at the beginning.
 <p class="inwebparagraph">Thus a typical loop header has the form
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">for (t_1=D(0), t_2=D(t_1): t_1: t_1=t_2, t_2=D(t_1))</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">t_1</span><span class="plain">=</span><span class="identifier">D</span><span class="plain">(0), </span><span class="identifier">t_2</span><span class="plain">=</span><span class="identifier">D</span><span class="plain">(</span><span class="identifier">t_1</span><span class="plain">): </span><span class="identifier">t_1</span><span class="plain">: </span><span class="identifier">t_1</span><span class="plain">=</span><span class="identifier">t_2</span><span class="plain">, </span><span class="identifier">t_2</span><span class="plain">=</span><span class="identifier">D</span><span class="plain">(</span><span class="identifier">t_1</span><span class="plain">))</span>
 </pre>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">D</span></code> is a routine such that at 0 it produces the first element of the

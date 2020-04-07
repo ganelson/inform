@@ -167,9 +167,9 @@ For example,
 >> The soldier can see that (this is true) they do not carry rifles.
 
 produces
-
-	|viable map: the[1] -- can[1] see[1] -- ([2] -- is[2] -- )[1] -- do[3] not[3] carry[3] --|
-
+= (text)
+	viable map: the[1] -- can[1] see[1] -- ([2] -- is[2] -- )[1] -- do[3] not[3] carry[3] --
+=
 Note that we sometimes get false positives when testing whether the word occurs
 in a verb (hence the way open bracket is marked here), but that doesn't matter,
 since non-zero-ness in the viability map is used only to speed up parsing.
@@ -527,13 +527,13 @@ int VerbPhrases::default_verb(int task, parse_node *V, wording *NPs) {
 
 @ If we have parsed a verb expressing a relationship other than equality, we
 need to record that in the parse tree. This code does the following:
-
-	|SENTENCE_NT "Darcy wears the hat"  --->  SENTENCE_NT "Darcy wears the hat"|
-	|    AVERB_NT "wears"                         AVERB_NT "wears"|
-	|    PROPER_NOUN_NT "Darcy"                   PROPER_NOUN_NT "Darcy"|
-	|    PROPER_NOUN_NT "hat"                     RELATIONSHIP_NT "wears" = is-worn-by|
-	|                                                 PROPER_NOUN_NT "hat"|
-
+= (text)
+	SENTENCE_NT "Darcy wears the hat"  --->  SENTENCE_NT "Darcy wears the hat"
+	    AVERB_NT "wears"                         AVERB_NT "wears"
+	    PROPER_NOUN_NT "Darcy"                   PROPER_NOUN_NT "Darcy"
+	    PROPER_NOUN_NT "hat"                     RELATIONSHIP_NT "wears" = is-worn-by
+	                                                 PROPER_NOUN_NT "hat"
+=
 The meaning is reversed here because we are applying it to the object of the
 sentence not the subject: we thus turn the idea of Darcy wearing the hat into
 the exactly equivalent idea of the hat being worn by Darcy.

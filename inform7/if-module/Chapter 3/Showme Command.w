@@ -80,9 +80,9 @@ properties listed since the last time it was zeroed. If it's positive, we
 need either a semicolon or a line break. If we're about to work on another
 definition contributing either/or properties, the former; otherwise the
 latter. Thus we end up with printed output such as
-
-	|unlit, inedible, portable; male|
-
+= (text)
+	unlit, inedible, portable; male
+=
 where the first sublist of three either/ors comes from "thing", and the
 second of just one from "person".
 

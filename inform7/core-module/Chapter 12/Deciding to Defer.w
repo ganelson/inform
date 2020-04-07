@@ -182,13 +182,13 @@ in the proposition, |x| never changes in |Prop_19|: thus we effect a
 substitution of $x=v$.
 
 For example, |R| might contain the function call:
-
-	|Prop_19(t_6, t_2, O13_sphinx)|
-
+= (text as Inform 6)
+	Prop_19(t_6, t_2, O13_sphinx)
+=
 and the function header of |Prop_19| might then look like so:
-
-	|[ Prop_19 const_0 const_1 x;|
-
+= (text as Inform 6)
+	[ Prop_19 const_0 const_1 x;
+=
 The value of |cinder_count| would then be 2.
 
 @<Compile the call to the test-proposition routine@> =
@@ -268,9 +268,9 @@ no other activity takes place in between, there is no risk that some
 recursive use of propositions will overwrite the list.)
 
 For example, |R| might this time contain a call like so:
-
-	|(Prop_19() && (t_2=deferred_calling_list-->0, t_3=deferred_calling_list-->1, true))|
-
+= (text as Inform 6)
+	(Prop_19() && (t_2=deferred_calling_list-->0, t_3=deferred_calling_list-->1, true))
+=
 which safely transfers the values to locals |t_2| and |t_3| of |R|. Note
 that I6 evaluates conditions joined by |&&| from left to right, so we
 can be certain that |Prop_19| has been called and has returned before we
@@ -592,14 +592,14 @@ where S, in [1], is a description which appears as a parameter in a phrase.
 In [1] we have no way of knowing what S might be, but we can safely assume
 that it has been compiled as a multi-purpose description routine, and
 therefore compile the function call:
-
-	|D(NUMBER_OF_DUSAGE)|
-
+= (text as Inform 6)
+	D(NUMBER_OF_DUSAGE)
+=
 But in case [2] it is sufficient to take $\phi(x) = {\it door}(x)\land{\it closed}(x)$,
 defer it to a proposition with reason |NUMBER_OF_DEFER|, and then compile just
-
-	|Prop_19()|
-
+= (text as Inform 6)
+	Prop_19()
+=
 to perform the calculation. We never need a multi-purpose description routine for
 $\phi(x)$ because it only occurs in this one context.
 
@@ -856,9 +856,9 @@ in the I6 object tree, and that relies on $v_1$ being an object which is still
 in the same location at the end of the loop as at the beginning.
 
 Thus a typical loop header has the form
-
-	|for (t_1=D(0), t_2=D(t_1): t_1: t_1=t_2, t_2=D(t_1))|
-
+= (text as Inform 6)
+	for (t_1=D(0), t_2=D(t_1): t_1: t_1=t_2, t_2=D(t_1))
+=
 where |D| is a routine such that at 0 it produces the first element of the
 domain, and then given |x| in the domain, |D(x)| produces the next element
 until it returns 0, when the domain is exhausted.

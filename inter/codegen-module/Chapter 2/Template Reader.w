@@ -166,20 +166,20 @@ particular, are not permitted. This means that no real tangling is required
 to make the I6T files.
 
 The entire range of possibilities is shown here:
-
-	|Circuses.|
-	| |
-	|This hypothetical I6T file provides support for holding circuses.|
-	| |
-	|@h Start.|
-	|This routine is called when a big top must be raised. Note that the|
-	|elephants must first be watered (see Livestock.i6t).|
-	||
-	|=|
-	|[ RaiseBT c;|
-	|...|
-	|];|
-
+= (text as Inweb)
+	Circuses.
+	 
+	This hypothetical I6T file provides support for holding circuses.
+	 
+	@h Start.
+	This routine is called when a big top must be raised. Note that the
+	elephants must first be watered (see Livestock.i6t).
+	
+	=
+	[ RaiseBT c;
+	...
+	];
+=
 ...and so on. As with Inweb, the commentary is removed when we read this
 code. While this doesn't allow for full-on literate programming, it does
 permit a generous amount of annotation.

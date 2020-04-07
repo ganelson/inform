@@ -66,7 +66,7 @@ multi-section rawtext volumes.
         <span class="reserved">volume</span><span class="plain"> *</span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">example</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">Rawtext::turn_rawtext_into_blocks</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">V</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">-&gt;</span><span class="element">ex_filename</span><span class="plain">, </span><span class="identifier">E</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">OUT</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain"> }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -253,8 +253,6 @@ must be. (A block ends when a new heading line appears, or at end of file.)
 <p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b>Block headings are paragraphs beginning with square-bracketed material:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">[x] The footwear kind</span>
 </pre>
@@ -267,8 +265,6 @@ the braced <code class="display"><span class="extract">{kind_footwear}</span></c
 <p class="inwebparagraph">The <code class="display"><span class="extract">x</span></code> text is a meaningless placeholder. The way to get this noticed
 is to write something like:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">[Chapter: Bananas] Introduction to soft yellow fruit</span>
@@ -320,11 +316,8 @@ be the first section.
 <p class="inwebparagraph"><a id="SP4_1_1"></a><b>&#167;4.1.1.  </b>Section headings can be marked with braced documentation references:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">[x] The footwear kind {kind_footwear}</span>
-
     &lt;<span class="cwebmacrodefn">Take note of documentation references</span> <span class="cwebmacronumber">4.1.1</span>&gt; =
         <span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*) {(%C+)} *"</span><span class="plain">)) {</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">title</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
@@ -427,16 +420,12 @@ It should be the only thing on its line.
 <p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b>Images are embedded with the notation
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">///filename.extension///</span>
 </pre>
 
 <p class="inwebparagraph">though only one of these may appear in each line. If the form
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">///classname:filename.extension///</span>
@@ -524,8 +513,6 @@ for whole blocks of documentation: this is much finer control.) For example,
 documentation might say:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{Windows}The My Documents folder can be reached using...</span>
 </pre>
@@ -556,13 +543,10 @@ throw the whole paragraph away. If we're generating for no specific platform
 <p class="inwebparagraph"><a id="SP4_6_2"></a><b>&#167;4.6.2.  </b>Tags also mark the presence of phrase explanations in the main WWI:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{defn ph_letdefault}let (a name not so far used) be (name of kind)</span>
         <span class="plain">...</span>
         <span class="plain">{end}</span>
-
     &lt;<span class="cwebmacrodefn">Deal with a phrase definition paragraph tag</span> <span class="cwebmacronumber">4.6.2</span>&gt; =
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr4</span><span class="plain">, </span><span class="identifier">paragraph_tag</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"defn *(%c*?)"</span><span class="plain">)) {</span>
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">defn</span><span class="plain"> = </span><span class="identifier">mr4</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>

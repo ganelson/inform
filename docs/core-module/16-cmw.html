@@ -309,7 +309,7 @@ about the Portal, to stand.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">clash</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">abcn</span><span class="plain"> = </span><span class="functiontext">World::Inferences::get_certainty</span><span class="plain">(</span><span class="identifier">narrow</span><span class="plain">); </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">abcn</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">abcn</span><span class="plain"> = -</span><span class="identifier">abcn</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">abcn</span><span class="plain"> == </span><span class="identifier">CERTAIN_CE</span><span class="plain">)</span>
-                    &lt;<span class="cwebmacro">Issue a problem message for clash with wider inference</span> <span class="cwebmacronumber">1.2.2.1.1.1</span>&gt;
+                    <span class="plain"> </span>&lt;<span class="cwebmacro">Issue a problem message for clash with wider inference</span> <span class="cwebmacronumber">1.2.2.1.1.1</span>&gt;
                 <span class="reserved">else</span>
                     <span class="functiontext">World::Inferences::set_certainty</span><span class="plain">(</span><span class="identifier">narrow</span><span class="plain">, </span><span class="identifier">IMPOSSIBLE_CE</span><span class="plain">);</span>
             <span class="plain">}</span>

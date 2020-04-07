@@ -19,9 +19,9 @@ dictionary *defined_symbols = NULL;
 The symbol |indoc| is always defined, so that, in theory, other programs
 working on rawtext can distinguish themselves from us (by not defining it).
 For example,
-
-	|{^indoc:}You'll probably never see this paragraph.|
-
+= (text as Indoc)
+	{^indoc:}You'll probably never see this paragraph.
+=
 provides rawtext visible only if |indoc| isn't the renderer.
 
 =

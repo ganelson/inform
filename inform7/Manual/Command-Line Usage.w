@@ -17,8 +17,8 @@ that Inform 7 is installed in the directory |inform7| with respect to your
 current working directory. |inform7| is a composite of various files, and
 the executable inside is at |inform7/Tangled/inform7|. To test that it has
 been built successfully, try:
-
-	|$ inform7/Tangled/inform7 -help|
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 -help
 
 @ When it runs, Inform 7 needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
@@ -38,9 +38,9 @@ with respect to the current working directory.
 @h Basic usage.
 The full range of options is complex, so it seems helpful to start by showing
 what the Inform UI apps typically call when the user clicks "Go":
-
-	|$ inform7/Tangled/inform7 -internal I -external E -project P -format=F|
-
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 -internal I -external E -project P -format=F
+=
 for suitable pathnames |I|, |E|, |P| and a choice of |F|. To dispose of this
 first, |-format=ulx| tells Inform to compile to the Glulx story file, and
 |-format=z8| to (version 8 of) the Z-machine.
@@ -132,9 +132,9 @@ which it stores in a writeable area of the file system called the "transient"
 directory.
 
 The usage for this is:
-
-	|$ inform7/Tangled/inform7 -internal I -external E -transient T -census|
-
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 -internal I -external E -transient T -census
+=
 (The caller has the obligation to provide the Transient directory.)
 
 @h Testing and debugging switches.
@@ -168,9 +168,9 @@ for an optional file called |inform7-settings.txt|. This is a sort of expert
 settings file, and consists of a list of additional command-line arguments
 (one per line): those are read exactly as if they had been passed on the
 command line. In particular, you could write:
-
-	|-kit BasicInformKit|
-
+= (text)
+	-kit BasicInformKit
+=
 and then the project will be Basic Inform, not regular Inform.
 
 @h Prehistory.

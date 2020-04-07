@@ -10,9 +10,9 @@ For example, the phrase definition:
 >> To adjust (N - a number): (- AdjustThis({N}, 1); -).
 
 results in an inter schema being compiled from this text:
-
-	|AdjustThis({N}, 1);|
-
+= (text as Inform 6)
+	AdjustThis({N}, 1);
+=
 The notation here is essentially Inform 6 code with a few special features
 in braces: here, |{N}|, which expands to the value of the token |N| mentioned
 in the phrase preamble. The notation being basically I6 was very convenient
@@ -22,9 +22,9 @@ though those would then usually be converted back into I6 anyway.
 
 And so the code in this section was written. The first half amounts to a
 miniature Inform 6 compiler: its task is to take text such as
-
-	|AdjustThis({N}, 1);|
-
+= (text as Inform 6)
+	AdjustThis({N}, 1);
+=
 and convert that into an inter schema. The second half is a code generator,
 which takes a given schema and generates inter code from it.
 
@@ -117,19 +117,19 @@ inter_schema_node *InterSchemas::new_node(inter_schema *sch, int isnt) {
 
 @ Ordinarily, a |CODE_ISNT| node represents a complete block of I6 code.
 For example, in
-
-	|if (x == 1) { print "Hello!"; }|
-
+= (text as Inform 6)
+	if (x == 1) { print "Hello!"; }
+=
 the print statement occurs inside a complete block, which will eventually
 be represented as a |CODE_ISNT|. But some inline phrase definitions leave
 blocks half-open. For example,
-
-	|if (x == 1)|
-
+= (text as Inform 6)
+	if (x == 1)
+=
 is a legal phrase definition: we read it as
-
-	|if (x == 1) {|
-
+= (text as Inform 6)
+	if (x == 1) {
+=
 and the schema has to contain a |CODE_ISNT| marked as having been left
 unclosed. Similarly, some definitions close an I6 block which is assumed
 as having been opened by an earlier phrase invocation.
@@ -176,9 +176,9 @@ void InterSchemas::mark_unopened(inter_schema_node *isn) {
 only in the middle of switch statements; they contain neither the start nor
 the end of the construct, so the above mechanisms are not sufficient.
 For example, the inline definition
-
-	|{X}:|
-
+= (text as Inform 6)
+	{X}:
+=
 implies, by use of the colon, that it's a switch case. We can't conveniently
 associate this with any single node, so we mark the schema as a whole.
 
@@ -652,31 +652,31 @@ For example:
 >> To repeat with a King's Court begin -- end loop:
 
 could be given the definition:
-
-	|@push {-my:trcount};|
-	|for (trcount=1; trcount<=3; trcount++)|
-	|    {-block}|
-	|@pull trcount;|
-
+= (text as Inform 6)
+	@push {-my:trcount};
+	for (trcount=1; trcount<=3; trcount++)
+	    {-block}
+	@pull trcount;
+=
 This then repeats what it's given three times, while guaranteeing that the
 counter is always a local variable called |trcount|, and that no matter how
 such operations are nested, they will work. We might then write:
-
-	|To say iteration: (- print {-my:trcount}; -).|
-
+= (text as Inform 7)
+	To say iteration: (- print {-my:trcount}; -).
+=
 and then this will work as might be hoped:
-
-	|repeat with a King's Court:|
-	|    say "[iteration]...";|
-	|        repeat with a King's Court:|
-	|            say "[iteration]. You play a Shanty Town, getting +2 Actions.";|
-
+= (text as Inform 7)
+	repeat with a King's Court:
+	    say "[iteration]...";
+	        repeat with a King's Court:
+	            say "[iteration]. You play a Shanty Town, getting +2 Actions.";
+=
 This is a slightly contrived example, and often |{-block}| isn't needed. If
 we didn't care about accessing the iteration count in the body of the loop,
 for instance, we could simply have defined:
-
-	|for ({-my:1}=1; {-my:1}<=3; {-my:1}++)|
-
+= (text as Inform 6)
+	for ({-my:1}=1; {-my:1}<=3; {-my:1}++)
+=
 and Inform would then have allocated a new variable as loop counter each time.
 
 @<Fetch the head and tail definitions@> =
@@ -954,15 +954,15 @@ a bracing.
 	preceding_token = t;
 
 @ A bracing can take any of the following forms:
-
-	|{-command}|
-	|{-command:operand}|
-	|{-command:operand:operand2}|
-	|{-command:operand<property name}|
-	|{-command:operand>property name}|
-	|{some text}|
-	|{-annotation:some text}|
-
+= (text)
+	{-command}
+	{-command:operand}
+	{-command:operand:operand2}
+	{-command:operand<property name}
+	{-command:operand>property name}
+	{some text}
+	{-annotation:some text}
+=
 We parse this with the command or annotation in |command|, the "some text"
 or operand in |bracing|, the property name (if given) in |extremal_property|,
 the direction of the |<| or |>| in |extremal_property_sign|, and the second,
@@ -1074,13 +1074,13 @@ optional, operand in |operand2|.
 @ That leaves us with just the main case to handle: raw I6 code which is
 outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,
-
-	|Frog + 2*Toad(|
-
+= (text as Inform 6)
+	Frog + 2*Toad(
+=
 (there is no reason to suppose that this stretch of code is complete or
 matches parentheses); we must tokenise it into
 
-	|Frog| |W| |+| |W| |2| |*| |Toad| |(|
+|Frog| |W| |+| |W| |2| |*| |Toad| |(|
 
 where |W| indicates a white space token. What we do is scan through the
 text until we reach the start of a new token, and then break off what we
@@ -1109,10 +1109,11 @@ scanned through since the last time.
 
 @ Recall that in I6 notation, a dollar introduces a non-decimal number, and
 the character after the initial dollar determines which:
-
-	|$+3.14159E2|
-	|$$1001001|
-	|$1FE6|
+= (text)
+	$+3.14159E2
+	$$1001001
+	$1FE6
+=
 
 @<Break off here for real, binary or hexadecimal notation@> =
 	int x = c_start, y = p-1;
@@ -1151,13 +1152,13 @@ the character after the initial dollar determines which:
 @ A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise |x-1| as
-
-	|x| |-| |1|
-
+= (text)
+|x| |-| |1|
+=
 and not as
-
-	|x| |-1|
-
+= (text)
+|x| |-1|
+=
 This requires context, that is, remembering what the previous token was.
 
 @<Break off here for negative number@> =

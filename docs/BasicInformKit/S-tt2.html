@@ -135,7 +135,7 @@ special to copy or destroy a text.
             <span class="identifier">EXTENT_KOVS</span><span class="plain">:      </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Extent</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">COMPARE_KOVS</span><span class="plain">:     </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Compare</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">);</span>
             <span class="identifier">READ_FILE_KOVS</span><span class="plain">:   </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">arg3</span><span class="plain"> == -1) </span><span class="reserved">rtrue</span><span class="plain">;</span>
-                            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_ReadFile</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">, </span><span class="identifier">arg3</span><span class="plain">);</span>
+                            <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_ReadFile</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">, </span><span class="identifier">arg2</span><span class="plain">, </span><span class="identifier">arg3</span><span class="plain">);</span>
             <span class="identifier">WRITE_FILE_KOVS</span><span class="plain">:  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_WriteFile</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">HASH_KOVS</span><span class="plain">:        </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">TEXT_TY_Hash</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
             <span class="identifier">DEBUG_KOVS</span><span class="plain">:       </span><span class="identifier">TEXT_TY_Debug</span><span class="plain">(</span><span class="identifier">arg1</span><span class="plain">);</span>
@@ -167,10 +167,8 @@ special to copy or destroy a text.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Creation. </b>A newly created text is a two-word short block with no long block, like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Array ThisIsAText --&gt; PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;</span>
+        <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">ThisIsAText</span><span class="plain"> --&gt; </span><span class="identifier">PACKED_TEXT_STORAGE</span><span class="plain"> </span><span class="identifier">EMPTY_TEXT_PACKED</span><span class="plain">;</span>
     <span class="plain">[ </span><span class="identifier">TEXT_TY_Create</span><span class="plain"> </span><span class="identifier">short_block</span><span class="plain"> </span><span class="identifier">x</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">BlkValueCreateSB2</span><span class="plain">(</span><span class="identifier">short_block</span><span class="plain">, </span><span class="identifier">PACKED_TEXT_STORAGE</span><span class="plain">, </span><span class="identifier">EMPTY_TEXT_PACKED</span><span class="plain">);</span>
     <span class="plain">];</span>

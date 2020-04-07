@@ -504,9 +504,9 @@ converted to a single space. If this would result in an empty text or only
 a single space, we return the text "story" instead.
 
 Our example (if not truncated) then emerges as:
-
-	|St- Bartholemew's Fair- Etude for a Push-Me-Pull-You Machine|
-
+= (text)
+	St- Bartholemew's Fair- Etude for a Push-Me-Pull-You Machine
+=
 Note that we do not write any filename extension (e.g., |.z5|) here.
 
 We change possible filename separators or extension indicators to hyphens,

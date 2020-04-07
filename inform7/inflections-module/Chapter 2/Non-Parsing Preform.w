@@ -28,9 +28,9 @@ Speed is not of the essence in any of these problems.
 Our main operation here is a "merge". This extracts the text from a production,
 substituting the ingredient text in place of any |...| it finds. (Other
 wildcards and nonterminals are ignored.) For example, merging the production
-
-	|fried ... tomatoes|
-
+= (text as InC)
+	fried ... tomatoes
+=
 with "orange" results in "fried orange tomatoes".
 
 =
@@ -182,12 +182,12 @@ single avinue.
 
 @ Each production contains one or two tokens. There are four possibilities for
 the production:
-
-	|(1)   ... <some-nonterminal>|
-	|(2)   <some-nonterminal> ...|
-	|(3)   <some-nonterminal>|
-	|(4)   pattern-word instructions-word|
-
+= (text)
+	(1)   ... <some-nonterminal>
+	(2)   <some-nonterminal> ...
+	(3)   <some-nonterminal>
+	(4)   pattern-word instructions-word
+=
 Cases (1), (2) and (3) are allowed only in list grammars; case (4) is allowed
 only in content grammars. The |...| indicates whether the trie in the named
 nonterminal will act on the start or end of a word -- this is needed only to

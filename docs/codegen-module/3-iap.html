@@ -733,14 +733,8 @@ where in memory the correct stick is, and this needs to be quick.
 
 <p class="inwebparagraph">This is essentially a dictionary lookup problem and we solve it by compiling
 a faux object <code class="display"><span class="extract">V</span></code> for each <code class="display"><span class="extract">K</span></code>, called a "value property holder" or VPH.
-Given <code class="display"><span class="extract">K</span></code> we find <code class="display"><span class="extract">V</span></code> by looking it up in the array
+Given <code class="display"><span class="extract">K</span></code> we find <code class="display"><span class="extract">V</span></code> by looking it up in the array <code class="display"><span class="extract">value_property_holders</span></code>.
 </p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">value_property_holders</span>
-</pre>
 
 <p class="inwebparagraph">Once we know <code class="display"><span class="extract">V</span></code>, we then look up <code class="display"><span class="extract">V.P</span></code> to get the address of the stick for
 property <code class="display"><span class="extract">P</span></code>, something which the virtual machine can do quickly.

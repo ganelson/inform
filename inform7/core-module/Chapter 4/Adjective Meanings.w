@@ -772,11 +772,11 @@ In fact what we do is to supply an I6 schema, which for this purpose is
 simply the text of I6 code in which the escape |*1| represents the value
 to which the adjective is applied. In the example of "open" for containers,
 we might choose:
-
-	|if the sack is open, ...  -->   (Adj_53_t1_v61(*1))|
-	|now the sack is open; ...  -->   Adj_53_t2_v61(*1)|
-	|now the sack is not open; ...  -->   Adj_53_t3_v61(*1)|
-
+= (text)
+	if the sack is open, ...  -->   (Adj_53_t1_v61(*1))
+	now the sack is open; ...  -->   Adj_53_t2_v61(*1)
+	now the sack is not open; ...  -->   Adj_53_t3_v61(*1)
+=
 These schemas call an I6 routine called a "support routine". The names
 here are schematic: "open" on this run was APH number 53, the run-time
 tasks to perform were task 1, task 2 and task 3, and the sense of the
@@ -787,9 +787,9 @@ open in the sense of objects", "now open in the sense of objects", and
 
 If we make a choice like that, then we say that the task is provided
 "via a support routine". We need not do so: for instance,
-
-	|if the Entire Game is happening, ...  -->  (scene_status->(*1 - 1)==1)|
-
+= (text)
+	if the Entire Game is happening, ...  -->  (scene_status->(*1 - 1)==1)
+=
 is an example where the sense of "happening" for scenes can be tested
 directly using a schema, without calling a support routine. And clearly
 support routines only put off the problem, because we will also have to

@@ -105,27 +105,17 @@ for the token list to contain two nulls in a row.) For instance, the
 token list:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">drink # milk #</span>
-</pre>
+    <span class="plain">#</span>
+    <span class="plain">matches "drink more milk today and every day", but not "drink milk". (The</span>
+    <span class="plain">sharp symbol |#| is printed in place of a null token, both in this documentation</span>
+    <span class="plain">and in the debugging log.)</span>
 
-<p class="inwebparagraph">matches "drink more milk today and every day", but not "drink milk". (The
-sharp symbol <code class="display"><span class="extract">#</span></code> is printed in place of a null token, both in this documentation
-and in the debugging log.)
-</p>
+    <span class="plain">Each excerpt meaning also comes with a hash code, which is automatically</span>
+    <span class="plain">generated from its token list, and a pointer to some structure.</span>
 
-<p class="inwebparagraph">Each excerpt meaning also comes with a hash code, which is automatically
-generated from its token list, and a pointer to some structure.
-</p>
-
-
-<pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">TooLongName_LINERROR</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
-</pre>
-
-<pre class="display">
 
     <span class="definitionkeyword">define</span> <span class="constant">MAX_TOKENS_PER_EXCERPT_MEANING</span><span class="plain"> </span><span class="constant">32</span>
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">excerpt_meaning</span><span class="plain"> {</span>
@@ -801,8 +791,6 @@ sensitivity.)
 <p class="inwebparagraph">and transcribe it into the token list, collapsing bracketed parts into <code class="display"><span class="extract">#</span></code>
 tokens denoting gaps, to result in something like:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">award # points</span>

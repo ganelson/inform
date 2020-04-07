@@ -10,9 +10,9 @@ can't sensibly be used for any project other than Inform.
 If you have compiled the standard distribution of the command-line tools
 for Inform then the Inpolicy executable will be at |inpolicy/Tangled/inpolicy|.
 Usage is very simple:
-
-	|$ inpolicy/Tangled/inpolicy POLICY|
-
+= (text as ConsoleText)
+	$ inpolicy/Tangled/inpolicy POLICY
+=
 where |POLICY| is whatever we want to check. There are very few at present;
 in some ways this program is a placeholder for future tightening-up of the
 style rules.
@@ -42,20 +42,20 @@ within the Inform 7 compiler, (b) all of the Problem test cases, and (c) all
 of the advisory references to Problems in the Inform documentation, and
 attempts to match these up. It prints out a report, and concludes with either
 "All is well" or a recommendation for changes. For example:
-
-	|1009 problem name(s) have been observed:|
-	|    Problems actually existing (the source code refers to them):|
-	|        906 problem(s) are named and in principle testable|
-	|        81 problem(s) are 'BelievedImpossible', that is, no known source text causes them|
-	|        14 problem(s) are 'Untestable', that is, not mechanically testable|
-	|        8 problem(s) are '...', that is, they need to be give a name and a test case|
-	|    Problems which should have test cases:|
-	|        904 problem(s) have test cases|
-	|        2 problem(s) have no test case yet:|
-	|            PM_SuperfluousOf|
-	|            PM_MisplacedFrom|
-	|    Problems which are cross-referenced in 'Writing with Inform':|
-	|        483 problem(s) are cross-referenced|
-	|All is well.|
-
+= (text as ConsoleText)
+	1009 problem name(s) have been observed:
+	    Problems actually existing (the source code refers to them):
+	        906 problem(s) are named and in principle testable
+	        81 problem(s) are 'BelievedImpossible', that is, no known source text causes them
+	        14 problem(s) are 'Untestable', that is, not mechanically testable
+	        8 problem(s) are '...', that is, they need to be give a name and a test case
+	    Problems which should have test cases:
+	        904 problem(s) have test cases
+	        2 problem(s) have no test case yet:
+	            PM_SuperfluousOf
+	            PM_MisplacedFrom
+	    Problems which are cross-referenced in 'Writing with Inform':
+	        483 problem(s) are cross-referenced
+	All is well.
+=
 As this example report shows, small sins are forgiven.

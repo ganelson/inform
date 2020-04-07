@@ -76,17 +76,16 @@ void CodeGen::CL::response_revisitor(inter_tree *I, inter_tree_node *P, void *st
 	WRITE_TO(CodeGen::current(gen), " ");
 }
 
-@
-
-There's a contrivance here to get around an awkward point of I6 syntax:
+@ There's a contrivance here to get around an awkward point of I6 syntax:
 an array written in the form
-
-	|Array X table 20;|
-
+= (text as Inform 6)
+	Array X table 20;
+=
 makes a table with 20 entries, not a table with one entry whose initial value
 is 20. We instead compile this as
-
-	|Array X --> 1 20;|
+= (text as Inform 6)
+	Array X --> 1 20;
+=
 
 =
 void CodeGen::CL::constant(code_generation *gen, inter_tree_node *P) {

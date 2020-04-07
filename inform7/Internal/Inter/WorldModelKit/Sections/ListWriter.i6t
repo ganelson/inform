@@ -255,9 +255,9 @@ From which:
 Suppose |Iter| is an iterator function and that we have a "raw list"
 $x_1, x_2, ..., x_n$ of objects. Of these, the iterator function will
 choose a sublist of "qualifying" objects. It is called with arguments
-
-	|Iter(obj, depth, L, function)|
-
+= (text as Inform 6)
+	Iter(obj, depth, L, function)
+=
 where the |obj| is required to be $x_j$ for some $j$ and the function is one
 of the |*_ITF| constants defined below:
 
@@ -610,7 +610,7 @@ circles, and never be able to see the individual objects in the group.)
 For instance, suppose we have objects with |list_together| values as follows,
 where $R_1$ and $R_2$ are addresses of routines:
 
-	|coin| ($R_1$), |coin| ($R_1$), |box| ($R_2$), |statuette| (0), |coin| ($R_1$), |box| ($R_2$)
+|coin| ($R_1$), |coin| ($R_1$), |box| ($R_2$), |statuette| (0), |coin| ($R_1$), |box| ($R_2$)
 
 Then the partition is 1, 1, 2, 3, 1, 2, so that the final output will be
 something like "three coins, two boxes and a statuette" -- with three
@@ -622,7 +622,7 @@ not every iterator function will be able to coalesce fully.)
 
 But if we have something like this:
 
-	|coin| ($R_1$), |Q| ($R_2$), |W| ($R_2$), |coin| ($R_1$), |statuette| (0), |E| ($R_2$), |R| ($R_2$)
+|coin| ($R_1$), |Q| ($R_2$), |W| ($R_2$), |coin| ($R_1$), |statuette| (0), |E| ($R_2$), |R| ($R_2$)
 
 then the partition is 1, 2, 3, 1, 4, 5, 6 and we have six classes in all.
 But classes 2 and 3 are grouped together, as are classes 5 and 6, so we

@@ -31,9 +31,9 @@ they can safely monkey with.
 @ The body of a kind definition is a sequence of one-line commands setting
 what properties the kind has. These commands take the form of a name, a colon,
 and an operand; for instance,
-
-	|i6-printing-routine-actions:DA_Number|
-
+= (text)
+	i6-printing-routine-actions:DA_Number
+=
 The operands have different types, and the possibilities are given here:
 
 @d NO_KCA -1 /* there's no operand */
@@ -64,9 +64,9 @@ typedef struct single_kind_command {
 
 @ A few of the commands connect pairs of kinds together: for instance,
 when we write
-
-	|cast:RULEBOOK_TY|
-
+= (text)
+	cast:RULEBOOK_TY
+=
 in the definition block for |RULE_TY|, we're saying that every rulebook
 can always be cast implicitly to a rule. There can be any number of these
 in the definition block, so we need somewhere to store details, and the
@@ -394,11 +394,11 @@ so we neglect it.
 @h Source text templates.
 These are passages of I7 source text which can be inserted into the main
 source text at the request of any kind. An example would be:
-
-	|*UNDERSTOOD-VARIABLE:|
-	|<kind> understood is a <kind> which varies.|
-	|*END|
-
+= (text)
+	*UNDERSTOOD-VARIABLE:
+	<kind> understood is a <kind> which varies.
+	*END
+=
 The template |*UNDERSTOOD-VARIABLE| contains only a single sentence of source
 text, and the idea is to make a new global variable associated with a given
 kind. Note that the text is not quite literal, because it can contain
@@ -411,22 +411,22 @@ There are a few limitations on what template text can include. Firstly,
 nothing with angle brackets in, except where a wildcard appears. Secondly,
 each sentence must end at the end of a line, and similarly the colon for
 any rule or other definition. Thus this template would fail:
-
-	|*UNDERSTOOD-VARIABLE:|
-	|<kind> understood is a <kind> which|
-	|varies. To judge <kind>: say "I judge [<kind> understood]."|
-	|*END|
-
+= (text)
+	*UNDERSTOOD-VARIABLE:
+	<kind> understood is a <kind> which
+	varies. To judge <kind>: say "I judge [<kind> understood]."
+	*END
+=
 because the first sentence ends in the middle of the second line, and the
 colon dividing the phrase header from its definition is also mid-line. The
 template must be reformatted thus to work:
-
-	|*UNDERSTOOD-VARIABLE:|
-	|<kind> understood is a <kind> which varies.|
-	|To judge <kind>:|
-	|    say "I judge [<kind> understood]."|
-	|*END|
-
+= (text)
+	*UNDERSTOOD-VARIABLE:
+	<kind> understood is a <kind> which varies.
+	To judge <kind>:
+	    say "I judge [<kind> understood]."
+	*END
+=
 @ So, to begin:
 
 =

@@ -25,13 +25,13 @@ page of the documentation (where |eg_number| is |-1|), then uses its return
 value (the number of examples provided, which may be 0) to generate
 associated files for each example. For instance, we might end up making,
 in sequence,
-
-	|Documentation/Extensions/Emily Short/Locksmith.html|
-	|Documentation/Extensions/Emily Short/Locksmith-eg1.html|
-	|Documentation/Extensions/Emily Short/Locksmith-eg2.html|
-	|Documentation/Extensions/Emily Short/Locksmith-eg3.html|
-	|Documentation/Extensions/Emily Short/Locksmith-eg4.html|
-
+= (text)
+	Documentation/Extensions/Emily Short/Locksmith.html
+	Documentation/Extensions/Emily Short/Locksmith-eg1.html
+	Documentation/Extensions/Emily Short/Locksmith-eg2.html
+	Documentation/Extensions/Emily Short/Locksmith-eg3.html
+	Documentation/Extensions/Emily Short/Locksmith-eg4.html
+=
 where these are pathnames relative to the external resources area.
 
 =

@@ -52,13 +52,13 @@ When we compile an invocation of a phrase like "award (N - a number) points",
 it becomes a call to an I6 function, say |R_231(N);|. To make that work, of
 course, we need to turn the definition into a function looking something
 like this:
-
-	|[ R_231 N;|
-	|	increase the score by N;|
-	|	say "Well done!";|
-	|	rtrue;|
-	|];|
-
+= (text as Inform 6)
+	[ R_231 N;
+		increase the score by N;
+		say "Well done!";
+		rtrue;
+	];
+=
 Devising this |R_231| function is called "compiling" the phrase. On the
 other hand, compiling an invocation of "alter score by (some - number)"
 is done inline rather than by a function call: the I6 code from its definition
@@ -99,9 +99,9 @@ all the information needed to place the rule within its rulebook.
 an excerpt with the excerpt parser, and the kinds required for the
 tokens in the definition. For example, it records that the kind of
 "alter score by (N - number)" is:
-
-	|phrase number -> nothing|
-
+= (text)
+	phrase number -> nothing
+=
 and that the first "token", the number supplied, is called "N".
 
 (iii) The phrase options data (PHOD) contains the names of phrase options,

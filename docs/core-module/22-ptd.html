@@ -178,20 +178,16 @@ number that varies", because the former is a kind and the latter is not.
 This is rather like C, where variables might be declared like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">int width, height; char *name;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">width</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">; </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">In C, the range of types which can be stored is the same as the range of
 types which can be function arguments, so for instance:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">int area(int width, int height) { return width*height; }</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">area</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">height</span><span class="plain">) { </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">width</span><span class="plain">*</span><span class="identifier">height</span><span class="plain">; }</span>
 </pre>
 
 <p class="inwebparagraph">But whereas Inform's variables are much like C's, Inform's phrase definitions
@@ -429,8 +425,6 @@ in different circumstances at run-time.
 <p class="inwebparagraph">What's the kind of this? From the point of view of compilation, it's
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">phrase (K, K) -&gt; nothing</span>
 </pre>
@@ -450,8 +444,6 @@ course is neither: for example, when Inform reads
 it from the 12 or the 31. So, internally, Inform regards the kind of this
 phrase as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">phrase (K, K, K) -&gt; nothing</span>
@@ -618,8 +610,6 @@ instance, if the source text ever contains an invocation like:
 <p class="inwebparagraph">then at some point Inform will have to compile a version of the phrase
 which has the kind:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">phrase (number, list of numbers) -&gt; nothing</span>

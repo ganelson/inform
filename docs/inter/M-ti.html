@@ -151,10 +151,8 @@ commands to Inform 6, such as memory settings or command-line switches.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">pragma target_I6 "$MAX_LABELS=200000"</span>
+        <span class="reserved">pragma</span><span class="plain"> target_I6 </span><span class="string">"$MAX_LABELS=200000"</span>
 </pre>
 
 <p class="inwebparagraph">(This would be meaningless if we were compiling to some other format.)
@@ -164,10 +162,8 @@ For example,
 were an assembly language, these would be the opcodes. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">primitive !move val val -&gt; void</span>
+        <span class="reserved">primitive</span><span class="plain"> </span><span class="functiontext">!move</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> </span><span class="reserved">val</span><span class="plain"> -&gt; </span><span class="reserved">void</span>
 </pre>
 
 <p class="inwebparagraph">defines the primitive <code class="display"><span class="extract">!move</span></code> as something which consumes two values and
@@ -192,15 +188,13 @@ be inside <code class="display"><span class="extract">main</span></code> in some
 <p class="inwebparagraph">The contents of the package are then one tab stop in from the declaration. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package main _plain</span>
-        <span class="plain">    ...</span>
-        <span class="plain">    package m1_RBLK1 _code</span>
-        <span class="plain">        ...</span>
-        <span class="plain">    package m1_RBLK2 _code</span>
-        <span class="plain">        ...</span>
+        <span class="reserved">package</span><span class="plain"> main _plain</span>
+            <span class="plain">...</span>
+            <span class="reserved">package</span><span class="plain"> m1_RBLK1 _code</span>
+                <span class="plain">...</span>
+            <span class="reserved">package</span><span class="plain"> m1_RBLK2 _code</span>
+                <span class="plain">...</span>
 </pre>
 
 <p class="inwebparagraph">Here, <code class="display"><span class="extract">main</span></code> contains two sub-packages, <code class="display"><span class="extract">m1_RBLK1</span></code> and <code class="display"><span class="extract">m1_RBLK2</span></code>, and
@@ -213,22 +207,18 @@ package written out explicitly. Each definition is a <code class="display"><span
 one of these three forms:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">symbol private TYPE NAME</span>
-        <span class="plain">symbol public TYPE NAME</span>
-        <span class="plain">symbol external TYPE NAME --&gt; SYMBOL</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">private</span><span class="plain"> TYPE NAME</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">public</span><span class="plain"> TYPE NAME</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">external</span><span class="plain"> TYPE NAME </span><span class="reserved">--&gt;</span><span class="plain"> SYMBOL</span>
 </pre>
 
 <p class="inwebparagraph">For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">symbol public misc MEMORY_HEAP_SIZE</span>
-        <span class="plain">symbol external misc AllowInShowme --&gt; /main/resources/template/AllowInShowme</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">public</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> MEMORY_HEAP_SIZE</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">external</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> AllowInShowme </span><span class="reserved">--&gt;</span><span class="plain"> /main/resources/template/AllowInShowme</span>
 </pre>
 
 <p class="inwebparagraph"><code class="display"><span class="extract">private</span></code> means that the meaning and existence of <code class="display"><span class="extract">NAME</span></code> are invisible
@@ -242,14 +232,12 @@ a requirement that this process must eventually end. It would be illegal
 to write
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package main _plain</span>
-        <span class="plain">    package A _plain</span>
-        <span class="plain">        symbol external misc S --&gt; /main/B/T</span>
-        <span class="plain">    package B _plain</span>
-        <span class="plain">        symbol external misc T --&gt; /main/B/S</span>
+        <span class="reserved">package</span><span class="plain"> main _plain</span>
+            <span class="reserved">package</span><span class="plain"> A _plain</span>
+                <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">external</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> S </span><span class="reserved">--&gt;</span><span class="plain"> /main/B/T</span>
+            <span class="reserved">package</span><span class="plain"> B _plain</span>
+                <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">external</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> T </span><span class="reserved">--&gt;</span><span class="plain"> /main/B/S</span>
 </pre>
 
 <p class="inwebparagraph">The symbol <code class="display"><span class="extract">TYPE</span></code> must be one of four possibilities:
@@ -283,8 +271,6 @@ risk of accidental name clashes; it is not required by inter.
 given is a sort of URL showing the package to look inside. Thus
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">/main/resources/template/AllowInShowme</span>
 </pre>
@@ -298,19 +284,15 @@ wishes to be given when the Inter is translated into some other language
 (i.e., Inform 6 or similar). This is written like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">symbol private TYPE NAME `TRANSLATION`</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">private</span><span class="plain"> TYPE NAME </span><span class="element">`TRANSLATION</span><span class="plain">`</span>
 </pre>
 
 <p class="inwebparagraph">So, for example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">symbol public misc launcher `launcher_U32`</span>
+        <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">public</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> launcher </span><span class="element">`launcher_U32</span><span class="plain">`</span>
 </pre>
 
 <p class="inwebparagraph">Symbols tabulated as <code class="display"><span class="extract">external</span></code> cannot be marked in this way, but of course
@@ -318,14 +300,12 @@ the original definition (to which the external link eventually leads) can be.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package main _plain</span>
-        <span class="plain">    package A _plain</span>
-        <span class="plain">        symbol external misc S --&gt; /main/B/T</span>
-        <span class="plain">    package B _plain</span>
-        <span class="plain">        symbol public misc T `FancyName`</span>
+        <span class="reserved">package</span><span class="plain"> main _plain</span>
+            <span class="reserved">package</span><span class="plain"> A _plain</span>
+                <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">external</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> S </span><span class="reserved">--&gt;</span><span class="plain"> /main/B/T</span>
+            <span class="reserved">package</span><span class="plain"> B _plain</span>
+                <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">public</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> T </span><span class="element">`FancyName</span><span class="plain">`</span>
 </pre>
 
 <p class="inwebparagraph">would result in the names <code class="display"><span class="extract">S</span></code> and <code class="display"><span class="extract">T</span></code> both being compiled to the name
@@ -354,19 +334,15 @@ it is declared in the symbols table. For example, here is a creation of
 a symbol for a constant:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000</span>
+        <span class="reserved">constant</span><span class="plain"> WORD_NEXTTOHIGHBIT </span><span class="identifier">K_typeless_int</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">x4000</span>
 </pre>
 
 <p class="inwebparagraph">And here it is with an annotation:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000 __hex</span>
+        <span class="reserved">constant</span><span class="plain"> WORD_NEXTTOHIGHBIT </span><span class="identifier">K_typeless_int</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">x4000 </span><span class="identifier">__hex</span>
 </pre>
 
 <p class="inwebparagraph">The annotation, <code class="display"><span class="extract">__hex</span></code>, simply means that the natural way to print the
@@ -378,22 +354,18 @@ of the program, and this is typical of annotations.
 or text literal:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">__binary</span>
-        <span class="plain">__table_array=1</span>
-        <span class="plain">__name="matching key"</span>
+        <span class="identifier">__binary</span>
+        <span class="identifier">__table_array</span><span class="plain">=1</span>
+        <span class="identifier">__name</span><span class="plain">=</span><span class="string">"matching key"</span>
 </pre>
 
 <p class="inwebparagraph">There is no built-in set of annotations, and their use does not need to be
 predeclared anywhere: simply writing
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">constant MY_CONSTANT K_typeless_int = 27 __plugh</span>
+        <span class="reserved">constant</span><span class="plain"> MY_CONSTANT </span><span class="identifier">K_typeless_int</span><span class="plain"> = </span><span class="constant">27</span><span class="plain"> </span><span class="identifier">__plugh</span>
 </pre>
 
 <p class="inwebparagraph">would create the annotation <code class="display"><span class="extract">__plugh</span></code> as a possibility, if it didn't already

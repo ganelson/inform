@@ -17,36 +17,36 @@ is a valid stage description.
 
 A "pipeline" is a list of stage descriptions. If the pipeline is spelled
 out textually on the command line, then commas are used to divide the stages:
-
-	|$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'|
-
+= (text as ConsoleText)
+	$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'
+=
 If the pipeline is in an external file, we would instead write:
-
-	|$ inter/Tangled/inter -pipeline-file mypl.interpipeline|
-
+= (text as ConsoleText)
+	$ inter/Tangled/inter -pipeline-file mypl.interpipeline
+=
 and the file |mypl.interpipeline| would have one stage listed on each line,
 so that the commas are not needed:
-
-	|plugh|
-	|xyzzy|
-	|plover|
+= (text)
+	plugh
+	xyzzy
+	plover
 
 @ A pipeline description can make use of "variables". These hold only text,
 and generally represent filenames. Variable names begin with a star |*|.
 The pipeline cannot create variables: instead, the user of the pipeline has
 to make them before use. For example,
-
-	|$ inter/Tangled/inter -variable '*X=ex/why' -pipeline-file mypl.interpipeline|
-
+= (text as ConsoleText)
+	$ inter/Tangled/inter -variable '*X=ex/why' -pipeline-file mypl.interpipeline
+=
 creates the variable |*X| with the textual contents |ex/why| before running
 the given pipeline. Inside the pipeline, a line such as:
-
-	|generate inform6 -> *X|
-
+= (text as Inter Pipeline)
+	generate inform6 -> *X
+=
 would then be read as:
-
-	|generate inform6 -> ex/why|
-
+= (text as Inter Pipeline)
+	generate inform6 -> ex/why
+=
 After variable substitution like this, filenames inside the pipeline
 description are interpreted as follows:
 
@@ -60,8 +60,8 @@ The special variable |*log|, which always exists, means the debugging log.
 A command to write a text file to |*log| is interpreted instead to mean
 "spool the output you would otherwise write to the debugging log instead".
 For example,
-
-	|generate inventory -> *log|
+= (text as Inter Pipeline)
+	generate inventory -> *log
 
 @h Pipelines run by Inform.
 As the above implies, Inter pipelines normally begin with a clean slate:
@@ -72,24 +72,24 @@ two variables are created in advance. |*in| is set to the inter code
 which Inform has generated on the current run, and |*out| is set to the
 filename to which final I6 code needs to be written. The practical
 effect is that any useful pipeline for Inform will begin and end thus:
-
-	|read <- *in|
-	|...|
-	|generate inform6 -> *out|
-
+= (text as Inter Pipeline)
+	read <- *in
+	...
+	generate inform6 -> *out
+=
 In addition, the "domain" is set to the directory containing the |*out|
 file.
 
 To Inbuild and Inform, pipelines are resources in their own right, rather
 like extensions or kits. So, for example, the standard distribution includes
-
-	|inform7/Internal/Pipelines/compile.interpipeline|
-
+= (text)
+	inform7/Internal/Pipelines/compile.interpipeline
+=
 which is the one used for standard compilation runs. A projects Materials
 folder is free to provide a replacement:
-
-	|Strange.materials/Pipelines/compile.interpipeline|
-	
+= (text)
+	Strange.materials/Pipelines/compile.interpipeline
+=
 ...and then this will be used instead when compiling |Strange.inform|.
 
 1. This sentence in Inform source text:
@@ -105,22 +105,23 @@ Inform; so for example you could write:
 >> Use inter pipeline "mypipeline".
 
 And then store the actual pipeline file as:
-
-	|Example Work.materials/Pipelines/mypipeline.interpipeline|
+= (text)
+	Example Work.materials/Pipelines/mypipeline.interpipeline
+=
 
 2. You don't need the Use... sentence, though, if you're willing to choose
 on the command line instead:
-
-	|$ inform7/Tangled/inform7 ... -pipeline NAME|
-
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 ... -pipeline NAME
+=
 Or, if you want to name a file explicitly, not have it looked for by name:
-
-	|$ inform7/Tangled/inform7 ... -pipeline-file FILE|
-
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 ... -pipeline-file FILE
+=
 3. Finally, you can also give Inform 7 an explicit pipeline in textual form:
-
-	|$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'|
-
+= (text as ConsoleText)
+	$ inform7/Tangled/inform7 ... -pipeline-text 'PIPELINE'
+=
 Note that Inbuild and Inform 7 respond to all three of |-pipeline|,
 |-pipeline-file| and |-pipeline-text|, whereas Inter responds only to the
 last two. (It can't find pipelines by name because it doesn't contain the
@@ -131,17 +132,17 @@ There are three sorts of stage description: those involving material coming
 in, denoted by a left arrow, those involving some external file being written
 out, denoted by a right arrow, and those which just process what we have.
 These take the following forms:
-
-	|STAGENAME [LOCATION] <- SOURCE|
-	|STAGENAME [LOCATION] FORMAT -> DESTINATION|
-	|STAGENAME [LOCATION]|
-
+= (text as Inter Pipeline)
+	STAGENAME [LOCATION] <- SOURCE
+	STAGENAME [LOCATION] FORMAT -> DESTINATION
+	STAGENAME [LOCATION]
+=
 In each case the |LOCATION| is optional. For example:
-
-	|read 2 <- *in|
-	|generate binary -> *out|
-	|eliminate-redundant-labels /main/template|
-
+= (text as Inter Pipeline)
+	read 2 <- *in
+	generate binary -> *out
+	eliminate-redundant-labels /main/template
+=
 In the first line the location is |2|. Pipeline descriptios allow us to manage
 up to 10 different repositories, and these are called |0| to |9|. These are
 all initially empty. Any stage which doesn't specify a repository is considered
@@ -162,18 +163,18 @@ includes all its subpackages): see below.
 The |read| stage reads Inter from a file into a repository in memory.
 (Its previous contents, if any, are discarded.) This then becomes the
 repository to which subsequent stages apply. The format is:
-
-	|read REPOSITORY <- FILE|
-
+= (text as Inter Pipeline)
+	read REPOSITORY <- FILE
+=
 where |REPOSITORY| is |0| to |9|, and is |0| if not supplied. Note that
 this fills an entire repository: it's not meaningful to specify a
 named package as the location.
 
 The |FILE| can contain either binary or textual Inter, and this is
 automatically detected.
-
-	|generate FORMAT -> FILE|
-
+= (text as Inter Pipeline)
+	generate FORMAT -> FILE
+=
 writes the repository out into the given |FILE|. There are several possible
 formats: |binary| and |text| mean a binary or textual Inter file, |inventory|
 means a textual summary of the contents, and |inform6| means an Inform 6
@@ -204,46 +205,46 @@ verbatim snippets of Inform 6 code.
 
 @ |parse-linked-matter| examines the splats produced by merging and annotates
 them by what they seem to want to do. For example,
-
-	|splat &"Global nitwit = 2;\n"|
-
+= (text as Inter)
+	splat &"Global nitwit = 2;\n"
+=
 is recognised as an Inform 6 variable declaration, and annotated thus:
-
-	|splat GLOBAL &"Global nitwit = 2;\n"|
-
+= (text as Inter)
+	splat GLOBAL &"Global nitwit = 2;\n"
+=
 @ |resolve-conditional-compilation| looks for splats arising from Inform 6
 conditional compilation directives such as |#ifdef|, |#ifndef|, |#endif|;
 it then detects whether the relevant symbols are defined, or looks at their
 values, and deletes sections of code not to be compiled. At the end of this
 stage, there are no conditional compilation splats left in the repository.
 For example:
-
-	|constant MAGIC K_number = 16339|
-	|splat IFTRUE &"#iftrue MAGIC == 16339;\n"|
-	|constant WIZARD K_number = 5|
-	|splat IFNOT &"#ifnot;\n"|
-	|constant MUGGLE K_number = 0|
-	|splat ENDIF &"#endif;\n"|
-
+= (text as Inter)
+	constant MAGIC K_number = 16339
+	splat IFTRUE &"#iftrue MAGIC == 16339;\n"
+	constant WIZARD K_number = 5
+	splat IFNOT &"#ifnot;\n"
+	constant MUGGLE K_number = 0
+	splat ENDIF &"#endif;\n"
+=
 is resolved to:
-
-	|constant MAGIC K_number = 16339|
-	|constant WIZARD K_number = 5|
-
+= (text as Inter)
+	constant MAGIC K_number = 16339
+	constant WIZARD K_number = 5
+=
 @ |assimilate| aims to convert all remaining splats in the repository into
 higher-level inter statements. For example,
-
-	|splat STUB &"#Stub Peach 0;\n"|
-	|splat ATTRIBUTE &"Attribute marmorial;\n"|
-
+= (text as Inter)
+	splat STUB &"#Stub Peach 0;\n"
+	splat ATTRIBUTE &"Attribute marmorial;\n"
+=
 becomes:
-
-	|constant Peach K_unchecked_function = Peach_B __assimilated=1|
-	|property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1|
-
+= (text as Inter)
+	constant Peach K_unchecked_function = Peach_B __assimilated=1
+	property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
+=
 At the end of this stage, there should be no splats left in the repository,
 and the linking process is complete.
-
+=
 @ |make-identifiers-unique| looks for symbols marked with the |MAKE_NAME_UNIQUE|
 flag (represented in textual form by an asterisk after its name), This flag
 means that Inform wants the symbol name to be globally unique in the repository.

@@ -146,19 +146,17 @@ Two, Section 5, Chapter I, Section 1, Chapter III) would be formed up into
 the heading tree:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(the pseudo-heading)  level -1, indentation -1</span>
-        <span class="plain">    (File: Standard Rules)  level 0, indentation 0</span>
-        <span class="plain">        ...</span>
-        <span class="plain">    (File: primary source text)  level 0, indentation 0</span>
-        <span class="plain">        Chapter I  level 4, indentation 1</span>
-        <span class="plain">        Book Two  level 2, indentation 1</span>
-        <span class="plain">            Section 5  level 5, indentation 2</span>
-        <span class="plain">            Chapter I  level 4, indentation 2</span>
-        <span class="plain">                Section 1  level 5, indentation 3</span>
-        <span class="plain">            Chapter III  level 4, indentation 2</span>
+            <span class="plain">(File: Standard Rules)  level 0, indentation 0</span>
+                <span class="plain">...</span>
+            <span class="plain">(File: primary source text)  level 0, indentation 0</span>
+                <span class="plain">Chapter I  level 4, indentation 1</span>
+                <span class="plain">Book Two  level 2, indentation 1</span>
+                    <span class="plain">Section 5  level 5, indentation 2</span>
+                    <span class="plain">Chapter I  level 4, indentation 2</span>
+                        <span class="plain">Section 1  level 5, indentation 3</span>
+                    <span class="plain">Chapter III  level 4, indentation 2</span>
 </pre>
 
 <p class="inwebparagraph">Note that the level of a heading is not the same thing as its depth in this
@@ -207,10 +205,8 @@ storage: we call it the "last indentation above level K".
 individual file of source text: at the top of file,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">for (i=0; i&lt;NO_HEADING_LEVELS; i++) last_indentation_above_level[i] = -1;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = -1;</span>
 </pre>
 
 <p class="inwebparagraph">Then parse for headings (they have an easily recognised lexical form); each
@@ -218,14 +214,12 @@ time one is found, work out its <code class="display"><span class="extract">leve
 and call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">int find_indentation(int level) {</span>
-        <span class="plain">    int i, ind = last_indentation_above_level[level] + 1;</span>
-        <span class="plain">    for (i=level+1; i&lt;NO_HEADING_LEVELS; i++)</span>
-        <span class="plain">        last_indentation_above_level[i] = ind;</span>
-        <span class="plain">    return ind;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">find_indentation</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">ind</span><span class="plain"> = </span><span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">level</span><span class="plain">] + </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">level</span><span class="plain">+1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_HEADING_LEVELS</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
+                <span class="identifier">last_indentation_above_level</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">ind</span><span class="plain">;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ind</span><span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
 
@@ -651,14 +645,12 @@ This isn't always the final position. For instance, given the sequence
 Volume 1, Chapter I, Section A, Chapter II, the tree is adjusted twice:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">when h = Volume 1:        then when h = Chapter I:</span>
         <span class="plain">Volume 1                  Volume 1</span>
-        <span class="plain">    Chapter I                 Chapter I</span>
-        <span class="plain">    Section A                     Section A</span>
-        <span class="plain">    Chapter II                Chapter II</span>
+            <span class="plain">Chapter I                 Chapter I</span>
+            <span class="plain">Section A                     Section A</span>
+            <span class="plain">Chapter II                Chapter II</span>
 </pre>
 
 <p class="inwebparagraph">since Section A is demoted twice, once by Volume 1, then by Chapter I.

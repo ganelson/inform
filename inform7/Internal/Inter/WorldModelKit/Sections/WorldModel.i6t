@@ -28,9 +28,9 @@ It is just possible for |HolderOf| to be called before the player has been
 placed into the model world, in cases where Inform is checking a past tense
 condition in the opening pre-turn. We don't want to return |nothing| then
 because that would make it true that
-
-	|HolderOf(player) == ContainerOf(player)|
-
+= (text as Inform 6)
+	HolderOf(player) == ContainerOf(player)
+=
 and similar conditions -- thus, it would appear that in the immediate past
 the player had been on the holder of the player, which is not in fact the
 case. So we return |thedark| as a typesafe but impossible value here.

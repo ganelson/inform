@@ -91,14 +91,14 @@ In order to preserve type safety, Inform forces its storage objects
 time. We are allowed to create a "number that varies", but not an "even
 number that varies", because the former is a kind and the latter is not.
 This is rather like C, where variables might be declared like so:
-
-	|int width, height; char *name;|
-
+= (text as C)
+	int width, height; char *name;
+=
 In C, the range of types which can be stored is the same as the range of
 types which can be function arguments, so for instance:
-
-	|int area(int width, int height) { return width*height; }|
-
+= (text as C)
+	int area(int width, int height) { return width*height; }
+=
 But whereas Inform's variables are much like C's, Inform's phrase definitions
 are not like C's functions, and they can have much more general arguments:
 
@@ -253,9 +253,9 @@ A further subtlety comes with phrases like:
 >> To juxtapose (name of kind of value K) with (alpha - K) and (beta - K): ...
 
 What's the kind of this? From the point of view of compilation, it's
-
-	|phrase (K, K) -> nothing|
-
+= (text)
+	phrase (K, K) -> nothing
+=
 but this is not quite right, because it doesn't make clear how Inform is to
 infer the kind K -- should it take it from the value supplied as alpha, or
 beta? This makes a difference in some cases of ambiguity. The answer of
@@ -266,9 +266,9 @@ course is neither: for example, when Inform reads
 it sets K to "number" from the explicit text "numbers", rather than inferring
 it from the 12 or the 31. So, internally, Inform regards the kind of this
 phrase as
-
-	|phrase (K, K, K) -> nothing|
-
+= (text)
+	phrase (K, K, K) -> nothing
+=
 even though it will compile actual function calls to "juxtapose" with two
 rather than three arguments. (This is all a sort of poor man's second-order
 logic, since one argument is in effect a kind rather than a value.)
@@ -374,9 +374,9 @@ instance, if the source text ever contains an invocation like:
 
 then at some point Inform will have to compile a version of the phrase
 which has the kind:
-
-	|phrase (number, list of numbers) -> nothing|
-
+= (text)
+	phrase (number, list of numbers) -> nothing
+=
 The routine below then dismantles that kind to extract the kinds of the
 arguments, "number" and then "list of numbers", and creates local
 variables "new entry" and "L" with those kinds.

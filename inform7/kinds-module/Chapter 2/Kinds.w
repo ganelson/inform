@@ -9,12 +9,12 @@ To build tree structures which represent Inform's universe of kinds.
 each valid kind as the outcome of a series of constructions performed on
 existing kinds. Here, for example, we get to out destination with four
 constructions in a row:
-
-	|(nothing) --> text|
-	|(nothing) --> time|
-	|time --> list of times|
-	|text, list of times --> relation of texts to lists of times|
-
+= (text)
+	(nothing) --> text
+	(nothing) --> time
+	time --> list of times
+	text, list of times --> relation of texts to lists of times
+=
 At each step there is only a finite choice of possible "kind constructions"
 which can be made, but since there can in principle be an unlimited number
 of steps, the set of all possible kinds is infinite. At each step we make
@@ -32,10 +32,10 @@ creates a new kind. For example,
 >> A weight is a kind of value. A mammal is a kind of animal.
 
 creates two new constructors:
-
-	|(nothing) --> weight|
-	|(nothing) --> animal|
-
+= (text)
+	(nothing) --> weight
+	(nothing) --> animal
+=
 At present these additional constructors all have arity 0. High-level Inform 7
 source is not currently able to define new constructors of higher arity;
 I6 template code can do this (and that's how the built-in set is defined),
@@ -50,17 +50,17 @@ used to make it; this is never null. In the case of two special
 constructors, there are further annotations (see below). The number of
 downward branches at the node is equal to the arity of the constructor
 being used; so the kind "number" is represented by a single leaf node:
-
-	|number|
-
+= (text)
+	number
+=
 whereas "relation of texts to lists of times" is represented by a tree of
 four nodes like so:
-
-	|relation of K to L|
-	|	text|
-	|	list of K|
-	|		time|
-
+= (text)
+	relation of K to L
+		text
+		list of K
+			time
+=
 @ We will often use the word "base" to refer to arity-0 constructors
 (or to the kinds which use them): thus, "text" and "time" are bases,
 but "list of K" is not. We call constructors of higher arity "proper".
@@ -80,15 +80,15 @@ medium-sized source text like "Bronze", which is not worth economising.
 arity, or needing different arity in different usages, so the scheme of
 having fixed arities in the range 0 to 2 looks limited. In practice we get
 around that by using "punctuation nodes" in the tree. For example,
-
-	|function K -> L|
-	|	CON_TUPLE_ENTRY|
-	|		text|
-	|		CON_TUPLE_ENTRY|
-	|			text|
-	|			CON_NIL|
-	|	number|
-
+= (text)
+	function K -> L
+		CON_TUPLE_ENTRY
+			text
+			CON_TUPLE_ENTRY
+				text
+				CON_NIL
+		number
+=
 represents |function (text, text) -> number|. Note two special constructors
 used here: |CON_TUPLE_ENTRY| and |CON_NIL|. These are called "punctuation";
 they cannot appear in isolation -- see below.
@@ -154,9 +154,9 @@ $(K_1, K_2, ..., K_n)$ of kinds of value. |CON_NIL| represents the empty
 tuple, where $n=0$; while |CON_TUPLE_ENTRY| behaves like a kind constructor
 with arity 2, its two bases being the first item and the rest, respectively.
 Thus we store $(A, B, C)$ as
-
-	|CON_TUPLE_ENTRY(A, CON_TUPLE_ENTRY(B, CON_TUPLE_ENTRY(C, CON_NIL)))|
-
+= (text)
+	CON_TUPLE_ENTRY(A, CON_TUPLE_ENTRY(B, CON_TUPLE_ENTRY(C, CON_NIL)))
+=
 This traditional LISP-like device enables us to store tuples of arbitrary
 size without need for any constructor of arity greater than 2.
 
@@ -336,9 +336,9 @@ kind *Kinds::variable_construction(int N, kind *declaration) {
 
 @ That completes the possible base constructions. Proper constructions are made
 using the following. For example,
-
-	|Kinds::unary_construction(CON_list_of, K_number)|
-
+= (text)
+	Kinds::unary_construction(CON_list_of, K_number)
+=
 produces a kind structure meaning "list of numbers". This is not cached
 anywhere, so a second request for the same thing will produce a different copy
 in memory of the same structure. Profiling shows that little memory is in
@@ -386,19 +386,19 @@ making use of the punctuation nodes |CON_TUPLE_ENTRY| and |CON_NIL|. Note
 that we use |K_nil| to represent the absence of a return kind (the "nothing"
 in a function to nothing). Note also that a function from X to Y, with just
 one argument, comes out as:
-
-	|CON_phrase|
-	|	CON_TUPLE_ENTRY|
-	|		X|
-	|		CON_NIL|
-	|	Y|
-
+= (text)
+	CON_phrase
+		CON_TUPLE_ENTRY
+			X
+			CON_NIL
+		Y
+=
 rather than as:
-
-	|CON_phrase|
-	|	X|
-	|	Y|
-
+= (text)
+	CON_phrase
+		X
+		Y
+=
 (It's more convenient to have a predictable form than to save on kind nodes.)
 
 =

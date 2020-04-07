@@ -133,13 +133,13 @@ source text defines a rule only as an I6 routine. For example:
 Responses like this one are "via I6", and they cause us to create a support
 routine for the rule, called in this case |HACK_MODE_ON_RM|. The rule then
 calls
-
-	|HACK_MODE_ON_RM('A');|
-
+= (text as Inform 6)
+	HACK_MODE_ON_RM('A');
+=
 to produce response (A), or alternatively
-
-	|HACK_MODE_ON_RM('a');|
-
+= (text as Inform 6)
+	HACK_MODE_ON_RM('a');
+=
 to return the current text of (A) without printing it. Speed is not of the
 essence here.
 
@@ -504,9 +504,9 @@ void Strings::compile_general(value_holster *VH, parse_node *str) {
 }
 
 @ Responses take the form
-
-	|"blah blah blah" ( letter )|
-
+= (text)
+	"blah blah blah" ( letter )
+=
 so the penultimate word, if it's there, is the letter.
 
 @<This is going to make a valid I7 text value@> =

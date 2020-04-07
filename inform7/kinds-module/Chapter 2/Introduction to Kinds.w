@@ -90,11 +90,11 @@ easily by defining a phrase inline using an insertion of I6 code. For instance:
 >> To decide which text is (N - a number) as text: (- \{N\} -).
 
 is analogous to a C function like so:
-
-	|char *number_as_text(int N) {|
-	|	return (char *) N;|
-	|}|
-
+= (text as C)
+	char *number_as_text(int N) {
+		return (char *) N;
+	}
+=
 This is completely unsafe, even though the innocent user who calls
 |number_as_text| may have no idea of the danger. Even worse things can
 be done if C functions are used to wrap, say, x86 assembly language for

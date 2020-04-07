@@ -113,9 +113,9 @@ text_stream *Renderer::render_block(OUTPUT_STREAM, volume *V, section *S) {
 @ Examples need to connect with particular sections of documentation, but
 they do so by title, not by block number, to protect them from renumbering
 as sections are added or removed. So if the current block is called
-
-	|2.3. Sailing Ships|
-
+= (text as Indoc)
+	2.3. Sailing Ships
+=
 then we need to look for the text |Sailing Ships| to see if an example
 belongs here. (But, owing to a historical accident, in the Recipe Book
 section names are capitalised for this purpose.)
@@ -393,9 +393,9 @@ convert those to HTML links.
 @h Javascript paste icons.
 That's the whole rendering routine, except for the handling of Javascript
 paste icons. In rawtext, these look like so:
-
-	|    {*}A useful sentence.|
-
+= (text as Indoc)
+	    {*}A useful sentence.
+=
 The |{*}| is replaced by a button which, when clicked on, performs a Javascript
 function call to paste "A useful sentence" into the Inform application's
 source text pane. (Note that the "A useful sentence" text is still also
@@ -459,14 +459,14 @@ see below.
  	}
 
 @ The rawtext is doing something like this:
-
-	|    {*}A ball is in the bag.|
-	|    The bag is on the kitchen table.|
-	||
-	|This single sentence doesn"t make much of a simulation. Let"s add:|
-	||
-	|    {**}The stitched seam is part of the ball.|
-
+= (text)
+	    {*}A ball is in the bag.
+	    The bag is on the kitchen table.
+	
+	This single sentence doesn"t make much of a simulation. Let"s add:
+	
+	    {**}The stitched seam is part of the ball.
+=
 The line count |i| points to the first line of this. The paste consists
 of the two lines about the bag and the table, but with the stitched seam
 line added in, because of the |{**}| continuation marker. The "range" is
@@ -600,9 +600,9 @@ void Renderer::apply_Inform_escape_characters(text_stream *text) {
 @h Rendering cross-references to other sections.
 These occur when the rawtext contains paragraphs with a very specific
 arrangement:
-
-	|(-See Units for a more sophisticated capacity system.)|
-
+= (text as Indoc)
+	(-See Units for a more sophisticated capacity system.)
+=
 The idea is that, except for the brackets and dash, the text makes sense as
 it stands; but in HTML, we can use the section title ("Units" here) to find
 which block is meant, and encode this as a link.
@@ -637,8 +637,9 @@ void Renderer::render_cross_reference(OUTPUT_STREAM,
  	else Errors::with_text("cross-reference to %S points to no section", sname);
 
 @ And similarly, for cross-referencing to examples by name:
-
-	|(See example "Blink")|
+= (text as Indoc)
+	(See example "Blink")
+=
 
 =
 void Renderer::render_example_cross_reference(OUTPUT_STREAM, text_stream *ename, volume *V) {

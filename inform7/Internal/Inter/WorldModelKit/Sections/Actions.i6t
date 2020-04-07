@@ -262,9 +262,9 @@ hidden in the call to |LookSub|. The |-Sub| suffix is an I6 usage identifying
 this as the routine to go along with the action |##Look|, and so it is,
 but it looks nothing like the |LookSub| of the old I6 library. NI compiles
 |-Sub| routines like so:
-
-	|[ LookSub; return GenericVerbSub(153,154,155); ];|
-
+= (text as Inform 6)
+	[ LookSub; return GenericVerbSub(153,154,155); ];
+=
 (with whatever rulebook numbers are appropriate). |GenericVerbSub| then
 runs through the specific action processing stage.
 

@@ -190,25 +190,25 @@ contain only invocations of |!case|, followed optionally by one of |!default|.
 (c) |primitive !default code -> void|. 
 
 This looks a little baroque, but it works in practice:
-
-	|inv !switch|
-	|    val K_number X|
-	|    code|
-	|        inv !case|
-	|            val K_number 1|
-	|            code|
-	|                inv !print|
-	|                    val K_text "One!"|
-	|        inv !case|
-	|            val K_number 2|
-	|            code|
-	|                inv !print|
-	|                    val K_text "Two!"|
-	|        inv !default|
-	|            code|
-	|                inv !print|
-	|                    val K_text "Something else!"|
-
+= (text as Inter)
+	inv !switch
+	    val K_number X
+	    code
+	        inv !case
+	            val K_number 1
+	            code
+	                inv !print
+	                    val K_text "One!"
+	        inv !case
+	            val K_number 2
+	            code
+	                inv !print
+	                    val K_text "Two!"
+	        inv !default
+	            code
+	                inv !print
+	                    val K_text "Something else!"
+=
 As in most C-like languages, there are primitives for:
 
 (a) |primitive !break void -> void|. Exit the innermost switch case or loop.

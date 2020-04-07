@@ -295,14 +295,12 @@ a correctly paired way; otherwise they are the same.
 and some wardrobes" becomes
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">AND_NT ","</span>
-        <span class="plain">    PROPERTY_LIST_NT "lion" article:definite</span>
-        <span class="plain">    AND_NT ", and"</span>
-        <span class="plain">        PROPERTY_LIST_NT "witch" article:indefinite</span>
-        <span class="plain">        PROPERTY_LIST_NT "wardrobe" article:indefinite pluralreference:true</span>
+            <span class="plain">PROPERTY_LIST_NT "lion" article:definite</span>
+            <span class="plain">AND_NT ", and"</span>
+                <span class="plain">PROPERTY_LIST_NT "witch" article:indefinite</span>
+                <span class="plain">PROPERTY_LIST_NT "wardrobe" article:indefinite pluralreference:true</span>
 </pre>
 
 <p class="inwebparagraph">The binary structure is chosen since it allows us to use a simple recursion
@@ -495,13 +493,11 @@ are present within the NP. For instance, we want to turn
 <p class="inwebparagraph">into the subtree:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">RELATIONSHIP_NT "in" = containment</span>
-        <span class="plain">    CALLED_NT "called"</span>
-        <span class="plain">        PROPER_NOUN_NT "container" article:indefinite</span>
-        <span class="plain">        PROPER_NOUN_NT "flask and cap with flange" article:definite</span>
+            <span class="plain">CALLED_NT "called"</span>
+                <span class="plain">PROPER_NOUN_NT "container" article:indefinite</span>
+                <span class="plain">PROPER_NOUN_NT "flask and cap with flange" article:definite</span>
 </pre>
 
 <p class="inwebparagraph">but we also want:
@@ -514,11 +510,11 @@ are present within the NP. For instance, we want to turn
 
 <pre class="display">
         <span class="plain">RELATIONSHIP_NT "in" = containment</span>
-        <span class="plain">    WITH_NT "with"</span>
-        <span class="plain">        PROPER_NOUN_NT "container" article:indefinite</span>
-        <span class="plain">        AND_NT "and"</span>
-        <span class="plain">            PROPERTY_LIST_NT "carrying capacity 10"</span>
-        <span class="plain">            PROPERTY_LIST_NT "diameter 12"</span>
+            <span class="plain">WITH_NT "with"</span>
+                <span class="plain">PROPER_NOUN_NT "container" article:indefinite</span>
+                <span class="plain">AND_NT "and"</span>
+                    <span class="plain">PROPERTY_LIST_NT "carrying capacity 10"</span>
+                    <span class="plain">PROPERTY_LIST_NT "diameter 12"</span>
 </pre>
 
 <p class="inwebparagraph">These two cases together force our conventions: from sentence [A] we see
@@ -531,8 +527,6 @@ to ensure that is to make sure they can only appear right down close to
 leaves in the tree. This dictates
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">RELATIONSHIP_NT &gt; CALLED_NT &gt; WITH_NT &gt; AND_NT</span>
 </pre>
@@ -543,8 +537,6 @@ lower. That leaves just the seventh construction: "kind of ...". To
 avoid misreading this as an "of", and to protect "called", we need
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">CALLED_NT &gt; KIND_NT</span>
 </pre>
@@ -554,8 +546,6 @@ will take different shapes in some cases if we move it around, we could
 write code which handled any of the outcomes about equally well). In fact,
 we choose to make it lowest possible, so the final precedence order is:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">RELATIONSHIP_NT &gt; CALLED_NT &gt; WITH_NT &gt; AND_NT &gt; KIND_NT</span>

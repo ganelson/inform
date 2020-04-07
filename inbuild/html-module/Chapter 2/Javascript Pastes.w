@@ -9,11 +9,11 @@ panel of the application.
 @ The application is required to provide a Javascript function to copy text
 into the source window. Broadly speaking, the application needs to support
 Javascript in the following form:
-
-	|var myProject = external.Project;|
-	|myProject.selectView('source');|
-	|myProject.pasteCode('Trying Taking Manhattan');|
-
+= (text)
+	var myProject = external.Project;
+	myProject.selectView('source');
+	myProject.pasteCode('Trying Taking Manhattan');
+=
 This for Windows: for OS X, the same code but |window.Project| rather
 than |external.Project|.
 
@@ -29,15 +29,15 @@ we define numerous copies of the Javascript code above. In model 1, we
 never need to compile fresh Javascript functions because the template file
 |ExtensionFileModel.html| for OS X contains a definition of the single
 Javascript function:
-
-	|<script language="JavaScript">|
-	|function pasteCode(code) {|
-	|	var myProject = project();|
-	|	myProject.selectView('source');|
-	|	myProject.pasteCode(code);|
-	|}|
-	|</script>|
-
+= (text)
+	<script language="JavaScript">
+	function pasteCode(code) {
+		var myProject = project();
+		myProject.selectView('source');
+		myProject.pasteCode(code);
+	}
+	</script>
+=
 and we can simply call |href="javascript:pasteCode(...)"| from any link.
 
 The text pasted may in some cases be quite long (say, 5K or more) and the

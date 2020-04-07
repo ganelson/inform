@@ -76,16 +76,16 @@ is intended; at present, the only possible choice is |target_I6|, meaning,
 Convention. Inform uses this to pass on ICL (Inform Command Language)
 commands to Inform 6, such as memory settings or command-line switches.
 For example,
-
-	|pragma target_I6 "$MAX_LABELS=200000"|
-
+= (text as Inter)
+	pragma target_I6 "$MAX_LABELS=200000"
+=
 (This would be meaningless if we were compiling to some other format.)
 
 @ |primitive PRIMITIVE IN -> OUT| defines a new code statement -- if inter
 were an assembly language, these would be the opcodes. For example,
-
-	|primitive !move val val -> void|
-
+= (text as Inter)
+	primitive !move val val -> void
+=
 defines the primitive |!move| as something which consumes two values and
 produces none. (Further details on this will appear in the section on code
 packages.)
@@ -103,14 +103,14 @@ only package allowed to appear at the top level: all other packages should
 be inside |main| in some way.
 
 The contents of the package are then one tab stop in from the declaration. Thus:
-
-	|package main _plain|
-	|    ...|
-	|    package m1_RBLK1 _code|
-	|        ...|
-	|    package m1_RBLK2 _code|
-	|        ...|
-
+= (text as Inter)
+	package main _plain
+	    ...
+	    package m1_RBLK1 _code
+	        ...
+	    package m1_RBLK2 _code
+	        ...
+=
 Here, |main| contains two sub-packages, |m1_RBLK1| and |m1_RBLK2|, and
 indentation is used to show which package a statement belongs to.
 
@@ -118,16 +118,16 @@ indentation is used to show which package a statement belongs to.
 of symbols definitions. In effect, this is the symbols table for the
 package written out explicitly. Each definition is a |symbol| line, in
 one of these three forms:
-
-	|symbol private TYPE NAME|
-	|symbol public TYPE NAME|
-	|symbol external TYPE NAME --> SYMBOL|
-
+= (text as Inter)
+	symbol private TYPE NAME
+	symbol public TYPE NAME
+	symbol external TYPE NAME --> SYMBOL
+=
 For example,
-
-	|symbol public misc MEMORY_HEAP_SIZE|
-	|symbol external misc AllowInShowme --> /main/resources/template/AllowInShowme|
-
+= (text as Inter)
+	symbol public misc MEMORY_HEAP_SIZE
+	symbol external misc AllowInShowme --> /main/resources/template/AllowInShowme
+=
 |private| means that the meaning and existence of |NAME| are invisible
 from outside the current package; |public| means that other packages are
 allowed to refer to |NAME|; and |external| means that this package is
@@ -137,13 +137,13 @@ another symbol which is also |external|, so that we then have to follow
 another link to find the original non-external definition. However, it is
 a requirement that this process must eventually end. It would be illegal
 to write
-
-	|package main _plain|
-	|    package A _plain|
-	|        symbol external misc S --> /main/B/T|
-	|    package B _plain|
-	|        symbol external misc T --> /main/B/S|
-
+= (text as Inter)
+	package main _plain
+	    package A _plain
+	        symbol external misc S --> /main/B/T
+	    package B _plain
+	        symbol external misc T --> /main/B/S
+=
 The symbol |TYPE| must be one of four possibilities:
 (a) |label|, used to mark execution positions in code packages;
 (b) |package|, meaning that this is the name of a package;
@@ -169,32 +169,32 @@ risk of accidental name clashes; it is not required by inter.
 
 @ Where a local symbol is being equated with an external one, the |SYMBOL|
 given is a sort of URL showing the package to look inside. Thus
-
-	|/main/resources/template/AllowInShowme|
-
+= (text as Inter)
+	/main/resources/template/AllowInShowme
+=
 means "the symbol |AllowInShowme| in package |template| inside package
 |resources| inside package |main|".
 
 @ Optionally, a |private| or |public| symbol can also specify a name it
 wishes to be given when the Inter is translated into some other language
 (i.e., Inform 6 or similar). This is written like so:
-
-	|symbol private TYPE NAME `TRANSLATION`|
-
+= (text as Inter)
+	symbol private TYPE NAME `TRANSLATION`
+=
 So, for example,
-
-	|symbol public misc launcher `launcher_U32`|
-
+= (text as Inter)
+	symbol public misc launcher `launcher_U32`
+=
 Symbols tabulated as |external| cannot be marked in this way, but of course
 the original definition (to which the external link eventually leads) can be.
 For example,
-
-	|package main _plain|
-	|    package A _plain|
-	|        symbol external misc S --> /main/B/T|
-	|    package B _plain|
-	|        symbol public misc T `FancyName`|
-
+= (text as Inter)
+	package main _plain
+	    package A _plain
+	        symbol external misc S --> /main/B/T
+	    package B _plain
+	        symbol public misc T `FancyName`
+=
 would result in the names |S| and |T| both being compiled to the name
 |FancyName| in the final code.
 
@@ -214,29 +214,29 @@ for looking at the output from different code-generation stages.
 Annotations are written on the line where the symbol is created, not where
 it is declared in the symbols table. For example, here is a creation of
 a symbol for a constant:
-
-	|constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000|
-
+= (text as Inter)
+	constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000
+=
 And here it is with an annotation:
-
-	|constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000 __hex|
-
+= (text as Inter)
+	constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000 __hex
+=
 The annotation, |__hex|, simply means that the natural way to print the
 value of this constant would be hexadecimal; it doesn't change the meaning
 of the program, and this is typical of annotations.
 
 All annotations begin with a double underscore, and some can take a number
 or text literal:
-
-	|__binary|
-	|__table_array=1|
-	|__name="matching key"|
-
+= (text as Inter)
+	__binary
+	__table_array=1
+	__name="matching key"
+=
 There is no built-in set of annotations, and their use does not need to be
 predeclared anywhere: simply writing
-
-	|constant MY_CONSTANT K_typeless_int = 27 __plugh|
-
+= (text as Inter)
+	constant MY_CONSTANT K_typeless_int = 27 __plugh
+=
 would create the annotation |__plugh| as a possibility, if it didn't already
 exist. However, Inform has a conventional set of annotations which it uses
 for symbols with various meanings, and that set will be covered later.

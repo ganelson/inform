@@ -135,17 +135,14 @@ identified with the same codes as used in "Dimensions". Note
 that the equals sign <code class="display"><span class="extract">=</span></code> is itself considered an operation here.Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">OPERATION_EQN =</span>
-        <span class="plain">    SYMBOL_EQN E</span>
-        <span class="plain">    OPERATION_EQN *</span>
-        <span class="plain">        SYMBOL_EQN m</span>
-        <span class="plain">        OPERATION_EQN ^</span>
-        <span class="plain">            SYMBOL_EQN c</span>
-        <span class="plain">            CONSTANT_EQN 2</span>
-
+            <span class="plain">SYMBOL_EQN E</span>
+            <span class="plain">OPERATION_EQN *</span>
+                <span class="plain">SYMBOL_EQN m</span>
+                <span class="plain">OPERATION_EQN ^</span>
+                    <span class="plain">SYMBOL_EQN c</span>
+                    <span class="plain">CONSTANT_EQN 2</span>
     <span class="definitionkeyword">define</span> <span class="constant">CONSTANT_EQN</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">a leaf, representing a quasinumerical constant not given a symbol</span>
     <span class="definitionkeyword">define</span> <span class="constant">SYMBOL_EQN</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">a leaf, representing a symbol</span>
     <span class="definitionkeyword">define</span> <span class="constant">OPERATION_EQN</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">a non-leaf, representing an operation</span>
@@ -2666,14 +2663,12 @@ point it is at the top level as required and we break out of the loop.
 always holds. The simplest case to understand is <code class="display"><span class="extract">+</span></code>. Suppose we have:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    +</span>
-        <span class="plain">        V</span>
-        <span class="plain">        E</span>
-        <span class="plain">    R</span>
+            <span class="plain">+</span>
+                <span class="plain">V</span>
+                <span class="plain">E</span>
+            <span class="plain">R</span>
 </pre>
 
 <p class="inwebparagraph">representing (V+E) = R, where V is the sub-equation containing
@@ -2683,14 +2678,12 @@ upwards in the tree, and since we can choose to promote either V or
 E, we'll choose V, thus obtaining:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    V</span>
-        <span class="plain">    -</span>
-        <span class="plain">        R</span>
-        <span class="plain">        E</span>
+            <span class="plain">V</span>
+            <span class="plain">-</span>
+                <span class="plain">R</span>
+                <span class="plain">E</span>
 </pre>
 
 <p class="inwebparagraph">that is, V = (R - E). Since V has moved upwards, so has the unique instance
@@ -2701,14 +2694,12 @@ Multiplication is similar, but turns into division on the right hand side.
 <p class="inwebparagraph">But now consider <code class="display"><span class="extract">-</span></code>. When we rearrange:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    -</span>
-        <span class="plain">        E</span>
-        <span class="plain">        V</span>
-        <span class="plain">    R</span>
+            <span class="plain">-</span>
+                <span class="plain">E</span>
+                <span class="plain">V</span>
+            <span class="plain">R</span>
 </pre>
 
 <p class="inwebparagraph">representing (E-V) = R we no longer have a choice of which operand of <code class="display"><span class="extract">-</span></code>
@@ -2776,26 +2767,22 @@ to write more explicit source text.
 <p class="inwebparagraph">Anyway, rearrangement for our easy cases is indeed easy:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    ^</span>
-        <span class="plain">        V</span>
-        <span class="plain">        2</span>
-        <span class="plain">    R</span>
+            <span class="plain">^</span>
+                <span class="plain">V</span>
+                <span class="plain">2</span>
+            <span class="plain">R</span>
 </pre>
 
 <p class="inwebparagraph">becomes
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    V</span>
-        <span class="plain">    square-root</span>
-        <span class="plain">        R</span>
+            <span class="plain">V</span>
+            <span class="plain">square-root</span>
+                <span class="plain">R</span>
 </pre>
 
 <p class="inwebparagraph">and V is always promoted, so we achieve property (i); and similarly for
@@ -2859,28 +2846,23 @@ which is only possible if we have an inverse available for our function &mdash;
 in this case, <code class="display"><span class="extract">exp</span></code> being the inverse of <code class="display"><span class="extract">log</span></code>. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    apply</span>
-        <span class="plain">        function</span>
-        <span class="plain">        V</span>
-        <span class="plain">    R</span>
+            <span class="plain">apply</span>
+                <span class="plain">function</span>
+                <span class="plain">V</span>
+            <span class="plain">R</span>
 </pre>
 
 <p class="inwebparagraph">must become
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=</span>
-        <span class="plain">    V</span>
-        <span class="plain">    apply</span>
-        <span class="plain">        inverse-of-function</span>
-        <span class="plain">        R</span>
-
+            <span class="plain">V</span>
+            <span class="plain">apply</span>
+                <span class="plain">inverse-of-function</span>
+                <span class="plain">R</span>
     &lt;<span class="cwebmacrodefn">Rearrange using the inverse of function</span> <span class="cwebmacronumber">50.3.2</span>&gt; =
         <span class="reserved">equation_node</span><span class="plain"> *</span><span class="identifier">fnode</span><span class="plain"> = </span><span class="identifier">old_LHS</span><span class="plain">-&gt;</span><span class="element">enode_operands</span><span class="plain">[0];</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">fnode</span><span class="plain">-&gt;</span><span class="element">leaf_symbol</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>

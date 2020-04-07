@@ -236,12 +236,10 @@ all targets, or grouped in braced blocks relevant to one target only. For
 example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">superbness = 20</span>
         <span class="plain">hypercard {</span>
-        <span class="plain">    superbness = 40</span>
+            <span class="plain">superbness = 40</span>
         <span class="plain">}</span>
 </pre>
 
@@ -374,8 +372,6 @@ example,
 <p class="inwebparagraph"><a id="SP5_1_2"></a><b>&#167;5.1.2.  </b>Here's where we parse the specifier part of lines like
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">volume: The Inform Recipe Book (RB) = The Recipe Book.txt</span>
 </pre>
@@ -383,11 +379,8 @@ example,
 <p class="inwebparagraph">which reads:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">The Inform Recipe Book (RB) = The Recipe Book.txt</span>
-
     &lt;<span class="cwebmacrodefn">Act on a volume creation</span> <span class="cwebmacronumber">5.1.2</span>&gt; =
         &lt;<span class="cwebmacro">Disallow this in a specific target</span> <span class="cwebmacronumber">5.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>

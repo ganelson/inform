@@ -226,735 +226,735 @@ for the many gestalt and other codes.
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">wintype_TextGrid</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
 
     <span class="plain">[ </span><span class="identifier">glk_exit</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_exit()</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_exit()</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_tick</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_tick()</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_tick()</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_gestalt</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_gestalt(uint, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_gestalt(uint, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">4</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_gestalt_ext</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_gestalt_ext(uint, uint, uintarray, arraylen) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_gestalt_ext(uint, uint, uintarray, arraylen) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_iterate</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_iterate(window, &amp;uint) =&gt; window</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_iterate(window, &amp;uint) =&gt; window</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">32</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_rock</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_rock(window) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">33</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_rock(window) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">33</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_root</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_root() =&gt; window</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">34</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_root() =&gt; window</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">34</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_open</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_open(window, uint, uint, uint, uint) =&gt; window</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">35</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_open(window, uint, uint, uint, uint) =&gt; window</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">35</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_close</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_close(window, &amp;{uint, uint})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">36</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_close(window, &amp;{uint, uint})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">36</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_size</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_size(window, &amp;uint, &amp;uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">37</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_size(window, &amp;uint, &amp;uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">37</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_set_arrangement</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_set_arrangement(window, uint, uint, window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">38</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_set_arrangement(window, uint, uint, window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">38</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_arrangement</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_arrangement(window, &amp;uint, &amp;uint, &amp;window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">39</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_arrangement(window, &amp;uint, &amp;uint, &amp;window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">39</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_type</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_type(window) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">40</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_type(window) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">40</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_parent</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_parent(window) =&gt; window</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">41</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_parent(window) =&gt; window</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">41</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_clear</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_clear(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">42</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_clear(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">42</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_move_cursor</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_move_cursor(window, uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">43</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_move_cursor(window, uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">43</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_stream(window) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">44</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_stream(window) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">44</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_set_echo_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_set_echo_stream(window, stream)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">45</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_set_echo_stream(window, stream)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">45</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_echo_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_echo_stream(window) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">46</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_echo_stream(window) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">46</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_window</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_window(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">47</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_window(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">47</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_get_sibling</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_window_get_sibling(window) =&gt; window</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">48</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_get_sibling(window) =&gt; window</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">48</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_iterate</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_iterate(stream, &amp;uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">64</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_iterate(stream, &amp;uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">64</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_get_rock</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_get_rock(stream) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">65</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_get_rock(stream) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">65</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_file</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_file(fileref, uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">66</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_file(fileref, uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">66</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_memory</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_memory(nativechararray, arraylen, uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">67</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_memory(nativechararray, arraylen, uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">67</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_close</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_stream_close(stream, &amp;{uint, uint})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">68</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_close(stream, &amp;{uint, uint})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">68</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_set_position</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_stream_set_position(stream, int, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">69</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_set_position(stream, int, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">69</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_get_position</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_get_position(stream) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">70</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_get_position(stream) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">70</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_set_current</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_stream_set_current(stream)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">71</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_set_current(stream)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">71</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_get_current</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_get_current() =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">72</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_get_current() =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">72</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_resource</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_resource(uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">73</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_resource(uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">73</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_create_temp</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_create_temp(uint, uint) =&gt; fileref</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">96</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_create_temp(uint, uint) =&gt; fileref</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">96</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_create_by_name</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_create_by_name(uint, string, uint) =&gt; fileref</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">97</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_create_by_name(uint, string, uint) =&gt; fileref</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">97</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_create_by_prompt</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_create_by_prompt(uint, uint, uint) =&gt; fileref</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">98</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_create_by_prompt(uint, uint, uint) =&gt; fileref</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">98</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_destroy</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_destroy(fileref)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">99</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_destroy(fileref)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">99</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_iterate</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_iterate(fileref, &amp;uint) =&gt; fileref</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_iterate(fileref, &amp;uint) =&gt; fileref</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">100</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_get_rock</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_get_rock(fileref) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">101</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_get_rock(fileref) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">101</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_delete_file</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_delete_file(fileref)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">102</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_delete_file(fileref)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">102</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_does_file_exist</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_does_file_exist(fileref) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">103</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_does_file_exist(fileref) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">103</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_fileref_create_from_fileref</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_fileref_create_from_fileref(uint, fileref, uint) =&gt; fileref</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">104</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_fileref_create_from_fileref(uint, fileref, uint) =&gt; fileref</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">104</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_char</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_char(uchar)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">128</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_char(uchar)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">128</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_char_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_char_stream(stream, uchar)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">129</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_char_stream(stream, uchar)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">129</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_string</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_string(string)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">130</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_string(string)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">130</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_string_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_string_stream(stream, string)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">131</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_string_stream(stream, string)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">131</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_buffer</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_buffer(nativechararray, arraylen)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">132</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_buffer(nativechararray, arraylen)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">132</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_buffer_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_buffer_stream(stream, nativechararray, arraylen)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">133</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_buffer_stream(stream, nativechararray, arraylen)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">133</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_style</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_style(uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">134</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_style(uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">134</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_style_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_style_stream(stream, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">135</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_style_stream(stream, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">135</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_char_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_char_stream(stream) =&gt; int</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">144</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_char_stream(stream) =&gt; int</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">144</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_line_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_line_stream(stream, nativechararray, arraylen) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">145</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_line_stream(stream, nativechararray, arraylen) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">145</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_buffer_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_buffer_stream(stream, nativechararray, arraylen) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">146</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_buffer_stream(stream, nativechararray, arraylen) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">146</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_char_to_lower</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_char_to_lower(uchar) =&gt; uchar</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">160</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_char_to_lower(uchar) =&gt; uchar</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">160</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_char_to_upper</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_char_to_upper(uchar) =&gt; uchar</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">161</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_char_to_upper(uchar) =&gt; uchar</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">161</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stylehint_set</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_stylehint_set(uint, uint, uint, int)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">176</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stylehint_set(uint, uint, uint, int)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">176</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stylehint_clear</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_stylehint_clear(uint, uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">177</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stylehint_clear(uint, uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">177</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_style_distinguish</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_style_distinguish(window, uint, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">178</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_style_distinguish(window, uint, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">178</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_style_measure</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_style_measure(window, uint, uint, &amp;uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">179</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_style_measure(window, uint, uint, &amp;uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">179</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_select</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_select(&amp;{uint, window, uint, uint})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">192</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_select(&amp;{uint, window, uint, uint})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">192</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_select_poll</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_select_poll(&amp;{uint, window, uint, uint})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">193</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_select_poll(&amp;{uint, window, uint, uint})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">193</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_line_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_line_event(window, nativechararray, arraylen, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">208</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_line_event(window, nativechararray, arraylen, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">208</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_cancel_line_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_cancel_line_event(window, &amp;{uint, window, uint, uint})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">209</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_cancel_line_event(window, &amp;{uint, window, uint, uint})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">209</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_char_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_char_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">210</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_char_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">210</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_cancel_char_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_cancel_char_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">211</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_cancel_char_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">211</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_mouse_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_mouse_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">212</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_mouse_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">212</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_cancel_mouse_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_cancel_mouse_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">213</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_cancel_mouse_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">213</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_timer_events</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_timer_events(uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">214</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_timer_events(uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">214</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_image_get_info</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_image_get_info(uint, &amp;uint, &amp;uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">224</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_image_get_info(uint, &amp;uint, &amp;uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">224</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_image_draw</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_image_draw(window, uint, int, int) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">225</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_image_draw(window, uint, int, int) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">225</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_image_draw_scaled</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_image_draw_scaled(window, uint, int, int, uint, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">226</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_image_draw_scaled(window, uint, int, int, uint, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">226</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_flow_break</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_flow_break(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">232</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_flow_break(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">232</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_erase_rect</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_erase_rect(window, int, int, uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">233</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_erase_rect(window, int, int, uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">233</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_fill_rect</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_fill_rect(window, uint, int, int, uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">234</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_fill_rect(window, uint, int, int, uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">234</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_window_set_background_color</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_window_set_background_color(window, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">235</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_window_set_background_color(window, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">235</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_iterate</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_iterate(schannel, &amp;uint) =&gt; schannel</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">240</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_iterate(schannel, &amp;uint) =&gt; schannel</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">240</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_get_rock</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_get_rock(schannel) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">241</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_get_rock(schannel) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">241</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_create</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_create(uint) =&gt; schannel</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">242</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_create(uint) =&gt; schannel</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">242</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_destroy</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_destroy(schannel)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">243</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_destroy(schannel)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">243</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_create_ext</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_create_ext(uint, uint) =&gt; schannel</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">244</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_create_ext(uint, uint) =&gt; schannel</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">244</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_play_multi</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_play_multi(schannelarray, arraylen, uintarray, arraylen, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">247</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_play_multi(schannelarray, arraylen, uintarray, arraylen, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">247</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_play</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_play(schannel, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">248</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_play(schannel, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">248</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_play_ext</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_play_ext(schannel, uint, uint, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">249</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_play_ext(schannel, uint, uint, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">249</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_stop</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_stop(schannel)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">250</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_stop(schannel)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">250</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_set_volume</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_set_volume(schannel, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">251</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_set_volume(schannel, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">251</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_sound_load_hint</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_sound_load_hint(uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">252</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_sound_load_hint(uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">252</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_set_volume_ext</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_set_volume_ext(schannel, uint, uint, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">253</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_set_volume_ext(schannel, uint, uint, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">253</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_pause</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_pause(schannel)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">254</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_pause(schannel)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">254</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_schannel_unpause</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_schannel_unpause(schannel)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">255</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_schannel_unpause(schannel)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">255</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_hyperlink</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_hyperlink(uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">256</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_hyperlink(uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">256</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_hyperlink_stream</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_hyperlink_stream(stream, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">257</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_hyperlink_stream(stream, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">257</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_hyperlink_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_hyperlink_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">258</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_hyperlink_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">258</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_cancel_hyperlink_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_cancel_hyperlink_event(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">259</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_cancel_hyperlink_event(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">259</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_buffer_to_lower_case_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_buffer_to_lower_case_uni(uintarray, arraylen, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">288</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_buffer_to_lower_case_uni(uintarray, arraylen, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">288</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_buffer_to_upper_case_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_buffer_to_upper_case_uni(uintarray, arraylen, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">289</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_buffer_to_upper_case_uni(uintarray, arraylen, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">289</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_buffer_to_title_case_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_buffer_to_title_case_uni(uintarray, arraylen, uint, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">290</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_buffer_to_title_case_uni(uintarray, arraylen, uint, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">290</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_buffer_canon_decompose_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_buffer_canon_decompose_uni(uintarray, arraylen, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">291</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_buffer_canon_decompose_uni(uintarray, arraylen, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">291</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_buffer_canon_normalize_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_buffer_canon_normalize_uni(uintarray, arraylen, uint) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">292</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_buffer_canon_normalize_uni(uintarray, arraylen, uint) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">292</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_char_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_char_uni(uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">296</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_char_uni(uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">296</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_string_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_string_uni(unicode)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">297</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_string_uni(unicode)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">297</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_buffer_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_buffer_uni(uintarray, arraylen)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">298</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_buffer_uni(uintarray, arraylen)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">298</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_char_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_char_stream_uni(stream, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">299</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_char_stream_uni(stream, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">299</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_string_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_string_stream_uni(stream, unicode)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">300</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_string_stream_uni(stream, unicode)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">300</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_put_buffer_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_put_buffer_stream_uni(stream, uintarray, arraylen)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">301</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_put_buffer_stream_uni(stream, uintarray, arraylen)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">301</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_char_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_char_stream_uni(stream) =&gt; int</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">304</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_char_stream_uni(stream) =&gt; int</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">304</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_buffer_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_buffer_stream_uni(stream, uintarray, arraylen) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">305</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_buffer_stream_uni(stream, uintarray, arraylen) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">305</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_get_line_stream_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_get_line_stream_uni(stream, uintarray, arraylen) =&gt; uint</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">306</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_get_line_stream_uni(stream, uintarray, arraylen) =&gt; uint</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">306</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_file_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_file_uni(fileref, uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">312</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_file_uni(fileref, uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">312</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_memory_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_memory_uni(uintarray, arraylen, uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">313</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_memory_uni(uintarray, arraylen, uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">313</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_stream_open_resource_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_stream_open_resource_uni(uint, uint) =&gt; stream</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">314</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_stream_open_resource_uni(uint, uint) =&gt; stream</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">314</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_char_event_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_char_event_uni(window)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">320</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_char_event_uni(window)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">320</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_request_line_event_uni</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_request_line_event_uni(window, uintarray, arraylen, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">321</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_request_line_event_uni(window, uintarray, arraylen, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">321</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_echo_line_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_echo_line_event(window, uint)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">336</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_echo_line_event(window, uint)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">336</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_set_terminators_line_event</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_set_terminators_line_event(window, uintarray, arraylen)</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">337</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_set_terminators_line_event(window, uintarray, arraylen)</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">337</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_current_time</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_current_time(&amp;{int, uint, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">352</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_current_time(&amp;{int, uint, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">352</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_current_simple_time</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_current_simple_time(uint) =&gt; int</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">353</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_current_simple_time(uint) =&gt; int</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">353</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_time_to_date_utc</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_time_to_date_utc(&amp;{int, uint, int}, &amp;{int, int, int, int, int, int, int, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">360</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_time_to_date_utc(&amp;{int, uint, int}, &amp;{int, int, int, int, int, int, int, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">360</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_time_to_date_local</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_time_to_date_local(&amp;{int, uint, int}, &amp;{int, int, int, int, int, int, int, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">361</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_time_to_date_local(&amp;{int, uint, int}, &amp;{int, int, int, int, int, int, int, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">361</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_simple_time_to_date_utc</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_simple_time_to_date_utc(int, uint, &amp;{int, int, int, int, int, int, int, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">362</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_simple_time_to_date_utc(int, uint, &amp;{int, int, int, int, int, int, int, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">362</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_simple_time_to_date_local</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_simple_time_to_date_local(int, uint, &amp;{int, int, int, int, int, int, int, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">363</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_simple_time_to_date_local(int, uint, &amp;{int, int, int, int, int, int, int, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">363</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_date_to_time_utc</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_date_to_time_utc(&amp;{int, int, int, int, int, int, int, int}, &amp;{int, uint, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">364</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_date_to_time_utc(&amp;{int, int, int, int, int, int, int, int}, &amp;{int, uint, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">364</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_date_to_time_local</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain">;</span>
-    <span class="comment">glk_date_to_time_local(&amp;{int, int, int, int, int, int, int, int}, &amp;{int, uint, int})</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">365</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_date_to_time_local(&amp;{int, int, int, int, int, int, int, int}, &amp;{int, uint, int})</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">365</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_date_to_simple_time_utc</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_date_to_simple_time_utc(&amp;{int, int, int, int, int, int, int, int}, uint) =&gt; int</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">366</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_date_to_simple_time_utc(&amp;{int, int, int, int, int, int, int, int}, uint) =&gt; int</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">366</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">glk_date_to_simple_time_local</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="comment">glk_date_to_simple_time_local(&amp;{int, int, int, int, int, int, int, int}, uint) =&gt; int</span>
-    <span class="plain">@</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">367</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
-    <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="comment">glk_date_to_simple_time_local(&amp;{int, int, int, int, int, int, int, int}, uint) =&gt; int</span>
+    <span class="plain">  @</span><span class="identifier">glk</span><span class="plain"> </span><span class="constant">367</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
+    <span class="plain">  </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">ret</span><span class="plain">;</span>
     <span class="plain">];</span>
 </pre>
 
@@ -1120,9 +1120,9 @@ light to the Dark Room.")
                 <span class="identifier">GG_SAVESTR_ROCK</span><span class="plain">: </span><span class="identifier">gg_savestr</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
                 <span class="identifier">GG_SCRIPTSTR_ROCK</span><span class="plain">: </span><span class="identifier">gg_scriptstr</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
                 <span class="identifier">GG_COMMANDWSTR_ROCK</span><span class="plain">: </span><span class="identifier">gg_commandstr</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
-                                    <span class="identifier">gg_command_reading</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
+                                    <span class="plain"> </span><span class="identifier">gg_command_reading</span><span class="plain"> = </span><span class="reserved">false</span><span class="plain">;</span>
                 <span class="identifier">GG_COMMANDRSTR_ROCK</span><span class="plain">: </span><span class="identifier">gg_commandstr</span><span class="plain"> = </span><span class="identifier">id</span><span class="plain">;</span>
-                                    <span class="identifier">gg_command_reading</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
+                                    <span class="plain"> </span><span class="identifier">gg_command_reading</span><span class="plain"> = </span><span class="reserved">true</span><span class="plain">;</span>
                 <span class="reserved">default</span><span class="plain">: </span><span class="identifier">IdentifyGlkObject</span><span class="plain">(1, </span><span class="constant">1</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">gg_arguments</span><span class="plain">--&gt;0);</span>
             <span class="plain">}</span>
             <span class="plain">#</span><span class="identifier">ifnot</span><span class="plain">;</span>
@@ -1290,7 +1290,7 @@ to document all of that.
         <span class="character">while (~~done) {</span>
             <span class="character">glk_select(gg_event);</span>
             <span class="character">switch (gg_event--&gt;0) {</span>
-            <span class="character">5: </span><span class="comment">evtype_Arrange</span>
+            <span class="character">  5: </span><span class="comment">evtype_Arrange</span>
                 <span class="character">if (nostat) {</span>
                     <span class="character">glk_cancel_char_event(win);</span>
                     <span class="character">res = $80000000;</span>
@@ -1298,7 +1298,7 @@ to document all of that.
                     <span class="character">break;</span>
                 <span class="character">}</span>
                 <span class="character">DrawStatusLine();</span>
-            <span class="character">2: </span><span class="comment">evtype_CharInput</span>
+            <span class="character">  2: </span><span class="comment">evtype_CharInput</span>
                 <span class="character">if (gg_event--&gt;1 == win) {</span>
                     <span class="character">res = gg_event--&gt;2;</span>
                     <span class="character">done = true;</span>
@@ -1331,7 +1331,7 @@ to document all of that.
             <span class="character">}</span>
             <span class="character">glk_put_char_stream(gg_commandstr, 10); </span><span class="comment">newline</span>
         <span class="character">}</span>
-    <span class="character">.KCPContinue;</span>
+    <span class="character">  .KCPContinue;</span>
         <span class="character">return res;</span>
     <span class="character">];</span>
 
@@ -1380,9 +1380,9 @@ to document all of that.
         <span class="character">while (~~done) {</span>
             <span class="character">glk_select(gg_event);</span>
             <span class="character">switch (gg_event--&gt;0) {</span>
-            <span class="character">5: </span><span class="comment">evtype_Arrange</span>
+            <span class="character">  5: </span><span class="comment">evtype_Arrange</span>
                 <span class="character">DrawStatusLine();</span>
-            <span class="character">3: </span><span class="comment">evtype_LineInput</span>
+            <span class="character">  3: </span><span class="comment">evtype_LineInput</span>
                 <span class="character">if (gg_event--&gt;1 == gg_mainwin) {</span>
                     <span class="character">a_buffer--&gt;0 = gg_event--&gt;2;</span>
                     <span class="character">done = true;</span>
@@ -1396,7 +1396,7 @@ to document all of that.
             <span class="character">glk_put_buffer_stream(gg_commandstr, a_buffer+WORDSIZE, a_buffer--&gt;0);</span>
             <span class="character">glk_put_char_stream(gg_commandstr, 10); </span><span class="comment">newline</span>
         <span class="character">}</span>
-    <span class="character">.KPContinue;</span>
+    <span class="character">  .KPContinue;</span>
         <span class="character">VM_Tokenise(a_buffer,a_table);</span>
         <span class="comment">It's time to close any quote window we've got going.</span>
         <span class="character">if (gg_quotewin) {</span>
@@ -1787,17 +1787,17 @@ set stored here is once again ZSCII, not Unicode.
 
         <span class="identifier">mclass</span><span class="plain"> = </span><span class="reserved">metaclass</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">mclass</span><span class="plain">) {</span>
-        <span class="reserved">nothing</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="reserved">nothing</span><span class="plain">:</span>
             <span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">String</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">String</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> (</span><span class="reserved">string</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">Routine</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">Routine</span><span class="plain">:</span>
             <span class="comment">Call the function with all the arguments which are already</span>
             <span class="comment">on the stack.</span>
             <span class="plain">@</span><span class="identifier">call</span><span class="plain"> </span><span class="identifier">obj</span><span class="plain"> </span><span class="identifier">_vararg_count</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
             <span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">Object</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">Object</span><span class="plain">:</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">_vararg_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">obj</span><span class="plain">;</span>
             <span class="plain">}</span>

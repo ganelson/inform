@@ -158,11 +158,11 @@ to be a valid sentence, equivalent to
 But it has the advantage that it enables us to avoid being pointlessly strict
 over the punctuation which precedes a paragraph break. Some people like to
 write paragraphs like this:
-
-	|Before going north:|
-	|    say "Northward ho!";|
-	|    now the compass points north;|
-
+= (text as Inform 7)
+	Before going north:
+	    say "Northward ho!";
+	    now the compass points north;
+=
 And properly speaking that ends with a semicolon then a paragraph break,
 which is a doubled sentence division. But we forgive it as harmless, and
 that forgiveness is provided by the loop arrangement below.
@@ -602,10 +602,10 @@ The other arises somewhat less officially when people treat phrases as
 if they were C (or Inform 6) statements, always to be terminated with
 semicolons, and also run two rules together with no skipped paragraph
 between:
-
-	|To do one thing: something here;|
-	|To do another thing: something else here;|
-
+= (text as Inform 7)
+	To do one thing: something here;
+	To do another thing: something else here;
+=
 A strict reading of our rules would oblige us to consider "To do another
 thing:" as a phrase within the definition of "To do one thing", and
 we would then have to issue a problem message. But this would be pettifogging.

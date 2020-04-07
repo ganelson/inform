@@ -225,21 +225,15 @@ are dual to each other in that they are related by a sort of negation:
 closed", and so on. Thus
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">Not ( ForAll x: P(x) )| is equivalent to |Exists x: Not(P(x))</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">Not ( ForAll x: P(x) )</span></code> is equivalent to <code class="display"><span class="extract">Exists x: Not(P(x))</span></code>
+</p>
 
 <p class="inwebparagraph">That isn't what we mean here. If Q and NQ are a quantifier and its
 negation in our sense, then:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">Not ( Q x: P(x) )| is equivalent to |NQ x: P(x)</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">Not ( Q x: P(x) )</span></code> is equivalent to <code class="display"><span class="extract">NQ x: P(x)</span></code>
+</p>
 
 <p class="inwebparagraph">Why do we do this? There are several reasons. First, we are using a richer
 set of quantifiers than traditional logic provides, and most of these have
@@ -249,31 +243,22 @@ using as much conjunction ("and") and as little disjunction ("or") as
 possible. Consider what effect de Morgan's laws have if we simplify:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">Not ( ForAll x: closed(x) and locked(x) and lockable(x) )</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">Not ( ForAll x: closed(x) and locked(x) and lockable(x) )</span></code>
+</p>
 
 <p class="inwebparagraph">in the traditional way: we obtain
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))</span></code>
+</p>
 
 <p class="inwebparagraph">which introduces disjunction ("or") in just the way we don't want. By
 simply regarding <code class="display"><span class="extract">NotAll</span></code> as a quantifier in its own right, we obtain
 something much easier to handle:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">NotAll x: closed(x) and locked(x) and lockable(x)</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">NotAll x: closed(x) and locked(x) and lockable(x)</span></code>
+</p>
 
 <p class="inwebparagraph">This is why we will be creating quantifiers <code class="display"><span class="extract">NotAll</span></code> and <code class="display"><span class="extract">DoesNotExist</span></code> &mdash;
 the negations of <code class="display"><span class="extract">ForAll</span></code> and <code class="display"><span class="extract">ThereExists</span></code> &mdash; even though they might seem
@@ -333,11 +318,8 @@ tallies are acceptable for the given quantifier. In the example above,
 the quantifier is <code class="display"><span class="extract">Proportion&gt;50%</span></code>, and compiles to the test:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">qcy_0 &gt; 5*qcn_0/10</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">qcy_0 &gt; 5*qcn_0/10</span></code>
+</p>
 
 <p class="inwebparagraph">(It looks a little wasteful to multiply by 5 and then divide by 10, but
 I6 will fold that out in eventual code generation. When the proportion is

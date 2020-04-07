@@ -22,14 +22,14 @@ matter; every so often we reach a "divide paragraph" point -- for instance
 when one rule has finished and before another is about to start -- and at
 those positions we look for |say__p|, and print a skipped line (and clear
 |say__p| again) if we find it. Thus:
-
-	|> WAIT|
-	|The clock ticks ominously.| {\it ...first rule}
-	|    | {\it ...skipped line printed at a Divide Paragraph point}
-	|Mme Tourmalet rises from her chair and slips out.| {\it second rule}
-	|    | {\it ...skipped line printed at a Divide Paragraph point}
-	|> |
-
+= (text)
+	> WAIT
+	The clock ticks ominously.  ...first rule
+	                     ...skipped line printed at a Divide Paragraph point
+	Mme Tourmalet rises from her chair and slips out.   ...second rule
+	                     ...skipped line printed at a Divide Paragraph point
+	> 
+=
 A divide paragraph point occurs between any two rules in an action rulebook,
 but not an activity rulebook: many activities exist to print text, such as
 the names of objects, and there would be wild spacing accidents if paragraphs
@@ -39,25 +39,25 @@ were divided there. Inform places DPPs elsewhere, too: and the text substitution
 A traditional layout convention handed down from Infocom makes an exception
 of the first paragraph to appear after the prompt, but only in one situation.
 Ordinarily, the first paragraph of any turn appears straight after the prompt:
-
-	|> EXAMINE DOG|
-	|Mme Tourmalet's borzoi looks as if it means fashion, not business.|
-
+= (text)
+	> EXAMINE DOG
+	Mme Tourmalet's borzoi looks as if it means fashion, not business.
+=
 The command is echoed on screen as the player types, but this doesn't set the
 paragraph flag, which is still clear when the text "Mme Tourmalet's..."
 begins to be printed. The single exception occurs when the command calls for
 the player to go to a new location, when a skipped line is printed before the
 room description for the new room. Thus:
-
-	|> SOUTH|
-	|    | {\it ...the "going look break"}
-	|Rocky Beach|
-
+= (text)
+	> SOUTH
+	    ...the "going look break" here
+	Rocky Beach
+=
 (Note that this is not inherent in the looking action:
-
-	|> LOOK|
-	|Rocky Beach|
-
+= (text)
+	> LOOK
+	Rocky Beach
+=
 ...which obeys the standard paragraphing conventions.)
 
 So much for automatic paragraph breaks. However, we need a variety of different
@@ -68,44 +68,44 @@ The simplest exceptional kind of paragraph break is a "command
 clarification break", in which a single new-line is printed but there is
 no skipped line: as the name implies, it's traditionally used when a
 command such as OPEN DOOR is clarified. For example:
-
-	|(first unlocking the oak door)| {\it ...now a command clarification break}
-	|You open the oak door.|
-
+= (text)
+	(first unlocking the oak door)   ...now a command clarification break
+	You open the oak door.
+=
 This is not quite the same thing as a "run paragraph on" break, in which
 we also deliberately suppress the skipped line, but make an exception for
 the skipped line which ought to appear last before the prompt: the idea is
 to merge two or more paragraphs together.
-
-	|> TAKE ALL|
-	|marmot: Taken.| {\it ...we run paragraph on here}
-	|weasel: Taken.| {\it ...and also here}
-	|    | {\it ...despite which the final skip does occur}
-	|> | {\it ...before the next prompt}
-
+= (text)
+	> TAKE ALL
+	marmot: Taken.   ...we run paragraph on here
+	weasel: Taken.   ...and also here
+	                 ...despite which the final skip does occur
+	>                ...before the next prompt
+=
 A more complicated case is "special look spacing", used for the break which
 occurs after the (boldface) short name of a room description is printed. This
 is tricky because it is sometimes followed directly by a long description, and
 we don't want a skipped line:
-
-	|Villa Christiane| {\it ...a special look spacing break}
-	|The walled garden of a villa in Cap d'Agde.|
-	|    | {\it ...a Divide Paragraph break}
-	|Mme Tourmalet's borzoi lazes in the long grass.|
-
+= (text)
+	Villa Christiane    ...a special look spacing break
+	The walled garden of a villa in Cap d'Agde.
+	                    ...a Divide Paragraph break
+	Mme Tourmalet's borzoi lazes in the long grass.
+=
 But sometimes it is followed directly by a subsequent paragraph, and again
 we want no skip:
-
-	|Villa Christiane| {\it ...a special look spacing break}
-	|Mme Tourmalet's borzoi lazes in the long grass.|
-
+= (text)
+	Villa Christiane    ...a special look spacing break
+	Mme Tourmalet's borzoi lazes in the long grass.
+=
 And sometimes it is the only content of the room description and is followed
 only by the prompt:
-
-	|Villa Christiane| {\it ...a special look spacing break}
-	|    | {\it ...a break inserted before the prompt}
-	|> |
-
+= (text)
+	Villa Christiane    ...a special look spacing break
+	                    ...a break inserted before the prompt
+	> 
+=
 To recap, we have five kinds of paragraph break:
 
 (a) Standard breaks at "divide paragraph points", used between rules.

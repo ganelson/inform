@@ -53,11 +53,11 @@ Each Example has its own file, which consists of a three-line header, and
 then some rawtext. The following scanner goes through a whole directory
 to look for example files, and then scans their headers, ignoring the text
 below for the time being. A sample:
-
-	|*** Plural assertions|
-	|(Clothing kinds; Get Me to the Church on Time)|
-	|Using kinds of clothing to prevent the player from wearing several...|
-
+= (text as Indoc)
+	*** Plural assertions
+	(Clothing kinds; Get Me to the Church on Time)
+	Using kinds of clothing to prevent the player from wearing several...
+=
 Note that the title of the work appears after the semicolon on line 2.
 
 An exception to this is the |(Recipes).txt| file, which is not an example,
@@ -368,9 +368,9 @@ void Examples::render_example_cue(OUTPUT_STREAM, example *E, volume *V, int writ
 
 @ The "surround" is an table-implemented area which contains the descriptive
 panel about the example. It has one row of three cells:
-
-	|[ ( 22 ) ]  [ Example: Whatever ]  [ RB ]|
-
+= (text)
+	[ ( 22 ) ]  [ Example: Whatever ]  [ RB ]
+=
 holding the "oval", the icon with the example number; the description of the
 example, including its name; and the cross-link to the same example in the
 other book.

@@ -58,11 +58,11 @@ instruction like so:
 
 At the start of play, the compiled story file will print a textual form of
 the proposition in predicate calculus which that became:
-
-	|1. a man can see the box in the Laboratory|
-	|[ Exists x : man(x) & thing('box') & is('laboratory', ContainerOf('box')) & can-see(x, 'box') ]|
-	|x - object.|
-
+= (text)
+	1. a man can see the box in the Laboratory
+	[ Exists x : man(x) & thing('box') & is('laboratory', ContainerOf('box')) & can-see(x, 'box') ]
+	x - object.
+=
 (The |intest| test case |Calculus| runs about 200 sentences like this.)
 One can similarly "Test description (internal) with..." for any description,
 such as "animals which are in lighted rooms".

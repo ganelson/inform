@@ -183,9 +183,9 @@ int Literals::ismultiplicationsign(int c) {
 @ The following routine, adapted from code contributed to I6 by Andrew
 Plotkin, returns the IEEE-754 single-precision encoding of a floating-point
 number. See:
-
-	|http://www.psc.edu/general/software/packages/ieee/ieee.php|
-
+= (text)
+	http://www.psc.edu/general/software/packages/ieee/ieee.php
+=
 for an explanation.
 
 If the magnitude is too large (beyond about |3.4e+38|), this returns plus or

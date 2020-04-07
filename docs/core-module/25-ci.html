@@ -300,8 +300,6 @@ We want each invocation in turn to try to handle the situation, and to stop
 as soon as one of them does. The first thought is this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1(T1, ..., Tm);</span>
         <span class="plain">else if (condition for I2 to be valid) invoke I2(T1, ..., Tm);</span>
@@ -314,8 +312,6 @@ of I1, ..., In can be applied. In fact, it will sometimes happen that the
 final invocation can be proved applicable at compile time, and then we'll
 compile this instead:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1(T1, ..., Tm);</span>
@@ -336,8 +332,6 @@ as it easily might (for example if T1 were a call to some phrase to decide
 something, and that phrase had side-effects). So in fact we modify our
 scheme like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">formal_par1 = T1;</span>
@@ -415,13 +409,10 @@ the context of a value.
 <p class="inwebparagraph"><a id="SP3_2_3_1"></a><b>&#167;3.2.3.1.  </b>In void mode, this code is simple: it just produces a list of assignments:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">formal_par1 = T1;</span>
         <span class="plain">formal_par2 = T2;</span>
         <span class="plain">...</span>
-
     &lt;<span class="cwebmacrodefn">Compile code to set the formal parameters in void mode</span> <span class="cwebmacronumber">3.2.3.1</span>&gt; =
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             &lt;<span class="cwebmacro">Compile the actual assignment</span> <span class="cwebmacronumber">3.2.3.1.1</span>&gt;<span class="plain">;</span>
@@ -436,8 +427,6 @@ the context of a value.
 and are therefore legal in an expression context; but, again avoiding the
 serial comma at the cost of a fruitless addition,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">(formal_parn = Tn) + ... + (formal_par1 = T1)</span>
@@ -503,8 +492,6 @@ at run-time; we assign 0 to it for the sake of tidiness.
 it will look like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if (condition for I1 to be valid) invoke I1;</span>
         <span class="plain">else if (condition for I2 to be valid) invoke I2;</span>
@@ -514,8 +501,6 @@ it will look like so:
 
 <p class="inwebparagraph">but in value mode, where invocations return values,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">((condition for I1 to be valid) &amp;&amp; ((formal_rv = I1) bitwise-or 1))</span>
@@ -874,16 +859,12 @@ In case we test if X is 10, in the other that X matches the description
 <p class="inwebparagraph"><a id="SP3_2_3_3_1_3"></a><b>&#167;3.2.3.3.1.3.  </b>...and the actual invocation is now simple. In void mode, simply:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">invoke(formal-vars)</span>
 </pre>
 
 <p class="inwebparagraph">whereas in value mode,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">((formal_rv = invoke(formal-vars)) bitwise-or 1)</span>

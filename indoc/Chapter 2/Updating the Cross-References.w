@@ -20,9 +20,9 @@ void Updater::add_reference_symbol(text_stream *symbol_name, volume *V, section 
 @h Cross-references file.
 Until January 2020, Inform managed cross-references to its dcumentation in a
 clumsy way, with explicit sentences such as:
-
-	|Document kind_person at doc45 "3.17" "Men, women and animals".|
-
+= (text as Indoc)
+	Document kind_person at doc45 "3.17" "Men, women and animals".
+=
 in the Standard Rules extension, which correlated "tags" such as |kind_person|
 with named passages in the documentation; in this way, the compiler learned
 how to annotate its problem messages and Index with links.

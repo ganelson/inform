@@ -300,14 +300,14 @@ void Phrases::Context::ensure_avl(rule *R) {
 Each rule compiles to a routine, and this routine is called whenever the
 opportunity might exist for the rule to fire. The structure of this is
 similar to:
-
-	|[ Rule;|
-	|    if (some-firing-condition) {|
-	|        ...|
-	|        return some-default-outcome;|
-	|    }|
-	|];|
-
+= (text as Inform 6)
+	[ Rule;
+	    if (some-firing-condition) {
+	        ...
+	        return some-default-outcome;
+	    }
+	];
+=
 The "test head" is the "if" line here, and the "test tail" is the "}". The
 return statement isn't necessarily reached, because even if the firing
 condition holds, the "..." code may decide to return in some other way.

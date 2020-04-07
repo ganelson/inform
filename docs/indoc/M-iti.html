@@ -51,10 +51,8 @@ for Inform then the Indoc executable will be at <code class="display"><span clas
 Usage is very simple:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ indoc/Tangled/indoc [OPTIONS] TARGET</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">indoc/Tangled/indoc</span><span class="plain"> [OPTIONS] TARGET</span>
 </pre>
 
 <p class="inwebparagraph">By default, Indoc reads its source documentation from a direction called
@@ -67,8 +65,6 @@ it <code class="display"><span class="extract">Documentation</span></code>.
 also reads instruction files. At minimum it will read
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Documentation/indoc-instructions.txt</span>
 </pre>
@@ -78,11 +74,9 @@ files mainly specify indexing notations, or CSS styles, or miscellaneous
 settings, but they group these under named "targets". For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">windows_app {</span>
-        <span class="plain">	...</span>
+            <span class="plain">...</span>
         <span class="plain">}</span>
 </pre>
 
@@ -97,8 +91,6 @@ the one named on the command line.
 
 <p class="inwebparagraph">The HTML produced is placed, by default, in the directory:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Documentation/Output</span>
@@ -136,16 +128,12 @@ cross-references to documentation contain accurate references. These
 lines are special sentences such as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Document kind_person at doc45 "3.17" "Men, women and animals".</span>
 </pre>
 
 <p class="inwebparagraph">Indoc looks for a contiguous block of lines in the form
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Document ... at doc12.</span>

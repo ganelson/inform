@@ -575,9 +575,10 @@ of each other: for example the old might have columns "fish", "mammals", "birds"
 "fungi" (index |i| running from 0 to 3). We're going to store both the permutation
 and its inverse, with the index |-1| meaning that the column doesn't appear in
 the other table at all. The result will be:
-
-	|old_to_new: 2, 0, -1|
-	|new_to_old: 1, -1, 0, -1|
+= (text)
+	old_to_new: 2, 0, -1
+	new_to_old: 1, -1, 0, -1
+=
 
 @<Build the column correspondence tables@> =
 	int i, j;
@@ -1124,9 +1125,9 @@ void Tables::amend_table(table *main_table, table *amendments) {
 @ The following is not so obvious. The amendment row is intended to replace a
 row in the main table, and we need to decide which one. Suppose the amendment
 reads:
-
-	|62   "lampstand"   10:30 AM|
-
+= (text)
+	62   "lampstand"   10:30 AM
+=
 If the main table has exactly one row with 62 in the first column, we choose
 that; if it contains more than one, we look for rows which begin with
 |62| and then |"lampstand"|; and so on. (Recall that amendment tables have

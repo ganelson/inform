@@ -15,14 +15,14 @@ pass through assertions. For example, we reach:
 >> Fifi is in the wicker basket.
 
 The two sides of the assertion are, respectively, |px|:
-
-	|node:PROPER_NOUN_NT  <fifi> (no article)|
-
+= (text)
+	node:PROPER_NOUN_NT  <fifi> (no article)
+=
 And |py|:
-
-	|node:RELATIONSHIP_NT  <in> (type:standard)|
-	|    node:PROPER_NOUN_NT  <wicker basket> (definite)|
-
+= (text)
+	node:RELATIONSHIP_NT  <in> (type:standard)
+	    node:PROPER_NOUN_NT  <wicker basket> (definite)
+=
 The Creator is not alas a cultured gentleman with a white-pointed beard, a
 roll of architect's plans and a set square, perhaps played by an American
 character actor in a movie like "The Matrix". It's just a routine which

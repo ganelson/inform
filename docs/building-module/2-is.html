@@ -73,10 +73,8 @@ For example, the phrase definition:
 <p class="inwebparagraph">results in an inter schema being compiled from this text:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">AdjustThis({N}, 1);</span>
+        <span class="identifier">AdjustThis</span><span class="plain">({</span><span class="identifier">N</span><span class="plain">}, </span><span class="constant">1</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph">The notation here is essentially Inform 6 code with a few special features
@@ -91,10 +89,8 @@ though those would then usually be converted back into I6 anyway.
 miniature Inform 6 compiler: its task is to take text such as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">AdjustThis({N}, 1);</span>
+        <span class="identifier">AdjustThis</span><span class="plain">({</span><span class="identifier">N</span><span class="plain">}, </span><span class="constant">1</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph">and convert that into an inter schema. The second half is a code generator,
@@ -220,10 +216,8 @@ but the need to do this went away.)
 For example, in
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if (x == 1) { print "Hello!"; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) { </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"Hello</span><span class="comment">; }</span>
 </pre>
 
 <p class="inwebparagraph">the print statement occurs inside a complete block, which will eventually
@@ -231,19 +225,15 @@ be represented as a <code class="display"><span class="extract">CODE_ISNT</span>
 blocks half-open. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if (x == 1)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">is a legal phrase definition: we read it as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if (x == 1) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">x</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
 </pre>
 
 <p class="inwebparagraph">and the schema has to contain a <code class="display"><span class="extract">CODE_ISNT</span></code> marked as having been left
@@ -307,10 +297,8 @@ the end of the construct, so the above mechanisms are not sufficient.
 For example, the inline definition
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">{X}:</span>
+        <span class="plain">{</span><span class="identifier">X</span><span class="plain">}:</span>
 </pre>
 
 <p class="inwebparagraph">implies, by use of the colon, that it's a switch case. We can't conveniently
@@ -863,13 +851,11 @@ white space from each. Note that <code class="display"><span class="extract">{-b
 <p class="inwebparagraph">could be given the definition:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">@push {-my:trcount};</span>
-        <span class="plain">for (trcount=1; trcount&lt;=3; trcount++)</span>
-        <span class="plain">    {-block}</span>
-        <span class="plain">@pull trcount;</span>
+        <span class="plain">@</span><span class="identifier">push</span><span class="plain"> {-</span><span class="identifier">my</span><span class="plain">:</span><span class="identifier">trcount</span><span class="plain">};</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">trcount</span><span class="plain">=1; </span><span class="identifier">trcount</span><span class="plain">&lt;=3; </span><span class="identifier">trcount</span><span class="plain">++)</span>
+            <span class="plain">{-</span><span class="identifier">block</span><span class="plain">}</span>
+        <span class="plain">@</span><span class="identifier">pull</span><span class="plain"> </span><span class="identifier">trcount</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">This then repeats what it's given three times, while guaranteeing that the
@@ -877,22 +863,18 @@ counter is always a local variable called <code class="display"><span class="ext
 such operations are nested, they will work. We might then write:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">To say iteration: (- print {-my:trcount}; -).</span>
+        <span class="identifier">To</span><span class="plain"> </span><span class="identifier">say</span><span class="plain"> </span><span class="identifier">iteration</span><span class="plain">: (- </span><span class="identifier">print</span><span class="plain"> {-</span><span class="identifier">my</span><span class="plain">:</span><span class="identifier">trcount</span><span class="plain">}; -).</span>
 </pre>
 
 <p class="inwebparagraph">and then this will work as might be hoped:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">repeat with a King's Court:</span>
-        <span class="plain">    say "[iteration]...";</span>
-        <span class="plain">        repeat with a King's Court:</span>
-        <span class="plain">            say "[iteration]. You play a Shanty Town, getting +2 Actions.";</span>
+        <span class="identifier">repeat</span><span class="plain"> </span><span class="identifier">with</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">King</span><span class="plain">'</span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">Court</span><span class="plain">:</span>
+            <span class="identifier">say</span><span class="plain"> </span><span class="string">"[iteration]..."</span><span class="plain">;</span>
+                <span class="identifier">repeat</span><span class="plain"> </span><span class="identifier">with</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">King</span><span class="plain">'</span><span class="identifier">s</span><span class="plain"> </span><span class="identifier">Court</span><span class="plain">:</span>
+                    <span class="identifier">say</span><span class="plain"> </span><span class="string">"[iteration]. You play a Shanty Town, getting +2 Actions."</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">This is a slightly contrived example, and often <code class="display"><span class="extract">{-block}</span></code> isn't needed. If
@@ -900,10 +882,8 @@ we didn't care about accessing the iteration count in the body of the loop,
 for instance, we could simply have defined:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">for ({-my:1}=1; {-my:1}&lt;=3; {-my:1}++)</span>
+        <span class="reserved">for</span><span class="plain"> ({-</span><span class="identifier">my</span><span class="plain">:1}=1; {-</span><span class="identifier">my</span><span class="plain">:1}&lt;=3; {-</span><span class="identifier">my</span><span class="plain">:1}++)</span>
 </pre>
 
 <p class="inwebparagraph">and Inform would then have allocated a new variable as loop counter each time.
@@ -1010,7 +990,7 @@ out for the two extra syntaxes allowed, <code class="display"><span class="extra
             <span class="plain">}</span>
 
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">tokeniser_state</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DQUOTED_TOKSTATE:</span>
+                <span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">DQUOTED_TOKSTATE:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'"'</span><span class="plain">) {</span>
                         &lt;<span class="cwebmacro">Absorb raw material, if any</span> <span class="cwebmacronumber">20.2.2</span>&gt;<span class="plain">;</span>
                         <span class="identifier">tokeniser_state</span><span class="plain"> = </span><span class="constant">NO_TOKSTATE</span><span class="plain">;</span>
@@ -1018,7 +998,7 @@ out for the two extra syntaxes allowed, <code class="display"><span class="extra
                         <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">current_raw</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SQUOTED_TOKSTATE:</span>
+                <span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">SQUOTED_TOKSTATE:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\''</span><span class="plain">) {</span>
                         &lt;<span class="cwebmacro">Absorb raw material, if any</span> <span class="cwebmacronumber">20.2.2</span>&gt;<span class="plain">;</span>
                         <span class="identifier">tokeniser_state</span><span class="plain"> = </span><span class="constant">NO_TOKSTATE</span><span class="plain">;</span>
@@ -1026,11 +1006,11 @@ out for the two extra syntaxes allowed, <code class="display"><span class="extra
                         <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">current_raw</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
                     <span class="plain">}</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_TOKSTATE:</span>
+                <span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">COMMENT_TOKSTATE:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\n'</span><span class="plain">) </span><span class="identifier">tokeniser_state</span><span class="plain"> = </span><span class="constant">NO_TOKSTATE</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WHITE_TOKSTATE:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="identifier">default:</span>
+                <span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="identifier">WHITE_TOKSTATE:</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain"> </span><span class="identifier">default:</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'!'</span><span class="plain">) {</span>
                         &lt;<span class="cwebmacro">Absorb raw material, if any</span> <span class="cwebmacronumber">20.2.2</span>&gt;<span class="plain">;</span>
                         <span class="identifier">tokeniser_state</span><span class="plain"> = </span><span class="constant">COMMENT_TOKSTATE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
@@ -1282,8 +1262,6 @@ a bracing.
 <p class="inwebparagraph"><a id="SP20_2_4_1_1"></a><b>&#167;20.2.4.1.1.  </b>A bracing can take any of the following forms:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-command}</span>
         <span class="plain">{-command:operand}</span>
@@ -1433,21 +1411,16 @@ outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Frog + 2*Toad(</span>
+        <span class="identifier">Frog</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">*</span><span class="identifier">Toad</span><span class="plain">(</span>
 </pre>
 
 <p class="inwebparagraph">(there is no reason to suppose that this stretch of code is complete or
 matches parentheses); we must tokenise it into
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">Frog| |W| |+| |W| |2| |*| |Toad| |(</span>
-</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">Frog</span></code> <code class="display"><span class="extract">W</span></code> <code class="display"><span class="extract">+</span></code> <code class="display"><span class="extract">W</span></code> <code class="display"><span class="extract">2</span></code> <code class="display"><span class="extract">*</span></code> <code class="display"><span class="extract">Toad</span></code> <code class="display"><span class="extract">(</span></code>
+</p>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">W</span></code> indicates a white space token. What we do is scan through the
 text until we reach the start of a new token, and then break off what we
@@ -1490,13 +1463,10 @@ scanned through since the last time.
 the character after the initial dollar determines which:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">$+3.14159E2</span>
         <span class="plain">$$1001001</span>
         <span class="plain">$1FE6</span>
-
     &lt;<span class="cwebmacrodefn">Break off here for real, binary or hexadecimal notation</span> <span class="cwebmacronumber">20.2.2.1.1</span>&gt; =
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">x</span><span class="plain"> = </span><span class="identifier">c_start</span><span class="plain">, </span><span class="identifier">y</span><span class="plain"> = </span><span class="identifier">p</span><span class="plain">-1;</span>
         &lt;<span class="cwebmacro">Break off a token</span> <span class="cwebmacronumber">20.2.2.1.4</span>&gt;<span class="plain">;</span>
@@ -1541,19 +1511,15 @@ not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise <code class="display"><span class="extract">x-1</span></code> as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">x| |-| |1</span>
+    <span class="plain">|x| |-| |1|</span>
 </pre>
 
 <p class="inwebparagraph">and not as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">x| |-1</span>
+    <span class="plain">|x| |-1|</span>
 </pre>
 
 <p class="inwebparagraph">This requires context, that is, remembering what the previous token was.

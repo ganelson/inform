@@ -432,10 +432,8 @@ sometimes shaky I6 expression parser will accept, which turns out to be
 quite a constraint. If we were compiling to C, we might try this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">(a, b, c)</span>
+        <span class="plain">(</span><span class="identifier">a</span><span class="plain">, </span><span class="identifier">b</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">using the serial comma operator &mdash; that is, where the expression <code class="display"><span class="extract">(a, b)</span></code>
@@ -448,10 +446,8 @@ function argument comma, i.e., I6 is unable properly to handle expressions
 like this one:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">(a(b, c), d)</span>
+        <span class="plain">(</span><span class="identifier">a</span><span class="plain">(</span><span class="identifier">b</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">), </span><span class="identifier">d</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">where the first comma constructs a list and the second is the operator.
@@ -459,10 +455,8 @@ like this one:
 I actually use is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">(c) + 0*((b) + (a))</span>
+        <span class="plain">(</span><span class="identifier">c</span><span class="plain">) + </span><span class="constant">0</span><span class="plain">*((</span><span class="identifier">b</span><span class="plain">) + (</span><span class="identifier">a</span><span class="plain">))</span>
 </pre>
 
 <p class="inwebparagraph">Because I6 evaluates the leaves in an expression tree right-to-left, not

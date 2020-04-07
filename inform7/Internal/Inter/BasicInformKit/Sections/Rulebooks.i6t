@@ -77,10 +77,10 @@ to write plausible-looking code which goes wrong because it assumes that the
 return value is success vs. failure.) The outcome of |FollowRulebook| is
 stored as described above: thus the most recent rule or rulebook succeeded
 or failed if --
-
-	|(latest_rule_result-->0 == RS_SUCCEEDS)|
-	|(latest_rule_result-->0 == RS_FAILS)|
-
+= (text as Inform 6)
+	(latest_rule_result-->0 == RS_SUCCEEDS)
+	(latest_rule_result-->0 == RS_FAILS)
+=
 and otherwise there was no decision.
 
 =

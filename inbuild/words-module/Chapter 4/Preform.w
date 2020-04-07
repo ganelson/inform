@@ -33,7 +33,7 @@ In the document of Preform grammar extracted from Inform's source code to
 lay the language out for translators, the |==>| arrows and formulae to the
 right of them are omitted -- those represent semantics, not syntax.
 
-= (not code)
+= (text)
 	<competitor> ::=
 		<ordinal-number> runner |				==> TRUE
 		runner no <cardinal-number>				==> FALSE
@@ -64,7 +64,7 @@ runner" matches with integer result 4, because <ordinal-number> matches
 with integer result 1; here there are no intermediate results to make use
 of, so |R[...]| can't be used.
 
-= (not code)
+= (text)
 	<competitor> ::=
 		the pacemaker |							==> 1
 		<ordinal-number> runner |				==> R[1]
@@ -75,16 +75,16 @@ result integer is set to the production number, counting up from 0. For
 example, given the following, "polkadot" matches with result 1, and "green"
 with result 2.
 
-= (not code)
+= (text)
 	<race-jersey> ::=
 		yellow | polkadot | green | white
 
 @h Implementation.
 We must first clarify how word ranges, once matched in the parser, will be
 stored. Within each production, word ranges are numbered upwards from 1. Thus:
-
-	|man with ... on his ...|
-
+= (text as InC)
+	man with ... on his ...
+=
 would, if it matched successfully, generate two word ranges, numbered 1 and 2.
 These are stored in memory belonging to the nonterminal; they are usually, but
 not always, then retrieved by whatever part of Inform requested the parse,
@@ -179,9 +179,9 @@ typedef struct production_list {
 @ So now we reach the production, which encodes a typical "row" of grammar;
 see the examples above. A production is another list, of "ptokens" (the
 "p" is silent). For example, the production
-
-	|runner no <cardinal-number>|
-
+= (text as InC)
+	runner no <cardinal-number>
+=
 contains three ptokens. (Note that the stroke sign and the defined-by sign are
 not ptokens; they divide up productions, but aren't part of them.)
 
@@ -191,9 +191,9 @@ matched: in the above example, both are 3.
 There's a new idea here as well, though: struts. A "strut" is a run of
 ptokens in the interior of the production whose position relative to the
 ends is not known. For example, if we match:
-
-	|frogs like ... but not ... to eat|
-
+= (text as InC)
+	frogs like ... but not ... to eat
+=
 then we know that in a successful match, "frogs" and "like" must be the
 first two words in the text matched, and "eat" and "to" the last two.
 They are said to have positions 1, 2, $-1$ and $-2$ respectively: a positive
@@ -249,9 +249,9 @@ for the headword.
 Each ptoken has a |range_starts| and |range_ends| number. This is either $-1$,
 or marks that the ptoken occurs as the first or last in a range (or both). For
 example, in the production
-
-	|make ... from {rice ... onions} and peppers|
-
+= (text as InC)
+	make ... from {rice ... onions} and peppers
+=
 the first |...| ptoken has start and end set to 1; |rice| has start 2; |onions|
 has end 2. Note that the second |...|, inside the braces, doesn't start or
 end anything; it normally would, but the wider range consumes it.
@@ -1702,9 +1702,9 @@ text against a production.
 not sufficient, a slow scan checking the rest; then making sure brackets
 match, if there were any, and last composing the intermediate results into
 the final ones. For example, if the production is
-
-	|adjust the <achingly-slow> to the <exhaustive> at once|
-
+= (text as InC)
+	adjust the <achingly-slow> to the <exhaustive> at once
+=
 then the fast scan verifies the presence of "adjust the" and "at once";
 the slow scan next looks for all occurrences of "to the", the single strut
 for this production; and only then does it test the two slow nonterminals
@@ -1961,9 +1961,9 @@ or else know exactly where the next ptoken starts: because its position is
 known, or because it's a strut.
 
 This is why two elastic nonterminals in a row won't parse correctly:
-
-	|frog <amphibian> <pond-preference> toad|
-
+= (text as InC)
+	frog <amphibian> <pond-preference> toad
+=
 Preform is unable to work out where the central boundary will occur. In theory
 it should try every possibility. But that's inefficient: in practice the
 solution is to write the grammar to minimise these cases, and then to set up
@@ -2004,9 +2004,9 @@ probably gives the wrong answer.)
 @ Here we find the next possible match position for the strut beginning |start|
 and of width |len| in words, which begins at word |from| or after. Note that
 the strut might run up right to the end of the input text: for example, in
-
-	|neckties ... tied ***|
-
+= (text as InC)
+	neckties ... tied ***
+=
 the word "tied" is a strut, because the |***| makes its position uncertain,
 but since |***| might match the empty text, "tied" might legally be the
 last word in the input text.

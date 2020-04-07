@@ -284,14 +284,12 @@ usage of <code class="display"><span class="extract">jump</span></code> statemen
 thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if (~~(score == 10)) jump L_Say3;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">jump L_SayX2; .L_Say3;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">.L_Say4; .L_SayX2;</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">score</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_Say3</span><span class="plain">;</span>
+            <span class="plain">...</span>
+        <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_SayX2</span><span class="plain">; .</span><span class="identifier">L_Say3</span><span class="plain">;</span>
+            <span class="plain">...</span>
+        <span class="plain">.</span><span class="identifier">L_Say4</span><span class="plain">; .</span><span class="identifier">L_SayX2</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">Though labels actually have local namespaces in I6 routines, we use
@@ -307,16 +305,14 @@ text "[if the score is 10]It's ten![otherwise if the score is 8]It's
 eight?[otherwise]It's not ten, alas." comes out as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if (~~(score == 10)) jump L_Say5;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">jump L_SayX3; .L_Say5; if (~~(score == 8)) jump L_Say6;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">jump L_SayX3; .L_Say6;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">.L_Say7; .L_SayX3;</span>
+        <span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">score</span><span class="plain"> == </span><span class="constant">10</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_Say5</span><span class="plain">;</span>
+            <span class="plain">...</span>
+        <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_SayX3</span><span class="plain">; .</span><span class="identifier">L_Say5</span><span class="plain">; </span><span class="reserved">if</span><span class="plain"> (~~(</span><span class="identifier">score</span><span class="plain"> == </span><span class="constant">8</span><span class="plain">)) </span><span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_Say6</span><span class="plain">;</span>
+            <span class="plain">...</span>
+        <span class="reserved">jump</span><span class="plain"> </span><span class="identifier">L_SayX3</span><span class="plain">; .</span><span class="identifier">L_Say6</span><span class="plain">;</span>
+            <span class="plain">...</span>
+        <span class="plain">.</span><span class="identifier">L_Say7</span><span class="plain">; .</span><span class="identifier">L_SayX3</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">In either form of the construct, control passes into at most one of the

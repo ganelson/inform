@@ -114,8 +114,6 @@ subpackages (and nothing else). Suppose the module name is <code class="display"
 range of possible subpackages is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">/main/M/actions</span>
         <span class="plain">/main/M/activities</span>
@@ -145,18 +143,14 @@ of type <code class="display"><span class="extract">_function</span></code>. The
 what is invoked. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">symbol X --&gt; /main/kinds/kind_6/gpr_fn/call</span>
+        <span class="reserved">symbol</span><span class="plain"> X </span><span class="reserved">--&gt;</span><span class="plain"> /main/kinds/kind_6/gpr_fn/call</span>
         <span class="plain">...</span>
-        <span class="plain">        inv X</span>
+                <span class="reserved">inv</span><span class="plain"> X</span>
 </pre>
 
 <p class="inwebparagraph">invokes the function defined by the package:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">/main/kinds/kind_6/gpr_fn</span>
@@ -168,8 +162,6 @@ except that rather than <code class="display"><span class="extract">call</span><
 template function. For example, <code class="display"><span class="extract">RELATION_TY_Distinguish</span></code> is assimilated as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">/template/functions/RELATION_TY_Distinguish_fn/RELATION_TY_Distinguish</span>
 </pre>
@@ -179,11 +171,9 @@ defining <code class="display"><span class="extract">call</span></code> as an al
 will be present at eventual compile time. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package print_fn _function</span>
-        <span class="plain">    symbol public misc call `REAL_NUMBER_TY_Say`</span>
+        <span class="reserved">package</span><span class="plain"> print_fn _function</span>
+            <span class="reserved">symbol</span><span class="plain"> </span><span class="reserved">public</span><span class="plain"> </span><span class="reserved">misc</span><span class="plain"> call </span><span class="element">`REAL_NUMBER_TY_Say</span><span class="plain">`</span>
 </pre>
 
 <p class="inwebparagraph">More often, however, and always for functions derived from Inform 7 source
@@ -191,13 +181,11 @@ text, the package contains a code subpackage, and then defines <code class="disp
 be that code package:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package gpr_fn _function</span>
-        <span class="plain">    package code_block_1 _code</span>
-        <span class="plain">        ...</span>
-        <span class="plain">    constant call K_phrase_nothing____nothing = code_block_1</span>
+        <span class="reserved">package</span><span class="plain"> gpr_fn _function</span>
+            <span class="reserved">package</span><span class="plain"> code_block_1 _code</span>
+                <span class="plain">...</span>
+            <span class="reserved">constant</span><span class="plain"> call </span><span class="identifier">K_phrase_nothing____nothing</span><span class="plain"> = code_block_1</span>
 </pre>
 
 <p class="inwebparagraph">In fact, though, the package can be much more elaborate. If the code needs
@@ -206,16 +194,14 @@ lists or texts, then it will probably need to create and subsequently destroy
 a stack frame. The mechanism will then be:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">package gpr_fn _function</span>
-        <span class="plain">    package code_block_1 _code</span>
-        <span class="plain">        ...</span>
-        <span class="plain">    constant kernel K_phrase_nothing____nothing = code_block_1</span>
-        <span class="plain">    package code_block_2 _code</span>
-        <span class="plain">        ...</span>
-        <span class="plain">    constant call K_phrase_nothing____nothing = code_block_2</span>
+        <span class="reserved">package</span><span class="plain"> gpr_fn _function</span>
+            <span class="reserved">package</span><span class="plain"> code_block_1 _code</span>
+                <span class="plain">...</span>
+            <span class="reserved">constant</span><span class="plain"> kernel </span><span class="identifier">K_phrase_nothing____nothing</span><span class="plain"> = code_block_1</span>
+            <span class="reserved">package</span><span class="plain"> code_block_2 _code</span>
+                <span class="plain">...</span>
+            <span class="reserved">constant</span><span class="plain"> call </span><span class="identifier">K_phrase_nothing____nothing</span><span class="plain"> = code_block_2</span>
 </pre>
 
 <p class="inwebparagraph">The "shell" routine of code, the one receiving the <code class="display"><span class="extract">call</span></code>, creates a stack

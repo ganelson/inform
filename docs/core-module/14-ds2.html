@@ -742,11 +742,9 @@ then, the tree we're checking contains its own instructions on how it
 should be checked. For example, the subtree
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">CONDITION_CONTEXT_NT</span>
-        <span class="plain">    p</span>
+            <span class="plain">p</span>
 </pre>
 
 <p class="inwebparagraph">tells us that when we reach <code class="display"><span class="extract">p</span></code> it should be checked as a condition.
@@ -1433,8 +1431,6 @@ there are still a handful of pitfalls.
 like this as the result:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">f ? f g ? ? p - - -</span>
 </pre>
@@ -1442,8 +1438,6 @@ like this as the result:
 <p class="inwebparagraph">We can now throw away the <code class="display"><span class="extract">f</span></code>, <code class="display"><span class="extract">g</span></code> and <code class="display"><span class="extract">-</span></code> readings &mdash; failed, grossly failed,
 or never reached &mdash; to leave just those which will be compiled:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">? ? ? p</span>

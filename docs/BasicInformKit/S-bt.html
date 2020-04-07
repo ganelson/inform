@@ -308,19 +308,15 @@ We abstract that with two routines to read and write entries.
 <p class="inwebparagraph"><code class="display"><span class="extract">BlkValueRead</span></code> takes two compulsory arguments and one optional one. Thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">BlkValueRead(bv, n)</span>
+        <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">bv</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">reads the nth entry in the long block for <code class="display"><span class="extract">bv</span></code>, whereas
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">BlkValueRead(long_block, n, true)</span>
+        <span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">long_block</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="reserved">true</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">read it from the given long block directly. <code class="display"><span class="extract">BlkValueWrite</span></code> is similar.
@@ -458,11 +454,9 @@ they must both be of the same word size but can differ in header size.
 Functionally, it's identical to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">for (n=0: n&lt;no_entries_to_copy: n++)</span>
-        <span class="plain">	BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain">=0: </span><span class="identifier">n</span><span class="plain">&lt;</span><span class="identifier">no_entries_to_copy</span><span class="plain">: </span><span class="identifier">n</span><span class="plain">++)</span>
+            <span class="identifier">BlkValueWrite</span><span class="plain">(</span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">, </span><span class="identifier">BlkValueRead</span><span class="plain">(</span><span class="identifier">from_bv</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph">but it's much, much faster, and runs in a reasonably small number of cycles
@@ -620,19 +614,15 @@ depending on the task in hand.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Creation. </b>To create a block value, call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">BlkValueCreate(kind)</span>
+        <span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">kind</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">where <code class="display"><span class="extract">K</span></code> is its (strong) kind ID. Optionally, call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">BlkValueCreate(K, short_block)</span>
+        <span class="identifier">BlkValueCreate</span><span class="plain">(</span><span class="identifier">K</span><span class="plain">, </span><span class="identifier">short_block</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">to mandate that the short block needs to be located at the given address
@@ -645,10 +635,8 @@ outside the heap, for reasons to be seen below.
 <p class="inwebparagraph">These work by delegating to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(CREATE_KOVS, strong_kind, short_block)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">CREATE_KOVS</span><span class="plain">, </span><span class="identifier">strong_kind</span><span class="plain">, </span><span class="identifier">short_block</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">which returns the address of the short block for the new value.
@@ -750,10 +738,8 @@ local variables.)
 freed by calling the following routine exactly once:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">BlkValueFree(value)</span>
+        <span class="identifier">BlkValueFree</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">In particular, if a block value is stored in any I6 location which is about
@@ -792,10 +778,8 @@ reference count of B.
 <p class="inwebparagraph">The support function should respond to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(COPYSB_KOVS, to_bv, from_bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">COPYSB_KOVS</span><span class="plain">, </span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">from_bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">by copying the short blocks alone.
@@ -846,10 +830,8 @@ here's where.
 <p class="inwebparagraph">We first call:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(KINDDATA_KOVS, to_bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">KINDDATA_KOVS</span><span class="plain">, </span><span class="identifier">to_bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">which asks for an ID for the kinds stored in the BV: for example, for a
@@ -873,10 +855,8 @@ spoiling anybody else's day. We resize it to make room for the incoming data;
 we copy the raw data of the long block; and finally we:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(COPY_KOVS, to_bv, from_bv, k)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">COPY_KOVS</span><span class="plain">, </span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">from_bv</span><span class="plain">, </span><span class="identifier">k</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">This is where the KOVS should make a proper copy, using <code class="display"><span class="extract">BlkValueCopy</span></code> and
@@ -908,10 +888,8 @@ is the value given us by <code class="display"><span class="extract">KINDDATA_KO
 asking the kind's support function:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(COPYQUICK_KOVS, to_bv, from_bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">COPYQUICK_KOVS</span><span class="plain">, </span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">from_bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">which should return true if a quick copy is okay, or false if not.
@@ -963,10 +941,8 @@ then destroying the data is on us. Since we don't know what's in the
 long block, we have to ask the KOVS to do this by means of:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(DESTROY_KOVS, bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">DESTROY_KOVS</span><span class="plain">, </span><span class="identifier">bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">Note that all of this frequently causes recursion: destruction leads to
@@ -1017,10 +993,8 @@ corrupting other block values.
 <p class="inwebparagraph">We offer the KOVS a chance to handle this for us:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(MAKEMUTABLE_KOVS, bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">MAKEMUTABLE_KOVS</span><span class="plain">, </span><span class="identifier">bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">should return 0 to say that it has done so, or else return the size of the
@@ -1064,10 +1038,8 @@ form of a cast, that is, a conversion of data from one kind to another:
 or at least, for some kinds of value we can.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(CAST_KOVS, to_bv, original_kind, original_value)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">CAST_KOVS</span><span class="plain">, </span><span class="identifier">to_bv</span><span class="plain">, </span><span class="identifier">original_kind</span><span class="plain">, </span><span class="identifier">original_value</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">casts from the given value, with the given kind, into the existing block
@@ -1088,10 +1060,8 @@ This mechanism is used, for example, to cast snippets to text.
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26. Comparison. </b>And it's a similar story with comparison:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(COMPARE_KOVS, bv_left, bv_right)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">COMPARE_KOVS</span><span class="plain">, </span><span class="identifier">bv_left</span><span class="plain">, </span><span class="identifier">bv_right</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">looks at the data in the two BVs and returns 0 if they are equal, a positive
@@ -1126,10 +1096,8 @@ will have different hash codes.
 hash code. Otherwise, we ask:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(HASH_KOVS, bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">HASH_KOVS</span><span class="plain">, </span><span class="identifier">bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">to return one for us. Whatever this does, it must at minimum have the
@@ -1160,10 +1128,8 @@ The following routines abstract that.
 <p class="inwebparagraph">If <code class="display"><span class="extract">ch</span></code> is -1, then:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(READ_FILE_KOVS, bv, auxf, ch)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">READ_FILE_KOVS</span><span class="plain">, </span><span class="identifier">bv</span><span class="plain">, </span><span class="identifier">auxf</span><span class="plain">, </span><span class="identifier">ch</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">returns <code class="display"><span class="extract">true</span></code> or <code class="display"><span class="extract">false</span></code> according to whether it is possible to read data
@@ -1173,10 +1139,8 @@ first character of the text read from the file which makes up the serialised
 form of the data.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">kovs(WRITE_FILE_KOVS, bv)</span>
+        <span class="identifier">kovs</span><span class="plain">(</span><span class="identifier">WRITE_FILE_KOVS</span><span class="plain">, </span><span class="identifier">bv</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">is simpler because, strictly speaking, it doesn't write to a file at all: it

@@ -346,16 +346,12 @@ example, where <code class="display"><span class="extract">k</span></code> is 10
 <p class="inwebparagraph">We get around this by increasing every <code class="display"><span class="extract">M</span></code>-value in the list by a factor of:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">k / gcd(B, k)</span>
 </pre>
 
 <p class="inwebparagraph">Note that <code class="display"><span class="extract">B</span></code> also increases in this process, and in fact becomes
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Bk / gcd(B, k)</span>
@@ -365,8 +361,6 @@ example, where <code class="display"><span class="extract">k</span></code> is 10
 <code class="display"><span class="extract">k</span></code> always divided <code class="display"><span class="extract">B</span></code>, then the scale multiple is 1 and no change is made.)
 That means that the new value of <code class="display"><span class="extract">B</span></code> divided by <code class="display"><span class="extract">k</span></code> will be
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">B / gcd(B, k)</span>
@@ -640,8 +634,6 @@ value is held in the I6 variable named <code class="display"><span class="extrac
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>The integer case of this is extracted as a utility routine because it's useful
 for other calculations too. This performs the operation
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">v --&gt; kv + l</span>
@@ -957,8 +949,6 @@ recurring decimals. If it can't, then we must approximate.
 <p class="inwebparagraph"><a id="SP21_1_1"></a><b>&#167;21.1.1.  </b>In this exact case,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">M = cl10M / t</span>
 </pre>
@@ -966,11 +956,9 @@ recurring decimals. If it can't, then we must approximate.
 <p class="inwebparagraph">for some natural number <code class="display"><span class="extract">t</span></code>, which means our example <code class="display"><span class="extract">26/M</span></code> is equal to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">26t/Mt = 26t / cl10M</span>
-    .</pre>
+</pre>
 
 <p class="inwebparagraph">Once we've done that, we simply work out how many initial 0s there should
 be; print that many zeroes; and then print <code class="display"><span class="extract">26t</span></code> as if it's an integer.

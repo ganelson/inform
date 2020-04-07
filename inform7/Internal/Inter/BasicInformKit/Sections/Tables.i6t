@@ -664,9 +664,9 @@ in order of their physical row numbers - ascending if |D = 1|, descending
 if |D = -1|, so that using the routine with |D = -1| always produces the
 exact reverse ordering from using it with |D = 1| and the same parameters.
 Rows with blank entries in |C| are skipped.
-
-	|for (R=TableNextRow(T,C,0,D): R : R=TableNextRow(T,C,R,D)) ...|
-
+= (text as Inform 6)
+	for (R=TableNextRow(T,C,0,D): R : R=TableNextRow(T,C,R,D)) ...
+=
 will perform a loop of valid row numbers in order of column |C|.
 
 =

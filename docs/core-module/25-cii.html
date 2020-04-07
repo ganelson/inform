@@ -85,8 +85,6 @@ mini-language. So:
 <p class="inwebparagraph">would expand to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">AdjustThis(16, 1);</span>
 </pre>
@@ -551,8 +549,6 @@ It allows this:
 <p class="inwebparagraph">to work, the tricky part being that the definition being invoked is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">FileIO_PutContents({FN}, {T}, false);</span>
 </pre>
@@ -615,11 +611,8 @@ invocation-language so baroque.
 <p class="inwebparagraph">We'll start with a suite of details about kinds:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-command:kind name}</span>
-
     &lt;<span class="cwebmacrodefn">Expand a bracing containing a kind command</span> <span class="cwebmacronumber">3.2</span>&gt; =
         <span class="identifier">Problems::quote_stream</span><span class="plain">(4, </span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_command</span><span class="plain"> == </span><span class="identifier">new_ISINC</span><span class="plain">) </span>&lt;<span class="cwebmacro">Inline command "new"</span> <span class="cwebmacronumber">3.2.1</span>&gt;<span class="plain">;</span>
@@ -684,8 +677,6 @@ its own when kind variables are in play.
 <p class="inwebparagraph"><a id="SP3_2_2"></a><b>&#167;3.2.2.  </b>The following complication makes lists of a given description. The inline
 definition:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})</span>
@@ -930,8 +921,6 @@ lint if they did.
 which should be supplied as the argument. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-label:pineapple}</span>
 </pre>
@@ -943,8 +932,6 @@ set has its own counter (0, 1, 2, ...). So this inline definition works
 safely:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};</span>
 </pre>
@@ -952,16 +939,12 @@ safely:
 <p class="inwebparagraph">if a little pointlessly, generating first
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;</span>
 </pre>
 
 <p class="inwebparagraph">and then
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;</span>
@@ -1067,8 +1050,6 @@ internal error will halt Inform.)
 useful trick is to allocate storage at run-time. Invoking
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple}</span>
 </pre>
@@ -1086,8 +1067,6 @@ guaranteed to contain one entry for each counter value reached. Thus:
 <p class="inwebparagraph">might be defined inline as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple}I7_ST_pineapple--&gt;{-counter:pineapple} = {N};</span>
 </pre>
@@ -1097,8 +1076,6 @@ Note that the value of a counter can also be read in template language,
 so with a little care we can get the final extent of the array, too. If more
 than one word of storage per count is needed, try:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">{-counter-makes-array:pineapple:3}</span>
@@ -1324,8 +1301,6 @@ having this annotation seems the smaller of the two warts.
 
 <p class="inwebparagraph">from the Standard Rules definition:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">return {-return-value:something};</span>
@@ -1609,8 +1584,6 @@ token, because that would be "property name". Instead:
 <p class="inwebparagraph">has the inline definition:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">SetTimedEvent({-mark-event-used:R}, {t}+1, 0);</span>
 </pre>
@@ -1737,8 +1710,6 @@ the ones we create will be different from those made by any other invocation
 <p class="inwebparagraph">which is a phrase to repeat a single phrase P twice, could be defined thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(- for ({-my:1}=1; {-my:1}&lt;=2; {-my:1}++) {P} -)</span>
 </pre>
@@ -1799,8 +1770,6 @@ For example:
 <p class="inwebparagraph">could be defined as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(- {-my:warn} = true; -)</span>
 </pre>
@@ -1815,8 +1784,6 @@ For example:
 
 <p class="inwebparagraph">as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">({-my:warn})</span>
@@ -1853,11 +1820,8 @@ or when a block value is needed, or where we need to match against descriptions
 (see below) where kind-checking comes into play, it could arise. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-my:1:list of numbers}</span>
-
     &lt;<span class="cwebmacrodefn">Set the kind of the my-variable</span> <span class="cwebmacronumber">3.5.1.1.1</span>&gt; =
         <span class="identifier">kind</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">operand2</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)</span>
@@ -1925,8 +1889,6 @@ indeed typesafe, and there's no problem. But if not, try using this:
 default value for that kind. If the kind is omitted, the default is to use
 the kind of the variable. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">{-my:1:time}{-initialise:1}</span>
@@ -2001,8 +1963,6 @@ a list entry), regardless of its kind of value. For example:
 <p class="inwebparagraph">is defined inline as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">{-unprotect:t}{-copy:t:u}</span>
 </pre>
@@ -2018,16 +1978,12 @@ a list entry), regardless of its kind of value. For example:
 <p class="inwebparagraph">it generates only something like:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">tmp_0 = 10;</span>
 </pre>
 
 <p class="inwebparagraph">which could have been achieved equally well with:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">{-unprotect:t}{t} = {u};</span>
@@ -2193,14 +2149,12 @@ For example,
 <p class="inwebparagraph">is defined in the Standard Rules thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">objectloop({-my:itm} ofclass Object)</span>
-        <span class="plain">    if ({-matches-description:itm:OS})</span>
-        <span class="plain">        give itm workflag2;</span>
-        <span class="plain">    else</span>
-        <span class="plain">        give itm ~workflag2;</span>
+            <span class="plain">if ({-matches-description:itm:OS})</span>
+                <span class="plain">give itm workflag2;</span>
+            <span class="plain">else</span>
+                <span class="plain">give itm ~workflag2;</span>
         <span class="plain">WriteListOfMarkedObjects(ENGLISH_BIT);</span>
 </pre>
 
@@ -2612,11 +2566,8 @@ especially those involving complicated linguistic propositions. For example:
 <p class="inwebparagraph">has the inline definition:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(- {-primitive-definition:total-of} -).</span>
-
     &lt;<span class="cwebmacrodefn">Expand an entirely internal-made definition</span> <span class="cwebmacronumber">3.7</span>&gt; =
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sche</span><span class="plain">-&gt;</span><span class="identifier">inline_subcommand</span><span class="plain"> == </span><span class="identifier">repeat_through_ISINSC</span><span class="plain">) {</span>
                 <span class="functiontext">Calculus::Deferrals::emit_repeat_through_domain_S</span><span class="plain">(</span><span class="identifier">tokens</span><span class="plain">-&gt;</span><span class="element">args</span><span class="plain">[1],</span>
@@ -2819,8 +2770,6 @@ then the operand refers to its value in the current invocation;
 substituted with their values in the context of the invocation being made.
 In addition two special kind names are recognised:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">return-kind</span>

@@ -49,18 +49,10 @@ all. It does so for two reasons:
 <ul class="items"><li>(a) Because the CSS may refer to background images, by URL, and these URLs
 depend on the website structure, which may vary according to the instructions
 and target chosen. So <code class="display"><span class="extract">indoc</span></code> needs to correct such URLs on the fly. What it
-does is to replace the word:
+does is to replace the word <code class="display"><span class="extract">IMAGES/</span></code> with the correct relative path, and this
+also means that the image name is flagged as one that will be needed by the
+resulting website.
 </li></ul>
-<pre class="display">
-        <span class="plain">IMAGES/</span>
-</pre>
-
-<p class="inwebparagraph">with the correct relative path, and this also means that the image name is
-flagged as one that will be needed by the resulting website.
-</p>
-
-<p class="inwebparagraph"></p>
-
 <ul class="items"><li>(b) Because the instructions have requested one or more changes, or "tweaks",
 to the CSS to be used on a given volume or volumes. Such instructions are
 kept in the following hashes:
@@ -446,7 +438,7 @@ expression parser:
                         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">content_from</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain"> + </span><span class="identifier">SN</span><span class="plain">-&gt;</span><span class="element">sp_left_len</span><span class="plain">, </span><span class="identifier">content_to</span><span class="plain"> = -1;</span>
                         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k2</span><span class="plain"> = </span><span class="identifier">content_from</span><span class="plain">; </span><span class="identifier">k2</span><span class="plain">&lt;</span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">k2</span><span class="plain">++)</span>
                             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::includes_wide_string_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">SN</span><span class="plain">-&gt;</span><span class="element">sp_right</span><span class="plain">, </span><span class="identifier">k2</span><span class="plain">)) {</span>
-                                <span class="identifier">content_to</span><span class="plain"> = </span><span class="identifier">k2</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+                                <span class="plain"> </span><span class="identifier">content_to</span><span class="plain"> = </span><span class="identifier">k2</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
                             <span class="plain">}</span>
                         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">content_to</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) {</span>
                             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">modified</span><span class="plain">, </span><span class="string">"___mu___%S___mo___"</span><span class="plain">, </span><span class="identifier">SN</span><span class="plain">-&gt;</span><span class="element">sp_style</span><span class="plain">);</span>

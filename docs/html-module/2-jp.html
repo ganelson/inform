@@ -68,8 +68,6 @@ into the source window. Broadly speaking, the application needs to support
 Javascript in the following form:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">var myProject = external.Project;</span>
         <span class="plain">myProject.selectView('source');</span>
@@ -96,14 +94,12 @@ never need to compile fresh Javascript functions because the template file
 Javascript function:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">&lt;script language="JavaScript"&gt;</span>
         <span class="plain">function pasteCode(code) {</span>
-        <span class="plain">	var myProject = project();</span>
-        <span class="plain">	myProject.selectView('source');</span>
-        <span class="plain">	myProject.pasteCode(code);</span>
+            <span class="plain">var myProject = project();</span>
+            <span class="plain">myProject.selectView('source');</span>
+            <span class="plain">myProject.pasteCode(code);</span>
         <span class="plain">}</span>
         <span class="plain">&lt;/script&gt;</span>
 </pre>

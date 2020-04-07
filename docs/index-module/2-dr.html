@@ -286,10 +286,8 @@ such a phrase, it increments the usage count by calling the following:
 especially, but to be accumulated over a whole corpus of source texts, e.g.:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">intest --keep-log=USAGE -log=phrase-usage examples</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">intest/Tangled/intest</span><span class="identifier"> --keep-log</span><span class="plain">=USAGE</span><span class="identifier"> -log</span><span class="plain">=phrase-usage examples</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Index::DocReferences::log_statistics</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">PHRASE_USAGE</span><span class="plain">, </span><span class="string">"The following shows how often each built-in phrase was used:\n"</span><span class="plain">);</span>
         <span class="functiontext">Index::DocReferences::read_xrefs</span><span class="plain">();</span>

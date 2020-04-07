@@ -11,12 +11,9 @@ all. It does so for two reasons:
 (a) Because the CSS may refer to background images, by URL, and these URLs
 depend on the website structure, which may vary according to the instructions
 and target chosen. So |indoc| needs to correct such URLs on the fly. What it
-does is to replace the word:
-
-	|IMAGES/|
-
-with the correct relative path, and this also means that the image name is
-flagged as one that will be needed by the resulting website.
+does is to replace the word |IMAGES/| with the correct relative path, and this
+also means that the image name is flagged as one that will be needed by the
+resulting website.
 
 (b) Because the instructions have requested one or more changes, or "tweaks",
 to the CSS to be used on a given volume or volumes. Such instructions are

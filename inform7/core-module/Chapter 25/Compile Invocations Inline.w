@@ -18,9 +18,9 @@ mini-language. So:
 >> adjust 16;
 
 would expand to
-
-	|AdjustThis(16, 1);|
-
+= (text)
+	AdjustThis(16, 1);
+=
 The exact definition of this mini-language has been the subject of some
 speculation ever since the early days of the I7 Public Beta: but the exotic
 features it contains were never meant to be used anywhere except by the
@@ -306,9 +306,9 @@ It allows this:
 >> let X be 17; write "remember [X]" to the file of Memos;
 
 to work, the tricky part being that the definition being invoked is:
-
-	|FileIO_PutContents({FN}, {T}, false);|
-
+= (text)
+	FileIO_PutContents({FN}, {T}, false);
+=
 The |{T}| bracing is the text one which triggers the mode change. The effect
 is to ensure that the token is compiled along with recordings being made of
 the current values of any local variables mentioned in it (bearing in mind
@@ -349,8 +349,9 @@ getting started. We now go through all of the special syntaxes which make
 invocation-language so baroque.
 
 We'll start with a suite of details about kinds:
-
-	|{-command:kind name}|
+= (text)
+	{-command:kind name}
+=
 
 @<Expand a bracing containing a kind command@> =
 	Problems::quote_stream(4, sche->operand);
@@ -388,9 +389,9 @@ its own when kind variables are in play.
 
 @ The following complication makes lists of a given description. The inline
 definition:
-
-	|LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})|
-
+= (text)
+	LIST_OF_TY_Desc({-new:list of K}, {D}, {-strong-kind:K})
+=
 is not good enough, because it fails if the description D makes reference to
 local variables (as it well may); instead we must construe D as a deferred
 proposition.
@@ -490,25 +491,25 @@ Here we want to generate unique numbers, or uniquely named labels, on demand.
 
 @ We can have any number of sets of labels, each with its own base name,
 which should be supplied as the argument. For example:
-
-	|{-label:pineapple}|
-
+= (text)
+	{-label:pineapple}
+=
 generates the current label in the "pineapple" set. (Sets don't need to be
 declared: they can be mentioned the first time they are used.) These label
 names take the form |L_pineapple_0|, |L_pineapple_1|, and so on; each named
 set has its own counter (0, 1, 2, ...). So this inline definition works
 safely:
-
-	|jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};|
-
+= (text)
+	jump {-label:leap}; print "Yikes! A trap!"; .{-label:leap}{-counter-up:leap};
+=
 if a little pointlessly, generating first
-
-	|jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;|
-
+= (text)
+	jump L_leap_0; print "Yikes! A trap!"; .L_leap_0;
+=
 and then
-
-	|jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;|
-
+= (text)
+	jump L_leap_1; print "Yikes! A trap!"; .L_leap_1;
+=
 and so on. The point of this is that it guarantees we won't define two labels
 with identical names in the same Inform 6 routine, which would fail to compile.
 
@@ -547,9 +548,9 @@ internal error will halt Inform.)
 
 @ We can use counters for anything, not just to generate labels, and one
 useful trick is to allocate storage at run-time. Invoking
-
-	|{-counter-makes-array:pineapple}|
-
+= (text)
+	{-counter-makes-array:pineapple}
+=
 at any time during compilation (once or many times over, it makes no
 difference) causes Inform to generate an array called |I7_ST_pineapple|
 guaranteed to contain one entry for each counter value reached. Thus:
@@ -557,16 +558,16 @@ guaranteed to contain one entry for each counter value reached. Thus:
 >> To remember (N - a number) for later: ...
 
 might be defined inline as
-
-	|{-counter-makes-array:pineapple}I7_ST_pineapple-->{-counter:pineapple} = {N};|
-
+= (text)
+	{-counter-makes-array:pineapple}I7_ST_pineapple-->{-counter:pineapple} = {N};
+=
 and the effect will be to accumulate an array of numbers during compilation.
 Note that the value of a counter can also be read in template language,
 so with a little care we can get the final extent of the array, too. If more
 than one word of storage per count is needed, try:
-
-	|{-counter-makes-array:pineapple:3}|
-
+= (text)
+	{-counter-makes-array:pineapple:3}
+=
 or similar -- this ensures that the array contains not fewer than three times
 as many cells as the final value of the count. (If multiple invocations are
 made with different numbers here, the maximum is taken.)
@@ -679,9 +680,9 @@ having this annotation seems the smaller of the two warts.
 >> decide on 102;
 
 from the Standard Rules definition:
-
-	|return {-return-value:something};|
-
+= (text)
+	return {-return-value:something};
+=
 We clearly need to police this: if the phrase is deciding a number, we need
 to object to:
 
@@ -858,9 +859,9 @@ token, because that would be "property name". Instead:
 >> To (R - rule) in (t - number) turn/turns from now: ...
 
 has the inline definition:
-
-	|SetTimedEvent({-mark-event-used:R}, {t}+1, 0);|
-
+= (text)
+	SetTimedEvent({-mark-event-used:R}, {t}+1, 0);
+=
 The annotation makes no difference to how R is compiled, except that it
 sneaks in a sanity check (R must be explicitly named and must be an event
 rule), and also makes a note for indexing purposes.
@@ -932,9 +933,9 @@ the ones we create will be different from those made by any other invocation
 >> To Throne Room (P - phrase):
 
 which is a phrase to repeat a single phrase P twice, could be defined thus:
-
-	|(- for ({-my:1}=1; {-my:1}<=2; {-my:1}++) {P} -)|
-
+= (text)
+	(- for ({-my:1}=1; {-my:1}<=2; {-my:1}++) {P} -)
+=
 The variable lasts only until the end of the invocation. In general, given
 this:
 
@@ -965,17 +966,17 @@ For example:
 >> To be warned: ...
 
 could be defined as:
-
-	|(- {-my:warn} = true; -)|
-
+= (text)
+	(- {-my:warn} = true; -)
+=
 and then
 
 >> To decide if we have been warned: ...
 
 as
-
-	|({-my:warn})|
-
+= (text)
+	({-my:warn})
+=
 the net result being that if either phrase is used, then |warn| becomes a
 local variable. The second phrase tests if the first has been used.
 
@@ -992,8 +993,9 @@ though there are hardly any circumstances where this is necessary, since I6
 is typeless. But in a few cases where I7 is embedded inside I6 inside I7,
 or when a block value is needed, or where we need to match against descriptions
 (see below) where kind-checking comes into play, it could arise. For example:
-
-	|{-my:1:list of numbers}|
+= (text)
+	{-my:1:list of numbers}
+=
 
 @<Set the kind of the my-variable@> =
 	kind *K = NULL;
@@ -1036,9 +1038,9 @@ indeed typesafe, and there's no problem. But if not, try using this:
 |{-initialise:var:kind}| takes the named local variable and gives it the
 default value for that kind. If the kind is omitted, the default is to use
 the kind of the variable. For example,
-
-	|{-my:1:time}{-initialise:1}|
-
+= (text)
+	{-my:1:time}{-initialise:1}
+=
 Note that this works only for kinds of word value, like "time". For kinds
 of block value, like "list of numbers", it does nothing. This may seem odd,
 but the point is that locals of that kind are automatically set to their
@@ -1090,21 +1092,21 @@ a list entry), regardless of its kind of value. For example:
 >> To let (t - nonexisting variable) be (u - value) (assignment operation): ...
 
 is defined inline as:
-
-	|{-unprotect:t}{-copy:t:u}|
-
+= (text)
+	{-unprotect:t}{-copy:t:u}
+=
 This may look superfluous: for example, in response to
 
 >> let X be 10;
 
 it generates only something like:
-
-	|tmp_0 = 10;|
-
+= (text)
+	tmp_0 = 10;
+=
 which could have been achieved equally well with:
-
-	|{-unprotect:t}{t} = {u};|
-
+= (text)
+	{-unprotect:t}{t} = {u};
+=
 But it makes something much more elaborate in response to, say:
 
 >> let Y be the list of people in dark rooms;
@@ -1203,14 +1205,14 @@ For example,
 >> To say a list of (OS - description of objects): ...
 
 is defined in the Standard Rules thus:
-
-	|objectloop({-my:itm} ofclass Object)|
-	|    if ({-matches-description:itm:OS})|
-	|        give itm workflag2;|
-	|    else|
-	|        give itm ~workflag2;|
-	|WriteListOfMarkedObjects(ENGLISH_BIT);|
-
+= (text)
+	objectloop({-my:itm} ofclass Object)
+	    if ({-matches-description:itm:OS})
+	        give itm workflag2;
+	    else
+	        give itm ~workflag2;
+	WriteListOfMarkedObjects(ENGLISH_BIT);
+=
 The whole "workflag" nonsense is Inform 6 convention from the stone age, but
 the basic point here is that the loop does one thing if an object matches
 the description and another if it doesn't. (In this example |itm| was a
@@ -1454,8 +1456,9 @@ especially those involving complicated linguistic propositions. For example:
 >> To decide which arithmetic value is total (p - arithmetic value valued property) of (S - description of values): ...
 
 has the inline definition:
-
-	|(- {-primitive-definition:total-of} -).|
+= (text)
+	(- {-primitive-definition:total-of} -).
+=
 
 @<Expand an entirely internal-made definition@> =
 	if (sche->inline_subcommand == repeat_through_ISINSC) {
@@ -1605,10 +1608,10 @@ parse_node *Invocations::Inline::parse_bracing_operand_as_identifier(text_stream
 If the kind named involves kind variables A, B, C, ..., then these are
 substituted with their values in the context of the invocation being made.
 In addition two special kind names are recognised:
-
-	|return-kind|
-	|rule-return-kind|
-
+= (text)
+	return-kind
+	rule-return-kind
+=
 The former being the return kind from the phrase we are being invoked in
 (if it's a phrase to decide a value), and the latter being the kind of value
 which this rule should produce (if it's a rule, and if it's in a rulebook

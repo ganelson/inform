@@ -544,11 +544,11 @@ main {
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguagePronouns</span><span class="plain"> </span><span class="identifier">table</span>
 
-    <span class="comment">word        possible GNAs                   connected</span>
-    <span class="comment">to follow:                      to:</span>
-    <span class="comment">a     i</span>
-    <span class="comment">s  p  s  p</span>
-    <span class="comment">mfnmfnmfnmfn</span>
+    <span class="plain">  </span><span class="comment">word        possible GNAs                   connected</span>
+    <span class="plain">  </span><span class="comment">to follow:                      to:</span>
+    <span class="plain">  </span><span class="comment">a     i</span>
+    <span class="plain">  </span><span class="comment">s  p  s  p</span>
+    <span class="plain">  </span><span class="comment">mfnmfnmfnmfn</span>
 
         <span class="character">'it'</span><span class="plain">      </span><span class="constant">$$001000111000</span><span class="plain">                    </span><span class="identifier">NULL</span>
         <span class="character">'him'</span><span class="plain">     </span><span class="constant">$$100000000000</span><span class="plain">                    </span><span class="identifier">NULL</span>
@@ -563,11 +563,11 @@ main {
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageDescriptors</span><span class="plain"> </span><span class="identifier">table</span>
 
-    <span class="comment">word        possible GNAs   descriptor      connected</span>
-    <span class="comment">to follow:      type:           to:</span>
-    <span class="comment">a     i</span>
-    <span class="comment">s  p  s  p</span>
-    <span class="comment">mfnmfnmfnmfn</span>
+    <span class="plain">  </span><span class="comment">word        possible GNAs   descriptor      connected</span>
+    <span class="plain">  </span><span class="comment">to follow:      type:           to:</span>
+    <span class="plain">  </span><span class="comment">a     i</span>
+    <span class="plain">  </span><span class="comment">s  p  s  p</span>
+    <span class="plain">  </span><span class="comment">mfnmfnmfnmfn</span>
 
         <span class="character">'my'</span><span class="plain">      </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
         <span class="character">'this'</span><span class="plain">    </span><span class="constant">$$111111111111</span><span class="plain">    </span><span class="identifier">POSSESS_PK</span><span class="plain">      </span><span class="constant">0</span>
@@ -644,8 +644,8 @@ main {
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageInanimateGender</span><span class="plain"> = </span><span class="identifier">neuter</span><span class="plain">;</span>
 
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">LanguageContractionForms</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">;     </span><span class="comment">English has two:</span>
-                                            <span class="comment">0 = starting with a consonant</span>
-                                            <span class="comment">1 = starting with a vowel</span>
+                                            <span class="plain">   </span><span class="comment">0 = starting with a consonant</span>
+                                            <span class="plain">   </span><span class="comment">1 = starting with a vowel</span>
 
     <span class="plain">[ </span><span class="identifier">LanguageContraction</span><span class="plain"> </span><span class="identifier">text</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">text</span><span class="plain">-&gt;0 == </span><span class="character">'a'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'e'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'i'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'o'</span><span class="plain"> </span><span class="reserved">or</span><span class="plain"> </span><span class="character">'u'</span>
@@ -655,15 +655,15 @@ main {
 
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageArticles</span><span class="plain"> --&gt;</span>
 
-    <span class="comment">Contraction form 0:     Contraction form 1:</span>
-    <span class="comment">Cdef   Def    Indef     Cdef   Def    Indef</span>
+    <span class="plain"> </span><span class="comment">Contraction form 0:     Contraction form 1:</span>
+    <span class="plain"> </span><span class="comment">Cdef   Def    Indef     Cdef   Def    Indef</span>
 
-        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"a "</span><span class="plain">      </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"an "</span><span class="plain">          </span><span class="comment">Articles 0</span>
-        <span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">   </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">;       </span><span class="comment">Articles 1</span>
+        <span class="plain"> </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"a "</span><span class="plain">      </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"an "</span><span class="plain">          </span><span class="comment">Articles 0</span>
+        <span class="plain"> </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">   </span><span class="string">"The "</span><span class="plain"> </span><span class="string">"the "</span><span class="plain"> </span><span class="string">"some "</span><span class="plain">;       </span><span class="comment">Articles 1</span>
 
-                    <span class="comment">a           i</span>
-                    <span class="comment">s     p     s     p</span>
-                    <span class="comment">m f n m f n m f n m f n</span>
+                    <span class="plain">   </span><span class="comment">a           i</span>
+                    <span class="plain">   </span><span class="comment">s     p     s     p</span>
+                    <span class="plain">   </span><span class="comment">m f n m f n m f n m f n</span>
 
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">LanguageGNAsToArticles</span><span class="plain"> --&gt; </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
 </pre>
@@ -688,12 +688,12 @@ adjective in a <code class="display"><span class="extract">name</span></code> pr
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">LanguageVerb</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">) {</span>
-        <span class="character">'i//'</span><span class="plain">,</span><span class="character">'inv'</span><span class="plain">,</span><span class="character">'inventory'</span><span class="plain">:</span>
-                <span class="reserved">print</span><span class="plain"> </span><span class="string">"take inventory"</span><span class="plain">;</span>
-        <span class="character">'l//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"look"</span><span class="plain">;</span>
-        <span class="character">'x//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"examine"</span><span class="plain">;</span>
-        <span class="character">'z//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"wait"</span><span class="plain">;</span>
-        <span class="reserved">default</span><span class="plain">: </span><span class="reserved">rfalse</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'i//'</span><span class="plain">,</span><span class="character">'inv'</span><span class="plain">,</span><span class="character">'inventory'</span><span class="plain">:</span>
+                <span class="plain">   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"take inventory"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'l//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"look"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'x//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"examine"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="character">'z//'</span><span class="plain">:   </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"wait"</span><span class="plain">;</span>
+        <span class="plain">  </span><span class="reserved">default</span><span class="plain">: </span><span class="reserved">rfalse</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">rtrue</span><span class="plain">;</span>
     <span class="plain">];</span>

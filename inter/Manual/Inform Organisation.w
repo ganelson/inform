@@ -49,76 +49,76 @@ package is |/main/synoptic|.
 each module package then contains some or all of a standard set of
 subpackages (and nothing else). Suppose the module name is |M|. The
 range of possible subpackages is:
-
-	|/main/M/actions|
-	|/main/M/activities|
-	|/main/M/adjectives|
-	|/main/M/chronology|
-	|/main/M/conjugations|
-	|/main/M/equations|
-	|/main/M/extensions|
-	|/main/M/functions|
-	|/main/M/grammar|
-	|/main/M/instances|
-	|/main/M/kinds|
-	|/main/M/listing|
-	|/main/M/phrases|
-	|/main/M/properties|
-	|/main/M/relations|
-	|/main/M/rulebooks|
-	|/main/M/rules|
-	|/main/M/tables|
-	|/main/M/variables|
-
+= (text)
+	/main/M/actions
+	/main/M/activities
+	/main/M/adjectives
+	/main/M/chronology
+	/main/M/conjugations
+	/main/M/equations
+	/main/M/extensions
+	/main/M/functions
+	/main/M/grammar
+	/main/M/instances
+	/main/M/kinds
+	/main/M/listing
+	/main/M/phrases
+	/main/M/properties
+	/main/M/relations
+	/main/M/rulebooks
+	/main/M/rules
+	/main/M/tables
+	/main/M/variables
+=
 @h Function packages.
 All functions compiled by Inform 7 are expressed in inter code by packages
 of type |_function|. The only externally visible symbol is |call|, which is
 what is invoked. For example:
-
-	|symbol X --> /main/kinds/kind_6/gpr_fn/call|
-	|...|
-	|        inv X|
-
+= (text as Inter)
+	symbol X --> /main/kinds/kind_6/gpr_fn/call
+	...
+	        inv X
+=
 invokes the function defined by the package:
-
-	|/main/kinds/kind_6/gpr_fn|
-
+= (text as Inter)
+	/main/kinds/kind_6/gpr_fn
+=
 (Inform conventionally uses names ending in |_fn| for function packages.)
 Functions assimilated from template files are almost exactly similar,
 except that rather than |call| the call symbol has the name of the original
 template function. For example, |RELATION_TY_Distinguish| is assimilated as:
-
-	|/template/functions/RELATION_TY_Distinguish_fn/RELATION_TY_Distinguish|
-
+= (text as Inter)
+	/template/functions/RELATION_TY_Distinguish_fn/RELATION_TY_Distinguish
+=
 It is possible for function packages to avoid defining any actual code, by
 defining |call| as an alias for a routine which we'll simply have to assume
 will be present at eventual compile time. For example:
-
-	|package print_fn _function|
-	|    symbol public misc call `REAL_NUMBER_TY_Say`|
-
+= (text as Inter)
+	package print_fn _function
+	    symbol public misc call `REAL_NUMBER_TY_Say`
+=
 More often, however, and always for functions derived from Inform 7 source
 text, the package contains a code subpackage, and then defines |call| to
 be that code package:
-
-	|package gpr_fn _function|
-	|    package code_block_1 _code|
-	|        ...|
-	|    constant call K_phrase_nothing____nothing = code_block_1|
-
+= (text as Inter)
+	package gpr_fn _function
+	    package code_block_1 _code
+	        ...
+	    constant call K_phrase_nothing____nothing = code_block_1
+=
 In fact, though, the package can be much more elaborate. If the code needs
 to manipulate or refer to data not expressible in single words, such as
 lists or texts, then it will probably need to create and subsequently destroy
 a stack frame. The mechanism will then be:
-
-	|package gpr_fn _function|
-	|    package code_block_1 _code|
-	|        ...|
-	|    constant kernel K_phrase_nothing____nothing = code_block_1|
-	|    package code_block_2 _code|
-	|        ...|
-	|    constant call K_phrase_nothing____nothing = code_block_2|
-
+= (text as Inter)
+	package gpr_fn _function
+	    package code_block_1 _code
+	        ...
+	    constant kernel K_phrase_nothing____nothing = code_block_1
+	    package code_block_2 _code
+	        ...
+	    constant call K_phrase_nothing____nothing = code_block_2
+=
 The "shell" routine of code, the one receiving the |call|, creates a stack
 fram and then calls the "kernel" routine, which does the actual work; when
 that returns to the "shell", the stack frame is disposed of again.

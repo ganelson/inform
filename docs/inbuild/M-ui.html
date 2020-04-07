@@ -113,10 +113,8 @@ For example, here we run <code class="display"><span class="extract">-inspect</s
 description of what it is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect</span><span class="plain"> 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'</span>
         <span class="plain">extension: Locksmith by Emily Short v12 in directory inform7/Internal/Extensions/Emily Short</span>
 </pre>
 
@@ -126,10 +124,8 @@ and doesn't trust its location as any indication of what it is. For
 example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect</span><span class="plain"> junk/Mystery.i7x</span>
         <span class="plain">extension: Complex Listing by Emily Short v9 in directory junk.</span>
 </pre>
 
@@ -137,11 +133,9 @@ example:
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">extension: Skeleton Keys by Emily Short - 1 error</span>
-        <span class="plain">    1. extension misworded: the opening line does not end 'begin(s) here'</span>
+            <span class="plain">1. extension misworded: the opening line does not end 'begin(s) here'</span>
 </pre>
 
 <p class="inwebparagraph">Only superficial problems can be spotted so far in advance of actually using
@@ -151,13 +145,11 @@ the software, but it's still helpful.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Graphs. </b>More ambitiously, we can look at the "graph" of a copy.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -graph</span><span class="plain"> 'Basic Help Menu.i7x'</span>
         <span class="plain">[c0] Basic Help Menu by Emily Short</span>
         <span class="plain">  --use---&gt; [c26] Menus by Emily Short v3</span>
-        <span class="plain">    --use---&gt; [c34] Basic Screen Effects by Emily Short v7.140425</span>
+            <span class="plain">--use---&gt; [c34] Basic Screen Effects by Emily Short v7.140425</span>
 </pre>
 
 <p class="inwebparagraph">The graph begins at the copy we asked for, and then continues through arrows
@@ -173,21 +165,17 @@ order to use Menus.
 source text is as follows:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Include Basic Help Menu by Emily Short.</span>
-        
-        <span class="plain">The French Laundry is a room.</span>
+        <span class="identifier">Include</span><span class="plain"> </span><span class="identifier">Basic</span><span class="plain"> </span><span class="identifier">Help</span><span class="plain"> </span><span class="identifier">Menu</span><span class="plain"> </span><span class="identifier">by</span><span class="plain"> </span><span class="identifier">Emily</span><span class="plain"> </span><span class="identifier">Short</span><span class="plain">.</span>
+
+        <span class="identifier">The</span><span class="plain"> </span><span class="identifier">French</span><span class="plain"> </span><span class="identifier">Laundry</span><span class="plain"> </span><span class="identifier">is</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">room</span><span class="plain">.</span>
 </pre>
 
 <p class="inwebparagraph">Once again, we can inspect this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inbuild/Tangled/inbuild -inspect 'Menu Time.inform'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect</span><span class="plain"> 'Menu Time.inform'</span>
         <span class="plain">projectbundle: Menu Time.inform at path Menu Time.inform</span>
 </pre>
 
@@ -196,18 +184,16 @@ because an innocent-looking source text like the above depends on many other
 resources.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">[f59] Menu Time.inform/Build/output.ulx</span>
         <span class="plain">  --build-&gt; [f58] Menu Time.inform/Build/auto.inf</span>
-        <span class="plain">    --build-&gt; [f57] Menu Time.inform/Build/auto.inf</span>
-        <span class="plain">      --build-&gt; [c0] Menu Time.inform</span>
-        <span class="plain">        --build-&gt; [c53] Basic Help Menu by Emily Short</span>
-        <span class="plain">          --use---&gt; [c47] Menus by Emily Short v3</span>
-        <span class="plain">            --use---&gt; [c55] Basic Screen Effects by Emily Short v7.140425</span>
-        <span class="plain">        --build-&gt; [f1] Menu Time.inform/Source/story.ni</span>
-        <span class="plain">        --build-&gt; [c12] BasicInformKit</span>
+            <span class="plain">--build-&gt; [f57] Menu Time.inform/Build/auto.inf</span>
+            <span class="plain">  --build-&gt; [c0] Menu Time.inform</span>
+                <span class="plain">--build-&gt; [c53] Basic Help Menu by Emily Short</span>
+                <span class="plain">  --use---&gt; [c47] Menus by Emily Short v3</span>
+                    <span class="plain">--use---&gt; [c55] Basic Screen Effects by Emily Short v7.140425</span>
+                <span class="plain">--build-&gt; [f1] Menu Time.inform/Source/story.ni</span>
+                <span class="plain">--build-&gt; [c12] BasicInformKit</span>
 </pre>
 
 <p class="inwebparagraph">...and so on. What's going on here is that if the user wants to compile the
@@ -247,18 +233,14 @@ want to know is: what do I need to use, or to build, something?
 <p class="inwebparagraph">The command <code class="display"><span class="extract">-use-needs</span></code> applied to our example extension gives:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">extension: Basic Help Menu by Emily Short</span>
         <span class="plain">  extension: Menus by Emily Short v3</span>
-        <span class="plain">    extension: Basic Screen Effects by Emily Short v7.140425</span>
+            <span class="plain">extension: Basic Screen Effects by Emily Short v7.140425</span>
 </pre>
 
 <p class="inwebparagraph">and applied to our example story gives just:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">projectbundle: Menu Time.inform</span>
@@ -269,8 +251,6 @@ On the other hand, <code class="display"><span class="extract">-build-needs</spa
 extension, we get:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">extension: Basic Help Menu by Emily Short</span>
 </pre>
@@ -279,23 +259,21 @@ extension, we get:
 to build them. But <code class="display"><span class="extract">-build-needs</span></code> on our story produces:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">projectbundle: Menu Time.inform</span>
         <span class="plain">  extension: Basic Help Menu by Emily Short</span>
-        <span class="plain">    extension: Menus by Emily Short v3</span>
-        <span class="plain">      extension: Basic Screen Effects by Emily Short v7.140425</span>
+            <span class="plain">extension: Menus by Emily Short v3</span>
+            <span class="plain">  extension: Basic Screen Effects by Emily Short v7.140425</span>
         <span class="plain">  kit: BasicInformKit</span>
-        <span class="plain">    extension: Basic Inform by Graham Nelson v1</span>
-        <span class="plain">    extension: English Language by Graham Nelson v1</span>
+            <span class="plain">extension: Basic Inform by Graham Nelson v1</span>
+            <span class="plain">extension: English Language by Graham Nelson v1</span>
         <span class="plain">  kit: CommandParserKit</span>
-        <span class="plain">    kit: WorldModelKit</span>
-        <span class="plain">      extension: Standard Rules by Graham Nelson v6</span>
-        <span class="plain">    extension: Standard Rules by Graham Nelson v6</span>
+            <span class="plain">kit: WorldModelKit</span>
+            <span class="plain">  extension: Standard Rules by Graham Nelson v6</span>
+            <span class="plain">extension: Standard Rules by Graham Nelson v6</span>
         <span class="plain">  language: English</span>
-        <span class="plain">    kit: EnglishLanguageKit</span>
-        <span class="plain">      extension: English Language by Graham Nelson v1</span>
+            <span class="plain">kit: EnglishLanguageKit</span>
+            <span class="plain">  extension: English Language by Graham Nelson v1</span>
 </pre>
 
 <p class="inwebparagraph">And there it is: six extensions, four kits and one natural language definition
@@ -337,8 +315,6 @@ such as:
 for the project, we see that it includes:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">missing extension: Xylophones by Jimmy Stewart, any version will do</span>
 </pre>
@@ -353,8 +329,6 @@ for the project, we see that it includes:
 
 <p class="inwebparagraph">we would see:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">missing extension: Xylophones by Jimmy Stewart, need version in range [6.2,7-A)</span>
@@ -384,10 +358,8 @@ binary files of Inter, one for each possible architecture.
 <p class="inwebparagraph">But building is mostly done with projects. If we run:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -build Example.inform</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -build</span><span class="plain"> Example.inform</span>
 </pre>
 
 <p class="inwebparagraph">then Inbuild will first build everthing needed to build the Example story
@@ -411,10 +383,8 @@ extensive graph, and is likely to mean that the final step followed by
 Inbuild is a call to <code class="display"><span class="extract">inblorb</span></code>, the releasing tool for Inform.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -release -build Example.inform</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -release -build</span><span class="plain"> Example.inform</span>
 </pre>
 
 <p class="inwebparagraph">Using the <code class="display"><span class="extract">-rebuild</span></code> command performs a build in a way which isn't incremental:
@@ -447,10 +417,8 @@ can be an Inform project. Multiple extensions, or kits, are fine.
 <code class="display"><span class="extract">D</span></code> using <code class="display"><span class="extract">-contents-of D</span></code>:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect -contents-of</span><span class="plain"> inform7/Internal/Inter</span>
         <span class="plain">kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit</span>
         <span class="plain">kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit</span>
         <span class="plain">kit: BasicInformExtrasKit at path inform7/Internal/Inter/BasicInformExtrasKit</span>
@@ -462,10 +430,8 @@ can be an Inform project. Multiple extensions, or kits, are fine.
 the project target using <code class="display"><span class="extract">-project</span></code>:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -build -project Example.inform</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -build -project</span><span class="plain"> Example.inform</span>
 </pre>
 
 <p class="inwebparagraph">But this is quite unnecessary: the effect is the same as if <code class="display"><span class="extract">-project</span></code> had
@@ -481,19 +447,15 @@ these copies are; and sometimes we do not.
 Inbuild will act on every copy it can find which matches that. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect -matching</span><span class="plain"> 'genre=kit'</span>
 </pre>
 
 <p class="inwebparagraph">lists all the kits which Inbuild can see; and
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect -matching</span><span class="plain"> 'genre=extension,author=Eric Eve'</span>
 </pre>
 
 <p class="inwebparagraph">lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
@@ -502,8 +464,6 @@ would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
 again, this is following semver conventions. To specify an explicit maximum
 and minimum version number, use <code class="display"><span class="extract">max</span></code> and <code class="display"><span class="extract">min</span></code>. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'</span>
@@ -525,12 +485,13 @@ when it's used as an app.
 <p class="inwebparagraph">Inbuild recognises the following subdirectories of a nest as significant:
 </p>
 
-<p class="inwebparagraph">	Templates
-	Pipelines
-	Inter
-	Languages
-	Extensions
-</p>
+<pre class="display">
+        <span class="plain">Templates</span>
+        <span class="plain">Pipelines</span>
+        <span class="plain">Inter</span>
+        <span class="plain">Languages</span>
+        <span class="plain">Extensions</span>
+</pre>
 
 <p class="inwebparagraph">Other subdirectories can also exist, and Inbuild ignores those. The above
 five containers hold website templates (used by Inblorb), Inter pipelines,
@@ -538,8 +499,6 @@ kits, language definitions, and extensions. In the case of extensions, where
 there may be very many in total, a further level of subdirectory is used
 for the authpr's name. Thus:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Extensions/Emily Short/Locksmith.i7x</span>
@@ -554,8 +513,6 @@ this, they should have a filename (or pathname) which ends with <code class="dis
 <code class="display"><span class="extract">N</span></code> is semantic version number but with any dots replaced by underscores.
 Thus, we can have e.g.:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Extensions/Emily Short/Locksmith-v3_2.i7x</span>
@@ -657,12 +614,10 @@ useful filing commands.
 <p class="inwebparagraph">The command <code class="display"><span class="extract">-copy-to N</span></code> makes a duplicate copy in the nest <code class="display"><span class="extract">N</span></code>. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -inspect</span><span class="plain"> junk/Mystery.i7x</span>
         <span class="plain">extension: Complex Listing by Emily Short v9 in directory junk.</span>
-        <span class="plain">$ inbuild/Tangled/inbuild -copy-to MyNest junk/Mystery.i7x</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inbuild/Tangled/inbuild</span><span class="identifier"> -copy-to</span><span class="plain"> MyNest junk/Mystery.i7x</span>
         <span class="plain">cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing-v9.i7x'</span>
 </pre>
 

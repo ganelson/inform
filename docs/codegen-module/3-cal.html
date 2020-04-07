@@ -160,20 +160,16 @@
 an array written in the form
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Array X table 20;</span>
+        <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> </span><span class="identifier">table</span><span class="plain"> </span><span class="constant">20</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">makes a table with 20 entries, not a table with one entry whose initial value
 is 20. We instead compile this as
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Array X --&gt; 1 20;</span>
+        <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">X</span><span class="plain"> --&gt; </span><span class="constant">1</span><span class="plain"> </span><span class="constant">20</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CodeGen::CL::constant</span><span class="plain">(</span><span class="reserved">code_generation</span><span class="plain"> *</span><span class="identifier">gen</span><span class="plain">, </span><span class="identifier">inter_tree_node</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = </span><span class="functiontext">CodeGen::current</span><span class="plain">(</span><span class="identifier">gen</span><span class="plain">);</span>
         <span class="identifier">inter_symbol</span><span class="plain"> *</span><span class="identifier">con_name</span><span class="plain"> = </span><span class="identifier">Inter::SymbolsTables::symbol_from_frame_data</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">DEFN_CONST_IFLD</span><span class="plain">);</span>

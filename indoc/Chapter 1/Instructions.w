@@ -186,12 +186,12 @@ void Instructions::read_instructions(text_stream *target_sought, linked_list *L,
 @ The instructions can be either at the top level, which means they apply to
 all targets, or grouped in braced blocks relevant to one target only. For
 example,
-
-	|superbness = 20|
-	|hypercard {|
-	|    superbness = 40|
-	|}|
-
+= (text)
+	superbness = 20
+	hypercard {
+	    superbness = 40
+	}
+=
 applies 20 for all targets except |hypercard|, where it applies 40.
 
 =
@@ -284,12 +284,13 @@ void Instructions::read_instructions_helper(text_stream *cl, text_file_position 
 			"structural settings like this one must apply to all targets", tfp);
 
 @ Here's where we parse the specifier part of lines like
-
-	|volume: The Inform Recipe Book (RB) = The Recipe Book.txt|
-
+= (text as Indoc)
+	volume: The Inform Recipe Book (RB) = The Recipe Book.txt
+=
 which reads:
-
-	|The Inform Recipe Book (RB) = The Recipe Book.txt|
+= (text as Indoc)
+	The Inform Recipe Book (RB) = The Recipe Book.txt
+=
 
 @<Act on a volume creation@> =
 	@<Disallow this in a specific target@>;

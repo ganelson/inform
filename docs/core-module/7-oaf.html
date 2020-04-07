@@ -81,12 +81,10 @@ names were. (For chicken-and-egg reasons, it couldn't know this.) So it
 almost certainly made some spurious noun phrase subtrees like this one:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">X_OF_Y_NT "worn patch of carpet"</span>
-        <span class="plain">    PROPER_NOUN_NT "carpet"</span>
-        <span class="plain">    PROPERTY_LIST_NT "worn patch"</span>
+            <span class="plain">PROPER_NOUN_NT "carpet"</span>
+            <span class="plain">PROPERTY_LIST_NT "worn patch"</span>
 </pre>
 
 <p class="inwebparagraph">Now comes the reckoning. The existing parse tree may contain a few bogus
@@ -229,15 +227,13 @@ form without being property declarations &mdash; with one exception: see below.
 <p class="inwebparagraph">We therefore look for this subtree structure:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">SENTENCE_NT "A container has a number called volume"</span>
-        <span class="plain">    AVERB_NT "has"</span>
-        <span class="plain">    PROPER_NOUN_NT "container" article:indefinite</span>
-        <span class="plain">    CALLED_NT "called"</span>
-        <span class="plain">        PROPER_NOUN_NT "number" article:indefinite</span>
-        <span class="plain">        PROPER_NOUN_NT "volume"</span>
+            <span class="plain">AVERB_NT "has"</span>
+            <span class="plain">PROPER_NOUN_NT "container" article:indefinite</span>
+            <span class="plain">CALLED_NT "called"</span>
+                <span class="plain">PROPER_NOUN_NT "number" article:indefinite</span>
+                <span class="plain">PROPER_NOUN_NT "volume"</span>
 </pre>
 
 <p class="inwebparagraph">...and then extract the bottom-most, rightmost noun-phrase as the name of

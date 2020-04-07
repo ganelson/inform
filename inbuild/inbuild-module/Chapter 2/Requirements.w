@@ -39,9 +39,9 @@ inbuild_requirement *Requirements::anything(void) {
 }
 
 @ The most involved of the creators parses text. An involved example might be:
-
-	|genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2|
-
+= (text)
+	genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2
+=
 We should return a requirement if this is valid, and write an error message if
 it is not. (If the text has multiple things wrong with it, we write only the
 first error message arising.)

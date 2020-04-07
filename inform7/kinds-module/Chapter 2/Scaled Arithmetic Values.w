@@ -200,19 +200,19 @@ Scaling down might look similar: we want |M = B/k|. But in integer arithmetic
 example, where |k| is 1000 and |B| is 1.
 
 We get around this by increasing every |M|-value in the list by a factor of:
-
-	|k / gcd(B, k)|
-
+= (text)
+	k / gcd(B, k)
+=
 Note that |B| also increases in this process, and in fact becomes
-
-	|Bk / gcd(B, k)|
-
+= (text)
+	Bk / gcd(B, k)
+=
 which is the smallest multiple of |B| which has |k| as a factor. (If in fact
 |k| always divided |B|, then the scale multiple is 1 and no change is made.)
 That means that the new value of |B| divided by |k| will be
-
-	|B / gcd(B, k)|
-
+= (text)
+	B / gcd(B, k)
+=
 so this is what we set |M| to.
 
 @<Calculate the multiplier for the LP relative to the benchmark@> =
@@ -414,9 +414,9 @@ void Kinds::Scalings::compile_quanta_to_value(scaling_transformation sc,
 
 @ The integer case of this is extracted as a utility routine because it's useful
 for other calculations too. This performs the operation
-
-	|v --> kv + l|
-
+= (text)
+	v --> kv + l
+=
 carefully checking that the result does not overflow the virtual machine's
 signed integer size limit in the process. |k| is a constant known at compile
 time, but |l| is an arbitrary I6 expression whose value can't be known until
@@ -677,13 +677,13 @@ recurring decimals. If it can't, then we must approximate.
 		@<Use an approximate method, since we can't have an exact one in all cases@>;
 
 @ In this exact case,
-
-	|M = cl10M / t|
-
+= (text)
+	M = cl10M / t
+=
 for some natural number |t|, which means our example |26/M| is equal to
-
-	|26t/Mt = 26t / cl10M|.
-
+= (text)
+	26t/Mt = 26t / cl10M
+=
 Once we've done that, we simply work out how many initial 0s there should
 be; print that many zeroes; and then print |26t| as if it's an integer.
 

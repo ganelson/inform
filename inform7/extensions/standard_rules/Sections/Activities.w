@@ -348,14 +348,14 @@ A "locale description" is a segment of the text produced by LOOK: the
 "locale" is a clutch of objects at a given level in the object tree. Most
 room descriptions consist of a top line, a description of the place, and
 then a single (though often, as here, multi-paragraph) locale:
-
-	|Sentier Le Corbusier|
-	|A coastal walk along the rocky shore between Nice and Menton.|
-	|    ...now the locale for the room Sentier Le Corbusier:|
-	|A translucent jellyfish has been washed up by the waves.|
-	|    |
-	|You can also see a bucket and a spade here.|
-
+= (text)
+	Sentier Le Corbusier
+	A coastal walk along the rocky shore between Nice and Menton.
+	    ...now the locale for the room Sentier Le Corbusier:
+	A translucent jellyfish has been washed up by the waves.
+	    
+	You can also see a bucket and a spade here.
+=
 A locale typically contains a run of paragraphs specific to interesting
 items, especially those not yet picked up, followed by a paragraph which
 lists the "nondescript" items -- those not given paragraphs of their own,
@@ -366,16 +366,16 @@ of nondescript items, or can even contain neither: that is, it can be
 entirely empty.
 
 When the player is in or on top of something, multiple locales are described:
-
-	|Sentier Le Corbusier (in the golf cart)|
-	|A coastal walk along the rocky shore between Nice and Menton.|
-	|    ...now the locale for the room Sentier Le Corbusier:|
-	|A translucent jellyfish has been washed up by the waves.|
-	|    |
-	|You can also see a bucket and a spade here.|
-	|    ...now the locale for the golf cart:|
-	|In the golf cart you can see a map of Villefranche-sur-Mer.|
-
+= (text)
+	Sentier Le Corbusier (in the golf cart)
+	A coastal walk along the rocky shore between Nice and Menton.
+	    ...now the locale for the room Sentier Le Corbusier:
+	A translucent jellyfish has been washed up by the waves.
+	    
+	You can also see a bucket and a spade here.
+	    ...now the locale for the golf cart:
+	In the golf cart you can see a map of Villefranche-sur-Mer.
+=
 To sum up, the text produced by LOOK consists of a header (produced by
 the carry out looking rules) followed by one or more locale descriptions
 (produced by the activity below).

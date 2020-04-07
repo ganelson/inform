@@ -58,8 +58,6 @@ simple Blorb wrapping up a story file with bibliographic data, but nothing
 more, and nothing else is released.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">storyfile "/Users/gnelson/Examples/Zinc.inform/Build/output.ulx" include</span>
         <span class="plain">ifiction "/Users/gnelson/Examples/Zinc.inform/Metadata.iFiction" include</span>
@@ -71,8 +69,6 @@ record respectively.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A more ambitious Blorb can be made like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">storyfile leafname "Audiophilia.gblorb"</span>
@@ -93,8 +89,6 @@ Resource ID 2, apparently skipped, is in fact the story file.
 file from the Skein of a project:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">project folder "/Users/gnelson/Examples/Zinc.inform"</span>
         <span class="plain">release to "/Users/gnelson/Examples/Zinc Materials/Release"</span>
@@ -111,8 +105,6 @@ the third line directly causes Inblorb to do anything.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>More ambitiously, this time we'll make a website for a project, but again
 without making a blorb:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">project folder "/Users/gnelson/Examples/Audiophilia.inform"</span>
@@ -159,8 +151,6 @@ location, taking its design from the template named. If we were to add
 any of these commands &mdash;
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">source public</span>
         <span class="plain">solution public</span>
@@ -174,8 +164,6 @@ any of these commands &mdash;
 deal with stand-alone files of Inform source text &mdash; notably extensions.
 For example, here we make a website out of an extension:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">release to "Test Site"</span>
@@ -259,16 +247,12 @@ value <code class="display"><span class="extract">B3</span></code>. Hexadecimal 
 a blorb:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">author &lt;string&gt;</span>
 </pre>
 
 <p class="inwebparagraph">Adds this author name to the file.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">copyright &lt;string&gt;</span>
@@ -279,16 +263,12 @@ short text such as "(c) J. Mango Pineapple 2007" rather than a lengthy legal
 discourse.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">release &lt;number&gt;</span>
 </pre>
 
 <p class="inwebparagraph">Gives this release number to the blorb file.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">auxiliary &lt;filename&gt; &lt;string&gt;</span>
@@ -298,8 +278,6 @@ discourse.
 with the release but will not be embedded directly into the blorb file. For
 instance,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">auxiliary "map.png" "Black Pete's treasure map"</span>
@@ -311,8 +289,6 @@ format, as in ".png": if there is no extension, then the auxiliary resource
 is assumed to be a mini-website housed in a subfolder with this name.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">ifiction &lt;filename&gt; include</span>
 </pre>
@@ -321,8 +297,6 @@ is assumed to be a mini-website housed in a subfolder with this name.
 specified in the Treaty of Babel, a cross-IF-system standard for specifying
 bibliographic data; it will be embedded into the blorb.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">storyfile &lt;filename&gt;    ... unsupported by Inblorb</span>
@@ -345,8 +319,6 @@ Inblorb always does this, and does not support <code class="display"><span class
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Second, now-deprecated commands describing our ideal screen display:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">palette 16 bit    ... unsupported by Inblorb</span>
         <span class="plain">palette 32 bit    ... unsupported by Inblorb</span>
@@ -362,8 +334,6 @@ continue over many lines. At least one and at most 256 colours may be
 defined in this way. This is only a "clue" to the interpreter; see the
 Blorb specification for details.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">resolution &lt;dim&gt;    ... unsupported by Inblorb</span>
@@ -382,8 +352,6 @@ infinity by infinity.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Third, commands for adding audiovisual resources:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">sound &lt;id&gt; &lt;filename&gt;</span>
         <span class="plain">sound &lt;id&gt; &lt;filename&gt; repeat &lt;number&gt;    ... unsupported by Inblorb</span>
@@ -400,8 +368,6 @@ does not generate those; the <code class="display"><span class="extract">music</
 sound formats. Nowadays the straight <code class="display"><span class="extract">sound</span></code> command should always
 be used regardless of format.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">picture &lt;id&gt; &lt;filename&gt;</span>
@@ -425,16 +391,12 @@ the default preferred scale factor is 1. Scale factors are expressed as
 fractions: so for instance,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">picture "flag/png" scale 3/1</span>
 </pre>
 
 <p class="inwebparagraph">means "always display three times its normal size", whereas
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">picture "backdrop/png" scale min 1/10 max 8/1</span>
@@ -452,8 +414,6 @@ very low resolution; an iPhone today has a screen resolution close to that
 of a typical desktop of 2001.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">cover &lt;filename&gt;</span>
 </pre>
@@ -465,8 +425,6 @@ of a typical desktop of 2001.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Three commands help us to specify locations.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">project folder &lt;filename&gt;</span>
 </pre>
@@ -474,8 +432,6 @@ of a typical desktop of 2001.
 <p class="inwebparagraph">Tells Inblorb to look for associated resources, such as the Skein file,
 within this Inform project.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">release to &lt;filename&gt;</span>
@@ -489,8 +445,6 @@ won't create it. Under some circumstances Inform will seem to be creating
 the release folder if it doesn't already exist, but that's always the work
 of <code class="display"><span class="extract">ni</span></code>, not Inblorb.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">template path &lt;filename&gt;</span>
@@ -511,8 +465,6 @@ made automatically if one of the above commands to include the story file,
 pictures, etc., is present in the script, and otherwise not generated.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">solution</span>
         <span class="plain">solution public</span>
@@ -525,8 +477,6 @@ public solution will be included in its links, thus being made available
 to the public who read the website.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">ifiction</span>
         <span class="plain">ifiction public</span>
@@ -534,8 +484,6 @@ to the public who read the website.
 
 <p class="inwebparagraph">is similar, but for the iFiction record of the project.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">source</span>
@@ -551,8 +499,6 @@ original.
 <p class="inwebparagraph">Miscellaneous files can be released like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">release file &lt;filename&gt;</span>
 </pre>
@@ -564,8 +510,6 @@ the named file is placed in the release folder.
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Finally we come to web pages.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">css</span>
 </pre>
@@ -576,8 +520,6 @@ versions of Inform source text, and is a good thing. Unless there is
 reason not to, every blurb script generating websites ought to contain
 this command.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">release file &lt;filename&gt; from &lt;template&gt;</span>
@@ -596,8 +538,6 @@ expand interesting text in their places &mdash; see "Writing with Inform"
 for more on this.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">release source &lt;filename&gt;| using |&lt;filename&gt; from &lt;template&gt;</span>
 </pre>
@@ -605,8 +545,6 @@ for more on this.
 <p class="inwebparagraph">makes Inblorb convert the Inform source text in the first filename into a
 suite of web pages using the style of the given file from the given template.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">website &lt;template&gt;</span>
@@ -629,8 +567,6 @@ wrapper, then calling an interpreter such as Parchment.
 <p class="inwebparagraph">The encoding part is taken care of by:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">base64 &lt;filename&gt; to &lt;filename&gt;</span>
 </pre>
@@ -645,8 +581,6 @@ allowing Javascript wrapper code to surround the encoded data.
 process rather like the construction of a website from a template. The
 necessary blurb command is:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">interpreter &lt;interpreter-name&gt; &lt;vm-letter&gt;</span>
@@ -669,8 +603,6 @@ the Inform application &mdash; it is not a valid HTML page in other
 contexts, and expects to have access to Javascript functions provided
 by Inform, and so on.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">status &lt;template&gt; &lt;filename&gt;</span>

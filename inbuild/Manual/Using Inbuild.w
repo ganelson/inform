@@ -48,35 +48,35 @@ genre -- in this case, an Inform extension.
 user should specify what to do and then give a list of things to do it to.
 For example, here we run |-inspect| on a single copy, and get a one-line
 description of what it is:
-
-	|$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'|
-	|extension: Locksmith by Emily Short v12 in directory inform7/Internal/Extensions/Emily Short|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
+	extension: Locksmith by Emily Short v12 in directory inform7/Internal/Extensions/Emily Short
+=
 This is reassuring -- the file which looks as if it ought to be a copy of
 Locksmith actually is. Inbuild always looks at the contents of something,
 and doesn't trust its location as any indication of what it is. For
 example:
-
-	|$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x|
-	|extension: Complex Listing by Emily Short v9 in directory junk.|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
+	extension: Complex Listing by Emily Short v9 in directory junk.
+=
 If Inbuild can see that something is damaged in some way, it will report that.
 For example,
-
-	|extension: Skeleton Keys by Emily Short - 1 error|
-	|    1. extension misworded: the opening line does not end 'begin(s) here'|
-
+= (text as ConsoleText)
+	extension: Skeleton Keys by Emily Short - 1 error
+	    1. extension misworded: the opening line does not end 'begin(s) here'
+=
 Only superficial problems can be spotted so far in advance of actually using
 the software, but it's still helpful.
 
 @h Graphs.
 More ambitiously, we can look at the "graph" of a copy.
-
-	|$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'|
-	|[c0] Basic Help Menu by Emily Short|
-	|  --use---> [c26] Menus by Emily Short v3|
-	|    --use---> [c34] Basic Screen Effects by Emily Short v7.140425|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'
+	[c0] Basic Help Menu by Emily Short
+	  --use---> [c26] Menus by Emily Short v3
+	    --use---> [c34] Basic Screen Effects by Emily Short v7.140425
+=
 The graph begins at the copy we asked for, and then continues through arrows
 to other copies. It gives a systematic answer to the question "how do I
 build or use this?". There are two kinds of arrows, use arrows and build
@@ -87,30 +87,30 @@ order to use Menus.
 
 @ Now suppose we have an Inform project called |Menu Time.inform|, whose
 source text is as follows:
-
-	|Include Basic Help Menu by Emily Short.|
-	||
-	|The French Laundry is a room.|
-
+= (text as Inform 7)
+	Include Basic Help Menu by Emily Short.
+	
+	The French Laundry is a room.
+=
 Once again, we can inspect this:
-
-	|inbuild/Tangled/inbuild -inspect 'Menu Time.inform'|
-	|projectbundle: Menu Time.inform at path Menu Time.inform|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect 'Menu Time.inform'
+	projectbundle: Menu Time.inform at path Menu Time.inform
+=
 We can also use |-graph|, but the output from this is surprisingly long,
 because an innocent-looking source text like the above depends on many other
 resources.
-
-	|[f59] Menu Time.inform/Build/output.ulx|
-	|  --build-> [f58] Menu Time.inform/Build/auto.inf|
-	|    --build-> [f57] Menu Time.inform/Build/auto.inf|
-	|      --build-> [c0] Menu Time.inform|
-	|        --build-> [c53] Basic Help Menu by Emily Short|
-	|          --use---> [c47] Menus by Emily Short v3|
-	|            --use---> [c55] Basic Screen Effects by Emily Short v7.140425|
-	|        --build-> [f1] Menu Time.inform/Source/story.ni|
-	|        --build-> [c12] BasicInformKit|
-
+= (text as ConsoleText)
+	[f59] Menu Time.inform/Build/output.ulx
+	  --build-> [f58] Menu Time.inform/Build/auto.inf
+	    --build-> [f57] Menu Time.inform/Build/auto.inf
+	      --build-> [c0] Menu Time.inform
+	        --build-> [c53] Basic Help Menu by Emily Short
+	          --use---> [c47] Menus by Emily Short v3
+	            --use---> [c55] Basic Screen Effects by Emily Short v7.140425
+	        --build-> [f1] Menu Time.inform/Source/story.ni
+	        --build-> [c12] BasicInformKit
+=
 ...and so on. What's going on here is that if the user wants to compile the
 source text, that will (by default) mean making a story file in Glulx format,
 called |output.ulx|, which sits inside the project bundle. So that is the top
@@ -142,39 +142,39 @@ we need various build-in extensions and kits, the first of which is
 want to know is: what do I need to use, or to build, something?
 
 The command |-use-needs| applied to our example extension gives:
-
-	|extension: Basic Help Menu by Emily Short|
-	|  extension: Menus by Emily Short v3|
-	|    extension: Basic Screen Effects by Emily Short v7.140425|
-
+= (text as ConsoleText)
+	extension: Basic Help Menu by Emily Short
+	  extension: Menus by Emily Short v3
+	    extension: Basic Screen Effects by Emily Short v7.140425
+=
 and applied to our example story gives just:
-
-	|projectbundle: Menu Time.inform|
-
+= (text as ConsoleText)
+	projectbundle: Menu Time.inform
+=
 That's because once Menu Time is built, nothing else is needed to use it.
 On the other hand, |-build-needs| has the opposite effect. Applied to the
 extension, we get:
-
-	|extension: Basic Help Menu by Emily Short|
-
+= (text as ConsoleText)
+	extension: Basic Help Menu by Emily Short
+=
 because extensions need no building, so certainly nothing else is needed
 to build them. But |-build-needs| on our story produces:
-
-	|projectbundle: Menu Time.inform|
-	|  extension: Basic Help Menu by Emily Short|
-	|    extension: Menus by Emily Short v3|
-	|      extension: Basic Screen Effects by Emily Short v7.140425|
-	|  kit: BasicInformKit|
-	|    extension: Basic Inform by Graham Nelson v1|
-	|    extension: English Language by Graham Nelson v1|
-	|  kit: CommandParserKit|
-	|    kit: WorldModelKit|
-	|      extension: Standard Rules by Graham Nelson v6|
-	|    extension: Standard Rules by Graham Nelson v6|
-	|  language: English|
-	|    kit: EnglishLanguageKit|
-	|      extension: English Language by Graham Nelson v1|
-
+= (text as ConsoleText)
+	projectbundle: Menu Time.inform
+	  extension: Basic Help Menu by Emily Short
+	    extension: Menus by Emily Short v3
+	      extension: Basic Screen Effects by Emily Short v7.140425
+	  kit: BasicInformKit
+	    extension: Basic Inform by Graham Nelson v1
+	    extension: English Language by Graham Nelson v1
+	  kit: CommandParserKit
+	    kit: WorldModelKit
+	      extension: Standard Rules by Graham Nelson v6
+	    extension: Standard Rules by Graham Nelson v6
+	  language: English
+	    kit: EnglishLanguageKit
+	      extension: English Language by Graham Nelson v1
+=
 And there it is: six extensions, four kits and one natural language definition
 are needed. Two of the extensions are listed twice: that's because they are
 each needed for two different reasons.
@@ -204,17 +204,17 @@ such as:
 
 No such extension exists. If we look at the graph, or the |-build-needs| list
 for the project, we see that it includes:
-
-	|missing extension: Xylophones by Jimmy Stewart, any version will do|
-
+= (text as ConsoleText)
+	missing extension: Xylophones by Jimmy Stewart, any version will do
+=
 If we had instead written:
 
 >> Include version 6.2 of Xylophones by Jimmy Stewart.
 
 we would see:
-
-	|missing extension: Xylophones by Jimmy Stewart, need version in range [6.2,7-A)|
-
+= (text as ConsoleText)
+	missing extension: Xylophones by Jimmy Stewart, need version in range [6.2,7-A)
+=
 This slightly arcane mathematical notation means that Inform would accept any
 version from 6.2 upwards, provided it still begins with a 6. This is a change
 over pre-2020 versions of Inform, and has been brought about by the adoption
@@ -234,9 +234,9 @@ does is to "assimilate" the Unform 6-notation source files inside the kit into
 binary files of Inter, one for each possible architecture.
 
 But building is mostly done with projects. If we run:
-
-	|$ inbuild/Tangled/inbuild -build Example.inform|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -build Example.inform
+=
 then Inbuild will first build everthing needed to build the Example story
 file, including everything needed to use the things needed to build it, and
 so on; and then will build Example itself. As with the Unix utility |make|,
@@ -254,9 +254,9 @@ As noted above, the |-release| switch tells Inbuild that we want to go all
 the way to a release of the project, not just a build. This makes a more
 extensive graph, and is likely to mean that the final step followed by
 Inbuild is a call to |inblorb|, the releasing tool for Inform.
-
-	|$ inbuild/Tangled/inbuild -release -build Example.inform|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -release -build Example.inform
+=
 Using the |-rebuild| command performs a build in a way which isn't incremental:
 timestamps of files are ignored and everything is remade from scratch.
 
@@ -282,19 +282,19 @@ can be an Inform project. Multiple extensions, or kits, are fine.
 
 We can also tell Inbuild to work on everything it finds in a given directory
 |D| using |-contents-of D|:
-
-	|$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter|
-	|kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit|
-	|kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit|
-	|kit: BasicInformExtrasKit at path inform7/Internal/Inter/BasicInformExtrasKit|
-	|kit: WorldModelKit at path inform7/Internal/Inter/WorldModelKit|
-	|kit: BasicInformKit at path inform7/Internal/Inter/BasicInformKit|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect -contents-of inform7/Internal/Inter
+	kit: EnglishLanguageKit at path inform7/Internal/Inter/EnglishLanguageKit
+	kit: CommandParserKit at path inform7/Internal/Inter/CommandParserKit
+	kit: BasicInformExtrasKit at path inform7/Internal/Inter/BasicInformExtrasKit
+	kit: WorldModelKit at path inform7/Internal/Inter/WorldModelKit
+	kit: BasicInformKit at path inform7/Internal/Inter/BasicInformKit
+=
 For compatibility with the |inform7| command line syntax, we can also specify
 the project target using |-project|:
-
-	|$ inbuild/Tangled/inbuild -build -project Example.inform|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -build -project Example.inform
+=
 But this is quite unnecessary: the effect is the same as if |-project| had
 been missed out.
 
@@ -304,21 +304,21 @@ these copies are; and sometimes we do not.
 
 If we instead specify |-matching R|, where |R| is a list of requirements,
 Inbuild will act on every copy it can find which matches that. For example,
-
-	|$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect -matching 'genre=kit'
+=
 lists all the kits which Inbuild can see; and
-
-	|$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect -matching 'genre=extension,author=Eric Eve'
+=
 lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
 specify are |title|, |author|, |genre| and |version|. Note that |version=5.1.1|
 would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
 again, this is following semver conventions. To specify an explicit maximum
 and minimum version number, use |max| and |min|. For example:
-
-	|-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'|
-
+= (text as ConsoleText)
+	-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'
+=
 @h Nests and searches.
 When searching with |-matching R|, or indeed when running Inform and needing
 to find certain resources, Inbuild looks inside what are called "nests".
@@ -330,21 +330,21 @@ this contains the extensions, kits and so on which are built in to Inform
 when it's used as an app.
 
 Inbuild recognises the following subdirectories of a nest as significant:
-
+= (text)
 	Templates
 	Pipelines
 	Inter
 	Languages
 	Extensions
-
+=
 Other subdirectories can also exist, and Inbuild ignores those. The above
 five containers hold website templates (used by Inblorb), Inter pipelines,
 kits, language definitions, and extensions. In the case of extensions, where
 there may be very many in total, a further level of subdirectory is used
 for the authpr's name. Thus:
-
-	|Extensions/Emily Short/Locksmith.i7x|
-
+= (text)
+	Extensions/Emily Short/Locksmith.i7x
+=
 (In some early releases of Inform 7, it was legal for this file not to have
 the |.i7x| extension: but now it is compulsory.)
 
@@ -352,10 +352,10 @@ As of 2020, nests can contain multiple versions of the same work. To do
 this, they should have a filename (or pathname) which ends with |-vN|, where
 |N| is semantic version number but with any dots replaced by underscores.
 Thus, we can have e.g.:
-
-	|Extensions/Emily Short/Locksmith-v3_2.i7x|
-	|Extensions/Emily Short/Locksmith-v4_0_0-prealpha_13.i7x|
-
+= (text)
+	Extensions/Emily Short/Locksmith-v3_2.i7x
+	Extensions/Emily Short/Locksmith-v4_0_0-prealpha_13.i7x
+=
 co-existing side by side. If the user asks to
 
 >> Include Locksmith by Emily Short.
@@ -424,12 +424,12 @@ Clerical work is generally best done automatically, and Inbuild offers some
 useful filing commands.
 
 The command |-copy-to N| makes a duplicate copy in the nest |N|. For example:
-
-	|$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x|
-	|extension: Complex Listing by Emily Short v9 in directory junk.|
-	|$ inbuild/Tangled/inbuild -copy-to MyNest junk/Mystery.i7x|
-	|cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing-v9.i7x'|
-
+= (text as ConsoleText)
+	$ inbuild/Tangled/inbuild -inspect junk/Mystery.i7x
+	extension: Complex Listing by Emily Short v9 in directory junk.
+	$ inbuild/Tangled/inbuild -copy-to MyNest junk/Mystery.i7x
+	cp -f 'junk/Mystery.i7x' 'MyNest/Extensions/Emily Short/Complex Listing-v9.i7x'
+=
 Note that Inbuild replies to the |-copy-to N| command by executing a shell
 command to copy what is, in this case, a single file. As when building, the
 |-dry| option puts Inbuild into dry-run mode, where it prints the commands it

@@ -909,12 +909,9 @@ and its inverse, with the index <code class="display"><span class="extract">-1</
 the other table at all. The result will be:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">old_to_new: 2, 0, -1</span>
         <span class="plain">new_to_old: 1, -1, 0, -1</span>
-
     &lt;<span class="cwebmacrodefn">Build the column correspondence tables</span> <span class="cwebmacronumber">20.10.1</span>&gt; =
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">old_t</span><span class="plain">-&gt;</span><span class="element">no_columns</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) </span><span class="identifier">old_to_new</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">] = -1;</span>
@@ -1737,8 +1734,6 @@ at a time:
 row in the main table, and we need to decide which one. Suppose the amendment
 reads:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">62   "lampstand"   10:30 AM</span>

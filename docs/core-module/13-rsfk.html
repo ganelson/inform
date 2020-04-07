@@ -663,11 +663,9 @@ different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">if ((strong &gt;= 0) &amp;&amp; (strong &lt; BASE_KIND_HWM)) weak = strong;</span>
-        <span class="plain">else weak = strong--&gt;0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">strong</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">strong</span><span class="plain"> &lt; </span><span class="identifier">BASE_KIND_HWM</span><span class="plain">)) </span><span class="identifier">weak</span><span class="plain"> = </span><span class="identifier">strong</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">weak</span><span class="plain"> = </span><span class="identifier">strong</span><span class="plain">--&gt;0;</span>
 </pre>
 
 <p class="inwebparagraph">We must be careful with comparisons because a strong ID may be numerically

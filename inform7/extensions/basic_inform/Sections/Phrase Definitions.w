@@ -212,13 +212,13 @@ To decide if a paragraph break is pending
 usage of |jump| statements, I6's form of goto. For instance, the text
 "[if the score is 10]It's ten![otherwise]It's not ten, alas." compiles
 thus:
-
-	|if (~~(score == 10)) jump L_Say3;|
-	|    ...|
-	|jump L_SayX2; .L_Say3;|
-	|    ...|
-	|.L_Say4; .L_SayX2;|
-
+= (text as Inform 6)
+	if (~~(score == 10)) jump L_Say3;
+	    ...
+	jump L_SayX2; .L_Say3;
+	    ...
+	.L_Say4; .L_SayX2;
+=
 Though labels actually have local namespaces in I6 routines, we use
 globally unique labels throughout the whole program: compiling the same
 phrase again would involve say labels 5 and 6 and "say exit" label 3.
@@ -230,15 +230,15 @@ machines there is no speed penalty for branches.) We also need the same
 definitions to accommodate what amounts to a switch statement. The trickier
 text "[if the score is 10]It's ten![otherwise if the score is 8]It's
 eight?[otherwise]It's not ten, alas." comes out as:
-
-	|if (~~(score == 10)) jump L_Say5;|
-	|    ...|
-	|jump L_SayX3; .L_Say5; if (~~(score == 8)) jump L_Say6;|
-	|    ...|
-	|jump L_SayX3; .L_Say6;|
-	|    ...|
-	|.L_Say7; .L_SayX3;|
-
+= (text as Inform 6)
+	if (~~(score == 10)) jump L_Say5;
+	    ...
+	jump L_SayX3; .L_Say5; if (~~(score == 8)) jump L_Say6;
+	    ...
+	jump L_SayX3; .L_Say6;
+	    ...
+	.L_Say7; .L_SayX3;
+=
 In either form of the construct, control passes into at most one of the
 pieces of text. The terminal labels (the two on the final line) are
 automatically generated; often -- when there is a simple "otherwise" or

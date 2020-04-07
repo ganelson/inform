@@ -235,13 +235,13 @@ the LB is not necessarily contiguous, since it can span multiple Flex blocks.
 We abstract that with two routines to read and write entries.
 
 |BlkValueRead| takes two compulsory arguments and one optional one. Thus:
-
-	|BlkValueRead(bv, n)|
-
+= (text as Inform 6)
+	BlkValueRead(bv, n)
+=
 reads the nth entry in the long block for |bv|, whereas
-
-	|BlkValueRead(long_block, n, true)|
-
+= (text as Inform 6)
+	BlkValueRead(long_block, n, true)
+=
 read it from the given long block directly. |BlkValueWrite| is similar.
 
 =
@@ -369,10 +369,10 @@ or -1 if it has no zeros.
 This copies a given number of entries from one BV's long block to another;
 they must both be of the same word size but can differ in header size.
 Functionally, it's identical to
-
-	|for (n=0: n<no_entries_to_copy: n++)|
-	|	BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));|
-
+= (text as Inform 6)
+	for (n=0: n<no_entries_to_copy: n++)
+		BlkValueWrite(to_bv, n, BlkValueRead(from_bv, n));
+=
 but it's much, much faster, and runs in a reasonably small number of cycles
 given what it needs to do.
 
@@ -515,13 +515,13 @@ Constant DEBUG_KOVS       = 15;
 
 @h Creation.
 To create a block value, call:
-
-	|BlkValueCreate(kind)|
-
+= (text as Inform 6)
+	BlkValueCreate(kind)
+=
 where |K| is its (strong) kind ID. Optionally, call:
-
-	|BlkValueCreate(K, short_block)|
-
+= (text as Inform 6)
+	BlkValueCreate(K, short_block)
+=
 to mandate that the short block needs to be located at the given address
 outside the heap: but don't do this unless you can guarantee that space of the
 necessary length will be available there for as long as the lifetime of
@@ -529,9 +529,9 @@ the value; and please note, it really does matter that this address lies
 outside the heap, for reasons to be seen below.
 
 These work by delegating to:
-
-	|kovs(CREATE_KOVS, strong_kind, short_block)|
-
+= (text as Inform 6)
+	kovs(CREATE_KOVS, strong_kind, short_block)
+=
 which returns the address of the short block for the new value.
 
 =
@@ -616,9 +616,9 @@ local variables.)
 @h Freeing.
 As noted above, every value returned by |BlkValueCreate| must later be
 freed by calling the following routine exactly once:
-
-	|BlkValueFree(value)|
-
+= (text as Inform 6)
+	BlkValueFree(value)
+=
 In particular, if a block value is stored in any I6 location which is about
 to be overwritten with a new value, it's essential to call this in order
 properly to dispose of the old value.
@@ -648,9 +648,9 @@ block of A into the short block of B, a quick process; and increment the
 reference count of B.
 
 The support function should respond to:
-
-	|kovs(COPYSB_KOVS, to_bv, from_bv)|
-
+= (text as Inform 6)
+	kovs(COPYSB_KOVS, to_bv, from_bv)
+=
 by copying the short blocks alone.
 
 =
@@ -690,9 +690,9 @@ you have to duplicate actual data, not just rearrange pointers to it, and
 here's where.
 
 We first call:
-
-	|kovs(KINDDATA_KOVS, to_bv)|
-
+= (text as Inform 6)
+	kovs(KINDDATA_KOVS, to_bv)
+=
 which asks for an ID for the kinds stored in the BV: for example, for a
 list of rooms it would return the kind ID for "room". We ask for this
 because it's information stored in the long block, which is about to be
@@ -710,9 +710,9 @@ count 1.
 All of which finally means we can scribble over the destination without
 spoiling anybody else's day. We resize it to make room for the incoming data;
 we copy the raw data of the long block; and finally we:
-
-	|kovs(COPY_KOVS, to_bv, from_bv, k)|
-
+= (text as Inform 6)
+	kovs(COPY_KOVS, to_bv, from_bv, k)
+=
 This is where the KOVS should make a proper copy, using |BlkValueCopy| and
 thus perhaps recursing, if any of that data contained block values in turn:
 as for instance it will if we're copying a list of texts. Note that |k|
@@ -737,9 +737,9 @@ is the value given us by |KINDDATA_KOVS|.
 @h Copy.
 As noted above, some copies are quick, and some are slow. We decide by
 asking the kind's support function:
-
-	|kovs(COPYQUICK_KOVS, to_bv, from_bv)|
-
+= (text as Inform 6)
+	kovs(COPYQUICK_KOVS, to_bv, from_bv)
+=
 which should return true if a quick copy is okay, or false if not.
 
 =
@@ -783,9 +783,9 @@ more, there's no problem, because we can simply decrement the count and
 let other people worry about the data from now on. But if it's only 1,
 then destroying the data is on us. Since we don't know what's in the
 long block, we have to ask the KOVS to do this by means of:
-
-	|kovs(DESTROY_KOVS, bv)|
-
+= (text as Inform 6)
+	kovs(DESTROY_KOVS, bv)
+=
 Note that all of this frequently causes recursion: destruction leads to
 freeing of some of the data, which in turn means that that data must be
 destroyed, and so on. So it's essential that block values be well-founded:
@@ -825,9 +825,9 @@ count 1, because then the data in the long block can freely be changed without
 corrupting other block values.
 
 We offer the KOVS a chance to handle this for us:
-
-	|kovs(MAKEMUTABLE_KOVS, bv)|
-
+= (text as Inform 6)
+	kovs(MAKEMUTABLE_KOVS, bv)
+=
 should return 0 to say that it has done so, or else return the size of the
 short block in words to ask us to handle it. The way we do this is to create
 a temporary value to make a safe copy into; it would be unnecessarily slow
@@ -864,9 +864,9 @@ a temporary one-value stack frame instead to hold it.
 We can also perform an assignment to an already-created block value in the
 form of a cast, that is, a conversion of data from one kind to another:
 or at least, for some kinds of value we can.
-
-	|kovs(CAST_KOVS, to_bv, original_kind, original_value)|
-
+= (text as Inform 6)
+	kovs(CAST_KOVS, to_bv, original_kind, original_value)
+=
 casts from the given value, with the given kind, into the existing block
 value |to_bv|. Note that the source value doesn't need to be a BV itself.
 This mechanism is used, for example, to cast snippets to text.
@@ -880,9 +880,9 @@ This mechanism is used, for example, to cast snippets to text.
 
 @h Comparison.
 And it's a similar story with comparison:
-
-	|kovs(COMPARE_KOVS, bv_left, bv_right)|
-
+= (text as Inform 6)
+	kovs(COMPARE_KOVS, bv_left, bv_right)
+=
 looks at the data in the two BVs and returns 0 if they are equal, a positive
 number if |bv_right| is "greater than" |bv_left|, and a negative number if
 not. The interpretation of "greater than" depends on the kind, but should be
@@ -909,9 +909,9 @@ will have different hash codes.
 
 If the value can be stored in a single word already, it can be its own
 hash code. Otherwise, we ask:
-
-	|kovs(HASH_KOVS, bv)|
-
+= (text as Inform 6)
+	kovs(HASH_KOVS, bv)
+=
 to return one for us. Whatever this does, it must at minimum have the
 property that two equivalent blocks (for which |COMPARE_KOVS| returns 0)
 produce the same hash value.
@@ -934,17 +934,17 @@ Some block values can be written to external files (on Glulx): others cannot.
 The following routines abstract that.
 
 If |ch| is $-1$, then:
-
-	|kovs(READ_FILE_KOVS, bv, auxf, ch)|
-
+= (text as Inform 6)
+	kovs(READ_FILE_KOVS, bv, auxf, ch)
+=
 returns |true| or |false| according to whether it is possible to read data
 from an auxiliary file |auxf| into the block value |bv|. If |ch| is any
 other value, then the routine should do exactly that, taking |ch| to be the
 first character of the text read from the file which makes up the serialised
 form of the data.
-
-	|kovs(WRITE_FILE_KOVS, bv)|
-
+= (text as Inform 6)
+	kovs(WRITE_FILE_KOVS, bv)
+=
 is simpler because, strictly speaking, it doesn't write to a file at all: it
 simply prints a serialised form of the data in |bv| to the output stream.
 Since it is called only when that output stream has been redirected to an

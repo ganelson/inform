@@ -35,9 +35,11 @@ a digit in the replacement text means "truncate by this many letters and
 add...". (As a special case, the replacement text "0" means: make no
 change.) Some examples:
 
-	|lead gold| turns "lead" into "gold"
-	|codex codices| turns "codex" to "codices"
-	|*mouse 5mice| turns "mouse" to "mice", or "fieldmouse" to "fieldmice"
+|lead gold| turns "lead" into "gold"
+
+|codex codices| turns "codex" to "codices"
+
+|*mouse 5mice| turns "mouse" to "mice", or "fieldmouse" to "fieldmice"
 
 Designing a trie is not quite as easy as it looks. It looks as if this is a
 sequence of tests to perform in succession, but it's better to think of the
@@ -50,9 +52,9 @@ instead, an appropriate version needs to be written for every language.
 
 Except at the very top level, translators are free to created new tries
 and name them as they please. For example, the Spanish implementation of
-
-	|<singular-noun-to-its-indefinite-article>|
-
+= (text as InC)
+	<singular-noun-to-its-indefinite-article>
+=
 may look entirely unlike its English version, but at the top level it still
 has to have that name.
 
@@ -782,9 +784,9 @@ For example, 2 expands into the present participle for the verb. If the
 number is followed by an open bracket, then an infinitive, then a close
 bracket, then it expands to the verb form for that verb. For example, the
 following expands to "sought":
-
-	|3 ( seek )|
-
+= (text as InC)
+	3 ( seek )
+=
 (b) Text in the form |1+xyz| expands into verb form 1 but with the letters
 "xyz" added. For example, |1+ed| for the verb "to mark" would expand to
 "marked", since 1 is the infinitive form. This feature is much more useful
@@ -833,13 +835,13 @@ For the passive, though, we do something new. The selector |p*| is actually
 a way to set all 60 passive forms (which would normally be written |p|), but
 it tells Inform to use "to be" as an auxiliary. When we write the |p*|
 step:
-
-	|p*     done by|
-
+= (text as InC)
+	p*     done by
+=
 the effect is the same as writing:
-
-	|p      ( be ) done by|
-
+= (text as InC)
+	p      ( be ) done by
+=
 The difference is that Inform more efficiently implements the |p*| version,
 by implementing "done by" as if it were a preposition rather than as part
 of a verb. This parses more quickly and makes English passive forms play
@@ -887,9 +889,9 @@ We do this by giving their definitions not as fixed wording, as we did
 for the verbs above, but as tries which act on the infinitive to produce
 a wording. For example, |<en-trie-present-participle>| is a trie which
 performs:
-
-	|take --> taking|
-
+= (text as InC)
+	take --> taking
+=
 We will have to define these tries below. Note that the infinitive can consist
 of multiple words; if so, the first word is run through the tries, and the
 remaining words are left alone. For example, "grab onto" would be inflected
@@ -1006,9 +1008,9 @@ the instructions grammar, right back at the start of this discussion of
 verbs, chooses which conjugation to use, it converts the text matching
 the wild-card |...| into the "adjoint infinitive" form (4). We get to
 this conjugation by matching
-
-	|be able to ...|
-
+= (text as InC)
+	be able to ...
+=
 so, for example, "be able to reach" results in 4 being set to "reach".
 
 Note also the construction |3 ( 4 )| in the passive. The 3 means "take the

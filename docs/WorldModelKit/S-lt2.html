@@ -327,10 +327,8 @@ x_1, x_2, ..., x_n of objects. Of these, the iterator function will
 choose a sublist of "qualifying" objects. It is called with arguments
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Iter(obj, depth, L, function)</span>
+        <span class="identifier">Iter</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">, </span><span class="identifier">depth</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">function</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph">where the <code class="display"><span class="extract">obj</span></code> is required to be x_j for some j and the function is one
@@ -731,11 +729,8 @@ circles, and never be able to see the individual objects in the group.)
 where R_1 and R_2 are addresses of routines:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">coin| ($R_1$), |coin| ($R_1$), |box| ($R_2$), |statuette| (0), |coin| ($R_1$), |box</span>
-     (R_2)</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">coin</span></code> (R_1), <code class="display"><span class="extract">coin</span></code> (R_1), <code class="display"><span class="extract">box</span></code> (R_2), <code class="display"><span class="extract">statuette</span></code> (0), <code class="display"><span class="extract">coin</span></code> (R_1), <code class="display"><span class="extract">box</span></code> (R_2)
+</p>
 
 <p class="inwebparagraph">Then the partition is 1, 1, 2, 3, 1, 2, so that the final output will be
 something like "three coins, two boxes and a statuette" &mdash; with three
@@ -749,11 +744,8 @@ not every iterator function will be able to coalesce fully.)
 <p class="inwebparagraph">But if we have something like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">coin| ($R_1$), |Q| ($R_2$), |W| ($R_2$), |coin| ($R_1$), |statuette| (0), |E| ($R_2$), |R</span>
-     (R_2)</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">coin</span></code> (R_1), <code class="display"><span class="extract">Q</span></code> (R_2), <code class="display"><span class="extract">W</span></code> (R_2), <code class="display"><span class="extract">coin</span></code> (R_1), <code class="display"><span class="extract">statuette</span></code> (0), <code class="display"><span class="extract">E</span></code> (R_2), <code class="display"><span class="extract">R</span></code> (R_2)
+</p>
 
 <p class="inwebparagraph">then the partition is 1, 2, 3, 1, 4, 5, 6 and we have six classes in all.
 But classes 2 and 3 are grouped together, as are classes 5 and 6, so we

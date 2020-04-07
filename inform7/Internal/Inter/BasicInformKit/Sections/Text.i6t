@@ -110,8 +110,9 @@ This shows the various forms a text's short block can take:
 
 @h Creation.
 A newly created text is a two-word short block with no long block, like this:
-
-	|Array ThisIsAText --> PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;|
+= (text as Inform 6)
+	Array ThisIsAText --> PACKED_TEXT_STORAGE EMPTY_TEXT_PACKED;
+=
 
 =
 [ TEXT_TY_Create short_block x;

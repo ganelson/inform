@@ -150,18 +150,18 @@ void Rawtext::process_large_helper(text_stream *rawl, text_file_position *tfp,
 }
 
 @ Block headings are paragraphs beginning with square-bracketed material:
-
-	|[x] The footwear kind|
-
+= (text as Indoc)
+	[x] The footwear kind
+=
 This one is a typical section heading. The |[x]| marks it as being a mere
 level-B heading in the book; "The footwear kind" is the text of the title;
 the braced |{kind_footwear}| is another documentation reference.
 
 The |x| text is a meaningless placeholder. The way to get this noticed
 is to write something like:
-
-	|[Chapter: Bananas] Introduction to soft yellow fruit|
-
+= (text as Indoc)
+	[Chapter: Bananas] Introduction to soft yellow fruit
+=
 which creates a new chapter called "Bananas", within which this block will
 be the first section.
 
@@ -194,9 +194,9 @@ be the first section.
 	Regexp::dispose_of(&mr2);
 
 @ Section headings can be marked with braced documentation references:
-
-	|[x] The footwear kind {kind_footwear}|
-
+= (text as Indoc)
+	[x] The footwear kind {kind_footwear}
+=
 @<Take note of documentation references@> =
  	while (Regexp::match(&mr2, title, L"(%c*) {(%C+)} *")) {
  		Str::copy(title, mr2.exp[0]);
@@ -261,13 +261,13 @@ void Rawtext::process_change_log_helper(text_stream *sml, text_file_position *tf
 }
 
 @ Images are embedded with the notation
-
-	|///filename.extension///|
-
+= (text as Indoc)
+	///filename.extension///
+=
 though only one of these may appear in each line. If the form
-
-	|///classname:filename.extension///|
-
+= (text as Indoc)
+	///classname:filename.extension///
+=
 is used, then the image is styled as |img.classname|.
 
 @<Deal with an insert-image notation@> =
@@ -324,9 +324,9 @@ then act accordingly.
 to one of the platforms on which Inform runs. (We've already seen this done
 for whole blocks of documentation: this is much finer control.) For example,
 documentation might say:
-
-	|{Windows}The My Documents folder can be reached using...|
-
+= (text as Indoc)
+	{Windows}The My Documents folder can be reached using...
+=
 If we're generating for Windows, we ignore the tag: this looks like a
 regular paragraph to us. If we're generating for some other platform, we
 throw the whole paragraph away. If we're generating for no specific platform
@@ -339,10 +339,11 @@ throw the whole paragraph away. If we're generating for no specific platform
  	}
 
 @ Tags also mark the presence of phrase explanations in the main WWI:
-
-	|{defn ph_letdefault}let (a name not so far used) be (name of kind)|
-	|...|
-	|{end}|
+= (text as Indoc)
+	{defn ph_letdefault}let (a name not so far used) be (name of kind)
+	...
+	{end}
+=
 
 @<Deal with a phrase definition paragraph tag@> =
  	if (Regexp::match(&mr4, paragraph_tag, L"defn *(%c*?)")) {

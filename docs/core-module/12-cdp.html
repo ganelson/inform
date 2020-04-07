@@ -500,11 +500,9 @@ variables such that φ is true. For example,
 might compile to code in the form:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">blah, blah, blah {</span>
-        <span class="plain">    M</span>
+            <span class="plain">M</span>
         <span class="plain">} rhubarb, rhubarb</span>
 </pre>
 
@@ -539,8 +537,6 @@ position <code class="display"><span class="extract">M</span></code>.
 <p class="inwebparagraph">The restriction to syntactically valid subpropositions is important. Suppose
 φ arises from "all doors are open" and is stored in memory as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Forall x IN[ door(x) IN] open(x)</span>
@@ -828,12 +824,10 @@ to a conjunction: X∧ Y∧ Z. The obvious way to compile code for this
 would be to take one term at a time:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if (X)</span>
-        <span class="plain">    if (Y)</span>
-        <span class="plain">        if (Z)</span>
+            <span class="plain">if (Y)</span>
+                <span class="plain">if (Z)</span>
 </pre>
 
 <p class="inwebparagraph">That satisfies the Invariant, and is clearly correct. But we want to use the
@@ -851,8 +845,6 @@ we don't crash: it will never be run.) Thus we can assume that between
 ¬(X∧ Y∧ Z), and we need to compile that to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if (~~(X &amp;&amp; Y &amp;&amp; Z))</span>
 </pre>
@@ -860,12 +852,10 @@ we don't crash: it will never be run.) Thus we can assume that between
 <p class="inwebparagraph">rather than
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if (~~X)</span>
-        <span class="plain">    if (~~Y)</span>
-        <span class="plain">        if (~~Z)</span>
+            <span class="plain">if (~~Y)</span>
+                <span class="plain">if (~~Z)</span>
 </pre>
 
 <p class="inwebparagraph">which gets de Morgan's laws wrong.
@@ -958,11 +948,9 @@ preserved by them. There are two cases: ∃, and everything else.
 <p class="inwebparagraph">The existence case is the easiest. Given ∃ v: ψ(v) we compile
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">loop header for v to run through its domain set {</span>
-        <span class="plain">    ...</span>
+            <span class="plain">...</span>
 </pre>
 
 <p class="inwebparagraph">and note that execution reaches the start of the loop body once for each
@@ -997,8 +985,6 @@ cases over a domain set. These need more elaborate code. Suppose we have
 looks like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; theta</span>
 </pre>
@@ -1006,21 +992,19 @@ looks like this:
 <p class="inwebparagraph">We compile that to code in the following shape:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">set count of domain size to 0</span>
         <span class="plain">set count of valid cases to 0</span>
         <span class="plain">loop header for v to run through its domain set {</span>
-        <span class="plain">    if psi holds {</span>
-        <span class="plain">        increment count of domain size</span>
-        <span class="plain">        if theta holds {</span>
-        <span class="plain">            increment count of valid cases</span>
-        <span class="plain">        }</span>
-        <span class="plain">    }</span>
+            <span class="plain">if psi holds {</span>
+                <span class="plain">increment count of domain size</span>
+                <span class="plain">if theta holds {</span>
+                    <span class="plain">increment count of valid cases</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="plain">if the counts are such that the quantifier is satisfied {</span>
-        <span class="plain">    ...</span>
+            <span class="plain">...</span>
 </pre>
 
 <p class="inwebparagraph">We don't always need both counts. For instance, to handle "at least three
@@ -1106,8 +1090,6 @@ do want to allow "now nobody likes Mr Wickham", say, which asserts
 <p class="inwebparagraph"><a id="SP2_1_6_1_2_4"></a><b>&#167;2.1.6.1.2.4.  </b>To resume the narrative of what happens when we read:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; theta</span>
 </pre>
@@ -1129,14 +1111,12 @@ to record any "called" values for later retrieval by whoever called
 this proposition routine: see below. That leaves just this part:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">        }</span>
-        <span class="plain">    }</span>
+                <span class="plain">}</span>
+            <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="plain">if the counts are such that the quantifier is satisfied {</span>
-        <span class="plain">    ...</span>
+            <span class="plain">...</span>
 </pre>
 
 <p class="inwebparagraph">left to compile, and we will be done: execution will reach the <code class="display"><span class="extract">...</span></code> if and
@@ -1234,17 +1214,15 @@ point <code class="display"><span class="extract">M</span></code>, that is, imme
 is transferred as soon as a dark room is found. The code looks like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">set count of domain size to 1</span>
         <span class="plain">loop through domain (i.e., dark rooms adjacent to the person's location) {</span>
-        <span class="plain">    increment count of domain size</span>
-        <span class="plain">    record the lair value</span>
+            <span class="plain">increment count of domain size</span>
+            <span class="plain">record the lair value</span>
         <span class="plain">}</span>
         <span class="plain">if the count of domain size is 1 {</span>
-        <span class="plain">    record the dupe value</span>
-        <span class="plain">    M</span>
+            <span class="plain">record the dupe value</span>
+            <span class="plain">M</span>
         <span class="plain">}</span>
 </pre>
 
@@ -2186,13 +2164,11 @@ domain.
 <p class="inwebparagraph"><a id="SP2_1_6_1_17"></a><b>&#167;2.1.6.1.17.  </b>Snarkily, this is how we do it:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">if we're called with a valid member of the domain, go to Z</span>
         <span class="plain">loop x over members of the domain {</span>
-        <span class="plain">    return x</span>
-        <span class="plain">    label Z is here</span>
+            <span class="plain">return x</span>
+            <span class="plain">label Z is here</span>
         <span class="plain">}</span>
 </pre>
 
@@ -2301,16 +2277,14 @@ involve loops through objects. Consider:
 <p class="inwebparagraph">Code like this will run very slowly:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">loop over objects (x)</span>
-        <span class="plain">    loop over objects (y)</span>
-        <span class="plain">        if x is a person</span>
-        <span class="plain">            if x is in the Dining Room</span>
-        <span class="plain">                if y is an animal</span>
-        <span class="plain">                    if x can see y</span>
-        <span class="plain">                        success!</span>
+            <span class="plain">loop over objects (y)</span>
+                <span class="plain">if x is a person</span>
+                    <span class="plain">if x is in the Dining Room</span>
+                        <span class="plain">if y is an animal</span>
+                            <span class="plain">if x can see y</span>
+                                <span class="plain">success!</span>
 </pre>
 
 <p class="inwebparagraph">This is folly in so many ways. Most objects aren't people or animals, so
@@ -2319,14 +2293,12 @@ of x for every possible y. And there are quick ways to find what is in
 the Dining Room, so we're missing a trick there, too. What we want is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">loop over objects in the Dining Room (x)</span>
-        <span class="plain">    if x is a person</span>
-        <span class="plain">        loop over animals (y)</span>
-        <span class="plain">            if x can see y</span>
-        <span class="plain">                success!</span>
+            <span class="plain">if x is a person</span>
+                <span class="plain">loop over animals (y)</span>
+                    <span class="plain">if x can see y</span>
+                        <span class="plain">success!</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -2409,8 +2381,6 @@ called to compile a loop arising from a quantifier with a domain, in
 which case <code class="display"><span class="extract">grouped</span></code> is set and <code class="display"><span class="extract">proposition</span></code> points to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">QUANTIFIER --&gt; DOMAIN_OPEN --&gt; psi --&gt; DOMAIN_CLOSE --&gt; ...</span>
 </pre>
@@ -2486,8 +2456,6 @@ loop in which <code class="display"><span class="extract">*1</span></code> denot
 
 <p class="inwebparagraph">For example, the worn-by relation writes the schema:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">objectloop (*1 in *2) if (WearerOf(*1)==parent(*1))</span>

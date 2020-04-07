@@ -191,15 +191,15 @@ be the empty string: see above). The argument must not include |}|.
 
 @ I7 expressions can be included in I6T code exactly as in inline invocation
 definitions: thus
-
-	|Constant FROG_CLASS = (+ pond-dwelling amphibian +);|
-
+= (text)
+	Constant FROG_CLASS = (+ pond-dwelling amphibian +);
+=
 will expand "pond-dwelling amphibian" into the I6 translation of the kind
 of object with this name. Because of this syntax, one has to watch out for
 I6 code like so:
-
-	|if (++counter_of_some_kind > 0) ...|
-
+= (text as Inform 6)
+	if (++counter_of_some_kind > 0) ...
+=
 which can trigger an unwanted |(+|.
 
 @<Read up to the next plus close-bracket as an I7 expression@> =

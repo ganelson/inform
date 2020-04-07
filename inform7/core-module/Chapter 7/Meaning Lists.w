@@ -37,16 +37,16 @@ we try to parse the example phrase at the beginning of this chapter:
 >> if Mr Fitzwilliam Darcy was carrying at least three things which are in the box, increase the score by 7;
 
 then the S-parser initially generates the following meaning list:
-
-	|CMD_ML / "if mr fitzwilliam darcy was carrying at least ..."|
-	|    PHRASE_ML|
-	|        [1/2] (score 1) {# at # = VOID_PHRASE_MC} / "if mr fitzwilliam ..."|
-	|            UNPARSED_ML / "if mr fitzwilliam darcy was carrying"|
-	|            UNPARSED_ML / "least three things which are in the box..."|
-	|        [2/2] (score 1) {if # , # = VOID_PHRASE_MC} / "if mr fitzwilliam darcy..."|
-	|            UNPARSED_ML / "mr fitzwilliam darcy was carrying at..."|
-	|            UNPARSED_ML / "increase the score by 7"|
-
+= (text)
+	CMD_ML / "if mr fitzwilliam darcy was carrying at least ..."
+	    PHRASE_ML
+	        [1/2] (score 1) {# at # = VOID_PHRASE_MC} / "if mr fitzwilliam ..."
+	            UNPARSED_ML / "if mr fitzwilliam darcy was carrying"
+	            UNPARSED_ML / "least three things which are in the box..."
+	        [2/2] (score 1) {if # , # = VOID_PHRASE_MC} / "if mr fitzwilliam darcy..."
+	            UNPARSED_ML / "mr fitzwilliam darcy was carrying at..."
+	            UNPARSED_ML / "increase the score by 7"
+=
 The notation |[1/2]| means "possibility 1 of 2". This structure shows that
 the S-parser is certain that we have a command phrase, but that on textual
 grounds alone it could be one of two possibilities. In fact, |[2/2]| is the
@@ -55,33 +55,33 @@ left as |UNPARSED_ML| nodes.
 
 @ When the S-parser gets to the condition (argument 1 of possibility |[2/2]| above),
 a more elaborate meaning list results, but which is unambiguous:
-
-	|COND_ML / "mr fitzwilliam darcy was carrying at least ... in the box"|
-	|    SV_ML / "mr fitzwilliam darcy was carrying at least ... in the box"|
-	|        NP_ML / "mr fitzwilliam darcy"|
-	|            VAL_ML / "mr fitzwilliam darcy"|
-	|                DC_ML / "mr fitzwilliam darcy"|
-	|                    DC_NOUN_ML / "mr fitzwilliam darcy"|
-	|                        {mr fitzwilliam darcy = NAMETAG_MC}|
-	|        VP_ML|
-	|            VERB_ML => VU: was WAS_TENSE -> is|
-	|                PREP_ML => PU: carrying -> carries|
-	|            NP_ML / "at least three things which are in the box"|
-	|                VAL_ML / "at least three things which are in the box"|
-	|                    DC_ML / "at least three things which are in the box"|
-	|                        SN_ML / "at least three things which are in the box"|
-	|                            DC_ML / "at least three things"|
-	|                                DC_NOUN_ML / "things"|
-	|                                    {things = NAMETAG_MC}|
-	|                                DETERMINER_ML => Card>=3 / "at least three"|
-	|                            VP_ML|
-	|                                VERB_ML => VU: are IS_TENSE -> is|
-	|                                    PREP_ML => PU: in -> is-in|
-	|                                DC_ML / "box"|
-	|                                    DC_NOUN_ML / "box"|
-	|                                        {mr bingham's box = NAMETAG_MC}|
-	|                        DETERMINER_ML => Card>=3 / "at least three"|
-
+= (text)
+	COND_ML / "mr fitzwilliam darcy was carrying at least ... in the box"
+	    SV_ML / "mr fitzwilliam darcy was carrying at least ... in the box"
+	        NP_ML / "mr fitzwilliam darcy"
+	            VAL_ML / "mr fitzwilliam darcy"
+	                DC_ML / "mr fitzwilliam darcy"
+	                    DC_NOUN_ML / "mr fitzwilliam darcy"
+	                        {mr fitzwilliam darcy = NAMETAG_MC}
+	        VP_ML
+	            VERB_ML => VU: was WAS_TENSE -> is
+	                PREP_ML => PU: carrying -> carries
+	            NP_ML / "at least three things which are in the box"
+	                VAL_ML / "at least three things which are in the box"
+	                    DC_ML / "at least three things which are in the box"
+	                        SN_ML / "at least three things which are in the box"
+	                            DC_ML / "at least three things"
+	                                DC_NOUN_ML / "things"
+	                                    {things = NAMETAG_MC}
+	                                DETERMINER_ML => Card>=3 / "at least three"
+	                            VP_ML
+	                                VERB_ML => VU: are IS_TENSE -> is
+	                                    PREP_ML => PU: in -> is-in
+	                                DC_ML / "box"
+	                                    DC_NOUN_ML / "box"
+	                                        {mr bingham's box = NAMETAG_MC}
+	                        DETERMINER_ML => Card>=3 / "at least three"
+=
 Note the three concrete noun phrases -- Mr Darcy, the box, and "things". It's
 perhaps surprising that the determiner for "at least three" turns up twice
 in the tree, but this is because the sub-excerpt
@@ -94,14 +94,14 @@ appropriate node.
 As this shows, the result of parsing can be an extravagantly big meaning list.
 When the S-parser finishes, it is translated into much more compact data:
 a single specification representing a condition,
-
-	|(A)'mr fitzwilliam ... box'/CONDITION_FMY/TEST_PROPOSITION_SPC<0 times: WAS_TENSE>|
-
+= (text)
+	(A)'mr fitzwilliam ... box'/CONDITION_FMY/TEST_PROPOSITION_SPC<0 times: WAS_TENSE>
+=
 and with the proposition
-
-	|[ Card>=3 x: K2'thing'(x) ^ is(O104'mr bingham's box',ContainerOf(x)) =>|
-	|    is(O105'mr fitzwilliam darcy',CarrierOf(x)) ]|
-
+= (text)
+	[ Card>=3 x: K2'thing'(x) ^ is(O104'mr bingham's box',ContainerOf(x)) =>
+	    is(O105'mr fitzwilliam darcy',CarrierOf(x)) ]
+=
 which can be paraphrased "at least three $x$ which are things and such that
 their container is the box are also such that Mr Darcy is their carrier".
 
@@ -402,22 +402,22 @@ expired.
 
 For instance, suppose the time is now 1021 and the list of MLs in memory
 shows expiry dates thus:
-
-	|PERMANENT -> 1020 -> PERMANENT -> PERMANENT -> 1021 -> 1020 -> 976|
-	|             ^GAP                 ^LP                  ^TAIL|
-
+= (text)
+	PERMANENT -> 1020 -> PERMANENT -> PERMANENT -> 1021 -> 1020 -> 976
+	             ^GAP                 ^LP                  ^TAIL
+=
 A new ephemeral ML reuses the TAIL position, the second 1020, and TAIL
 moves forwards:
-
-	|PERMANENT -> 1020 -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976|
-	|             ^GAP                 ^LP                          ^TAIL|
-
+= (text)
+	PERMANENT -> 1020 -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976
+	             ^GAP                 ^LP                          ^TAIL
+=
 Whereas a new permanent ML reuses the GAP position, filling in the gap,
 and GAP becomes |NULL|:
-
-	|PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976|
-	|                                       ^LP                          ^TAIL|
-
+= (text)
+	PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976
+	                                       ^LP                          ^TAIL
+=
 Note that LP moves only forwards. GAP is |NULL| from time to time, but its
 non-|NULL| values always move forwards, too. The sequence is always GAP
 strictly behind LP strictly behind TAIL, when these are not |NULL|, and
@@ -515,15 +515,15 @@ void Parser::SP::MeaningLists::finish_this_session(void) {
 }
 
 @ To continue our example, at one minute to midnight on day 1021 we had:
-
-	|PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976|
-	|                                       ^LP                          ^TAIL|
-
+= (text)
+	PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976
+	                                       ^LP                          ^TAIL
+=
 And at one minute past midnight on day 1022 we have:
-
-	|PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976|
-	|                                       ^LP          ^TAIL|
-
+= (text)
+	PERMANENT -> PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> 976
+	                                       ^LP          ^TAIL
+=
 LP doesn't move, since there is no change to the permanent items. Since every
 non-permanent item expired at midnight, the new TAIL always starts just after LP.
 
@@ -531,9 +531,9 @@ The tricky one is GAP. If it is non-|NULL| at midnight, it doesn't change,
 since it is still an expired item with everything before it permanent. But if
 it is |NULL|, we only know that any gaps in the permanent items are filled
 with day-1021 creations, like this:
-
-	|PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> PERMANENT -> 1021 -> 976|
-
+= (text)
+	PERMANENT -> PERMANENT -> PERMANENT -> 1021 -> 1021 -> PERMANENT -> 1021 -> 976
+=
 Consider the first day-1021 creation in the list. If it doesn't exist
 (i.e., there are no day-1021 items) there is still no GAP. Otherwise it
 exists, and is either before, at or after the new TAIL position. If before

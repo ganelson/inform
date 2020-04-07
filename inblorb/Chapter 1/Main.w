@@ -147,9 +147,9 @@ interface, and it expects to have two Javascript functions available,
 different for the Windows and OS X user interface implementations of
 Javascript, we abstract the prefix for these function calls into the
 |JAVASCRIPT_PRELUDE|. Thus
-
-	|<a href="***openUrl">...</a>|
-
+= (text)
+	<a href="***openUrl">...</a>
+=
 causes a link, when clicked, to call the |openUrl| function, where |***|
 is the prelude; similarly for |fileUrl|. The first opens a URL in the local
 operating system's default web browser, the second opens a file (identified

@@ -500,10 +500,10 @@ the array |LIST_OF_TY 1 TEXT_TY|.
 for constructions like "list of numbers", where the strong and weak IDs are
 different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:
-
-	|if ((strong >= 0) && (strong < BASE_KIND_HWM)) weak = strong;|
-	|else weak = strong-->0;|
-
+= (text as Inform 6)
+	if ((strong >= 0) && (strong < BASE_KIND_HWM)) weak = strong;
+	else weak = strong-->0;
+=
 We must be careful with comparisons because a strong ID may be numerically
 negative if it's a pointer into the upper half of virtual machine memory.
 

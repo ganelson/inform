@@ -255,35 +255,7 @@ value the property will have, and compiles a clause as appropriate.
 
 <p class="endnote">The function Properties::Emit::emit_propertyvalue is used in <a href="#SP1_1_3">&#167;1.1.3</a>, <a href="#SP1_1_4">&#167;1.1.4</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>Inform 6 notation is to use a clause like
-</p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">with capacity 20</span>
-</pre>
-
-<p class="inwebparagraph">for I6 properties, and
-</p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">has open ~lockable</span>
-</pre>
-
-<p class="inwebparagraph">for "attributes", where the tilde <code class="display"><span class="extract">~</span></code> denotes negation. As noted above, some
-of our either/or properties are going to be stored as attributes, in which case
-the value 1 (run-time <code class="display"><span class="extract">true</span></code>) corresponds to <code class="display"><span class="extract">has</span></code> and 0 to <code class="display"><span class="extract">has ~</span></code>.
-</p>
-
-<p class="inwebparagraph">For purposes of our size calculation, each property costs 2 words, but attributes
-are free.
-</p>
-
-
-<p class="macrodefinition"><code class="display">
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Now emit a propertyvalue</span> <span class="cwebmacronumber">2.1</span>&gt; =
 </code></p>
 

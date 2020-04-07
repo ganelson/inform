@@ -273,9 +273,9 @@ int Kinds::Textual::parse_constructor_name(kind_constructor *con, wording *KW, w
 }
 
 @ Note that the name text for a constructor is likely to have a form like so:
-
-	|relation STROKE relation of k to l STROKE relation of k|
-
+= (text)
+	relation STROKE relation of k to l STROKE relation of k
+=
 with multiple possibilities divided by strokes; each possibility must be
 checked for.
 

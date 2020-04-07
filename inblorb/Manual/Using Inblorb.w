@@ -34,9 +34,9 @@ though in a strong box).")
 If you have compiled the standard distribution of the command-line tools
 for Inform then the Inblorb executable will be at |inblorb/Tangled/inblorb/|.
 Usage is very simple:
-
-	|$ inblorb/Tangled/inblorb [OPTIONS] BLURBFILE [BLORBFILE]|
-
+= (text as ConsoleText)
+	$ inblorb/Tangled/inblorb [OPTIONS] BLURBFILE [BLORBFILE]
+=
 This follows the given blurb file. Not all blurbs instruct Inblorb to make
 a blorb, which is why BLORBFILE is optional.
 
@@ -76,9 +76,9 @@ exactly as it would in a non-Release run.
 Inblorb as follows. Let |Path| be the path to the folder containing the Inform
 project being released, which we'll call |This.inform|. Then the interface
 should call:
-
-	|inblorb "Path/This.inform/Release.blurb" "Path/This.inform/Build/output.gblorb"|
-
+= (text as ConsoleText)
+	$ inblorb "Path/This.inform/Release.blurb" "Path/This.inform/Build/output.gblorb"
+=
 (...) These two filename arguments are the Blurb script for Inblorb to
 follow, which was written by Inform 7 at step 3, and the filename of the Blorb
 file which it should write. Note that the interface should give this the
@@ -101,12 +101,12 @@ inside the Build project of a folder, which on Mac OS X, for instance, is
 not even visible. To see what to do, the interface must look at the textual
 output from Inblorb, printed to |stdout| (of course the interface is free
 to redirect this if it wants to). If Inblorb printed a line in the form:
-
-	|Copy blorb to: [[...]]|
-
+= (text as ConsoleText)
+	Copy blorb to: [[...]]
+=
 (...) then the interface should do as it's told. For instance:
-
-	|Copy blorb to: [[/Users/gnelson/Examples/Bronze Materials/Release/Bronze.gblorb]]|
-
+= (text as ConsoleText)
+	Copy blorb to: [[/Users/gnelson/Examples/Bronze Materials/Release/Bronze.gblorb]]
+=
 (...) If Inblorb printed no such line, the interface should put up a Save As...
 dialogue box, and invite the user to choose a destination.

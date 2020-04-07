@@ -138,36 +138,36 @@ used a lookup table for the values of 2^{15-n} where 0&lt;= n &lt;= 11.
 
 <pre class="display">
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">PowersOfTwo_TB</span>
-    <span class="plain">--&gt; </span><span class="constant">$$100000000000</span>
-        <span class="constant">$$010000000000</span>
-        <span class="constant">$$001000000000</span>
-        <span class="constant">$$000100000000</span>
-        <span class="constant">$$000010000000</span>
-        <span class="constant">$$000001000000</span>
-        <span class="constant">$$000000100000</span>
-        <span class="constant">$$000000010000</span>
-        <span class="constant">$$000000001000</span>
-        <span class="constant">$$000000000100</span>
-        <span class="constant">$$000000000010</span>
-        <span class="constant">$$000000000001</span><span class="plain">;</span>
+    <span class="plain">  --&gt; </span><span class="constant">$$100000000000</span>
+        <span class="plain">  </span><span class="constant">$$010000000000</span>
+        <span class="plain">  </span><span class="constant">$$001000000000</span>
+        <span class="plain">  </span><span class="constant">$$000100000000</span>
+        <span class="plain">  </span><span class="constant">$$000010000000</span>
+        <span class="plain">  </span><span class="constant">$$000001000000</span>
+        <span class="plain">  </span><span class="constant">$$000000100000</span>
+        <span class="plain">  </span><span class="constant">$$000000010000</span>
+        <span class="plain">  </span><span class="constant">$$000000001000</span>
+        <span class="plain">  </span><span class="constant">$$000000000100</span>
+        <span class="plain">  </span><span class="constant">$$000000000010</span>
+        <span class="plain">  </span><span class="constant">$$000000000001</span><span class="plain">;</span>
 
     <span class="reserved">Array</span><span class="plain"> </span><span class="identifier">IncreasingPowersOfTwo_TB</span>
-    <span class="plain">--&gt; </span><span class="constant">$$0000000000000001</span>
-        <span class="constant">$$0000000000000010</span>
-        <span class="constant">$$0000000000000100</span>
-        <span class="constant">$$0000000000001000</span>
-        <span class="constant">$$0000000000010000</span>
-        <span class="constant">$$0000000000100000</span>
-        <span class="constant">$$0000000001000000</span>
-        <span class="constant">$$0000000010000000</span>
-        <span class="constant">$$0000000100000000</span>
-        <span class="constant">$$0000001000000000</span>
-        <span class="constant">$$0000010000000000</span>
-        <span class="constant">$$0000100000000000</span>
-        <span class="constant">$$0001000000000000</span>
-        <span class="constant">$$0010000000000000</span>
-        <span class="constant">$$0100000000000000</span>
-        <span class="constant">$$1000000000000000</span><span class="plain">;</span>
+    <span class="plain">  --&gt; </span><span class="constant">$$0000000000000001</span>
+        <span class="plain">  </span><span class="constant">$$0000000000000010</span>
+        <span class="plain">  </span><span class="constant">$$0000000000000100</span>
+        <span class="plain">  </span><span class="constant">$$0000000000001000</span>
+        <span class="plain">  </span><span class="constant">$$0000000000010000</span>
+        <span class="plain">  </span><span class="constant">$$0000000000100000</span>
+        <span class="plain">  </span><span class="constant">$$0000000001000000</span>
+        <span class="plain">  </span><span class="constant">$$0000000010000000</span>
+        <span class="plain">  </span><span class="constant">$$0000000100000000</span>
+        <span class="plain">  </span><span class="constant">$$0000001000000000</span>
+        <span class="plain">  </span><span class="constant">$$0000010000000000</span>
+        <span class="plain">  </span><span class="constant">$$0000100000000000</span>
+        <span class="plain">  </span><span class="constant">$$0001000000000000</span>
+        <span class="plain">  </span><span class="constant">$$0010000000000000</span>
+        <span class="plain">  </span><span class="constant">$$0100000000000000</span>
+        <span class="plain">  </span><span class="constant">$$1000000000000000</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -585,11 +585,11 @@ here regardless.
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">PARTINV_BIT</span><span class="plain">        = </span><span class="constant">$$0000000010000000</span><span class="plain">; </span><span class="comment">Only brief inventory information after entry</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">DEFART_BIT</span><span class="plain">         = </span><span class="constant">$$0000000100000000</span><span class="plain">; </span><span class="comment">Use the definite article in list</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">WORKFLAG_BIT</span><span class="plain">       = </span><span class="constant">$$0000001000000000</span><span class="plain">; </span><span class="comment">At top level (only), only list objects</span>
-                                                    <span class="comment">which have the "workflag" attribute</span>
+                                                    <span class="plain">  </span><span class="comment">which have the "workflag" attribute</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">ISARE_BIT</span><span class="plain">          = </span><span class="constant">$$0000010000000000</span><span class="plain">; </span><span class="comment">Print " is" or " are" before list</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CONCEAL_BIT</span><span class="plain">        = </span><span class="constant">$$0000100000000000</span><span class="plain">; </span><span class="comment">Omit objects with "concealed" or "scenery":</span>
-                                                    <span class="comment">if WORKFLAG_BIT also set, then does not</span>
-                                                    <span class="comment">apply at top level, but does lower down</span>
+                                                    <span class="plain">  </span><span class="comment">if WORKFLAG_BIT also set, then does not</span>
+                                                    <span class="plain">  </span><span class="comment">apply at top level, but does lower down</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">NOARTICLE_BIT</span><span class="plain">      = </span><span class="constant">$$0001000000000000</span><span class="plain">; </span><span class="comment">Print no articles, definite or not</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">EXTRAINDENT_BIT</span><span class="plain">    = </span><span class="constant">$$0010000000000000</span><span class="plain">; </span><span class="comment">New in I7: extra indentation of 1 level</span>
     <span class="reserved">Constant</span><span class="plain"> </span><span class="identifier">CFIRSTART_BIT</span><span class="plain">      = </span><span class="constant">$$0100000000000000</span><span class="plain">; </span><span class="comment">Capitalise first article in list</span>

@@ -161,13 +161,13 @@ as a list of three articled noun phrases.
 
 @ That builds into a lopsided binary tree: thus "the lion, a witch,
 and some wardrobes" becomes
-
-	|AND_NT ","|
-	|    PROPERTY_LIST_NT "lion" article:definite|
-	|    AND_NT ", and"|
-	|        PROPERTY_LIST_NT "witch" article:indefinite|
-	|        PROPERTY_LIST_NT "wardrobe" article:indefinite pluralreference:true|
-
+= (text)
+	AND_NT ","
+	    PROPERTY_LIST_NT "lion" article:definite
+	    AND_NT ", and"
+	        PROPERTY_LIST_NT "witch" article:indefinite
+	        PROPERTY_LIST_NT "wardrobe" article:indefinite pluralreference:true
+=
 The binary structure is chosen since it allows us to use a simple recursion
 to run through possibilities, and also to preserve each connective of the text
 in the |AND_NT| nodes.
@@ -295,23 +295,23 @@ are present within the NP. For instance, we want to turn
 >> [A] in a container called the flask and cap with flange
 
 into the subtree:
-
-	|RELATIONSHIP_NT "in" = containment|
-	|    CALLED_NT "called"|
-	|        PROPER_NOUN_NT "container" article:indefinite|
-	|        PROPER_NOUN_NT "flask and cap with flange" article:definite|
-
+= (text)
+	RELATIONSHIP_NT "in" = containment
+	    CALLED_NT "called"
+	        PROPER_NOUN_NT "container" article:indefinite
+	        PROPER_NOUN_NT "flask and cap with flange" article:definite
+=
 but we also want:
 
 >> [B] in a container with carrying capacity 10 and diameter 12
-
-	|RELATIONSHIP_NT "in" = containment|
-	|    WITH_NT "with"|
-	|        PROPER_NOUN_NT "container" article:indefinite|
-	|        AND_NT "and"|
-	|            PROPERTY_LIST_NT "carrying capacity 10"|
-	|            PROPERTY_LIST_NT "diameter 12"|
-
+= (text)
+	RELATIONSHIP_NT "in" = containment
+	    WITH_NT "with"
+	        PROPER_NOUN_NT "container" article:indefinite
+	        AND_NT "and"
+	            PROPERTY_LIST_NT "carrying capacity 10"
+	            PROPERTY_LIST_NT "diameter 12"
+=
 These two cases together force our conventions: from sentence [A] we see
 that initial relative clauses (in) must beat callings ("called") which
 must beat property clauses ("with"), while from [B] we see that property
@@ -320,23 +320,23 @@ clauses must beat lists ("and"). These all have to beat "of" and
 constructions must be easily reversible, as we shall see, and the best way
 to ensure that is to make sure they can only appear right down close to
 leaves in the tree. This dictates
-
-	|RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT|
-
+= (text)
+	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT
+=
 in the sense that a subtree construction higher in this chain will take
 precedence over (and therefore be higher up in the tree than) one that is
 lower. That leaves just the seventh construction: "kind of ...". To
 avoid misreading this as an "of", and to protect "called", we need
-
-	|CALLED_NT > KIND_NT|
-
+= (text)
+	CALLED_NT > KIND_NT
+=
 but otherwise we are fairly free where to put it (though the resulting trees
 will take different shapes in some cases if we move it around, we could
 write code which handled any of the outcomes about equally well). In fact,
 we choose to make it lowest possible, so the final precedence order is:
-
-	|RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT|
-
+= (text)
+	RELATIONSHIP_NT > CALLED_NT > WITH_NT > AND_NT > KIND_NT
+=
 Once all possible constructions have been recursively exhausted, every leaf we
 end up at is treated as a balanced articled NP. (Thus <np-inner> fails on
 source text where brackets aren't balanced, such as "smile X-)". This is why

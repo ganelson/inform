@@ -130,18 +130,18 @@ A person is a kind of thing.
 A region is a kind.
 
 @ At this point, then, the hierarchy looks like so:
-
-	|kind|
-	|    room|
-	|    thing|
-	|        door|
-	|        container|
-	|        supporter|
-	|        backdrop|
-	|        person|
-	|    direction|
-	|    region|
-
+= (text)
+	kind
+	    room
+	    thing
+	        door
+	        container
+	        supporter
+	        backdrop
+	        person
+	    direction
+	    region
+=
 This framework is the minimum kit needed in order for Inform to be able to
 manage the spatial relationships arising from its basic verbs. Room and thing
 are needed to distinguish places and objects; door and backdrop because they
@@ -904,9 +904,9 @@ in the I6 library.
 
 Ordinarily, a new value property such as "astral significance" would
 be compiled by Inform into an I6 property called something like
-
-	|P73_astral_significance|
-
+= (text)
+	P73_astral_significance
+=
 whereas a new either/or property might become either an I6 attribute or an
 I6 property holding only |true| or |false|, at the compiler's discretion.
 (It needs to use this discretion because I6 has a hard limit on the number

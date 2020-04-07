@@ -169,9 +169,9 @@ The following sentences express the same fact:
 
 ...but when we parse them into their meanings, we could easily lose sight
 that they are saying the same thing, because they involve different BPs:
-
-	|inside(ball, trophy case)| and |contains(trophy case, ball)|
-
+= (text)
+	inside(ball, trophy case)| and |contains(trophy case, ball)
+=
 It's usually a bad idea for any computer program to represent the same
 conceptual idea in more than one way. So for every pair of BPs $X$ and $Y$
 which are each other's reversal, Inform designates one as being

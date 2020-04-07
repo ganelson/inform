@@ -297,26 +297,24 @@ contain only invocations of <code class="display"><span class="extract">!case</s
 <p class="inwebparagraph">This looks a little baroque, but it works in practice:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">inv !switch</span>
-        <span class="plain">    val K_number X</span>
-        <span class="plain">    code</span>
-        <span class="plain">        inv !case</span>
-        <span class="plain">            val K_number 1</span>
-        <span class="plain">            code</span>
-        <span class="plain">                inv !print</span>
-        <span class="plain">                    val K_text "One!"</span>
-        <span class="plain">        inv !case</span>
-        <span class="plain">            val K_number 2</span>
-        <span class="plain">            code</span>
-        <span class="plain">                inv !print</span>
-        <span class="plain">                    val K_text "Two!"</span>
-        <span class="plain">        inv !default</span>
-        <span class="plain">            code</span>
-        <span class="plain">                inv !print</span>
-        <span class="plain">                    val K_text "Something else!"</span>
+        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!switch</span>
+            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> X</span>
+            <span class="reserved">code</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!case</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">1</span>
+                    <span class="reserved">code</span>
+                        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+                            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"One!"</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!case</span>
+                    <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_number</span><span class="plain"> </span><span class="constant">2</span>
+                    <span class="reserved">code</span>
+                        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+                            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"Two!"</span>
+                <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!default</span>
+                    <span class="reserved">code</span>
+                        <span class="reserved">inv</span><span class="plain"> </span><span class="functiontext">!print</span>
+                            <span class="reserved">val</span><span class="plain"> </span><span class="identifier">K_text</span><span class="plain"> </span><span class="string">"Something else!"</span>
 </pre>
 
 <p class="inwebparagraph">As in most C-like languages, there are primitives for:

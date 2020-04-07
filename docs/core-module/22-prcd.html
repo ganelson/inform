@@ -498,14 +498,12 @@ opportunity might exist for the rule to fire. The structure of this is
 similar to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">[ Rule;</span>
-        <span class="plain">    if (some-firing-condition) {</span>
-        <span class="plain">        ...</span>
-        <span class="plain">        return some-default-outcome;</span>
-        <span class="plain">    }</span>
+        <span class="plain">[ </span><span class="identifier">Rule</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">some</span><span class="plain">-</span><span class="identifier">firing</span><span class="plain">-</span><span class="identifier">condition</span><span class="plain">) {</span>
+                <span class="plain">...</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">some</span><span class="plain">-</span><span class="reserved">default</span><span class="plain">-</span><span class="identifier">outcome</span><span class="plain">;</span>
+            <span class="plain">}</span>
         <span class="plain">];</span>
 </pre>
 

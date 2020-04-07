@@ -482,9 +482,7 @@ where in memory the correct stick is, and this needs to be quick.
 
 This is essentially a dictionary lookup problem and we solve it by compiling
 a faux object |V| for each |K|, called a "value property holder" or VPH.
-Given |K| we find |V| by looking it up in the array
-
-	|value_property_holders|
+Given |K| we find |V| by looking it up in the array |value_property_holders|.
 
 Once we know |V|, we then look up |V.P| to get the address of the stick for
 property |P|, something which the virtual machine can do quickly.

@@ -127,21 +127,6 @@ int Properties::Emit::emit_propertyvalue(inference_subject *know, property *prn)
 	return storage_cost;
 }
 
-@ Inform 6 notation is to use a clause like
-
-	|with capacity 20|
-
-for I6 properties, and
-
-	|has open ~lockable|
-
-for "attributes", where the tilde |~| denotes negation. As noted above, some
-of our either/or properties are going to be stored as attributes, in which case
-the value 1 (run-time |true|) corresponds to |has| and 0 to |has ~|.
-
-For purposes of our size calculation, each property costs 2 words, but attributes
-are free.
-
 @<Now emit a propertyvalue@> =
 	instance *as_I = InferenceSubjects::as_instance(know);
 	kind *as_K = InferenceSubjects::as_kind(know);

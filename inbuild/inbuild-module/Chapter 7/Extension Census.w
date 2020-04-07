@@ -783,7 +783,7 @@ down to the bottom level, where there is a page for every installed
 extension (wherever it is installed). The picture is therefore something
 like this:
 
-= (not code)
+= (text)
     (Main documentation contents page)
             |
     Extensions.html--ExtIndex.html
@@ -792,10 +792,10 @@ like this:
     Nigel Toad/Eggs  Barnabas Dundritch/Neopolitan Iced Cream   ...
 
 @ These pages are stored at the relative pathnames
-
-	|Extensions/Documentation/Extensions.html|
-	|Extensions/Documentation/ExtIndex.html|
-
+= (text)
+	Extensions/Documentation/Extensions.html
+	Extensions/Documentation/ExtIndex.html
+=
 They are made by inserting content in place of the material between the
 HTML anchors |on| and |off| in a template version of the page built in
 to the application, with a leafname which varies from platform to

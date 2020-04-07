@@ -97,11 +97,14 @@ a digit in the replacement text means "truncate by this many letters and
 add...". (As a special case, the replacement text "0" means: make no
 change.) Some examples:
 </li></ul>
-<pre class="display">
-        <span class="plain">lead gold</span>
-     turns "lead" into "gold"    <span class="plain">codex codices</span>
-     turns "codex" to "codices"    <span class="plain">*mouse 5mice</span>
-     turns "mouse" to "mice", or "fieldmouse" to "fieldmice"</pre>
+<p class="inwebparagraph"><code class="display"><span class="extract">lead gold</span></code> turns "lead" into "gold"
+</p>
+
+<p class="inwebparagraph"><code class="display"><span class="extract">codex codices</span></code> turns "codex" to "codices"
+</p>
+
+<p class="inwebparagraph"><code class="display"><span class="extract">*mouse 5mice</span></code> turns "mouse" to "mice", or "fieldmouse" to "fieldmice"
+</p>
 
 <p class="inwebparagraph">Designing a trie is not quite as easy as it looks. It looks as if this is a
 sequence of tests to perform in succession, but it's better to think of the
@@ -118,10 +121,8 @@ instead, an appropriate version needs to be written for every language.
 and name them as they please. For example, the Spanish implementation of
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">&lt;singular-noun-to-its-indefinite-article&gt;</span>
+        <span class="plain">&lt;</span><span class="identifier">singular</span><span class="plain">-</span><span class="identifier">noun</span><span class="plain">-</span><span class="identifier">to</span><span class="plain">-</span><span class="identifier">its</span><span class="plain">-</span><span class="identifier">indefinite</span><span class="plain">-</span><span class="identifier">article</span><span class="plain">&gt;</span>
 </pre>
 
 <p class="inwebparagraph">may look entirely unlike its English version, but at the top level it still
@@ -1024,7 +1025,7 @@ bracket, then it expands to the verb form for that verb. For example, the
 following expands to "sought":
 </li></ul>
 <pre class="display">
-        <span class="plain">3 ( seek )</span>
+        <span class="constant">3</span><span class="plain"> ( </span><span class="identifier">seek</span><span class="plain"> )</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1088,19 +1089,15 @@ it tells Inform to use "to be" as an auxiliary. When we write the <code class="d
 step:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">p*     done by</span>
+        <span class="identifier">p</span><span class="plain">*     </span><span class="identifier">done</span><span class="plain"> </span><span class="identifier">by</span>
 </pre>
 
 <p class="inwebparagraph">the effect is the same as writing:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">p      ( be ) done by</span>
+        <span class="identifier">p</span><span class="plain">      ( </span><span class="identifier">be</span><span class="plain"> ) </span><span class="identifier">done</span><span class="plain"> </span><span class="identifier">by</span>
 </pre>
 
 <p class="inwebparagraph">The difference is that Inform more efficiently implements the <code class="display"><span class="extract">p*</span></code> version,
@@ -1165,10 +1162,8 @@ a wording. For example, <code class="display"><span class="extract">&lt;en-trie-
 performs:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">take --&gt; taking</span>
+        <span class="identifier">take</span><span class="plain"> --&gt; </span><span class="identifier">taking</span>
 </pre>
 
 <p class="inwebparagraph">We will have to define these tries below. Note that the infinitive can consist
@@ -1317,10 +1312,8 @@ the wild-card <code class="display"><span class="extract">...</span></code> into
 this conjugation by matching
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">be able to ...</span>
+        <span class="identifier">be</span><span class="plain"> </span><span class="identifier">able</span><span class="plain"> </span><span class="identifier">to</span><span class="plain"> ...</span>
 </pre>
 
 <p class="inwebparagraph">so, for example, "be able to reach" results in 4 being set to "reach".

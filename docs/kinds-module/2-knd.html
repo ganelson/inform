@@ -70,8 +70,6 @@ existing kinds. Here, for example, we get to out destination with four
 constructions in a row:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(nothing) --&gt; text</span>
         <span class="plain">(nothing) --&gt; time</span>
@@ -105,8 +103,6 @@ creates a new kind. For example,
 <p class="inwebparagraph">creates two new constructors:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">(nothing) --&gt; weight</span>
         <span class="plain">(nothing) --&gt; animal</span>
@@ -130,8 +126,6 @@ downward branches at the node is equal to the arity of the constructor
 being used; so the kind "number" is represented by a single leaf node:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">number</span>
 </pre>
@@ -140,13 +134,11 @@ being used; so the kind "number" is represented by a single leaf node:
 four nodes like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">relation of K to L</span>
-        <span class="plain">	text</span>
-        <span class="plain">	list of K</span>
-        <span class="plain">		time</span>
+            <span class="plain">text</span>
+            <span class="plain">list of K</span>
+                <span class="plain">time</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -174,16 +166,14 @@ having fixed arities in the range 0 to 2 looks limited. In practice we get
 around that by using "punctuation nodes" in the tree. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">function K -&gt; L</span>
-        <span class="plain">	CON_TUPLE_ENTRY</span>
-        <span class="plain">		text</span>
-        <span class="plain">		CON_TUPLE_ENTRY</span>
-        <span class="plain">			text</span>
-        <span class="plain">			CON_NIL</span>
-        <span class="plain">	number</span>
+            <span class="plain">CON_TUPLE_ENTRY</span>
+                <span class="plain">text</span>
+                <span class="plain">CON_TUPLE_ENTRY</span>
+                    <span class="plain">text</span>
+                    <span class="plain">CON_NIL</span>
+            <span class="plain">number</span>
 </pre>
 
 <p class="inwebparagraph">represents <code class="display"><span class="extract">function (text, text) -&gt; number</span></code>. Note two special constructors
@@ -268,8 +258,6 @@ tuple, where n=0; while <code class="display"><span class="extract">CON_TUPLE_EN
 with arity 2, its two bases being the first item and the rest, respectively.
 Thus we store (A, B, C) as
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">CON_TUPLE_ENTRY(A, CON_TUPLE_ENTRY(B, CON_TUPLE_ENTRY(C, CON_NIL)))</span>
@@ -511,8 +499,6 @@ Checking.w".
 using the following. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">Kinds::unary_construction(CON_list_of, K_number)</span>
 </pre>
@@ -585,25 +571,21 @@ in a function to nothing). Note also that a function from X to Y, with just
 one argument, comes out as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">CON_phrase</span>
-        <span class="plain">	CON_TUPLE_ENTRY</span>
-        <span class="plain">		X</span>
-        <span class="plain">		CON_NIL</span>
-        <span class="plain">	Y</span>
+            <span class="plain">CON_TUPLE_ENTRY</span>
+                <span class="plain">X</span>
+                <span class="plain">CON_NIL</span>
+            <span class="plain">Y</span>
 </pre>
 
 <p class="inwebparagraph">rather than as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">CON_phrase</span>
-        <span class="plain">	X</span>
-        <span class="plain">	Y</span>
+            <span class="plain">X</span>
+            <span class="plain">Y</span>
 </pre>
 
 <p class="inwebparagraph">(It's more convenient to have a predictable form than to save on kind nodes.)

@@ -149,12 +149,12 @@ be a term in a proposition.
 @ If the proposition contains contradictory |KIND| atoms, it automatically fails
 type-checking, even if there is no implication that both apply at once. This
 throws out, for instance:
-
-	|1. a scene which is not a number|
-	|[ scene(x) & NOT[ number(x) NOT] ]|
-	|Failed: proposition would not type-check|
-	|x is both scene and number|
-
+= (text)
+	1. a scene which is not a number
+	[ scene(x) & NOT[ number(x) NOT] ]
+	Failed: proposition would not type-check
+	x is both scene and number
+=
 It could be argued that all scenes ought to pass this proposition, but we will
 treat it as a piece of nonsense, like "if Wednesday is not custard".
 
@@ -209,11 +209,11 @@ instance, if we define
 >> Definition: a container is empty if the number of things in it is 0.
 
 then we find that, say:
-
-	|1. empty which is empty|
-	|[ 'empty'(x) & 'empty'(x) ]|
-	|x (free) - object.|
-
+= (text)
+	1. empty which is empty
+	[ 'empty'(x) & 'empty'(x) ]
+	x (free) - object.
+=
 though in fact it would also have been viable for $x$ to be a rulebook, a list,
 or various other kinds of value.
 
@@ -245,12 +245,12 @@ problem message has already been issued, but just in case not...
 As with contradictory |KIND| atoms applied to variables, we will reject any
 |KIND| atom applied to a constant if it necessarily fails -- even when the
 sense of the proposition is arguably correct. For example:
-
-	|1. 100 is not a text|
-	|[ NOT[ text('100') NOT] ]|
-	|Failed: proposition would not type-check|
-	|Term '100' is number not text|
-
+= (text)
+	1. 100 is not a text
+	[ NOT[ text('100') NOT] ]
+	Failed: proposition would not type-check
+	Term '100' is number not text
+=
 "100 is not a number" would pass, on the other hand. It is obviously false,
 but not meaningless.
 

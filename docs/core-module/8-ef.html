@@ -175,20 +175,11 @@ on three occasions:
 </li><li>(b) when the Inform application installs a new extension;
 </li><li>(c) when the Inform application uninstalls an extension.
 </li></ul>
-<p class="inwebparagraph">When Inform is run in "census mode", it should be run with the command
-</p>
-
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">ni -rules (...) -census</span>
-</pre>
-
-<p class="inwebparagraph">where the argument for <code class="display"><span class="extract">-rules</span></code> is the same as for any other run. All
-output from Inform should be ignored, including its return code: ideally,
-not even a fatal error should provoke a reaction from the application.
-If the census doesn't work for some file-system reason, never mind &mdash;
-it's not mission-critical.
+<p class="inwebparagraph">When <code class="display"><span class="extract">inform7</span></code> is run in "census mode", it should be run with the command <code class="display"><span class="extract">-census</span></code>.
+All output from Inform should be ignored, including its return code: ideally,
+not even a fatal error should provoke a reaction from the application. If the
+census doesn't work for some file-system reason, never mind &mdash; it's not
+mission-critical.
 </p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. What happens in census mode. </b>The census has two purposes: first, to create provisional documentation
@@ -197,17 +188,13 @@ following index files in the external documentation area (not in
 the external extension area):
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">.../Extensions.html</span>
-     (basically a contents page)    <span class="plain">.../ExtIndex.html</span>
-     (basically an index)</pre>
+        <span class="plain">.../ExtIndex.html</span>
+</pre>
 
 <p class="inwebparagraph">Documentation for any individual extension is stored at, e.g.,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html</span>

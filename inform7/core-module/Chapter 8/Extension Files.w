@@ -87,29 +87,25 @@ on three occasions:
 (b) when the Inform application installs a new extension;
 (c) when the Inform application uninstalls an extension.
 
-When Inform is run in "census mode", it should be run with the command
-
-	|ni -rules (...) -census|
-
-where the argument for |-rules| is the same as for any other run. All
-output from Inform should be ignored, including its return code: ideally,
-not even a fatal error should provoke a reaction from the application.
-If the census doesn't work for some file-system reason, never mind --
-it's not mission-critical.
+When |inform7| is run in "census mode", it should be run with the command |-census|.
+All output from Inform should be ignored, including its return code: ideally,
+not even a fatal error should provoke a reaction from the application. If the
+census doesn't work for some file-system reason, never mind -- it's not
+mission-critical.
 
 @h What happens in census mode.
 The census has two purposes: first, to create provisional documentation
 where needed for new and unused extensions; and second, to create the
 following index files in the external documentation area (not in
 the external extension area):
-
-	|.../Extensions.html| (basically a contents page)
-	|.../ExtIndex.html| (basically an index)
-
+= (text)
+	.../Extensions.html
+	.../ExtIndex.html
+=
 Documentation for any individual extension is stored at, e.g.,
-
-	|.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html|
-
+= (text)
+	.../Extensions/Victoria Saxe-Coburg-Gotha/Werewolves.html
+=
 Inform can generate such a file, for an individual extension, in two ways: (a)
 provisionally, with much less detail, and (b) fully. Whenever it
 successfully compiles a work using extension X, it rewrites the

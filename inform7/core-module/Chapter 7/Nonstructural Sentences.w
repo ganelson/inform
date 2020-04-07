@@ -349,12 +349,12 @@ action declarations continue with usually extensive further text:
 @ In all other cases it's routine to construct the subtree, which typically
 gives the sentence node three children: verb phrase, subject noun phrase,
 object noun phrase.
-
-	|SENTENCE_NT "Railway Departure begins when the player is in the train"|
-	|    AVERB_NT "begins when"|
-	|    PROPER_NOUN_NT "Railway Departure"|
-	|    PROPER_NOUN_NT "the player is in the train"|
-
+= (text)
+	SENTENCE_NT "Railway Departure begins when the player is in the train"
+	    AVERB_NT "begins when"
+	    PROPER_NOUN_NT "Railway Departure"
+	    PROPER_NOUN_NT "the player is in the train"
+=
 This is made by |Sentences::VPs::nss_tree2|, but there are variants for one noun phrase or three.
 
 =

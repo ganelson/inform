@@ -103,19 +103,15 @@ by definition the pointer to the block heading this linked list. For instance,
 the data in a text
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">"But now I worship a celestiall Sunne"</span>
+        <span class="string">"But now I worship a celestiall Sunne"</span>
 </pre>
 
 <p class="inwebparagraph">might be stored in a list of blocks like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">NULL &lt;-- BN: "But now I wor" &lt;--&gt; BN2: "ship a celestiall Sunne" --&gt; NULL</span>
+        <span class="identifier">NULL</span><span class="plain"> &lt;-- </span><span class="identifier">BN</span><span class="plain">: </span><span class="string">"But now I wor"</span><span class="plain"> &lt;--&gt; </span><span class="identifier">BN2</span><span class="plain">: </span><span class="string">"ship a celestiall Sunne"</span><span class="plain"> --&gt; </span><span class="identifier">NULL</span>
 </pre>
 
 <p class="inwebparagraph">Note that the unique pointer to <code class="display"><span class="extract">BN2</span></code> is the one in the header of the

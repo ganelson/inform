@@ -153,9 +153,9 @@ always initialised explicitly, and so on. Clearly the default value for a
 phrase to nothing is one that does nothing, and for a phrase to some kind K
 is one that returns the default value of kind K. For example, the default
 value of
-
-	|phrase (text, time) -> number|
-
+= (text)
+	phrase (text, time) -> number
+=
 is the function which takes any pair of a text and a time, does nothing with
 them, and always returns 0. But this means we need to actually compile such
 routines. Since there are in principle an infinite number of distinct phrase

@@ -58,14 +58,15 @@ As usual, the leaves represent symbols or else constants not given symbol
 status (such as the 2 in $E = mc^2$); the non-leaf nodes represent operations,
 identified with the same codes as used in "Dimensions". Note
 that the equals sign |=| is itself considered an operation here.Thus:
-
-	|OPERATION_EQN =|
-	|    SYMBOL_EQN E|
-	|    OPERATION_EQN *|
-	|        SYMBOL_EQN m|
-	|        OPERATION_EQN ^|
-	|            SYMBOL_EQN c|
-	|            CONSTANT_EQN 2|
+= (text)
+	OPERATION_EQN =
+	    SYMBOL_EQN E
+	    OPERATION_EQN *
+	        SYMBOL_EQN m
+	        OPERATION_EQN ^
+	            SYMBOL_EQN c
+	            CONSTANT_EQN 2
+=
 
 @d CONSTANT_EQN 1 /* a leaf, representing a quasinumerical constant not given a symbol */
 @d SYMBOL_EQN 2 /* a leaf, representing a symbol */
@@ -1868,37 +1869,37 @@ point it is at the top level as required and we break out of the loop.
 
 @ So the rearrangement moves have to make sure the "(i) or (ii)" property
 always holds. The simplest case to understand is |+|. Suppose we have:
-
-	|=|
-	|    +|
-	|        V|
-	|        E|
-	|    R|
-
+= (text)
+	=
+	    +
+	        V
+	        E
+	    R
+=
 representing $(V+E) = R$, where $V$ is the sub-equation containing
 $v$. ($E$ is an arbitrary sub-equation, and $R$ is the right hand
 side.) One of the two operands of |+| will be "promoted", moving
 upwards in the tree, and since we can choose to promote either $V$ or
 $E$, we'll choose $V$, thus obtaining:
-
-	|=|
-	|    V|
-	|    -|
-	|        R|
-	|        E|
-
+= (text)
+	=
+	    V
+	    -
+	        R
+	        E
+=
 that is, $V = (R - E)$. Since $V$ has moved upwards, so has the unique instance
 of $v$, and therefore the tree depth of $v$ has decreased by 1 -- property (i).
 Multiplication is similar, but turns into division on the right hand side.
 
 But now consider |-|. When we rearrange:
-
-	|=|
-	|    -|
-	|        E|
-	|        V|
-	|    R|
-
+= (text)
+	=
+	    -
+	        E
+	        V
+	    R
+=
 representing $(E-V) = R$ we no longer have a choice of which operand of |-|
 to promote: we have to promote the right operand, and that produces $E = (R+V)$.
 The tree depth of $v$ is not improved, and it's now over on the right hand
@@ -1948,20 +1949,20 @@ hardly ever occurs in physical equations, and anyone wanting this will have
 to write more explicit source text.
 
 Anyway, rearrangement for our easy cases is indeed easy:
-
-	|=|
-	|    ^|
-	|        V|
-	|        2|
-	|    R|
-
+= (text)
+	=
+	    ^
+	        V
+	        2
+	    R
+=
 becomes
-
-	|=|
-	|    V|
-	|    square-root|
-	|        R|
-
+= (text)
+	=
+	    V
+	    square-root
+	        R
+=
 and $V$ is always promoted, so we achieve property (i); and similarly for
 cube roots.
 
@@ -2009,20 +2010,21 @@ cube roots.
 @ Here we have something like |log x = y| and want to rewrite as |x = exp y|,
 which is only possible if we have an inverse available for our function --
 in this case, |exp| being the inverse of |log|. Thus:
-
-	|=|
-	|    apply|
-	|        function|
-	|        V|
-	|    R|
-
+= (text)
+	=
+	    apply
+	        function
+	        V
+	    R
+=
 must become
-
-	|=|
-	|    V|
-	|    apply|
-	|        inverse-of-function|
-	|        R|
+= (text)
+	=
+	    V
+	    apply
+	        inverse-of-function
+	        R
+=
 
 @<Rearrange using the inverse of function@> =
 	equation_node *fnode = old_LHS->enode_operands[0];

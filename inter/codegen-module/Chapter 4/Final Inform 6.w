@@ -329,9 +329,9 @@ int CodeGen::I6::compile_primitive(code_generation_target *cgt, code_generation 
 @ Here we need some gymnastics. We need to produce a value which the
 sometimes shaky I6 expression parser will accept, which turns out to be
 quite a constraint. If we were compiling to C, we might try this:
-
-	|(a, b, c)|
-
+= (text as C)
+	(a, b, c)
+=
 using the serial comma operator -- that is, where the expression |(a, b)|
 evaluates |a| then |b| and returns the value of |b|, discarding |a|.
 Now I6 does support the comma operator, and this makes a workable scheme,
@@ -340,15 +340,15 @@ invocations of functions, because I6's syntax analyser won't always
 allow the serial comma to be mixed in the same expression with the
 function argument comma, i.e., I6 is unable properly to handle expressions
 like this one:
-
-	|(a(b, c), d)|
-
+= (text as C)
+	(a(b, c), d)
+=
 where the first comma constructs a list and the second is the operator.
 (Many such expressions work fine, but not all.) That being so, the scheme
 I actually use is:
-
-	|(c) + 0*((b) + (a))|
-
+= (text as C)
+	(c) + 0*((b) + (a))
+=
 Because I6 evaluates the leaves in an expression tree right-to-left, not
 left-to-right, the parameter assignments happen first, then the conditions,
 then the result.

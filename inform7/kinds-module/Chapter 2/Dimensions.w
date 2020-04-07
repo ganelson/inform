@@ -74,17 +74,17 @@ the output of:
 
 (The dash is meaningless -- this is a test with no input.) In the output, we
 see that
-
-	|Base units: time, length, mass, elapsed time, electric current, temperature, luminosity|
-	|Derived units:|
-	|frequency = (elapsed time)-1|
-	|force = (length).(mass).(elapsed time)-2|
-	|energy = (length)2.(mass).(elapsed time)-2|
-	|pressure = (length)-1.(mass).(elapsed time)-2|
-	|power = (length)2.(mass).(elapsed time)-3|
-	|electric charge = (elapsed time).(electric current)|
-	|voltage = (length)2.(mass).(elapsed time)-3.(electric current)-1|
-
+= (text)
+	Base units: time, length, mass, elapsed time, electric current, temperature, luminosity
+	Derived units:
+	frequency = (elapsed time)-1
+	force = (length).(mass).(elapsed time)-2
+	energy = (length)2.(mass).(elapsed time)-2
+	pressure = (length)-1.(mass).(elapsed time)-2
+	power = (length)2.(mass).(elapsed time)-3
+	electric charge = (elapsed time).(electric current)
+	voltage = (length)2.(mass).(elapsed time)-3.(electric current)-1
+=
 ...and so on. Those expressions on the right hand sides are "derived units",
 where the numbers are powers, so that negative numbers mean division.
 It's easy to see why we want to give names and notations for some of
@@ -129,9 +129,9 @@ velocity again to get energy, then divides by a dimensionless constant. But
 another way would be to square the velocity first, then multiply by mass
 to get energy, then halve. If we do it that way, what units are the squared
 velocity in? The answer has to be
-
-	|(length)2.(elapsed time)-2|
-
+= (text)
+	(length)2.(elapsed time)-2
+=
 but that's a unit which isn't useful for much, and doesn't have any everyday
 name. Inform creates what are called "intermediate kinds" like this in
 order to be able to represent the kinds of intermediate values which turn

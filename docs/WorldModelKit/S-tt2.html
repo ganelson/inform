@@ -136,7 +136,7 @@ moves an object to a new position in the object tree.
 
 <pre class="display">
     <span class="plain">[ </span><span class="identifier">ShowRelationsSub</span><span class="plain">;</span>
-    <span class="identifier">IterateRelations</span><span class="plain">(</span><span class="identifier">ShowOneRelation</span><span class="plain">);</span>
+    <span class="plain">   </span><span class="identifier">IterateRelations</span><span class="plain">(</span><span class="identifier">ShowOneRelation</span><span class="plain">);</span>
     <span class="plain">];</span>
 
     <span class="plain">[ </span><span class="identifier">ShowOneRelation</span><span class="plain"> </span><span class="identifier">rel</span><span class="plain">;</span>
@@ -223,7 +223,7 @@ moves an object to a new position in the object tree.
     <span class="plain">[ </span><span class="identifier">RulesOnSub</span><span class="plain">;</span>
         <span class="identifier">debug_rules</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="string">"Rules tracing now switched on. Type ~rules off~ to switch it off again,</span>
-        <span class="string">or ~rules all~ to include even rules which do not apply."</span><span class="plain">;</span>
+        <span class="string"> or ~rules all~ to include even rules which do not apply."</span><span class="plain">;</span>
     <span class="plain">];</span>
     <span class="plain">[ </span><span class="identifier">RulesAllSub</span><span class="plain">;</span>
         <span class="identifier">debug_rules</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">say__p</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
@@ -399,31 +399,31 @@ out the I6 command verb grammar for the supplied command.
     <span class="plain">[ </span><span class="identifier">DebugToken</span><span class="plain"> </span><span class="identifier">token</span><span class="plain">;</span>
         <span class="identifier">AnalyseToken</span><span class="plain">(</span><span class="identifier">token</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">found_ttype</span><span class="plain">) {</span>
-        <span class="identifier">ILLEGAL_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ILLEGAL_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"&lt;illegal token number "</span><span class="plain">, </span><span class="identifier">token</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">;</span>
-        <span class="identifier">ELEMENTARY_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ELEMENTARY_TT</span><span class="plain">:</span>
             <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">found_tdata</span><span class="plain">) {</span>
-            <span class="identifier">NOUN_TOKEN</span><span class="plain">:           </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"noun"</span><span class="plain">;</span>
-            <span class="identifier">HELD_TOKEN</span><span class="plain">:           </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"held"</span><span class="plain">;</span>
-            <span class="identifier">MULTI_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multi"</span><span class="plain">;</span>
-            <span class="identifier">MULTIHELD_TOKEN</span><span class="plain">:      </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiheld"</span><span class="plain">;</span>
-            <span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiexcept"</span><span class="plain">;</span>
-            <span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiinside"</span><span class="plain">;</span>
-            <span class="identifier">CREATURE_TOKEN</span><span class="plain">:       </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"creature"</span><span class="plain">;</span>
-            <span class="identifier">SPECIAL_TOKEN</span><span class="plain">:        </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"special"</span><span class="plain">;</span>
-            <span class="identifier">NUMBER_TOKEN</span><span class="plain">:         </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"number"</span><span class="plain">;</span>
-            <span class="identifier">TOPIC_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"topic"</span><span class="plain">;</span>
-            <span class="identifier">ENDIT_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"END"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">NOUN_TOKEN</span><span class="plain">:           </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"noun"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">HELD_TOKEN</span><span class="plain">:           </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"held"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">MULTI_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multi"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">MULTIHELD_TOKEN</span><span class="plain">:      </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiheld"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">MULTIEXCEPT_TOKEN</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiexcept"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">MULTIINSIDE_TOKEN</span><span class="plain">:    </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"multiinside"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">CREATURE_TOKEN</span><span class="plain">:       </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"creature"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">SPECIAL_TOKEN</span><span class="plain">:        </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"special"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">NUMBER_TOKEN</span><span class="plain">:         </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"number"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">TOPIC_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"topic"</span><span class="plain">;</span>
+            <span class="plain">  </span><span class="identifier">ENDIT_TOKEN</span><span class="plain">:          </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"END"</span><span class="plain">;</span>
             <span class="plain">}</span>
-        <span class="identifier">PREPOSITION_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">PREPOSITION_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"'"</span><span class="plain">, (</span><span class="identifier">address</span><span class="plain">) </span><span class="identifier">found_tdata</span><span class="plain">, </span><span class="string">"'"</span><span class="plain">;</span>
-        <span class="identifier">ROUTINE_FILTER_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ROUTINE_FILTER_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"noun=Routine("</span><span class="plain">, </span><span class="identifier">found_tdata</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
-        <span class="identifier">ATTR_FILTER_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">ATTR_FILTER_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> (</span><span class="identifier">DebugAttribute</span><span class="plain">) </span><span class="identifier">found_tdata</span><span class="plain">;</span>
-        <span class="identifier">SCOPE_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">SCOPE_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"scope=Routine("</span><span class="plain">, </span><span class="identifier">found_tdata</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
-        <span class="identifier">GPR_TT</span><span class="plain">:</span>
+        <span class="plain">  </span><span class="identifier">GPR_TT</span><span class="plain">:</span>
             <span class="reserved">print</span><span class="plain"> </span><span class="string">"Routine("</span><span class="plain">, </span><span class="identifier">found_tdata</span><span class="plain">, </span><span class="string">")"</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">];</span>
@@ -452,8 +452,8 @@ out the I6 command verb grammar for the supplied command.
         <span class="identifier">test_stack</span><span class="plain">--&gt;(</span><span class="identifier">test_sp</span><span class="plain">+3) = </span><span class="identifier">l</span><span class="plain">;</span>
         <span class="identifier">test_sp</span><span class="plain"> = </span><span class="identifier">test_sp</span><span class="plain"> + </span><span class="constant">4</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain">--&gt;0) &amp;&amp; (</span><span class="identifier">R</span><span class="plain">--&gt;0 ~= </span><span class="identifier">real_location</span><span class="plain">)) {</span>
-            <span class="reserved">print</span><span class="plain"> </span><span class="string">"(first moving to "</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">--&gt;0, </span><span class="string">")^"</span><span class="plain">;</span>
-            <span class="identifier">PlayerTo</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">--&gt;0, </span><span class="constant">1</span><span class="plain">);</span>
+            <span class="plain"> </span><span class="reserved">print</span><span class="plain"> </span><span class="string">"(first moving to "</span><span class="plain">, (</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">R</span><span class="plain">--&gt;0, </span><span class="string">")^"</span><span class="plain">;</span>
+            <span class="plain"> </span><span class="identifier">PlayerTo</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">--&gt;0, </span><span class="constant">1</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">k</span><span class="plain">=1;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain">--&gt;</span><span class="identifier">k</span><span class="plain">) {</span>

@@ -290,8 +290,6 @@ happen.
 <p class="inwebparagraph">produces
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">viable map: the[1] -- can[1] see[1] -- ([2] -- is[2] -- )[1] -- do[3] not[3] carry[3] --</span>
 </pre>
@@ -791,14 +789,12 @@ For example, "Darcy is proud" and "Darcy wears the hat" will both end up here.
 need to record that in the parse tree. This code does the following:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">SENTENCE_NT "Darcy wears the hat"  ---&gt;  SENTENCE_NT "Darcy wears the hat"</span>
-        <span class="plain">    AVERB_NT "wears"                         AVERB_NT "wears"</span>
-        <span class="plain">    PROPER_NOUN_NT "Darcy"                   PROPER_NOUN_NT "Darcy"</span>
-        <span class="plain">    PROPER_NOUN_NT "hat"                     RELATIONSHIP_NT "wears" = is-worn-by</span>
-        <span class="plain">                                                 PROPER_NOUN_NT "hat"</span>
+            <span class="plain">AVERB_NT "wears"                         AVERB_NT "wears"</span>
+            <span class="plain">PROPER_NOUN_NT "Darcy"                   PROPER_NOUN_NT "Darcy"</span>
+            <span class="plain">PROPER_NOUN_NT "hat"                     RELATIONSHIP_NT "wears" = is-worn-by</span>
+                                                        <span class="plain"> PROPER_NOUN_NT "hat"</span>
 </pre>
 
 <p class="inwebparagraph">The meaning is reversed here because we are applying it to the object of the

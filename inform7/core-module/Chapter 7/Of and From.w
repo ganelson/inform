@@ -21,11 +21,11 @@ Inform's run, which handful of the many such nodes it made were actually
 valid. It didn't know what the property names were, nor what the direction
 names were. (For chicken-and-egg reasons, it couldn't know this.) So it
 almost certainly made some spurious noun phrase subtrees like this one:
-
-	|X_OF_Y_NT "worn patch of carpet"|
-	|    PROPER_NOUN_NT "carpet"|
-	|    PROPERTY_LIST_NT "worn patch"|
-
+= (text)
+	X_OF_Y_NT "worn patch of carpet"
+	    PROPER_NOUN_NT "carpet"
+	    PROPERTY_LIST_NT "worn patch"
+=
 Now comes the reckoning. The existing parse tree may contain a few bogus
 nodes, but it's good enough to determine all the property and direction
 names. This then enables us to go back and check all the |X_OF_Y_NT|
@@ -129,14 +129,14 @@ reason). We must simply rely on the fact that assertions cannot take this
 form without being property declarations -- with one exception: see below.
 
 We therefore look for this subtree structure:
-
-	|SENTENCE_NT "A container has a number called volume"|
-	|    AVERB_NT "has"|
-	|    PROPER_NOUN_NT "container" article:indefinite|
-	|    CALLED_NT "called"|
-	|        PROPER_NOUN_NT "number" article:indefinite|
-	|        PROPER_NOUN_NT "volume"|
-
+= (text)
+	SENTENCE_NT "A container has a number called volume"
+	    AVERB_NT "has"
+	    PROPER_NOUN_NT "container" article:indefinite
+	    CALLED_NT "called"
+	        PROPER_NOUN_NT "number" article:indefinite
+	        PROPER_NOUN_NT "volume"
+=
 ...and then extract the bottom-most, rightmost noun-phrase as the name of
 the new property.
 

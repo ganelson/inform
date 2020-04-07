@@ -134,12 +134,12 @@ are dual to each other in that they are related by a sort of negation:
 "there does not exist an open door" means the same as "all doors are
 closed", and so on. Thus
 
-	|Not ( ForAll x: P(x) )| is equivalent to |Exists x: Not(P(x))|
+|Not ( ForAll x: P(x) )| is equivalent to |Exists x: Not(P(x))|
 
 That isn't what we mean here. If $Q$ and $NQ$ are a quantifier and its
 negation in our sense, then:
 
-	|Not ( Q x: P(x) )| is equivalent to |NQ x: P(x)|
+|Not ( Q x: P(x) )| is equivalent to |NQ x: P(x)|
 
 Why do we do this? There are several reasons. First, we are using a richer
 set of quantifiers than traditional logic provides, and most of these have
@@ -148,17 +148,17 @@ as well exploit that. Second, we are going to try to represent propositions
 using as much conjunction ("and") and as little disjunction ("or") as
 possible. Consider what effect de Morgan's laws have if we simplify:
 
-	|Not ( ForAll x: closed(x) and locked(x) and lockable(x) )|
+|Not ( ForAll x: closed(x) and locked(x) and lockable(x) )|
 
 in the traditional way: we obtain
 
-	|Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))|
+|Exists x: Not(closed(x)) or Not(locked(x)) or Not(lockable(x))|
 
 which introduces disjunction ("or") in just the way we don't want. By
 simply regarding |NotAll| as a quantifier in its own right, we obtain
 something much easier to handle:
 
-	|NotAll x: closed(x) and locked(x) and lockable(x)|
+|NotAll x: closed(x) and locked(x) and lockable(x)|
 
 This is why we will be creating quantifiers |NotAll| and |DoesNotExist| --
 the negations of |ForAll| and |ThereExists| -- even though they might seem
@@ -199,7 +199,7 @@ The following routine compiles an I6 condition to test whether the
 tallies are acceptable for the given quantifier. In the example above,
 the quantifier is |Proportion>50%|, and compiles to the test:
 
-	|qcy_0 > 5*qcn_0/10|
+|qcy_0 > 5*qcn_0/10|
 
 (It looks a little wasteful to multiply by 5 and then divide by 10, but
 I6 will fold that out in eventual code generation. When the proportion is

@@ -14,9 +14,9 @@ running it: it's not present in the Inform UI apps.
 If you have compiled the standard distribution of the command-line tools
 for Inform then the Indoc executable will be at |indoc/Tangled/indoc/|.
 Usage is very simple:
-
-	|$ indoc/Tangled/indoc [OPTIONS] TARGET|
-
+= (text as ConsoleText)
+	$ indoc/Tangled/indoc [OPTIONS] TARGET
+=
 By default, Indoc reads its source documentation from a direction called
 |Documentation| (with respect to the current working directory); the
 option |-from X| changes this path to |X|, but in this manual we'll call
@@ -24,17 +24,17 @@ it |Documentation|.
 
 In addition to documentation files, which will be described later, Indoc
 also reads instruction files. At minimum it will read
-
-	|Documentation/indoc-instructions.txt|
-
+= (text as Indoc)
+	Documentation/indoc-instructions.txt
+=
 but the option |-instructions X| causes it to read |X| as well. Instructions
 files mainly specify indexing notations, or CSS styles, or miscellaneous
 settings, but they group these under named "targets". For example:
-
-	|windows_app {|
-	|	...|
-	|}|
-
+= (text)
+	windows_app {
+		...
+	}
+=
 declares a target called |windows_app|. (This is the form of HTML needed for
 use inside the Windows UI application for Inform.) The idea here is that
 there is probably no single form of HTML needed -- it will be needed in
@@ -44,9 +44,9 @@ called "targets". On any given run, Indoc generates a single target --
 the one named on the command line.
 
 The HTML produced is placed, by default, in the directory:
-
-	|Documentation/Output|
-
+= (text as Indoc)
+	Documentation/Output
+=
 This can be changed with the option |-to X|.
 
 @ When it runs, Indoc needs to know where it is installed in the file
@@ -72,13 +72,13 @@ about its location as it starts up.
 extension, which comes supplied with Inform, so that its lines giving
 cross-references to documentation contain accurate references. These
 lines are special sentences such as:
-
-	|Document kind_person at doc45 "3.17" "Men, women and animals".|
-
+= (text as Indoc)
+	Document kind_person at doc45 "3.17" "Men, women and animals".
+=
 Indoc looks for a contiguous block of lines in the form
-
-	|Document ... at doc12.|
-
+= (text as Indoc)
+	Document ... at doc12.
+=
 and replaces it with a new block of lines containing up to date information.
 
 This happens only if |-rewrite-standard-rules X| is specified, with |X| being

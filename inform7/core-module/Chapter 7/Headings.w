@@ -83,15 +83,15 @@ cases of ambiguity, being the definition of narrowest scope which is valid
 at the position in question. In our terms, a stand-alone C program has a
 heading tree like so, with two semantically meaningful heading levels,
 File (0) and Routine (1), and then sublevels provided by braced blocks:
-
-	|File|
-	|    main()|
-	|    routine1()|
-	|        interior block of a loop|
-	|        ...|
-	|    routine2()|
-	|    ...|
-
+= (text)
+	File
+	    main()
+	    routine1()
+	        interior block of a loop
+	        ...
+	    routine2()
+	    ...
+=
 The resolution of a name at a given position P is unambiguous: find the
 heading H to which P belongs; if the name is defined there, accept that;
 if not move H upwards and try again; if it is not defined even at File (0)

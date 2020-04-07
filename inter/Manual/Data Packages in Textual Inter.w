@@ -24,9 +24,9 @@ from "types" of packages, a completely different concept).
 No kinds are built in: all must be declared before use. However, these
 declarations are able to say something about them, so they aren't entirely
 abstract. The syntax is:
-
-	|kind NAME CONTENT|
-
+= (text as Inter)
+	kind NAME CONTENT
+=
 The |NAME|, like all names, goes into the owning package's symbol table;
 other packages wanting to use this kind will have to have an |external|
 symbol pointing to this definition.
@@ -55,11 +55,11 @@ not all have to have the same kind;
 (k) and |routine|, meaning that data must be references to functions.
 
 For example:
-
-	|kind k_boolean int2|
-	|kind k_list_of_bool list of k_boolean|
-	|kind K_grammatical_tense enum|
-
+= (text as Inter)
+	constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }
+	kind k_list_of_bool list of k_boolean
+	kind K_grammatical_tense enum
+=
 @ In the remainder of this specification, |VALUE| means either the name of
 a defined |constant| (see below), or else a literal.
 
@@ -78,11 +78,11 @@ A literal |list| is writtem in braces: |{ V1, V2, ..., Vn }|, where |V1|,
 |V2| and so on must all be acceptable literals for the entry kind of the
 list. For example, |{ 2, 3, 5, 7, 11, 13, 17, 19 }|. The same notation is
 also accepted for a |struct|, a |column| or a |table|. For example:
-
-	|constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }|
-	|constant C_egtable_col2 K_column_of_colour = { I_green, undef, I_red }|
-	|constant C_egtable K_table = { C_egtable_col1, C_egtable_col2 }|
-
+= (text as Inter)
+	constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }
+	constant C_egtable_col2 K_column_of_colour = { I_green, undef, I_red }
+	constant C_egtable K_table = { C_egtable_col1, C_egtable_col2 }
+=
 A list-like notation can also be used for a "calculated literal". This is
 a single value, but which we may not be able to evaluate at inter generation
 time. For example, if we do not yet know the value of |X|, we can write
@@ -118,10 +118,10 @@ absolutely anywhere.
 is really a form of comment used in the middle of long lists. Thus the
 list |{ 1, 2, ^"predictable start", 3721, -11706 }| is actually a list of four values
 but which should be compiled on two lines with the comment in between:
-
-	|1, 2, ! predictable start|
-	|3721, -11706|
-
+= (text as Inter)
+	1, 2, ! predictable start
+	3721, -11706
+=
 (As unnecessary as this feature seems, it does make the code produced by
 Inform look a lot more readable when it finally reaches Inform 6.)
 
@@ -141,8 +141,8 @@ of kind |K|, but that value is not specified, then the default is used.
 For example, the default |int32| is zero.
 
 This can be controlled using |defaultvalue KIND = VALUE|. For example,
-
-	|defaultvalue K_boolean = 0|
+= (text as Inter)
+	defaultvalue K_boolean = 0
 
 @h Enumerations and instances.
 As noted above, some kinds marked as |enum| are enumerated. This means
@@ -150,23 +150,23 @@ that they can have only a finite number of possible values, each of which
 is represented in textual inter by a different name.
 
 These values are called "instances" and must also be declared. For example:
-
-	|kind K_grammatical_tense enum|
-	|instance I_present_tense K_grammatical_tense|
-	|instance I_past_tense K_grammatical_tense|
-
+= (text as Inter)
+	kind K_grammatical_tense enum
+	instance I_present_tense K_grammatical_tense
+	instance I_past_tense K_grammatical_tense
+=
 It is also possible to specify numerical values to be used at run-time:
-
-	|instance I_present_tense K_grammatical_tense = 1|
-
+= (text as Inter)
+	instance I_present_tense K_grammatical_tense = 1
+=
 If so, then such values must all be different (for all instances of that kind).
 Enum values must fit into an |int16|.
 
 Enumerations, but no other kinds, may have "subkinds", as in this example:
-
-	|kind K_object enum|
-	|kind K1_room <= K_object|
-
+= (text as Inter)
+	kind K_object enum
+	kind K1_room <= K_object
+=
 This creates a new |enum| kind |K1_room|. Values of this are a subset of
 the values for its parent, |K_object|: thus, an instance of |K1_room| is
 automatically also an instance of |K_object|. This new subkind can itself
@@ -175,19 +175,19 @@ have subkinds, and so on.
 @h Properties of instances.
 A "property" is a named value attached to all instances of a given kind,
 and must be created before use with:
-
-	|property NAME KIND|
-
+= (text as Inter)
+	property NAME KIND
+=
 which declares that |NAME| is a property whose value has the given |KIND|;
 however, it doesn't say which kind(s) can have this property, so we also
 have to give one or more "permissions", in the form
-
-	|permission NAME KIND|
-
+= (text as Inter)
+	permission NAME KIND
+=
 And once that is done, actual values can be assigned with:
-
-	|propertyvalue NAME OWNER = VALUE|
-
+= (text as Inter)
+	propertyvalue NAME OWNER = VALUE
+=
 where |OWNER| can either be the name of a whole kind, in which case this sets
 the default value of the property for instances of that kind, or else the name
 of a specific instance, in which case this sets just the property of a single
@@ -198,52 +198,52 @@ The given value is just the initial state; at run-time, it can be changed to
 another value (of the same kind).
 
 For example:
-
-	|kind K_object enum|
-	|kind K_text text|
-	|property P_printed_name K_text|
-	|permission P_printed_name K_object|
-	|propertyvalue P_printed_name K_object = "something"|
-	|instance I_ball K_object|
-	|propertyvalue P_printed_name I_ball = "beach ball"|
+= (text as Inter)
+	kind K_object enum
+	kind K_text text
+	property P_printed_name K_text
+	permission P_printed_name K_object
+	propertyvalue P_printed_name K_object = "something"
+	instance I_ball K_object
+	propertyvalue P_printed_name I_ball = "beach ball"
 
 @h Constants.
 A constant definition assigns a name to a given value: where that name is
 used, it evaluates to this value. The syntax is:
-
-	|constant NAME KIND = VALUE|
-
+= (text as Inter)
+	constant NAME KIND = VALUE
+=
 where the value given must itself be a constant or literal, and must conform
 to the given kind. As always, this is conformance only in the very weak
 system of type checking used by Inter: if either the value or the constant
 has an |unchecked| kind, then the test is automatically passed.
 
 For example,
-
-	|kind K_number int32|
-	|constant favourite_prime K_number = 16339|
-
+= (text as Inter)
+	kind K_number int32
+	constant favourite_prime K_number = 16339
+=
 Constants can have any kind, including enumerated ones, but if so then that
 does not make them instances. For example,
-
-	|kind K_colour enum|
-	|instance C_red K_colour|
-	|instance C_green K_colour|
-	|constant C_favourite K_colour = C_green|
-
+= (text as Inter)
+	kind K_colour enum
+	instance C_red K_colour
+	instance C_green K_colour
+	constant C_favourite K_colour = C_green
+=
 does not make |C_favourite| a new possible colour: it's only a synonym for
 the existing |C_green|.
 
 @ If a constant needs to refer to a function, we seem to run into the limitation
 that there's no notation for literal functions. In fact there is, though:
 that's what code packages are. For example,
-
-	|kind K_number int32|
-	|kind K_number_to_number K_number -> K_number|
-	|package R_101_B _code|
-	|    ...|
-	|constant R_101 K_number_to_number = R_101_B|
-
+= (text as Inter)
+	kind K_number int32
+	kind K_number_to_number K_number -> K_number
+	package R_101_B _code
+	    ...
+	constant R_101 K_number_to_number = R_101_B
+=
 defines the constant |R_101|. Note that |R_101_B| is not a value, because
 package names are not values; but |R_101| on the other hand is a value, and
 can be stored and used at run-time like any other value.
@@ -252,20 +252,20 @@ can be stored and used at run-time like any other value.
 Variables are like properties, except that each exists only as a single
 value, not attached to any instance in particular: it makes no sense to ask
 who the owner is. Variables must be declared as:
-
-	|variable NAME KIND = VALUE|
+= (text as Inter)
+	variable NAME KIND = VALUE
 
 The given value is just the initial state; at run-time, it can be changed to
 another value (of the same kind). For example,
-
-	|variable V_score K_number = 10|
+= (text as Inter)
+	variable V_score K_number = 10
 
 @h Responses.
 A "response" is a special sort of property belonging to a function rather than
 an instance: it's a piece of text. This can be set with:
-
-	|response NAME MARKER FUNCTION = VALUE|
-
+= (text as Inter)
+	response NAME MARKER FUNCTION = VALUE
+=
 |NAME| provides a unique symbol name identifying this specific response; this
 is needed so that other code elsewhere in the program can alter this response
 at run-time. |MARKER| indicates which of 26 possible responses is meant: in
@@ -277,13 +277,13 @@ must be a |text| literal.
 This has no effect on the code generated, and is simply semantic markup for
 the benefit of onlookers. The scheme here is that any package can have a
 dictionary of textual key-value pairs, specified by:
-
-	|metadata KEY: VALUE|
-
+= (text as Inter)
+	metadata KEY: VALUE
+=
 Here |KEY| must be a (public) symbol whose name begins with a backtick, and
 |VALUE| must be literal text. For example:
-
-	|metadata `name: "blue book"|
+= (text as Inter)
+	metadata `name: "blue book"
 
 @h Append and Link.
 Two rather ugly constructs are currently needed in order to implement very
@@ -297,16 +297,16 @@ For example, the I7 source text:
 >> Include (- has door, -) when defining a door.
 
 results in the following inter being generated:
-
-	|append K4_door " has door, \n"|
-
+= (text as Inter)
+	append K4_door " has door, \n"
+=
 |link STAGE "SEGMENT" "PART" "CONTENT" "OTHER"| tells Inter that it needs
 to make an alteration to the Inform 6 code inside the I6T template file
 |SEGMENT|, at heading |PART|; the |STAGE| must be one of |early|, |before|,
 |instead| or |after|. For example:
-
-	|link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""|
-
+= (text as Inter)
+	link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""
+=
 @h Nop.
 The "nop" statement has no textual representation. It does nothing, and exists
 only as a convenience used by Inform when it needs to write simultaneously to
